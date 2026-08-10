@@ -1,0 +1,2123 @@
+{
+  "gems": {
+    "weapon": [
+      {
+        "id": "g_81101",
+        "n": "Global Attack",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81102",
+        "n": "Basic ATK Dmg Boost",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81103",
+        "n": "Combo Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81104",
+        "n": "Counter Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81105",
+        "n": "Physical Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81106",
+        "n": "Lightning Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81107",
+        "n": "Fire Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81108",
+        "n": "Explosion Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81109",
+        "n": "Final Dmg Boost",
+        "t": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7.5,
+          10,
+          12.5,
+          15
+        ]
+      },
+      {
+        "id": "g_81111",
+        "n": "Dmg to Bosses",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81112",
+        "n": "Ignore 50% DR on skill",
+        "t": [
+          5,
+          10,
+          15,
+          22.5,
+          30,
+          37.5,
+          45
+        ]
+      },
+      {
+        "id": "g_81113",
+        "n": "Dmg fluctuation",
+        "t": [
+          30,
+          35,
+          40,
+          50,
+          60,
+          70,
+          80
+        ]
+      },
+      {
+        "id": "g_81114",
+        "n": "Basic ATK 2x chance",
+        "t": [
+          10,
+          15,
+          22.5,
+          30,
+          35,
+          40
+        ]
+      },
+      {
+        "id": "g_81115",
+        "n": "Sword Qi cap mult",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14
+        ]
+      },
+      {
+        "id": "g_81116",
+        "n": "Dmg to HP>70%",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81117",
+        "n": "Combo MaxHP dmg",
+        "t": [
+          0.2,
+          0.4,
+          0.7,
+          1,
+          1.5,
+          2,
+          2.5
+        ]
+      },
+      {
+        "id": "g_81118",
+        "n": "Counter MaxHP dmg",
+        "t": [
+          0.3,
+          0.6,
+          1,
+          1.5,
+          2,
+          2.5,
+          3
+        ]
+      },
+      {
+        "id": "g_81121",
+        "n": "Lightning paralyze",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          17,
+          20
+        ]
+      },
+      {
+        "id": "g_81122",
+        "n": "Light Spear shield",
+        "t": [
+          4,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81123",
+        "n": "Phoenix extra fireball",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          40
+        ]
+      },
+      {
+        "id": "g_81124",
+        "n": "Pharaoh vuln",
+        "t": [
+          10,
+          20,
+          30,
+          40
+        ]
+      },
+      {
+        "id": "g_81125",
+        "n": "Fallen Queen DR shred",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          40
+        ]
+      },
+      {
+        "id": "g_81126",
+        "n": "White Tiger crit",
+        "t": [
+          5,
+          10,
+          15,
+          20
+        ]
+      },
+      {
+        "id": "g_81127",
+        "n": "Ootengu bleed dmg",
+        "t": [
+          2,
+          4.5,
+          6,
+          9,
+          12
+        ]
+      },
+      {
+        "id": "g_81129",
+        "n": "Counter ATK buff",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          20,
+          25
+        ]
+      },
+      {
+        "id": "g_81130",
+        "n": "Steal ATK start",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15
+        ]
+      },
+      {
+        "id": "g_81131",
+        "n": "Helos Basic ATK coef",
+        "t": [
+          6,
+          9,
+          12,
+          16,
+          20
+        ]
+      },
+      {
+        "id": "g_81132",
+        "n": "Ailoren Sword Qi coef",
+        "t": [
+          5,
+          7.5,
+          10,
+          12.5,
+          15
+        ]
+      },
+      {
+        "id": "g_81133",
+        "n": "Thorn Shield coef",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81134",
+        "n": "Nashir Electric Shield",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81135",
+        "n": "Holy Angel Dagger coef",
+        "t": [
+          6,
+          9,
+          12,
+          16,
+          20
+        ]
+      }
+    ],
+    "armor": [
+      {
+        "id": "g_81201",
+        "n": "Global HP",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81202",
+        "n": "Global DEF",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81203",
+        "n": "Speed",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          15,
+          20,
+          25,
+          30
+        ]
+      },
+      {
+        "id": "g_81204",
+        "n": "Final DMG Red",
+        "t": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7.5,
+          10,
+          12.5,
+          15
+        ]
+      },
+      {
+        "id": "g_81205",
+        "n": "Basic ATK DMG Red",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81206",
+        "n": "Combo DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81207",
+        "n": "Counter DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81208",
+        "n": "Physical DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81209",
+        "n": "Lightning DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81210",
+        "n": "Fire DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81211",
+        "n": "Ignore Counter Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81212",
+        "n": "Ignore Combo Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81213",
+        "n": "Ignore Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81214",
+        "n": "Control Immunity",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81215",
+        "n": "Ignore Control Immunity",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10
+        ]
+      },
+      {
+        "id": "g_81217",
+        "n": "Dagger Dmg Coef",
+        "t": [
+          3,
+          4.5,
+          6,
+          7.5,
+          9
+        ]
+      },
+      {
+        "id": "g_81218",
+        "n": "Lightning Dmg Coef",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81219",
+        "n": "Burn Dmg Coef",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81220",
+        "n": "Light Spear Dmg Coef",
+        "t": [
+          3,
+          4.5,
+          6,
+          7.5,
+          9
+        ]
+      },
+      {
+        "id": "g_81221",
+        "n": "Combo Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81222",
+        "n": "Counter Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81223",
+        "n": "Rage Skill Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81226",
+        "n": "Dmg to HP>70%",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81227",
+        "n": "Skill count DMG",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          15,
+          20,
+          25,
+          30
+        ]
+      },
+      {
+        "id": "g_81228",
+        "n": "Basic ATK stun",
+        "t": [
+          2,
+          3.5,
+          5,
+          6.5,
+          8
+        ]
+      },
+      {
+        "id": "g_81229",
+        "n": "Heal per turn",
+        "t": [
+          2,
+          4,
+          6,
+          9,
+          12,
+          15,
+          17.5,
+          20
+        ]
+      },
+      {
+        "id": "g_81230",
+        "n": "Start shield",
+        "t": [
+          10,
+          15,
+          20,
+          25,
+          30,
+          45,
+          60,
+          75,
+          90
+        ]
+      },
+      {
+        "id": "g_81231",
+        "n": "Clown heal reduc",
+        "t": [
+          3,
+          5,
+          8,
+          12,
+          16
+        ]
+      },
+      {
+        "id": "g_81232",
+        "n": "White Robe frozen dmg",
+        "t": [
+          20,
+          35,
+          50,
+          75,
+          100
+        ]
+      },
+      {
+        "id": "g_81233",
+        "n": "Electro paralysis",
+        "t": [
+          8,
+          12,
+          18,
+          25
+        ]
+      },
+      {
+        "id": "g_81234",
+        "n": "Evil Eye laser hits",
+        "t": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "g_81235",
+        "n": "Panda frost pierce",
+        "t": [
+          20,
+          40,
+          60,
+          80
+        ]
+      },
+      {
+        "id": "g_81236",
+        "n": "Turn 1 FDR",
+        "t": [
+          6,
+          12,
+          18,
+          24,
+          30,
+          40,
+          50
+        ]
+      },
+      {
+        "id": "g_81237",
+        "n": "Reflect dmg",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          10
+        ]
+      }
+    ],
+    "ring": [
+      {
+        "id": "g_81301",
+        "n": "Global Attack",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81302",
+        "n": "Basic ATK Dmg Boost",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81303",
+        "n": "Combo Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81304",
+        "n": "Counter Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81305",
+        "n": "Physical Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81306",
+        "n": "Lightning Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81307",
+        "n": "Fire Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81308",
+        "n": "Explosion Dmg Boost",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81309",
+        "n": "Weapon Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81310",
+        "n": "DoT Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81311",
+        "n": "Dagger Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81312",
+        "n": "Sword Qi Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81313",
+        "n": "Lightning Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81314",
+        "n": "Counter Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81315",
+        "n": "Combo Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81316",
+        "n": "Dmg to Shielded",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81317",
+        "n": "Phoenix dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81318",
+        "n": "Pharaoh dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81319",
+        "n": "Fallen Queen dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81320",
+        "n": "White Tiger dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81321",
+        "n": "Great Tengu dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81322",
+        "n": "Dmg to HP>70%",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81323",
+        "n": "Burn 5stacks MaxHP",
+        "t": [
+          0.5,
+          1,
+          1.5,
+          2.2,
+          3,
+          3.7,
+          4.5
+        ]
+      },
+      {
+        "id": "g_81324",
+        "n": "[U] Dagger ATK",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          40,
+          50,
+          60
+        ]
+      },
+      {
+        "id": "g_81325",
+        "n": "[U] Combo Shield",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          17.5,
+          20
+        ]
+      },
+      {
+        "id": "g_81326",
+        "n": "[U] Lightning shield reduc",
+        "t": [
+          10,
+          20,
+          30,
+          30,
+          30,
+          30,
+          30
+        ]
+      },
+      {
+        "id": "g_81328",
+        "n": "[U] Light Spear burn counter",
+        "t": [
+          0.3,
+          0.6,
+          0.9,
+          1.2,
+          1.5,
+          1.8
+        ]
+      },
+      {
+        "id": "g_81329",
+        "n": "[U] Low HP Lifesteal",
+        "t": [
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81330",
+        "n": "[U] Rage Silence",
+        "t": [
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45,
+          50
+        ]
+      },
+      {
+        "id": "g_81331",
+        "n": "[U] Burn/Poison pierce FDR",
+        "t": [
+          1.5,
+          3,
+          4.5,
+          6,
+          8,
+          11,
+          14,
+          17,
+          20
+        ]
+      }
+    ],
+    "accessory": [
+      {
+        "id": "g_81401",
+        "n": "Global HP",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81402",
+        "n": "Global DEF",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          18,
+          22
+        ]
+      },
+      {
+        "id": "g_81403",
+        "n": "Speed",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          15,
+          20,
+          25,
+          30
+        ]
+      },
+      {
+        "id": "g_81404",
+        "n": "Basic ATK DMG Red",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81405",
+        "n": "Combo DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81406",
+        "n": "Counter DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81407",
+        "n": "Physical DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81408",
+        "n": "Lightning DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81409",
+        "n": "Fire DMG Red",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81410",
+        "n": "Ignore Counter Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81411",
+        "n": "Ignore Combo Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81412",
+        "n": "Ignore Crit Rate",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81413",
+        "n": "Control Immunity",
+        "t": [
+          1,
+          1.5,
+          2,
+          3,
+          4,
+          6,
+          8,
+          10,
+          12
+        ]
+      },
+      {
+        "id": "g_81414",
+        "n": "Ignore Control Immunity",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10
+        ]
+      },
+      {
+        "id": "g_81415",
+        "n": "Dmg to Shielded",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ]
+      },
+      {
+        "id": "g_81416",
+        "n": "Dagger Dmg Coef",
+        "t": [
+          3,
+          4.5,
+          6,
+          7.5,
+          9
+        ]
+      },
+      {
+        "id": "g_81417",
+        "n": "Lightning Dmg Coef",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81418",
+        "n": "Burn Dmg Coef",
+        "t": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "g_81419",
+        "n": "Light Spear Dmg Coef",
+        "t": [
+          3,
+          4.5,
+          6,
+          7.5,
+          9
+        ]
+      },
+      {
+        "id": "g_81420",
+        "n": "Combo Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81421",
+        "n": "Counter Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81422",
+        "n": "Rage Skill Dmg Coef",
+        "t": [
+          6,
+          9,
+          12,
+          15,
+          18
+        ]
+      },
+      {
+        "id": "g_81423",
+        "n": "Clown dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81424",
+        "n": "White-Robed Mage dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81425",
+        "n": "Electro Dragon dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81426",
+        "n": "Evil Eye dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81427",
+        "n": "Pandaman dmg",
+        "t": [
+          10,
+          15,
+          20,
+          30,
+          45,
+          60
+        ]
+      },
+      {
+        "id": "g_81428",
+        "n": "Dmg to HP>70%",
+        "t": [
+          3,
+          6,
+          9,
+          12,
+          15,
+          20,
+          25,
+          30,
+          35
+        ]
+      },
+      {
+        "id": "g_81430",
+        "n": "[U] Attacked ATK buff",
+        "t": [
+          1,
+          1.5,
+          2,
+          2.5,
+          3,
+          4.5,
+          6
+        ]
+      },
+      {
+        "id": "g_81431",
+        "n": "[U] Pet healing",
+        "t": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          40,
+          50,
+          60
+        ]
+      },
+      {
+        "id": "g_81432",
+        "n": "[U] Pet crit reduc",
+        "t": [
+          1.5,
+          3,
+          4.5,
+          6,
+          8,
+          10,
+          13,
+          16
+        ]
+      },
+      {
+        "id": "g_81433",
+        "n": "[U] Hit ATK debuff",
+        "t": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          15,
+          20,
+          25
+        ]
+      }
+    ]
+  },
+  "psionics": {
+    "weapon": [
+      {
+        "c": "p_w_dmg_all",
+        "n": "DMG Increase (all)",
+        "k": "n"
+      },
+      {
+        "c": "p_w_skill_dmg",
+        "n": "Skill DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_basic_dmg",
+        "n": "Basic ATK DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_lightning",
+        "n": "Lightning DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_dagger",
+        "n": "Dagger DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_swordqi",
+        "n": "Sword Qi DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_lightspear",
+        "n": "Light Spear DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_fire",
+        "n": "Fire DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_dot",
+        "n": "DoT DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_combo_dmg",
+        "n": "Combo DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_counter_dmg",
+        "n": "Counter DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_comborate",
+        "n": "Combo Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_counterrate",
+        "n": "Counter Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_weapcrit",
+        "n": "Weapon Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_dotcrit",
+        "n": "DoT Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_daggercrit",
+        "n": "Dagger Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_lightcrit",
+        "n": "Lightning Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_swordqicrit",
+        "n": "Sword Qi Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_lightsprcrit",
+        "n": "Light Spear Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_speed",
+        "n": "Speed",
+        "k": "s"
+      }
+    ],
+    "armor": [
+      {
+        "c": "p_a_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_lightningred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_lightspeared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_a_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_fdr",
+        "n": "Final DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_a_advfdr",
+        "n": "Final Adventurer DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_artfdr",
+        "n": "Final Artifact DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_mntfdr",
+        "n": "Final Mount DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_petfdr",
+        "n": "Final Pet DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_critred",
+        "n": "Crit DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_a_basiccritred",
+        "n": "Basic ATK Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_skillcritred",
+        "n": "Skill Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_dotcritred",
+        "n": "DoT Crit DMG Red",
+        "k": "s"
+      }
+    ],
+    "ring": [
+      {
+        "c": "p_ra_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightspared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_r_comborate",
+        "n": "Combo Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_counterrate",
+        "n": "Counter Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igncrit",
+        "n": "Ignore Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_ignwcrit",
+        "n": "Ignore Weapon Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igndotcrit",
+        "n": "Ignore DoT Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igndaggercrit",
+        "n": "Ignore Dagger Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_iglightcrit",
+        "n": "Ignore Lightning Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igswordqi",
+        "n": "Ignore Sword Qi Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_iglightspear",
+        "n": "Ignore Light Spear Crit",
+        "k": "s"
+      }
+    ],
+    "accessory": [
+      {
+        "c": "p_ra_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightspared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ac_fdr",
+        "n": "Final DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_adv",
+        "n": "Adventurer FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_art",
+        "n": "Artifact FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_mnt",
+        "n": "Mount FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_pet",
+        "n": "Pet FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_critred",
+        "n": "Crit DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_skillcritred",
+        "n": "Skill Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_basiccritred",
+        "n": "Basic ATK Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_dotcritred",
+        "n": "DoT Crit DMG Red",
+        "k": "s"
+      }
+    ]
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "heroes": [
+    {
+      "n": "None",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "April O'Neil",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Bone King",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Crimson Witch",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Dark Knight",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Flame Heart Succubus",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Ghost Princess",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Holy Statue",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Judgement Reaper",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Knight of the End",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Legendary Knight",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Legendary Ranger",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Splinter",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Spring Orchid",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Tribal Orc",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Undead Pirate",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    }
+  ],
+  "pets": [
+    {
+      "n": "None"
+    },
+    {
+      "n": "Pingu"
+    },
+    {
+      "n": "Flash"
+    },
+    {
+      "n": "Unicorn"
+    },
+    {
+      "n": "Baby Dragon"
+    },
+    {
+      "n": "Slime King"
+    },
+    {
+      "n": "Purple Demon Fox"
+    },
+    {
+      "n": "Elsa"
+    },
+    {
+      "n": "Freya"
+    },
+    {
+      "n": "Piggy"
+    },
+    {
+      "n": "Susu"
+    }
+  ],
+  "adventurers": [
+    {
+      "n": "None"
+    },
+    {
+      "n": "Daji"
+    },
+    {
+      "n": "Donatello"
+    },
+    {
+      "n": "Dragon Girl"
+    },
+    {
+      "n": "Gagarin"
+    },
+    {
+      "n": "Jianghu Meow"
+    },
+    {
+      "n": "Leonardo"
+    },
+    {
+      "n": "Little Bear Prince"
+    },
+    {
+      "n": "Michelangelo"
+    },
+    {
+      "n": "Panda Hero"
+    },
+    {
+      "n": "Piggy Warrior"
+    },
+    {
+      "n": "Raphael"
+    },
+    {
+      "n": "Wukong"
+    }
+  ]
+}

@@ -1,0 +1,772 @@
+{
+  "weapons": [
+    {
+      "n": "None",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Blood Shadow Ailoren Sword",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Divine Thunder Nashir's Scepter",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Gale Elres' Whisper",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Helos Warblade",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "St. Mung's Elven Bow",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Thorn-Seles Suffering",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Angel Bow",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Bishop Staff",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Blade of Justice",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Durian Hammer",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Mushroom Hammer",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Reaper Staff",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Shadow Lance",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Skysplitter",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Star Staff",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Warrior's Blade",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Warrior's Sword",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Whisperer",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Forest Staff",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Frostbite Spear",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Giant's Hammer",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Hawkeye Bow",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Mystic Staff",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Nomad Bow",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Nomad Staff",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Nomad Sword",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    }
+  ],
+  "armors": [
+    {
+      "n": "None",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Crimson Dracula Chestplate",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Reinhardt's Resolve",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Eternal Dragon's Breath Armor",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Revival Cape",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Hard Armor",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Silverscale Plate",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Tunic",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    }
+  ],
+  "rings": [
+    {
+      "n": "None",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Forbidden Julian's Inquisition",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Ruin Tyr's Smash",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Salama Dragon Pearl Ring",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Shadowblade Sivira's Fang",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Skybreaker Elenos' Creed",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Thunderous Ezra's End",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Ursol Shadow Ring",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Verdan Ring of Judgement",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Dragon Ball Ring",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Judgement Ring",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Shadow Ring",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Sky Flame Ring",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Eagle Ring",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Guardian's Ring",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Magic Ring",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    }
+  ],
+  "accessories": [
+    {
+      "n": "None",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Battle Will Grande's Wrath",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Demonseed Crimson Chalice",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Justice Emblem of Verdict",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Winter Ice Soul Guard",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Bloody Grail",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Proof of Glory",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Reckoning Badge",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Frostwind Horn",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Icy Bubble",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Vitality Stone",
+      "q": [
+        "Common",
+        "Uncommon",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    }
+  ],
+  "brands": [
+    {
+      "n": "Alien UFO",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Brutal Wild Vulture",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Cleopatra",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Frankenstein",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Mechanical Magic Eye",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Naga Siren",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Ootengu",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Prince of Sanctuary",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Silly Sorcerer",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Thousand-Change Demon Eye",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "White Robe Wizard",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "White Tiger",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Fantasy Joker",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Lava Giant",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Mecha Titan",
+      "q": [
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Phantom Assassin",
+      "q": [
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Skeleton Spellblade",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Stone Golem",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Undead Swordsman",
+      "q": [
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Wild Vulture",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Wise Archdemon",
+      "q": [
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Bone Club Golem",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Dwarf Gunner",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Goblin Warrior",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Green Slime",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Harpy",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Hellhound",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Nimble Murloc",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Pirate Swordsman",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Sharp Rogue",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "Spiked Club Cactus",
+      "q": [
+        "Epic/Legendary",
+        "Mythic"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+  "metadata": {
+    "game": "Capybara Go!",
+    "version": "1.8.4",
+    "last_updated": "2026-08-06",
+    "focus": "PvP Stats, Mechanics, and Formulas",
+    "sources": [
+      "meowdb.com/db/capybara-go/pvp-guide-overview",
+      "meowdb.com/db/capybara-go/tenacity-and-penetration-armor-break-explained",
+      "capybara-go.game-vault.net/wiki/Stats_and_Effects",
+      "reddit.com/r/CapybaraGoGame"
+    ]
+  },
+  "tenacity_and_penetration": {
+    "description": "The core PvP damage adjustment layer. These stats ONLY matter in PvP and follow identical diminishing-returns curves.",
+    "tenacity": {
+      "description": "Lowers the opponent's bonus damage (Damage%, Combo DMG%, Skill DMG%, Elemental DMG%, Rage DMG%, etc.)",
+      "formula": "downT = clamp( ΔT / (A + ΔT), 0, capT )",
+      "delta_formula": "ΔT = Tenacity_defender − IgnoreTenacity_attacker",
+      "scaling_constant_A": 7000,
+      "effectiveness_cap": "capT = 0.85 (85%)",
+      "meaning": "downT = the percentage of the attacker's bonus damage (S_add) that Tenacity deletes",
+      "example": "If downT = 0.30 (30%), the attacker keeps 70% of their bonus damage layer"
+    },
+    "penetration": {
+      "description": "Also known as Armor Break. Lowers the opponent's damage reduction (Damage Reduction%, Basic ATK DMG Reduction%, Skill DMG Reduction%, etc.)",
+      "formula": "downP = clamp( ΔP / (A + ΔP), 0, capP )",
+      "delta_formula": "ΔP = Penetration_attacker − IgnorePenetration_defender",
+      "scaling_constant_A": 7000,
+      "effectiveness_cap": "capP = 0.85 (85%)",
+      "meaning": "downP = the percentage of the defender's damage reduction (S_red) that Penetration deletes",
+      "example": "If downP = 0.30 (30%), the defender keeps 70% of their damage reduction layer"
+    },
+    "damage_adjustment_layer": {
+      "formula": "DmgFix = clamp( 1 + S_add × (1 − downT) − S_red × (1 − downP), min, max )",
+      "variables": {
+        "S_add": "Sum of all attacker additive damage bonuses: Damage%, Skill Damage%, Combo Damage%, Elemental Damage%, Rage Damage%, Crit Damage% (as bonus over base), etc.",
+        "S_red": "Sum of all defender damage reduction effects: Damage Reduction%, Basic ATK DMG Reduction%, Skill DMG Reduction%, etc. NOTE: Does NOT include Final Damage Reduction%.",
+        "downT": "Result from Tenacity formula — % of S_add deleted",
+        "downP": "Result from Penetration formula — % of S_red deleted",
+        "min": "Minimum allowed final multiplier (unknown exact value, likely 0.01 or similar)",
+        "max": "Maximum allowed final multiplier (unknown exact value)"
+      }
+    },
+    "what_they_do_not_affect": [
+      "Global% stats (Global ATK%, Global HP%, Global DMG%, Global DMG Reduction%)",
+      "In-Battle% stats (In-Battle DMG%, In-Battle Skill DMG%, In-Battle Chi DMG%)",
+      "Crit% stats (Crit Rate%, Crit DMG%)",
+      "Final% DMG or Final% DMG REDUCTION"
+    ],
+    "sweet_spot": "3000–7000 difference (Δ). Below = weak. Above = expensive and inefficient.",
+    "breakpoints": [
+      {
+        "difference": 368,
+        "deleted_percent": 5.0,
+        "remaining_percent": 95.0,
+        "note": "Barely noticeable"
+      },
+      {
+        "difference": 777,
+        "deleted_percent": 10.0,
+        "remaining_percent": 90.0,
+        "note": "Minor effect"
+      },
+      {
+        "difference": 1750,
+        "deleted_percent": 20.0,
+        "remaining_percent": 80.0,
+        "note": "Starting to matter"
+      },
+      {
+        "difference": 3000,
+        "deleted_percent": 30.0,
+        "remaining_percent": 70.0,
+        "note": "Key mid-tier breakpoint"
+      },
+      {
+        "difference": 4200,
+        "deleted_percent": 37.5,
+        "remaining_percent": 62.5,
+        "note": "Good value"
+      },
+      {
+        "difference": 5500,
+        "deleted_percent": 44.0,
+        "remaining_percent": 56.0,
+        "note": "Strong effect"
+      },
+      {
+        "difference": 7000,
+        "deleted_percent": 50.0,
+        "remaining_percent": 50.0,
+        "note": "HALFWAY POINT — central curve inflection"
+      },
+      {
+        "difference": 9000,
+        "deleted_percent": 56.25,
+        "remaining_percent": 43.75,
+        "note": "Diminishing returns begin"
+      },
+      {
+        "difference": 10500,
+        "deleted_percent": 60.0,
+        "remaining_percent": 40.0,
+        "note": "Expensive for small gains"
+      },
+      {
+        "difference": 13000,
+        "deleted_percent": 65.0,
+        "remaining_percent": 35.0,
+        "note": "Heavy diminishing returns"
+      },
+      {
+        "difference": 15400,
+        "deleted_percent": 68.75,
+        "remaining_percent": 31.25,
+        "note": "Very expensive"
+      },
+      {
+        "difference": 21000,
+        "deleted_percent": 75.0,
+        "remaining_percent": 25.0,
+        "note": "Extreme investment needed"
+      },
+      {
+        "difference": 28000,
+        "deleted_percent": 80.0,
+        "remaining_percent": 20.0,
+        "note": "Theoretical max range"
+      }
+    ],
+    "practical_advice": {
+      "if_dying_too_fast": "Build Tenacity (defender) and Ignore Armor Break / Ignore Penetration (defender). Lowers how hard enemy multipliers hit you.",
+      "if_enemies_too_tanky": "Build Penetration / Armor Break (attacker) and Ignore Tenacity (attacker). Cuts through their damage reduction.",
+      "no_cross_counter": "Tenacity does NOT reduce damage reduction. Penetration does NOT reduce damage%. They work on completely separate layers."
+    }
+  },
+  "suppression_and_ignore_suppression": {
+    "description": "Suppression is an offensive stat from artifact awakening. Ignore Suppression is its defensive counter from mount awakening.",
+    "suppression": {
+      "description": "Offensive stat gained through artifact awakening after tier 15",
+      "sources": "Artifact Awakening (Orange, Red, Pink, Violet rarities only)",
+      "values_by_rarity": {
+        "orange": {
+          "suppression_lv10": 80
+        },
+        "red": {
+          "suppression_lv10": 120
+        },
+        "pink": {
+          "suppression_lv10": 150
+        },
+        "violet": {
+          "suppression_lv10": 180
+        }
+      },
+      "effect": "Scales the attacker's hit in PvP-style damage exchanges"
+    },
+    "ignore_suppression": {
+      "description": "Defensive counter-stat gained through mount awakening after tier 15",
+      "sources": "Mount Awakening (Red, Pink, Violet rarities only)",
+      "values_by_rarity": {
+        "red": {
+          "ignore_suppression_lv10": 120
+        },
+        "pink": {
+          "ignore_suppression_lv10": 150
+        },
+        "violet": {
+          "ignore_suppression_lv10": 180
+        }
+      },
+      "effect": "Cancels the attacker's Suppression on the receiving side"
+    },
+    "note": "Green/Blue/Purple mounts and artifacts do NOT gain Suppression or Ignore Suppression. Only Red, Pink, and Violet rarities participate in this layer."
+  },
+  "block_mechanic": {
+    "description": "Block is a PvP-relevant defensive stat with its own trigger chance and damage reduction.",
+    "trigger_condition": "When your Block value exceeds the target's Block value, 30% chance to trigger Block on incoming hits",
+    "damage_reduction": "Reduces DMG by 0.1% per Block point, max 90%",
+    "example": "If you have 5000 Block and the attacker has 3000 Block, you have a 30% chance to reduce their damage by min(5000 × 0.1%, 90%) = 50%",
+    "sources": [
+      "Equipment substats",
+      "Collectibles",
+      "Pet builds",
+      "Relics"
+    ]
+  },
+  "shield_vs_skill_shield": {
+    "description": "Two distinct damage-absorption layers with different interactions.",
+    "shield": {
+      "description": "The canonical shield mechanic. Adds extra HP layer.",
+      "damage_calculation": "Damage to Shield is calculated after all damage reduction effects",
+      "vulnerable_to": "Shield Bonus reduction effects (Qiankun Bag, World within a Bag, Cone Bombing, Demon Evolving Formation)",
+      "scaling": "Based on Character's Current Max HP"
+    },
+    "skill_shield": {
+      "description": "A separate shield type that absorbs damage normally",
+      "damage_calculation": "Absorbs damage normally but ignores Shield Bonus reduction effects entirely",
+      "note": "Only invest in Shield Bonus reduction if your opponent runs Shield-typed protection rather than Skill Shield"
+    }
+  },
+  "aggro_system": {
+    "description": "Aggro (threat) system works identically in PvP and PvE.",
+    "formula": "Target probability = your_aggro / team_total_aggro",
+    "applies_to": [
+      "PvE chapters with summons",
+      "Guild Boss",
+      "Holy Grail War",
+      "PvP teams"
+    ],
+    "note": "Single-target enemy attacks roll against aggro weights. AOE attacks ignore aggro entirely.",
+    "tank_strategy": "Stack +Aggro on tank slots so they absorb single-target hits",
+    "dps_strategy": "Spread -Aggro between both DPS slots so they don't get targeted"
+  },
+  "berserk_stance_pvp": {
+    "description": "Berserk stance trades HP for escalating Basic ATK damage.",
+    "mechanic": "Pays 5% of max HP per basic attack. Gains escalating Basic ATK DMG bonus: +10% per attack, caps at +150% after attack 15. Also adds permanent +2 combo count once crossing attack 6.",
+    "pvp_recommendation": "AVOID Berserk in PvP unless you have shielding or healing. A 30-50% effective max HP cap going into round 2 is a free kill for any Skill DMG comp.",
+    "where_it_shines": "Long single-target boss fights with sustain. Falls off in 2-to-3-attack burst rotations.",
+    "note": "Skill-based DPS doesn't gain from Berserk; the per-attack ramp only multiplies Basic ATK DMG."
+  },
+  "pvp_damage_reduction_cap": {
+    "description": "PvP has its own damage reduction cap formula.",
+    "cap": "75% + enemy DMG (the cap scales with enemy power)",
+    "note": "Unlike PvE where DR caps are fixed per chapter, PvP DR cap increases based on opponent stats"
+  },
+  "pvp_gear_priorities": {
+    "tank_slots": {
+      "priority_1": "Final Damage Reduction (FDR) — cap at 90%, applies after all other reduction",
+      "priority_2": "Tenacity — lowers enemy bonus damage",
+      "priority_3": "Ignore Armor Break / Ignore Penetration — prevents enemies from shredding your DR",
+      "priority_4": "+Aggro modifiers — draw single-target attacks",
+      "priority_5": "HP% / Global HP% — survivability buffer",
+      "priority_6": "Shield uptime — pair with aggro so absorbed hits actually get absorbed"
+    },
+    "dps_slots": {
+      "priority_1": "Penetration / Armor Break — shred enemy DR so your hits stick",
+      "priority_2": "Ignore Tenacity — prevents enemy Tenacity from deleting your bonus damage",
+      "priority_3": "Crit Damage — uncapped in crit bracket (up to 500%, 1000% with Super Crit)",
+      "priority_4": "Combo Damage — for combo-focused builds",
+      "priority_5": "Skill Damage — for skill-focused builds",
+      "priority_6": "-Aggro — spread between DPS slots so they don't get targeted"
+    },
+    "universal_priorities": {
+      "description": "These stats are NOT affected by Tenacity or Penetration, making them extremely reliable in PvP",
+      "stats": [
+        "Final DMG% — no cap, not affected by Tenacity",
+        "Global ATK% — multiplicative, not affected by Tenacity",
+        "Global HP% — multiplicative, not affected by Penetration",
+        "Crit Rate / Crit DMG — not affected by Tenacity",
+        "In-Battle DMG% — not affected by Tenacity"
+      ]
+    }
+  },
+  "pvp_gem_priorities": {
+    "top_tier": [
+      {
+        "stat": "Tenacity",
+        "reason": "Lowers enemy damage output",
+        "target": "3000-7000 difference"
+      },
+      {
+        "stat": "Penetration / Armor Break",
+        "reason": "Shreds enemy DR",
+        "target": "3000-7000 difference"
+      },
+      {
+        "stat": "Final Damage Reduction",
+        "reason": "Best defensive layer, 90% cap",
+        "target": "As high as possible"
+      },
+      {
+        "stat": "Ignore Armor Break / Ignore Penetration",
+        "reason": "Prevents enemies from shredding your DR",
+        "target": "Match enemy Penetration"
+      },
+      {
+        "stat": "Ignore Tenacity",
+        "reason": "Prevents enemies from deleting your bonus damage",
+        "target": "Match enemy Tenacity"
+      }
+    ],
+    "high_tier": [
+      {
+        "stat": "Combo Damage",
+        "reason": "Strong for combo builds",
+        "target": "~200% early, 300%+ endgame"
+      },
+      {
+        "stat": "Crit Damage",
+        "reason": "Massive damage multiplier",
+        "target": "Up to 500% cap (1000% with Super Crit)"
+      },
+      {
+        "stat": "Skill Damage",
+        "reason": "Core for skill builds",
+        "target": "~200% early, 300%+ endgame"
+      },
+      {
+        "stat": "Skill Damage Reduction",
+        "reason": "Mirror of Skill Damage for defense",
+        "target": "~200% early, 300%+ endgame"
+      }
+    ],
+    "note": "Community target for Skill Dmg / Skill Dmg Red in PvP: 300/300+"
+  },
+  "pvp_modes": {
+    "martial_arts_tournament": {
+      "abbreviation": "MAT",
+      "description": "Cross-server 1v1 ranked tournament",
+      "brackets": 26,
+      "matchmaking": "Servers matched by region tag (GL, JP, KR, TC, AS) and server age",
+      "unlock": "Based on server age and account progression"
+    },
+    "holy_grail_war": {
+      "abbreviation": "HGW",
+      "description": "Cross-server competitive mode",
+      "brackets": 26,
+      "matchmaking": "Same bracket system as MAT"
+    },
+    "cross_server_guild": {
+      "description": "Guild vs Guild cross-server battles",
+      "brackets": 11,
+      "matchmaking": "Servers grouped by region and age"
+    },
+    "guild_hegemony": {
+      "description": "Premier guild-vs-guild PvP event",
+      "qualification": "Only guilds in server group's League Point rankings that finished top placements in Guild League within 4 weeks before event",
+      "lock_in_rules": "Mid-event joiners during Prep Phase excluded. Members must remain in guild from event start.",
+      "matchmaking": "Random each round during active phase. No fixed bracket.",
+      "rewards": {
+        "battle_flag_shop": [
+          {
+            "item": "Marshmallow Cloud",
+            "cost": 36000
+          },
+          {
+            "item": "Marshmallow Cloud Core x30",
+            "cost": 32000
+          },
+          {
+            "item": "Demon Hunter + Avatar",
+            "cost": 24000,
+            "limit": 1
+          },
+          {
+            "item": "Spartan Shield Shards",
+            "cost": 7000,
+            "limit": 5
+          }
+        ]
+      }
+    },
+    "alien_mine": {
+      "description": "Resource-focused PvP mode"
+    },
+    "cappy_trade": {
+      "description": "Cross-server trade competition",
+      "brackets": 20
+    },
+    "guild_trade": {
+      "description": "Guild-based trade competition"
+    }
+  },
+  "pvp_ranking_rewards": {
+    "worlds_no_1": {
+      "title": "World's No.1",
+      "bonus": {
+        "final_dmg_percent": 0.1
+      },
+      "duration_days": 14,
+      "source": "Ranking reward"
+    },
+    "worlds_no_2": {
+      "title": "World's No.2",
+      "bonus": {
+        "final_dmg_percent": 0.07
+      },
+      "duration_days": 14,
+      "source": "Ranking reward"
+    },
+    "worlds_no_3": {
+      "title": "World's No.3",
+      "bonus": {
+        "final_dmg_percent": 0.05
+      },
+      "duration_days": 14,
+      "source": "Ranking reward"
+    },
+    "astral_throne": {
+      "title": "Astral Throne",
+      "bonus": {
+        "global_atk_percent": 0.1
+      },
+      "duration_days": 28,
+      "source": "Top 10 ranking reward"
+    },
+    "golden_throne": {
+      "title": "Golden Throne",
+      "bonus": {
+        "global_atk_percent": 0.07
+      },
+      "duration_days": 28,
+      "source": "Top 50 ranking reward"
+    },
+    "steel_throne": {
+      "title": "Steel Throne",
+      "bonus": {
+        "global_atk_percent": 0.05
+      },
+      "duration_days": 28,
+      "source": "Top 100 ranking reward"
+    },
+    "peerless_twins_hall": {
+      "title": "Peerless Twins Hall",
+      "bonus": {
+        "final_dmg_reduction": 0.08
+      },
+      "duration_days": 28,
+      "source": "Event reward"
+    },
+    "mighty_duo_event": {
+      "title": "Mighty Duo Event",
+      "bonus": {
+        "final_dmg_reduction": 0.06
+      },
+      "duration_days": 28,
+      "source": "Event reward"
+    },
+    "extraordinary_duo_constellation": {
+      "title": "Extraordinary Duo Constellation",
+      "bonus": {
+        "final_dmg_reduction": 0.05
+      },
+      "duration_days": 28,
+      "source": "Event reward"
+    }
+  },
+  "pvp_build_archetypes": [
+    {
+      "name": "Skill Burst DPS",
+      "focus": "Maximize skill damage with penetration to shred tanks",
+      "key_stats": [
+        "Penetration",
+        "Ignore Tenacity",
+        "Skill Dmg%",
+        "Final Dmg%",
+        "Global ATK%",
+        "Crit Rate",
+        "Crit Dmg"
+      ],
+      "weapon": "Bishop Staff or Reaper's Staff",
+      "pets": [
+        "Dragon",
+        "Kraken",
+        "Pegasus"
+      ],
+      "artifacts": [
+        "Blade of the Void",
+        "Crown of Wisdom"
+      ],
+      "strategy": "Open with high-coefficient rage skill. Penetration ensures it punches through enemy DR."
+    },
+    {
+      "name": "Tenacity Tank",
+      "focus": "Survive burst with massive Tenacity and FDR",
+      "key_stats": [
+        "Tenacity",
+        "Final Dmg Red%",
+        "Ignore Armor Break",
+        "HP%",
+        "Global HP%",
+        "Block"
+      ],
+      "weapon": "Blade of Justice or Durian Hammer",
+      "pets": [
+        "Leviathan",
+        "Phoenix",
+        "Unicorn"
+      ],
+      "artifacts": [
+        "Shield of Eternity",
+        "Amulet of Life"
+      ],
+      "strategy": "Stack Tenacity to 7000+ difference. Enemies' bonus damage gets halved. FDR absorbs what's left."
+    },
+    {
+      "name": "Crit Assassin",
+      "focus": "100% crit with massive crit damage, bypassing Tenacity on crit bracket",
+      "key_stats": [
+        "Crit Rate",
+        "Crit Dmg",
+        "Penetration",
+        "Final Dmg%",
+        "Global ATK%",
+        "Basic Attack Dmg%"
+      ],
+      "weapon": "Whisperer or Angel Bow",
+      "pets": [
+        "Dragon",
+        "Assassin Capy",
+        "Phoenix"
+      ],
+      "artifacts": [
+        "Ring of Power",
+        "Blade of the Void"
+      ],
+      "strategy": "Crit Dmg is NOT affected by Tenacity. Stack to 500% cap (1000% with Super Crit)."
+    },
+    {
+      "name": "Combo Pressure",
+      "focus": "High combo rate with combo damage, sustained DPS",
+      "key_stats": [
+        "Combo Rate",
+        "Combo Dmg%",
+        "Penetration",
+        "ATK%",
+        "Final Dmg%",
+        "Basic Attack Dmg%"
+      ],
+      "weapon": "Helos Warblade (Blade of Justice SS)",
+      "pets": [
+        "Thunder Wolf",
+        "Hamster",
+        "Kraken"
+      ],
+      "artifacts": [
+        "Crown of Wisdom",
+        "Ring of Power"
+      ],
+      "strategy": "Combo counts as basic attack. High combo rate = constant pressure that ignores some defensive layers."
+    },
+    {
+      "name": "Counter Tank",
+      "focus": "Punish enemies for attacking you",
+      "key_stats": [
+        "Counter Rate",
+        "Counter Dmg%",
+        "Tenacity",
+        "FDR",
+        "HP%",
+        "DEF%"
+      ],
+      "weapon": "Thorn Seles Suffering (Durian Hammer SS)",
+      "pets": [
+        "Leviathan",
+        "Phoenix",
+        "Warrior Capy"
+      ],
+      "artifacts": [
+        "Shield of Eternity",
+        "Amulet of Life"
+      ],
+      "strategy": "High counter rate + Thorn Shield records damage and fires it back. Best against aggressive opponents."
+    }
+  ],
+  "stat_interaction_cheat_sheet": {
+    "attacker_bonus_damage": {
+      "affected_by_tenacity": true,
+      "affected_by_ignore_tenacity": true,
+      "affected_by_penetration": false,
+      "affected_by_final_dmg": false,
+      "examples": [
+        "Damage%",
+        "Skill Damage%",
+        "Combo Damage%",
+        "Counter Damage%",
+        "Elemental Damage%",
+        "Rage Skill Damage%",
+        "Basic Attack Damage%",
+        "Artifact Damage%",
+        "Pet Damage%"
+      ]
+    },
+    "defender_damage_reduction": {
+      "affected_by_tenacity": false,
+      "affected_by_penetration": true,
+      "affected_by_ignore_armor_break": true,
+      "affected_by_final_dmg_red": false,
+      "examples": [
+        "Damage Reduction%",
+        "Basic ATK DMG Reduction%",
+        "Skill DMG Reduction%",
+        "Combo DMG Reduction%",
+        "Counter DMG Reduction%",
+        "Elemental DMG Reduction%",
+        "Pet DMG Reduction%"
+      ]
+    },
+    "uncapped_unaffected_stats": {
+      "description": "These stats are completely immune to Tenacity/Penetration and have no known caps",
+      "stats": [
+        {
+          "name": "Final DMG%",
+          "why_strong": "Applied last, not reduced by anything"
+        },
+        {
+          "name": "Global ATK%",
+          "why_strong": "Multiplies entire ATK pool, not in S_add"
+        },
+        {
+          "name": "Global HP%",
+          "why_strong": "Multiplies entire HP pool, not in S_red"
+        },
+        {
+          "name": "Global DMG%",
+          "why_strong": "Separate multiplicative bracket"
+        },
+        {
+          "name": "In-Battle DMG%",
+          "why_strong": "Separate multiplicative bracket"
+        },
+        {
+          "name": "Crit Rate%",
+          "why_strong": "Determines crit chance, not affected by Tenacity"
+        },
+        {
+          "name": "Crit DMG%",
+          "why_strong": "Determines crit multiplier, not affected by Tenacity"
+        },
+        {
+          "name": "Final DMG Red%",
+          "why_strong": "Applied after all other reduction, 90% cap"
+        }
+      ]
+    }
+  },
+  "sample_pvp_matchup": {
+    "description": "Example calculation showing Tenacity and Penetration in action",
+    "scenario": "Attacker with 3000 Penetration vs Defender with 70% DR and 0 Ignore Penetration",
+    "attacker_stats": {
+      "base_damage": 10000000000,
+      "penetration": 3000,
+      "ignore_tenacity": 0,
+      "S_add": {
+        "damage_percent": 2.0,
+        "skill_damage_percent": 1.5,
+        "crit_damage_percent": 2.0
+      }
+    },
+    "defender_stats": {
+      "damage_reduction": 0.7,
+      "tenacity": 0,
+      "ignore_penetration": 0,
+      "S_red": {
+        "damage_reduction_percent": 0.7
+      }
+    },
+    "calculation_without_penetration": {
+      "damage_taken": "10B × (1 - 0.70) = 3B",
+      "note": "70% DR means only 30% damage gets through"
+    },
+    "calculation_with_penetration": {
+      "delta_p": "3000 - 0 = 3000",
+      "downP": "3000 / (7000 + 3000) = 0.30 (30%)",
+      "effective_DR": "0.70 × (1 - 0.30) = 0.70 × 0.70 = 0.49 (49%)",
+      "damage_taken": "10B × (1 - 0.49) = 5.1B",
+      "damage_increase": "+70% real damage (3B → 5.1B)"
+    },
+    "key_takeaway": "3000 Penetration against 70% DR results in a +70% real damage increase, even though Penetration was 'only' deleting 30% of the DR layer."
+  }
+}

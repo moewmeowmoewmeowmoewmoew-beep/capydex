@@ -1,0 +1,272 @@
+{
+  "collectibles": [
+    {
+      "n": "Windmill House",
+      "b": "hp_flat",
+      "set": "Pastoral Idyll"
+    },
+    {
+      "n": "Hot Pot",
+      "b": "global_hp",
+      "set": "Family Reunion"
+    },
+    {
+      "n": "Capy Hot Spring",
+      "b": "hp_flat",
+      "set": "Slacker's Comeback"
+    },
+    {
+      "n": "Capybara Hero Statue",
+      "b": "final_dmg",
+      "set": "Statue Park"
+    },
+    {
+      "n": "Music Festival",
+      "b": "global_atk",
+      "set": "Mushroom Village"
+    },
+    {
+      "n": "Fountain",
+      "b": "atk_flat",
+      "set": "Capy Market"
+    },
+    {
+      "n": "Haunted House",
+      "b": "final_dmg_red",
+      "set": "Halloween"
+    },
+    {
+      "n": "Turkey",
+      "b": "global_hp",
+      "set": "Harvest Festival"
+    },
+    {
+      "n": "Starcrest Golden House",
+      "b": "final_dmg",
+      "set": "Alien Maze"
+    },
+    {
+      "n": "Fun Cedar",
+      "b": "final_dmg_red",
+      "set": "Dreamy Snow Garden"
+    },
+    {
+      "n": "Snow Dance & Dragon Soar",
+      "b": "final_dmg",
+      "set": "2026 Horse"
+    },
+    {
+      "n": "Auspicious Horse Welcomes Spring",
+      "b": "global_hp",
+      "set": "2026 Horse"
+    },
+    {
+      "n": "Sunny Capy",
+      "b": "global_atk",
+      "set": "Tycoon"
+    },
+    {
+      "n": "Puffer Puffer",
+      "b": "global_hp",
+      "set": "Tycoon"
+    },
+    {
+      "n": "Ghost Ship",
+      "b": "global_hp",
+      "set": "Tycoon"
+    },
+    {
+      "n": "Jester's Tent",
+      "b": "final_dmg_red",
+      "set": "Prank Festival"
+    },
+    {
+      "n": "Pingu's Igloo",
+      "b": "final_dmg_red",
+      "set": "Pingu Crossover"
+    }
+  ],
+  "collectible_sets": {
+    "epic": [
+      {
+        "set": "Alchemical Creation",
+        "stat": "defPct",
+        "vals": [
+          3,
+          5,
+          7,
+          10
+        ],
+        "items": [
+          "Alchemists Lamp",
+          "Eternal Torch",
+          "Golden Hourglass",
+          "Petals of Hope"
+        ]
+      },
+      {
+        "set": "Exotic Treasure",
+        "stat": "atkPct",
+        "vals": [
+          3,
+          5,
+          7,
+          10
+        ],
+        "items": [
+          "Star Shard",
+          "Frost Giants Hand",
+          "Giants Heart",
+          "Devils Blood"
+        ]
+      },
+      {
+        "set": "Arcane Set",
+        "stat": "hpPct",
+        "vals": [
+          3,
+          5,
+          7,
+          10
+        ],
+        "items": [
+          "Arcane Cloak",
+          "Holy Grail",
+          "Forbidden Knowledge",
+          "Destruction Hat"
+        ]
+      }
+    ],
+    "legendary": [
+      {
+        "set": "Pirate King's Collection",
+        "stat": "defPct",
+        "vals": [
+          5,
+          10,
+          15,
+          20
+        ],
+        "items": [
+          "Keats Ghost Ship",
+          "Challengers Badge",
+          "Iron Throne",
+          "Origin Staff"
+        ]
+      },
+      {
+        "set": "Gladiator's Will",
+        "stat": "atkPct",
+        "vals": [
+          5,
+          10,
+          15,
+          20
+        ],
+        "items": [
+          "Infinite Blade",
+          "Mages Bane",
+          "Blade Armor",
+          "Gladiators Helm"
+        ]
+      },
+      {
+        "set": "Mythic Legacy",
+        "stat": "hpPct",
+        "vals": [
+          5,
+          10,
+          15,
+          20
+        ],
+        "items": [
+          "Titans Sword",
+          "Horn of Plenty",
+          "Royal Roses",
+          "Golden Apple"
+        ]
+      },
+      {
+        "set": "Paladin's Vigil",
+        "stat": "block",
+        "vals": [
+          100,
+          200,
+          300,
+          400
+        ],
+        "items": [
+          "Heroic Brooch",
+          "Aegis Shield",
+          "Eternal Lance",
+          "Golden Armor"
+        ]
+      },
+      {
+        "set": "Gold Tycoon",
+        "stat": "goldGain",
+        "vals": [
+          25,
+          25,
+          25,
+          25
+        ],
+        "items": [
+          "Lucky Four-leaf Clover",
+          "Hungry Eye",
+          "Treasure Compass",
+          "Pot of Treasure"
+        ]
+      }
+    ],
+    "mythic": [
+      {
+        "set": "Spirit's Blessing",
+        "stat": "defPct",
+        "vals": [
+          10,
+          15,
+          20,
+          25
+        ],
+        "items": [
+          "Lion Kings Shield",
+          "Windwalker Boots",
+          "Sword in the Stone"
+        ]
+      },
+      {
+        "set": "Source of Miracles",
+        "stat": "hpPct",
+        "vals": [
+          10,
+          15,
+          20,
+          25
+        ],
+        "items": [
+          "Lucky Rabbit Foot",
+          "Darkmoon Card",
+          "Sacred Anvil",
+          "Aladdins Lamp"
+        ]
+      },
+      {
+        "set": "Twilight's End",
+        "stat": "atkPct",
+        "vals": [
+          10,
+          15,
+          20,
+          25
+        ],
+        "items": [
+          "Flames Delight",
+          "Oceanic Trident",
+          "Saints Relic",
+          "Giant Slayer"
+        ]
+      }
+    ]
+  }
+}
