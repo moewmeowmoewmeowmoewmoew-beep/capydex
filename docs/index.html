@@ -1155,10 +1155,19 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
     btnRow.appendChild(el('button', {
       class: 'bulk-action-btn',
       onclick: () => {
-        groupItems.forEach(it => allSelected ? selectedItems[kind].delete(it.n) : selectedItems[kind].add(it.n));
+        if (allSelected) {
+          // Deselect just this tier's items, leaving any others untouched
+          groupItems.forEach(it => selectedItems[kind].delete(it.n));
+        } else {
+          // Select ONLY this tier — replaces whatever was selected before,
+          // rather than adding on top of it (that additive behavior was
+          // the source of an earlier bug: clicking this on multiple tiers
+          // in a row silently selected everything at once).
+          selectedItems[kind] = new Set(groupItems.map(it => it.n));
+        }
         render();
       },
-    }, allSelected ? 'Deselect Tier' : 'Select Tier'));
+    }, allSelected ? 'Deselect Tier' : 'Select Only This Tier'));
   }
   btnRow.appendChild(el('button', {
     class: 'bulk-action-btn',
