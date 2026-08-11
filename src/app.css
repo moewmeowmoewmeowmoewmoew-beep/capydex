@@ -325,6 +325,21 @@ body {
 }
 .stepper-row .stepper { margin-top: 0; }
 
+.card-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+}
+.steppers-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+.steppers-col .stepper-row { margin-top: 0; }
+
 .stepper {
   display: flex;
   align-items: center;

@@ -394,31 +394,35 @@ function renderRelicCard(relic) {
       renderThumb('relics', relic),
       el('div', { class: 'item-name' }, relic.n),
     ]),
-    renderOwnedBadge(owned, (checked) => {
-      state.relicOwned[relic.id] = checked;
-      if (!checked) state.relicStars[relic.id] = 0;
-      saveState();
-      render();
-    }),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, relic.rarity + (relic.type ? ' · ' + relic.type : '')));
-  card.appendChild(el('div', { class: 'item-effect' + (relic.effect ? '' : ' placeholder') },
-    relic.effect ? el('span', {}, ['10★: ', renderTextWithSkillTags(relic.effect)]) : 'Effect not yet documented'));
-
-  // stat preview at current star
-  if (relic.star_stats) {
-    const nodes = formatStatBlockNodes(
-      Object.fromEntries(Object.entries(relic.star_stats).map(([stat, vals]) => [stat, vals[star]]))
-    );
-    card.appendChild(el('div', { class: 'item-effect' }, nodes));
-  }
 
   const stepper = renderStepper(
     `relic-${relic.id}`, star, 0, 10,
     (next) => setRelicStar(relic.id, next),
     (v) => `${v}★`
   );
-  card.appendChild(stepper);
+  card.appendChild(el('div', { class: 'card-controls-row' }, [
+    renderOwnedBadge(owned, (checked) => {
+      state.relicOwned[relic.id] = checked;
+      if (!checked) state.relicStars[relic.id] = 0;
+      saveState();
+      render();
+    }),
+    el('div', { class: 'steppers-col' }, [stepper]),
+  ]));
+
+  if (owned) {
+    card.appendChild(el('div', { class: 'item-effect' + (relic.effect ? '' : ' placeholder') },
+      relic.effect ? el('span', {}, ['10★: ', renderTextWithSkillTags(relic.effect)]) : 'Effect not yet documented'));
+
+    if (relic.star_stats) {
+      const nodes = formatStatBlockNodes(
+        Object.fromEntries(Object.entries(relic.star_stats).map(([stat, vals]) => [stat, vals[star]]))
+      );
+      card.appendChild(el('div', { class: 'item-effect' }, nodes));
+    }
+  }
 
   return card;
 }
@@ -519,33 +523,46 @@ function renderCollectibleGrid(grid) {
 
 function renderCollectibleCard(item) {
   const owned = !!state.collectibleOwned[item.n];
-  const stars = state.collectibleStars[item.n] || 0;
-  const card = el('div', { class: 'item-card' });
+  const maxStar = item.star_vals.length - 1;
+  const stars = Math.min(state.collectibleStars[item.n] || 0, maxStar);
+  const card = el('div', { class: `item-card r-${item.rarity}` });
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('collectibles', item),
       el('div', { class: 'item-name' }, item.n),
     ]),
+  ]));
+  card.appendChild(el('div', { class: 'item-rarity' },
+    item.rarity + (item.set ? ' · Set: ' + item.set : '')));
+
+  const stepper = renderStepper(
+    `collectible-${item.n}`, stars, 0, maxStar,
+    (next) => setCollectibleStar(item.n, next, maxStar),
+    (v) => `${v}★`
+  );
+  card.appendChild(el('div', { class: 'card-controls-row' }, [
     renderOwnedBadge(owned, (checked) => {
       state.collectibleOwned[item.n] = checked;
       if (!checked) state.collectibleStars[item.n] = 0;
       saveState();
       render();
     }),
+    el('div', { class: 'steppers-col' }, [stepper]),
   ]));
-  card.appendChild(el('div', { class: 'item-rarity' }, item.set ? `Set: ${item.set}` : 'No set'));
-  card.appendChild(el('div', { class: 'item-effect' }, statLabel(item.b) || ''));
-  const stepper = renderStepper(
-    `collectible-${item.n}`, stars, 0, 10,
-    (next) => setCollectibleStar(item.n, next),
-    (v) => `${v}★`
-  );
-  card.appendChild(stepper);
+
+  if (owned) {
+    const val = item.star_vals[stars];
+    const pct = Math.round(val * 10000) / 100; // trim float noise, keep up to 2 decimals
+    card.appendChild(el('div', { class: 'item-effect' }, [
+      item.stat_label + ': ',
+      el('span', { class: 'stat-value-live' }, `${pct}%`),
+    ]));
+  }
   return card;
 }
 
-function setCollectibleStar(name, next) {
-  state.collectibleStars[name] = next;
+function setCollectibleStar(name, next, maxStar) {
+  state.collectibleStars[name] = Math.max(0, Math.min(maxStar != null ? maxStar : 10, next));
   if (next > 0) state.collectibleOwned[name] = true;
   saveState();
   render();
@@ -652,50 +669,52 @@ function renderMountArtifactCard(item, bucket, isMount) {
       renderThumb(isMount ? 'mounts' : 'artifacts', item),
       el('div', { class: 'item-name' }, item.n),
     ]),
-    renderOwnedBadge(s.owned, (checked) => { s.owned = checked; saveState(); render(); }),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
 
-  if (item.star_up) {
-    card.appendChild(el('div', { class: 'item-effect' }, renderTextWithSkillTags(item.base_effect || '')));
-  } else {
-    card.appendChild(el('div', { class: 'item-effect placeholder' },
-      el('span', { class: 'coming-soon-badge' }, 'Coming Soon')));
-  }
-
-  card.appendChild(el('div', { class: 'stepper-row' }, [
+  const starsStepper = el('div', { class: 'stepper-row' }, [
     el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Stars'),
     renderStepper(`${bucket}-${item.idx}-stars`, s.stars, 0, 5,
       (next) => { s.stars = next; saveState(); render(); }),
-  ]));
-
-  card.appendChild(el('div', { class: 'stepper-row' }, [
+  ]);
+  const awakenStepper = el('div', { class: 'stepper-row' }, [
     el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
     renderStepper(`${bucket}-${item.idx}-awaken`, s.awaken, 0, 10,
       (next) => { s.awaken = next; saveState(); render(); },
       (v) => `A${v}`),
+  ]);
+
+  card.appendChild(el('div', { class: 'card-controls-row' }, [
+    renderOwnedBadge(s.owned, (checked) => { s.owned = checked; saveState(); render(); }),
+    el('div', { class: 'steppers-col' }, [starsStepper, awakenStepper]),
   ]));
+
+  if (!s.owned) return card;
+
+  if (!item.star_up) {
+    card.appendChild(el('div', { class: 'item-effect placeholder' },
+      el('span', { class: 'coming-soon-badge' }, 'Coming Soon')));
+    return card;
+  }
 
   // Show live totals = base + star delta + awaken delta. Base stats live in
   // awaken.base_stats for both item types (mounts don't scale stats by star
   // at all, so star_up.base_stats is empty there — awaken.base_stats is the
   // one reliable source, and it's identical to star_up.base_stats for
   // artifacts anyway, so this works for both without branching.)
-  if (item.star_up) {
-    const starDelta = s.stars > 0 ? item.star_up.deltas[String(s.stars)] : null;
-    const awakenDelta = s.awaken > 0 ? item.awaken.deltas[`A${s.awaken}`] : null;
-    const total = sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
-    card.appendChild(el('div', { class: 'item-effect', style: 'margin-top:8px;border-top:1px solid var(--hairline);padding-top:8px;' },
-      [`At ${s.stars}★ / A${s.awaken}: `, formatStatBlockNodes(total, true)]));
+  const starDelta = s.stars > 0 ? item.star_up.deltas[String(s.stars)] : null;
+  const awakenDelta = s.awaken > 0 ? item.awaken.deltas[`A${s.awaken}`] : null;
+  const total = sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
+  card.appendChild(el('div', { class: 'item-effect', style: 'margin-top:8px;border-top:1px solid var(--hairline);padding-top:8px;' },
+    [`At ${s.stars}★ / A${s.awaken}: `, formatStatBlockNodes(total, true)]));
 
-    const starEff = item.star_effects && item.star_effects[String(s.stars)];
-    if (starEff) card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' }, [`★${s.stars}: `, renderTextWithSkillTags(starEff)]));
+  const starEff = item.star_effects && item.star_effects[String(s.stars)];
+  if (starEff) card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' }, [`★${s.stars}: `, renderTextWithSkillTags(starEff)]));
 
-    const resolved = resolveAwakenEffect(item, s.awaken);
-    if (resolved) {
-      card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' },
-        [`A${s.awaken}: `, renderTextWithSkillTags(resolved.text)]));
-    }
+  const resolved = resolveAwakenEffect(item, s.awaken);
+  if (resolved) {
+    card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' },
+      [`A${s.awaken}: `, renderTextWithSkillTags(resolved.text)]));
   }
 
   return card;

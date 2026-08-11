@@ -3,15 +3,15 @@
     {
       "idx": 0,
       "n": "None",
-      "tier": "Uncommon",
-      "effect": null
+      "tier": "",
+      "base_effect": null
     },
     {
       "idx": 1,
       "n": "Crocodile Overlord",
       "tier": "Uncommon",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +1%, damage reduction +1%",
+      "awaken_base_effect": "After the protagonist's normal attack, Crocodile Overlord has a 60% chance to release [ Bite ], dealing 80% of the protagonist's attack power as normal attack damage to the enemy, with a cooldown of 1 turn.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -79,15 +79,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "The probability of Crocodile Overlord releasing [ Bite ] is increased to 100%."
-      },
-      "awaken_base_effect": "After the protagonist's normal attack, Crocodile Overlord has a 60% chance to release [ Bite ], dealing 80% of the protagonist's attack power as normal attack damage to the enemy, with a cooldown of 1 turn."
+      }
     },
     {
       "idx": 2,
       "n": "Snail Immortal",
       "tier": "Uncommon",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +2%, damage reduction +2%",
+      "awaken_base_effect": "The Snail Sage casts [ Snail's Watch ] every 3 turns, granting the protagonist a shield equal to 5% of their max HP.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -155,15 +154,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Snail's Watch ] increases the protagonist's shield to 15% of their max HP."
-      },
-      "awaken_base_effect": "The Snail Sage casts [ Snail's Watch ] every 3 turns, granting the protagonist a shield equal to 5% of their max HP."
+      }
     },
     {
       "idx": 3,
       "n": "Bubble Newt",
       "tier": "Rare",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +3%, damage reduction +3%",
+      "awaken_base_effect": "Bubble Newt releases [ Bubble Crash ] once every 3 turns, dealing 100% of the protagonist's attack as skill damage to enemies, and reducing the enemy's damage by 3% for 2 turns.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -231,15 +229,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Bubble Crash ] deals 300% of the protagonist's attack as skill damage to enemies, and increases the enemy's damage reduction to 15%."
-      },
-      "awaken_base_effect": "Bubble Newt releases [ Bubble Crash ] once every 3 turns, dealing 100% of the protagonist's attack as skill damage to enemies, and reducing the enemy's damage by 3% for 2 turns."
+      }
     },
     {
       "idx": 4,
       "n": "Brave Turtle",
       "tier": "Rare",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +4%, damage reduction +4%",
+      "awaken_base_effect": "When taking damage, Brave Turtle has a 60% chance to release [ Turtle Shield ], granting the main character a shield equal to 10% of max HP, with a cooldown of 2 turns.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -307,15 +304,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Turtle Shield ] Increases the shield gained by the protagonist to 20% of maximum health"
-      },
-      "awaken_base_effect": "When taking damage, Brave Turtle has a 60% chance to release [ Turtle Shield ], granting the main character a shield equal to 10% of max HP, with a cooldown of 2 turns."
+      }
     },
     {
       "idx": 5,
       "n": "GG Bond",
       "tier": "Rare",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +5%, damage reduction +5%",
+      "awaken_base_effect": "GG Bond releases [ Charge ] once every 3 turns, dealing 150% of the protagonist's attack power as skill damage to the enemy, with a 20% chance to stun the enemy for 1 turn.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -383,15 +379,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Charge ] deals skill damage equal to 300% of the protagonist's attack power to the enemy and increases the chance of stunning the enemy to 35%."
-      },
-      "awaken_base_effect": "GG Bond releases [ Charge ] once every 3 turns, dealing 150% of the protagonist's attack power as skill damage to the enemy, with a 20% chance to stun the enemy for 1 turn."
+      }
     },
     {
       "idx": 6,
       "n": "Fangless",
       "tier": "Epic",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +6%, damage reduction +6%",
+      "awaken_base_effect": "After the protagonist's ultimate move, Toothless releases [ Toothless Bite ], dealing skill damage equal to 200% of the protagonist's attack power to the enemy, with a cooldown of 3 turns.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -459,15 +454,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Toothless Bite ] deals 500% of the protagonist's attack as skill damage to enemies."
-      },
-      "awaken_base_effect": "After the protagonist's ultimate move, Toothless releases [ Toothless Bite ], dealing skill damage equal to 200% of the protagonist's attack power to the enemy, with a cooldown of 3 turns."
+      }
     },
     {
       "idx": 7,
       "n": "Wisps",
       "tier": "Epic",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage boost +7%, damage reduction +7%",
+      "awaken_base_effect": "When taking damage, Wisps release [ Rebirth ] once, restoring 60% of the protagonist's attack as health, with a cooldown of 3 turns.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -535,15 +529,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Rebirth ] Restore 120% of the main character's attack as health"
-      },
-      "awaken_base_effect": "When taking damage, Wisps release [ Rebirth ] once, restoring 60% of the protagonist's attack as health, with a cooldown of 3 turns."
+      }
     },
     {
       "idx": 8,
       "n": "Big Horn",
       "tier": "Epic",
-      "effect": "Coming Soon",
       "base_effect": "Main character damage increase +8%, damage reduction +8%",
+      "awaken_base_effect": "After the protagonist's normal attack, Big Horn releases [ Devour ], dealing normal damage equal to 100% of the protagonist's attack to enemies and increasing the protagonist's damage by +3%, stackable up to 3 times, lasting until Big Horn dies. [ Devour ] has a cooldown of 1 turn.",
       "star_up": {
         "base_stats": {},
         "deltas": {
@@ -611,15 +604,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Devour ] deals normal attack damage to enemies equal to 180% of the main character's attack and increases the main character's damage by +6%."
-      },
-      "awaken_base_effect": "After the protagonist's normal attack, Big Horn releases [ Devour ], dealing normal damage equal to 100% of the protagonist's attack to enemies and increasing the protagonist's damage by +3%, stackable up to 3 times, lasting until Big Horn dies. [ Devour ] has a cooldown of 1 turn."
+      }
     },
     {
       "idx": 9,
       "n": "Roach (Carrot)",
       "tier": "Legendary",
-      "effect": "Coming Soon",
       "base_effect": "Pet DMG per round +10%.",
+      "awaken_base_effect": "Every time the pet skill is released 6 times, at the start of the turn, Carrot releases [ Angry Carrot ], causing 200% of the main character's attack as skill damage to the enemy.",
       "star_up": {
         "base_stats": {
           "pet_dmg_pct": 15.0,
@@ -705,15 +697,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "When Radish dies, it increases the protagonist's pet critical rate by +50% and pet damage by +50%, lasting for 3 turns."
-      },
-      "awaken_base_effect": "Every time the pet skill is released 6 times, at the start of the turn, Carrot releases [ Angry Carrot ], causing 200% of the main character's attack as skill damage to the enemy."
+      }
     },
     {
       "idx": 10,
       "n": "Laputa",
       "tier": "Legendary",
-      "effect": "Coming Soon",
       "base_effect": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+      "awaken_base_effect": "Laputa releases [ Magic Carpet Strike ] every 2 turns, dealing 200% of the main character's attack as skill damage to enemies and increasing the main character's skill damage by +10%. This effect can stack up to 3 times and lasts until Laputa's death.",
       "star_up": {
         "base_stats": {
           "combo_rate_pct": 10.0,
@@ -799,15 +790,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "When Laputa dies, increases the main character's skill damage by +30% for 2 turns"
-      },
-      "awaken_base_effect": "Laputa releases [ Magic Carpet Strike ] every 2 turns, dealing 200% of the main character's attack as skill damage to enemies and increasing the main character's skill damage by +10%. This effect can stack up to 3 times and lasts until Laputa's death."
+      }
     },
     {
       "idx": 11,
       "n": "King Kong",
       "tier": "Legendary",
-      "effect": "Coming Soon",
       "base_effect": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+      "awaken_base_effect": "After the protagonist's counterattack, King Kong unleashes [ King Kong Counter ] dealing counter damage equal to 100% of the protagonist's attack power to the enemy, and increases the protagonist's light spear damage by +10%, which can stack up to 5 times, lasting until the end of the battle.",
       "star_up": {
         "base_stats": {
           "counter_rate_pct": 10.0,
@@ -893,15 +883,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ King Kong Counter ] additionally deals counter damage equal to 5% of the target's max HP, with extra damage not exceeding 2000% of protagonist's attack"
-      },
-      "awaken_base_effect": "After the protagonist's counterattack, King Kong unleashes [ King Kong Counter ] dealing counter damage equal to 100% of the protagonist's attack power to the enemy, and increases the protagonist's light spear damage by +10%, which can stack up to 5 times, lasting until the end of the battle."
+      }
     },
     {
       "idx": 12,
       "n": "Catastrophe",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+      "awaken_base_effect": "Catastrophe releases [ Heavenly Disaster ] once every 3 turns, dealing 300% of the protagonist's attack as skill damage to enemies, and reducing the target's damage by 20% for 1 turn.",
       "star_up": {
         "base_stats": {
           "global_def_pct": 10.0,
@@ -987,15 +976,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After Catastrophe appears, the protagonist's global skill damage reduction is increased by +90%, and the protagonist's control immunity rate is increased by +50%, lasting for 2 turns."
-      },
-      "awaken_base_effect": "Catastrophe releases [ Heavenly Disaster ] once every 3 turns, dealing 300% of the protagonist's attack as skill damage to enemies, and reducing the target's damage by 20% for 1 turn."
+      }
     },
     {
       "idx": 13,
       "n": "Sphinx",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+      "awaken_base_effect": "When Sphinx enters, release [ Life Gaze ] to deal 1 time of the protagonist's attack 100% skill damage to the enemy, and resurrect 1 dead mount, restoring 50% of its health. If there are no dead mounts, grant a shield equal to 20% of the protagonist's max health.",
       "star_up": {
         "base_stats": {
           "crit_rate_pct": 10.0,
@@ -1081,15 +1069,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "When any mount's ultimate ability deals damage, gain 1 stack of [ Cat Soul ]. When Sphinx dies, consume all [ Cat Soul ] to revive, each stack of [ Cat Soul ] restores 25% of the mount's HP. After revival, immediately release [ Life Gaze ] (permanently triggers 1 time)"
-      },
-      "awaken_base_effect": "When Sphinx enters, release [ Life Gaze ] to deal 1 time of the protagonist's attack 100% skill damage to the enemy, and resurrect 1 dead mount, restoring 50% of its health. If there are no dead mounts, grant a shield equal to 20% of the protagonist's max health."
+      }
     },
     {
       "idx": 14,
       "n": "Diego",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+      "awaken_base_effect": "After the protagonist's basic attack, Diego has a 60% chance to release [ Tiger Strike ], dealing 100% of the protagonist's attack as basic attack damage to the enemy, and causing the enemy to [ Bleed ]. This can trigger a maximum of 2 times per turn.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 10.0,
@@ -1175,15 +1162,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Tiger Strike ] hits targets in a bleeding state, increasing the protagonist's bleeding damage by +20%, stacking up to 5 layers, lasting until Diego leaves the field"
-      },
-      "awaken_base_effect": "After the protagonist's basic attack, Diego has a 60% chance to release [ Tiger Strike ], dealing 100% of the protagonist's attack as basic attack damage to the enemy, and causing the enemy to [ Bleed ]. This can trigger a maximum of 2 times per turn."
+      }
     },
     {
       "idx": 15,
       "n": "Sea Hero",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+      "awaken_base_effect": "After the protagonist counterattacks, Hero of the Sea Rreleases [ Tidal Wave ], dealing counter damage equal to 150% of the protagonist's attack to enemies, and increases the protagonist's counter damage by +6% and Light Spear damage by +6%, stackable up to 5 times, lasts until Hero of the Sea exits",
       "star_up": {
         "base_stats": {
           "dmg_reduction_pct": 10.0,
@@ -1269,15 +1255,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After [ Tidal Wave ] is released, additionally deals counter damage equal to 8% of enemy's maximum health, not exceeding 30 times the protagonist's attack"
-      },
-      "awaken_base_effect": "After the protagonist counterattacks, Hero of the Sea Rreleases [ Tidal Wave ], dealing counter damage equal to 150% of the protagonist's attack to enemies, and increases the protagonist's counter damage by +6% and Light Spear damage by +6%, stackable up to 5 times, lasts until Hero of the Sea exits"
+      }
     },
     {
       "idx": 16,
       "n": "Don Quixote Sugar",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+      "awaken_base_effect": "Don Quixote releases [ Dazzling Barrage ] every 3 turns, dealing 5 hits of Skill Damage equal to 40% of hero's Attack; after release, enemy Crit Rate -10% for 2 turns",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 10.0,
@@ -1363,15 +1348,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After Don Quixote dies, the hero gains Ignore Critical Rate +20% and Critical Damage Reduction +60% for 2 turns"
-      },
-      "awaken_base_effect": "Don Quixote releases [ Dazzling Barrage ] every 3 turns, dealing 5 hits of Skill Damage equal to 40% of hero's Attack; after release, enemy Crit Rate -10% for 2 turns"
+      }
     },
     {
       "idx": 17,
       "n": "Dapper Goose",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+      "awaken_base_effect": "Dapper Goose casts [ Gentle Greeting ] every 3 turns, dealing 200% ATK Skill DMG and granting the hero 1 Control Immune (non-stackable; max value applies).",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 10.0,
@@ -1457,15 +1441,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "When Dapper Goose dies, grants a 30% Max HP Shield and Disarms the enemy for 1 turn."
-      },
-      "awaken_base_effect": "Dapper Goose casts [ Gentle Greeting ] every 3 turns, dealing 200% ATK Skill DMG and granting the hero 1 Control Immune (non-stackable; max value applies)."
+      }
     },
     {
       "idx": 18,
       "n": "Toffee",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+      "awaken_base_effect": "Every 3 turns, release [ Candy Charge ], dealing 200% Rof the protagonist's attack as skill damage to enemies, and the protagonist randomly gains 0-3 non-repeating [ Candies ].\nStrawberry Candy: Protagonist's attack +20% for 1 turn\nPineapple Candy: Recovers 20% HP\nBlueberry Candy: Gain a shield equal to 20% of max HP",
       "star_up": {
         "base_stats": {
           "dmg_reduction_pct": 10.0,
@@ -1551,15 +1534,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "Upon Candy Death, the hero gains a 20% max HP shield and all candy effects"
-      },
-      "awaken_base_effect": "Every 3 turns, release [ Candy Charge ], dealing 200% Rof the protagonist's attack as skill damage to enemies, and the protagonist randomly gains 0-3 non-repeating [ Candies ].\nStrawberry Candy: Protagonist's attack +20% for 1 turn\nPineapple Candy: Recovers 20% HP\nBlueberry Candy: Gain a shield equal to 20% of max HP"
+      }
     },
     {
       "idx": 19,
       "n": "Luminous Dragon",
       "tier": "Mythic",
-      "effect": "Coming Soon",
       "base_effect": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+      "awaken_base_effect": "When Luminous Dragon appears, it releases [ Eternal Night Pulse ], dealing 200% of the protagonist's attack as damage to enemies. This damage is boosted by the protagonist's normal attack damage bonus and skill damage bonus, and is released once every 3 turns thereafter.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 10.0,
@@ -1645,15 +1627,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Eternal Night Pulse ] deals additional damage equal to 5% of the target's max health, with the additional damage not exceeding 2000% of the protagonist's attack."
-      },
-      "awaken_base_effect": "When Luminous Dragon appears, it releases [ Eternal Night Pulse ], dealing 200% of the protagonist's attack as damage to enemies. This damage is boosted by the protagonist's normal attack damage bonus and skill damage bonus, and is released once every 3 turns thereafter."
+      }
     },
     {
       "idx": 20,
-      "n": "Flyer No.1",
+      "n": "Flyer No. 1",
       "tier": "Immortal",
-      "effect": "Coming Soon",
       "base_effect": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+      "awaken_base_effect": "Flver No.1 casts [ Rocket Start ] every 3 turns, dealing skill damage equal to 300% of hero's attack. When cast, the hero gains a shield equal to 15% of max HP.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 15.0,
@@ -1739,15 +1720,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "When Flyer No.1 dies, all control effects on the hero are cleared, the hero gains 1 control immunity, and enemy critical rate is reduced by -20% and critical damage by -50%, lasting 2 turns."
-      },
-      "awaken_base_effect": "Flver No.1 casts [ Rocket Start ] every 3 turns, dealing skill damage equal to 300% of hero's attack. When cast, the hero gains a shield equal to 15% of max HP."
+      }
     },
     {
       "idx": 21,
       "n": "Capytti Veyron",
       "tier": "Immortal",
-      "effect": "Coming Soon",
       "base_effect": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+      "awaken_base_effect": "Capvtti Vevron releases [ Rapid Dash ] once every 4 turns, dealing skill damage equal to 300% of the main character's attack to enemies, and increasing the main character's final skill damage reduction by +9%. This effect decreases by -3% each turn and lasts for 3 turns.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 15.0,
@@ -1833,15 +1813,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "Additionally causes enemies to be stunned or silenced for 1 turn"
-      },
-      "awaken_base_effect": "Capvtti Vevron releases [ Rapid Dash ] once every 4 turns, dealing skill damage equal to 300% of the main character's attack to enemies, and increasing the main character's final skill damage reduction by +9%. This effect decreases by -3% each turn and lasts for 3 turns."
+      }
     },
     {
       "idx": 22,
       "n": "Overlord Deer",
       "tier": "Immortal",
-      "effect": "Coming Soon",
       "base_effect": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+      "awaken_base_effect": "Overlord Deer releases [ Deer Stampede ] once every 2 turns, dealing burning, poison, and bleeding damage each equal to 100% of the protagonist's attack. After release, it immediately deals additional damage equal to 25% of the target's total burning, poison, and bleeding damage. Each type of damage cannot exceed 25 times the protagonist's attack.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 15.0,
@@ -1927,15 +1906,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After using [ Deer Stampede ], for each 1 stack of burn, poison, or bleed, deal continuous damage equal to 0.5% of the target's HPMax, not exceeding 60 times the protagonist's attack."
-      },
-      "awaken_base_effect": "Overlord Deer releases [ Deer Stampede ] once every 2 turns, dealing burning, poison, and bleeding damage each equal to 100% of the protagonist's attack. After release, it immediately deals additional damage equal to 25% of the target's total burning, poison, and bleeding damage. Each type of damage cannot exceed 25 times the protagonist's attack."
+      }
     },
     {
       "idx": 23,
       "n": "Marshmallow Cloud",
       "tier": "Immortal",
-      "effect": "Coming Soon",
       "base_effect": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+      "awaken_base_effect": "Releases [ Dreamy Impact ] every 3 turns, dealing Skill DMG equal to 300% of Hero's ATK and inflicting [ Dreamy ] on enemies for 2 turns. Dreamy: Final DMG Bonus -5%, CRIT DMG-20%.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 15.0,
@@ -2021,15 +1999,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After [ Dreamy ] ends, reduces enemy's CRIT Rate by 30% for 1 turn."
-      },
-      "awaken_base_effect": "Releases [ Dreamy Impact ] every 3 turns, dealing Skill DMG equal to 300% of Hero's ATK and inflicting [ Dreamy ] on enemies for 2 turns. Dreamy: Final DMG Bonus -5%, CRIT DMG-20%."
+      }
     },
     {
       "idx": 24,
       "n": "Dreamy Bathtub",
       "tier": "Immortal",
-      "effect": "Coming Soon",
       "base_effect": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+      "awaken_base_effect": "Every 3 rounds, casts [ Dreamy Cleanse ] once, dealing 3 hits of Skill DMG equal to 100% of ATK. Each hit has a 50% chance to apply 1 stack of [ Smooth ] to the enemy. Smooth: Basic Attack Crit Rate -5%, stacks up to 3 times.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 15.0,
@@ -2115,15 +2092,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "New Defeat Mechanic: Upon death, immediately applies max [ Smooth ] (3 stacks) and -30% Crit Rate to the enemy for 2 rounds."
-      },
-      "awaken_base_effect": "Every 3 rounds, casts [ Dreamy Cleanse ] once, dealing 3 hits of Skill DMG equal to 100% of ATK. Each hit has a 50% chance to apply 1 stack of [ Smooth ] to the enemy. Smooth: Basic Attack Crit Rate -5%, stacks up to 3 times."
+      }
     },
     {
       "idx": 25,
       "n": "Imperial Dragon-Armor Beast",
       "tier": "Transcendent",
-      "effect": "Coming Soon",
       "base_effect": "Imperial Dragon Armor — Hero ignores Critical Rate +10%. When taking Critical damage and surviving, gain a shield equal to 30% of damage taken. This effect can grant up to 25% of the hero's max HP as shield per round.",
+      "awaken_base_effect": "Each turn, cast 1 [ Imperial Dragon Devour ], dealing skill damage equal to 100% of the protagonist's Attack for 1 hit. On the first cast, transform into the Destruction Dragon Emperor and replace it with 1 [ Photon Annihilation ]. Thereafter, after every 2 casts of [ Imperial Dragon Devour ], replace with 1 [ Photon Annihilation ], dealing 175% of the protagonist's Attack as skill damage for 1 hit and granting final damage reduction +5% for 2 turns. When the Sacred Sword is deployed, casting [ Photon Annihilation ] transforms into the Supreme Dragon God, removes all control effects from the protagonist, and grants 1 instance of control immunity.",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 20.0,
@@ -2209,15 +2185,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "[ Dragon's Blessing ] effect enhanced: the maximum accumulated final damage reduction is increased from 10% to 20%. When the Holy Sword is deployed, during [ Dragon's Blessing ], a single instance of critical damage received by the main character will not exceed 30% of their max HP."
-      },
-      "awaken_base_effect": "Each turn, cast 1 [ Imperial Dragon Devour ], dealing skill damage equal to 100% of the protagonist's Attack for 1 hit. On the first cast, transform into the Destruction Dragon Emperor and replace it with 1 [ Photon Annihilation ]. Thereafter, after every 2 casts of [ Imperial Dragon Devour ], replace with 1 [ Photon Annihilation ], dealing 175% of the protagonist's Attack as skill damage for 1 hit and granting final damage reduction +5% for 2 turns. When the Sacred Sword is deployed, casting [ Photon Annihilation ] transforms into the Supreme Dragon God, removes all control effects from the protagonist, and grants 1 instance of control immunity."
+      }
     },
     {
       "idx": 26,
       "n": "Ash Progenitor Dragon",
       "tier": "Transcendent",
-      "effect": "Coming Soon",
       "base_effect": "Primal Dragon Blessing — Final DMG Reduc. +20%. Gains 1 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +5% until the end of battle.",
+      "awaken_base_effect": "Ash Breath — Every 3 rounds, Ash Primal Dragon casts [ Ash Breath ] once, dealing Skill DMG equal to 125% of Protagonist's ATK 3 times. When Ash Primal Dragon enters, resurrects 1 fallen Mount and restores 50% of its HP. At the start of battle, Protagonist gains [ Ember ] for 3 rounds. (Ember: Protagonist's Final DMG Reduc. +5%.) When Protagonist is Stunned, Frozen, Silenced, or Disarmed, increases Control Immune by +50% for 2 rounds (cannot stack) and deals Skill DMG equal to 5% of enemy's Max HP (caps at 50x Protagonist's ATK). Ash Primal Dragon cannot be resurrected by other Mount skills.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20.0,
@@ -2303,14 +2278,14 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "Ash Primal Dragon resurrects after its first death and grants Protagonist 2 Control Immune. [ Ember ] clears Control states when triggered (once per battle)."
-      },
-      "awaken_base_effect": "Ash Breath — Every 3 rounds, Ash Primal Dragon casts [ Ash Breath ] once, dealing Skill DMG equal to 125% of Protagonist's ATK 3 times. When Ash Primal Dragon enters, resurrects 1 fallen Mount and restores 50% of its HP. At the start of battle, Protagonist gains [ Ember ] for 3 rounds. (Ember: Protagonist's Final DMG Reduc. +5%.) When Protagonist is Stunned, Frozen, Silenced, or Disarmed, increases Control Immune by +50% for 2 rounds (cannot stack) and deals Skill DMG equal to 5% of enemy's Max HP (caps at 50x Protagonist's ATK). Ash Primal Dragon cannot be resurrected by other Mount skills."
+      }
     },
     {
       "idx": 27,
       "n": "Frost Dragon",
       "tier": "Transcendent",
       "base_effect": "Frost Scales — Protagonist Ignore Crit Rate +10%, Final DMG Reduction +10%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 30% Max HP, and reduces enemy Final Skill DMG Boost by 10% for 2 turns. Triggers once per battle.",
+      "awaken_base_effect": "After Frost Dragon enters battle, it immediately casts [ Frost Breath ], dealing 3 hits of skill DMG equal to 125% of the Protagonist's ATK to enemies. It then casts it 1 time every 3 turns. After the first cast, the Protagonist gains [ Winter's Embrace ] for 2 turns. [ Winter's Embrace ]: Overall DMG RES +50%, Control RES +30%. Triggers 1 time per battle.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20.0,
@@ -2396,8 +2371,7 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "After [ Frost Breath ] is cast, enemies qain [ Frostbound ] for 3 turns. When [ Winter's Embrace ] ends, enemies gain [ Piercing Frost ] for 2 turns, increasing the Protagonist's Crit Ignore Rate by +50% and Crit DMG Reduction by +75%. This effect takes effect only 1 time per battle. [ Frostbound ]'s Final DMG Boost reduction is increased to -10%."
-      },
-      "awaken_base_effect": "After Frost Dragon enters battle, it immediately casts [ Frost Breath ], dealing 3 hits of skill DMG equal to 125% of the Protagonist's ATK to enemies. It then casts it 1 time every 3 turns. After the first cast, the Protagonist gains [ Winter's Embrace ] for 2 turns. [ Winter's Embrace ]: Overall DMG RES +50%, Control RES +30%. Triggers 1 time per battle."
+      }
     }
   ]
 }
