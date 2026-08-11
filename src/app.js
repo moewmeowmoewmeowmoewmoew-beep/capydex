@@ -215,10 +215,10 @@ function tierSlug(tier) {
   return (tier || 'untiered').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
-function buildTierGroups(items) {
+function buildTierGroups(items, field = 'tier') {
   const grouped = {};
   items.forEach(item => {
-    const tier = item.tier || '(Untiered)';
+    const tier = item[field] || '(Untiered)';
     (grouped[tier] = grouped[tier] || []).push(item);
   });
   const ordered = [...TIER_ORDER.filter(t => grouped[t]), ...Object.keys(grouped).filter(t => !TIER_ORDER.includes(t))];
@@ -226,8 +226,8 @@ function buildTierGroups(items) {
 }
 
 const COLLECTION_SECTIONS = [
-  { id: 'relics', label: 'Relics', build: renderRelics },
-  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles },
+  { id: 'relics', label: 'Relics', build: renderRelics, sub: () => buildTierGroups(DB.relics, 'rarity') },
+  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity') },
   { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')) },
   { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')) },
   { id: 'pets', label: 'Pets', build: renderPets, sub: () => buildTierGroups(DB.pets) },
@@ -390,35 +390,169 @@ function renderSetCard({ kind, name, statLabel, tierLabels, vals, members, allOw
   return card;
 }
 
+/* ============================================================
+   Bulk actions: per-tier "Own All", and cross-tier multi-select
+   with a modal to assign a star level to many items at once.
+   ============================================================ */
+const BULK_CONFIG = {
+  relics: {
+    getOwned: (name) => !!state.relicOwned[name],
+    getStar: (name) => state.relicStars[name] || 0,
+    maxStar: () => 10,
+    apply: (name, owned, star) => { state.relicOwned[name] = owned; state.relicStars[name] = star; },
+  },
+  collectibles: {
+    getOwned: (name) => !!state.collectibleOwned[name],
+    getStar: (name) => state.collectibleStars[name] || 0,
+    maxStar: (item) => item.star_vals.length - 1,
+    apply: (name, owned, star) => { state.collectibleOwned[name] = owned; state.collectibleStars[name] = star; },
+  },
+};
+
+const selectMode = { relics: false, collectibles: false };
+const selectedItems = { relics: new Set(), collectibles: new Set() };
+
+function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
+  const cfg = BULK_CONFIG[kind];
+  const allOwned = groupItems.length > 0 && groupItems.every(it => cfg.getOwned(it.n));
+  const allSelected = groupItems.length > 0 && groupItems.every(it => selectedItems[kind].has(it.n));
+
+  const header = el('div', { class: 'tier-group-header' });
+  header.appendChild(el('div', { class: 'tier-group-title', id: groupId, style: 'margin:0;border:none;padding:0;' }, tierLabel));
+
+  const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
+  if (selectMode[kind]) {
+    btnRow.appendChild(el('button', {
+      class: 'bulk-action-btn',
+      onclick: () => {
+        groupItems.forEach(it => allSelected ? selectedItems[kind].delete(it.n) : selectedItems[kind].add(it.n));
+        render();
+      },
+    }, allSelected ? 'Deselect Tier' : 'Select Tier'));
+  }
+  btnRow.appendChild(el('button', {
+    class: 'bulk-action-btn',
+    onclick: () => {
+      groupItems.forEach(it => cfg.apply(it.n, !allOwned, allOwned ? 0 : cfg.getStar(it.n)));
+      saveState();
+      render();
+    },
+  }, allOwned ? 'Unown All' : 'Own All'));
+  header.appendChild(btnRow);
+
+  return header;
+}
+
+function toggleSelectMode(kind) {
+  selectMode[kind] = !selectMode[kind];
+  if (!selectMode[kind]) selectedItems[kind].clear();
+  render();
+}
+
+function toggleItemSelected(kind, name) {
+  const set = selectedItems[kind];
+  if (set.has(name)) set.delete(name); else set.add(name);
+  render();
+}
+
+function renderBulkActionBar(kind) {
+  const count = selectedItems[kind].size;
+  if (!selectMode[kind]) return null;
+  const cfg = BULK_CONFIG[kind];
+  return el('div', { class: 'bulk-action-bar' }, [
+    el('span', { class: 'bulk-action-count' }, count > 0 ? `${count} selected` : 'Tap items or "Select Tier" to select them'),
+    el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;' }, [
+      el('button', {
+        class: 'bulk-action-btn',
+        disabled: count === 0 ? 'true' : null,
+        onclick: () => {
+          if (count === 0) return;
+          [...selectedItems[kind]].forEach(n => cfg.apply(n, true, cfg.getStar(n)));
+          saveState();
+          render();
+        },
+      }, 'Mark Owned'),
+      el('button', {
+        class: 'bulk-action-btn',
+        disabled: count === 0 ? 'true' : null,
+        onclick: () => { if (count > 0) openStarAssignModal(kind); },
+      }, 'Set Stars…'),
+      el('button', { class: 'bulk-action-btn secondary', onclick: () => toggleSelectMode(kind) }, 'Done'),
+    ]),
+  ]);
+}
+
+function openStarAssignModal(kind) {
+  const cfg = BULK_CONFIG[kind];
+  const names = [...selectedItems[kind]];
+  const itemsByName = Object.fromEntries((kind === 'relics' ? DB.relics : DB.collectibles).map(it => [it.n, it]));
+  const maxAllowed = Math.min(...names.map(n => cfg.maxStar(itemsByName[n])));
+  let value = maxAllowed;
+
+  const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
+  const valDisplay = el('div', { class: 'modal-star-value' }, `${value}★`);
+  const numInput = el('input', {
+    type: 'number', class: 'modal-star-input', min: '0', max: String(maxAllowed), value: String(value),
+    oninput: (e) => {
+      const n = parseInt(e.target.value, 10);
+      value = Number.isNaN(n) ? 0 : Math.max(0, Math.min(maxAllowed, n));
+      valDisplay.textContent = `${value}★`;
+    },
+  });
+
+  const box = el('div', { class: 'modal-box' }, [
+    el('div', { class: 'modal-title' }, `Set stars for ${names.length} item${names.length === 1 ? '' : 's'}`),
+    el('div', { class: 'modal-star-picker' }, [
+      el('button', { class: 'modal-star-btn', onclick: () => { value = Math.max(0, value - 1); valDisplay.textContent = `${value}★`; numInput.value = String(value); } }, '−'),
+      valDisplay,
+      el('button', { class: 'modal-star-btn', onclick: () => { value = Math.min(maxAllowed, value + 1); valDisplay.textContent = `${value}★`; numInput.value = String(value); } }, '+'),
+    ]),
+    el('div', { class: 'modal-input-row' }, [
+      el('span', { class: 'modal-input-label' }, 'or type a number:'),
+      numInput,
+    ]),
+    maxAllowed < 10 ? el('div', { class: 'modal-note' }, `Capped at ${maxAllowed}★ — the lowest max among your selected items.`) : null,
+    el('div', { class: 'modal-actions' }, [
+      el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
+      el('button', {
+        class: 'bulk-action-btn primary',
+        onclick: () => {
+          names.forEach(n => cfg.apply(n, true, Math.min(value, cfg.maxStar(itemsByName[n]))));
+          saveState();
+          selectedItems[kind].clear();
+          selectMode[kind] = false;
+          closeModal();
+          render();
+        },
+      }, 'Apply'),
+    ]),
+  ]);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  function closeModal() { overlay.remove(); }
+}
+
 function renderRelics() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Treasure Collection relics, 0★–10★. Set bonuses key off the lowest star level among owned set members.'));
 
-  // Toolbar
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
     class: 'search-input', type: 'text', placeholder: 'Search relics…',
-    oninput: (e) => { relicSearch = e.target.value.toLowerCase(); renderRelicGrid(grid); },
+    oninput: (e) => { relicSearch = e.target.value.toLowerCase(); renderRelicGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
-  ['All', 'Rare', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
-    const chip = el('button', {
-      class: 'filter-chip' + (relicRarityFilter === r ? ' active' : ''),
-      onclick: () => {
-        relicRarityFilter = r;
-        toolbar.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        renderRelicGrid(grid);
-      },
-    }, r);
-    toolbar.appendChild(chip);
-  });
+  toolbar.appendChild(el('button', {
+    class: 'filter-chip' + (selectMode.relics ? ' active' : ''),
+    onclick: () => toggleSelectMode('relics'),
+  }, selectMode.relics ? 'Cancel selecting' : 'Select multiple…'));
   wrap.appendChild(toolbar);
 
-  const grid = el('div', { class: 'card-grid' });
-  wrap.appendChild(grid);
-  renderRelicGrid(grid);
+  const groupsWrap = el('div', {});
+  wrap.appendChild(groupsWrap);
+  renderRelicGroups(groupsWrap);
 
   // Sets, at the bottom
   wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Relic Sets'));
@@ -430,21 +564,35 @@ function renderRelics() {
   return wrap;
 }
 
-function renderRelicGrid(grid) {
-  grid.innerHTML = '';
-  const items = DB.relics.filter(r => {
-    if (relicRarityFilter !== 'All' && r.rarity !== relicRarityFilter) return false;
-    if (relicSearch && !r.n.toLowerCase().includes(relicSearch)) return false;
-    return true;
+function renderRelicGroups(container) {
+  container.innerHTML = '';
+  const items = DB.relics.filter(r => !relicSearch || r.n.toLowerCase().includes(relicSearch));
+  const groups = buildTierGroups(items, 'rarity');
+  groups.forEach(g => {
+    container.appendChild(renderTierGroupHeader('relics', g.tier, `relics-${g.slug}`, g.items));
+    const grid = el('div', { class: 'card-grid cols-3' });
+    g.items.forEach(r => grid.appendChild(renderRelicCard(r)));
+    container.appendChild(grid);
   });
-  items.forEach(r => grid.appendChild(renderRelicCard(r)));
+  const bar = renderBulkActionBar('relics');
+  if (bar) container.appendChild(bar);
+}
+
+function renderSelectionOverlay(kind, name) {
+  const selected = selectedItems[kind].has(name);
+  return el('button', {
+    type: 'button',
+    class: 'select-checkbox' + (selected ? ' checked' : ''),
+    onclick: (e) => { e.stopPropagation(); toggleItemSelected(kind, name); },
+  }, selected ? '✓' : '');
 }
 
 function renderRelicCard(relic) {
   const owned = !!state.relicOwned[relic.n];
   const star = state.relicStars[relic.n] || 0;
 
-  const card = el('div', { class: `item-card r-${relic.rarity}` });
+  const card = el('div', { class: `item-card r-${relic.rarity}` + (selectMode.relics && selectedItems.relics.has(relic.n) ? ' selected' : '') });
+  if (selectMode.relics) card.appendChild(renderSelectionOverlay('relics', relic.n));
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('relics', relic),
@@ -469,8 +617,10 @@ function renderRelicCard(relic) {
   ]));
 
   if (owned) {
-    card.appendChild(el('div', { class: 'item-effect' + (relic.effect ? '' : ' placeholder') },
-      relic.effect ? el('span', {}, ['10★: ', renderTextWithSkillTags(relic.effect)]) : 'Effect not yet documented'));
+    if (relic.effect) {
+      card.appendChild(el('div', { class: 'item-effect' },
+        el('span', {}, ['10★: ', renderTextWithSkillTags(relic.effect)])));
+    }
 
     if (relic.star_stats) {
       const nodes = formatStatBlockNodes(
@@ -530,14 +680,18 @@ function renderCollectibles() {
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
     class: 'search-input', type: 'text', placeholder: 'Search collectibles…',
-    oninput: (e) => { collectibleSearch = e.target.value.toLowerCase(); renderCollectibleGrid(grid); },
+    oninput: (e) => { collectibleSearch = e.target.value.toLowerCase(); renderCollectibleGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
+  toolbar.appendChild(el('button', {
+    class: 'filter-chip' + (selectMode.collectibles ? ' active' : ''),
+    onclick: () => toggleSelectMode('collectibles'),
+  }, selectMode.collectibles ? 'Cancel selecting' : 'Select multiple…'));
   wrap.appendChild(toolbar);
 
-  const grid = el('div', { class: 'card-grid' });
-  wrap.appendChild(grid);
-  renderCollectibleGrid(grid);
+  const groupsWrap = el('div', {});
+  wrap.appendChild(groupsWrap);
+  renderCollectibleGroups(groupsWrap);
 
   wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Collectible Sets'));
   const setsGrid = el('div', { class: 'sets-grid' });
@@ -548,17 +702,26 @@ function renderCollectibles() {
   return wrap;
 }
 
-function renderCollectibleGrid(grid) {
-  grid.innerHTML = '';
+function renderCollectibleGroups(container) {
+  container.innerHTML = '';
   const items = DB.collectibles.filter(c => !collectibleSearch || c.n.toLowerCase().includes(collectibleSearch));
-  items.forEach(c => grid.appendChild(renderCollectibleCard(c)));
+  const groups = buildTierGroups(items, 'rarity');
+  groups.forEach(g => {
+    container.appendChild(renderTierGroupHeader('collectibles', g.tier, `collectibles-${g.slug}`, g.items));
+    const grid = el('div', { class: 'card-grid cols-3' });
+    g.items.forEach(c => grid.appendChild(renderCollectibleCard(c)));
+    container.appendChild(grid);
+  });
+  const bar = renderBulkActionBar('collectibles');
+  if (bar) container.appendChild(bar);
 }
 
 function renderCollectibleCard(item) {
   const owned = !!state.collectibleOwned[item.n];
   const maxStar = item.star_vals.length - 1;
   const stars = Math.min(state.collectibleStars[item.n] || 0, maxStar);
-  const card = el('div', { class: `item-card r-${item.rarity}` });
+  const card = el('div', { class: `item-card r-${item.rarity}` + (selectMode.collectibles && selectedItems.collectibles.has(item.n) ? ' selected' : '') });
+  if (selectMode.collectibles) card.appendChild(renderSelectionOverlay('collectibles', item.n));
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('collectibles', item),
@@ -843,7 +1006,7 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  backToTopBtn.classList.toggle('visible', y > 400);
+  backToTopBtn.classList.toggle('visible', y > 400 && !selectMode.relics && !selectMode.collectibles);
   lastScrollY = y;
 }, { passive: true });
 
