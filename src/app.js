@@ -7,10 +7,11 @@ function defaultState() {
   return {
     collectibleOwned: {},   // itemName -> bool
     collectibleStars: {},   // itemName -> number of stars, 0-10
-    relicOwned: {},         // relicId -> bool
-    relicStars: {},         // relicId -> 0-10
+    relicOwned: {},         // relicName -> bool (keyed by name, not id — ids can be blank/duplicate in source data)
+    relicStars: {},         // relicName -> 0-10
     mountState: {},         // idx -> { owned, stars(0-5), awaken(0-10) }
     artifactState: {},      // idx -> { owned, stars(0-5), awaken(0-10) }
+    petState: {},           // idx -> { owned, battleLv(1-5), awaken(0-10) }
   };
 }
 
@@ -40,6 +41,13 @@ function getMountOrArtifactState(bucket, idx) {
     state[bucket][idx] = { owned: false, stars: 0, awaken: 0 };
   }
   return state[bucket][idx];
+}
+
+function getPetState(idx) {
+  if (!state.petState[idx]) {
+    state.petState[idx] = { owned: false, battleLv: 1, awaken: 0 };
+  }
+  return state.petState[idx];
 }
 
 /* ============================================================
@@ -222,6 +230,7 @@ const COLLECTION_SECTIONS = [
   { id: 'collectibles', label: 'Collectibles', build: renderCollectibles },
   { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')) },
   { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')) },
+  { id: 'pets', label: 'Pets', build: renderPets, sub: () => buildTierGroups(DB.pets) },
 ];
 
 function renderPlaceholder(label) {
@@ -335,16 +344,56 @@ function setupScrollSpy(navEl) {
 let relicSearch = '';
 let relicRarityFilter = 'All';
 
+function renderSetMemberIcon(kind, name) {
+  const img = el('img', {
+    src: itemImagePath(kind, { n: name }),
+    alt: name,
+    loading: 'lazy',
+    onerror: (e) => { e.target.style.visibility = 'hidden'; },
+  });
+  return el('div', { class: 'set-member-icon' }, img);
+}
+
+function renderSetCard({ kind, name, statLabel, tierLabels, vals, members, allOwned, minStar, tierIdx }) {
+  const ownedCount = members.filter(m => m.owned).length;
+
+  const card = el('div', { class: 'set-card' });
+  card.appendChild(el('div', { class: 'set-card-header' }, [
+    el('div', { class: 'set-card-name' }, name),
+    el('div', { class: 'set-card-count' + (ownedCount === members.length ? ' complete' : '') },
+      `${ownedCount}/${members.length} owned`),
+  ]));
+
+  const memberList = el('div', { class: 'set-member-list' });
+  members.forEach(m => {
+    memberList.appendChild(el('div', { class: 'set-member-row' }, [
+      el('div', { class: 'set-member-left' }, [
+        renderSetMemberIcon(kind, m.name),
+        el('div', { class: 'set-member-name' + (m.owned ? ' owned' : '') }, m.name),
+      ]),
+      el('div', { class: 'set-member-value' }, m.owned ? `${m.star}★` : '—'),
+    ]));
+  });
+  card.appendChild(memberList);
+
+  const tierGrid = el('div', { class: 'set-tier-grid' });
+  vals.forEach((v, i) => {
+    const reached = allOwned && i <= tierIdx;
+    const active = allOwned && i === tierIdx;
+    tierGrid.appendChild(el('div', { class: 'set-tier-pip2' + (reached ? ' reached' : '') + (active ? ' active' : '') }, [
+      el('span', { class: 'pip-star' }, tierLabels[i]),
+      el('span', { class: 'pip-val' }, `${v}${typeof v === 'number' && v < 20 ? '%' : ''}`),
+    ]));
+  });
+  card.appendChild(tierGrid);
+
+  return card;
+}
+
 function renderRelics() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Treasure Collection relics, 0★–10★. Set bonuses key off the lowest star level among owned set members, not the total — see the note on each set panel.'));
-
-  // Set panels first (context before the grid)
-  const setsWrap = el('div', {});
-  const allSets = Object.values(DB.relic_sets).flat();
-  allSets.forEach(set => setsWrap.appendChild(renderRelicSetPanel(set)));
-  wrap.appendChild(setsWrap);
+    'Treasure Collection relics, 0★–10★. Set bonuses key off the lowest star level among owned set members.'));
 
   // Toolbar
   const toolbar = el('div', { class: 'toolbar' });
@@ -371,6 +420,13 @@ function renderRelics() {
   wrap.appendChild(grid);
   renderRelicGrid(grid);
 
+  // Sets, at the bottom
+  wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Relic Sets'));
+  const setsGrid = el('div', { class: 'sets-grid' });
+  const allSets = Object.values(DB.relic_sets).flat();
+  allSets.forEach(set => setsGrid.appendChild(renderRelicSetPanel(set)));
+  wrap.appendChild(setsGrid);
+
   return wrap;
 }
 
@@ -385,8 +441,8 @@ function renderRelicGrid(grid) {
 }
 
 function renderRelicCard(relic) {
-  const owned = !!state.relicOwned[relic.id];
-  const star = state.relicStars[relic.id] || 0;
+  const owned = !!state.relicOwned[relic.n];
+  const star = state.relicStars[relic.n] || 0;
 
   const card = el('div', { class: `item-card r-${relic.rarity}` });
   card.appendChild(el('div', { class: 'card-header-row' }, [
@@ -398,14 +454,14 @@ function renderRelicCard(relic) {
   card.appendChild(el('div', { class: 'item-rarity' }, relic.rarity + (relic.type ? ' · ' + relic.type : '')));
 
   const stepper = renderStepper(
-    `relic-${relic.id}`, star, 0, 10,
-    (next) => setRelicStar(relic.id, next),
+    `relic-${relic.n}`, star, 0, 10,
+    (next) => setRelicStar(relic.n, next),
     (v) => `${v}★`
   );
   card.appendChild(el('div', { class: 'card-controls-row' }, [
     renderOwnedBadge(owned, (checked) => {
-      state.relicOwned[relic.id] = checked;
-      if (!checked) state.relicStars[relic.id] = 0;
+      state.relicOwned[relic.n] = checked;
+      if (!checked) state.relicStars[relic.n] = 0;
       saveState();
       render();
     }),
@@ -427,9 +483,9 @@ function renderRelicCard(relic) {
   return card;
 }
 
-function setRelicStar(relicId, next) {
-  state.relicStars[relicId] = next;
-  if (next > 0) state.relicOwned[relicId] = true;
+function setRelicStar(relicName, next) {
+  state.relicStars[relicName] = next;
+  if (next > 0) state.relicOwned[relicName] = true;
   saveState();
   render();
 }
@@ -438,10 +494,9 @@ const RELIC_TIER_STARS = [0, 2, 4, 6, 8, 10];
 const RELIC_TIER_LABELS = ['Set', '2★', '4★', '6★', '8★', '10★'];
 
 function renderRelicSetPanel(set) {
-  // Match set members to relic IDs by name for owned/star lookup
   const memberRelics = set.items.map(name => DB.relics.find(r => r.n === name)).filter(Boolean);
-  const allOwned = memberRelics.length > 0 && memberRelics.every(r => state.relicOwned[r.id]);
-  const minStar = allOwned ? Math.min(...memberRelics.map(r => state.relicStars[r.id] || 0)) : -1;
+  const allOwned = memberRelics.length > 0 && memberRelics.every(r => state.relicOwned[r.n]);
+  const minStar = allOwned ? Math.min(...memberRelics.map(r => state.relicStars[r.n] || 0)) : -1;
 
   let tierIdx = -1;
   if (allOwned) {
@@ -451,40 +506,17 @@ function renderRelicSetPanel(set) {
     }
   }
 
-  const panel = el('div', { class: 'set-panel' });
-  panel.appendChild(el('div', { class: 'set-header' }, [
-    el('div', { class: 'set-name' }, set.set),
-    el('div', { class: 'set-stat' }, set.stat),
-  ]));
+  const members = memberRelics.map(r => ({
+    name: r.n,
+    owned: !!state.relicOwned[r.n],
+    star: state.relicStars[r.n] || 0,
+  }));
 
-  const track = el('div', { class: 'set-tier-track' });
-  set.vals.forEach((v, i) => {
-    const reached = allOwned && i <= tierIdx;
-    const active = allOwned && i === tierIdx;
-    track.appendChild(el('div', {
-      class: 'tier-pip' + (reached ? ' reached' : '') + (active ? ' active' : ''),
-    }, `${RELIC_TIER_LABELS[i]}: ${v}${typeof v === 'number' && v < 20 ? '%' : ''}`));
+  return renderSetCard({
+    kind: 'relics', name: set.set, statLabel: set.stat,
+    tierLabels: RELIC_TIER_LABELS, vals: set.vals,
+    members, allOwned, minStar, tierIdx,
   });
-  panel.appendChild(track);
-
-  const members = el('div', { class: 'set-members' });
-  set.items.forEach(name => {
-    const r = DB.relics.find(x => x.n === name);
-    const owned = r && state.relicOwned[r.id];
-    members.appendChild(el('span', { class: 'set-member' + (owned ? ' owned' : '') }, name));
-  });
-  panel.appendChild(members);
-
-  panel.appendChild(el('div', { class: 'set-current-bonus' },
-    allOwned
-      ? ['Current: ', el('b', {}, `${set.vals[tierIdx]}${typeof set.vals[tierIdx] === 'number' && set.vals[tierIdx] < 20 ? '%' : ''} ${set.stat}`), ` (min star ${minStar})`]
-      : 'Not active — own every set member to unlock.'
-  ));
-
-  panel.appendChild(el('div', { class: 'set-note' },
-    'Assumes tiers replace rather than stack (unconfirmed in-game — see project notes).'));
-
-  return panel;
 }
 
 /* ---------- Collectibles ---------- */
@@ -494,11 +526,6 @@ function renderCollectibles() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Common Collection items, 0★–10★ per item. Set bonuses key off the lowest star level among all four members, same mechanic as relic sets.'));
-
-  const setsWrap = el('div', {});
-  const allSets = Object.values(DB.collectible_sets).flat();
-  allSets.forEach(set => setsWrap.appendChild(renderCollectibleSetPanel(set)));
-  wrap.appendChild(setsWrap);
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
@@ -511,6 +538,12 @@ function renderCollectibles() {
   const grid = el('div', { class: 'card-grid' });
   wrap.appendChild(grid);
   renderCollectibleGrid(grid);
+
+  wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Collectible Sets'));
+  const setsGrid = el('div', { class: 'sets-grid' });
+  const allSets = Object.values(DB.collectible_sets).flat();
+  allSets.forEach(set => setsGrid.appendChild(renderCollectibleSetPanel(set)));
+  wrap.appendChild(setsGrid);
 
   return wrap;
 }
@@ -572,8 +605,6 @@ const COLLECTIBLE_TIER_STARS = [0, 3, 6, 10];
 const COLLECTIBLE_TIER_LABELS = ['0★', '3★', '6★', '10★'];
 
 function renderCollectibleSetPanel(set) {
-  // Bonus scales with the lowest star level among owned set members (same
-  // mechanic as relics, confirmed via meowdb). Requires every member owned.
   const allOwned = set.items.every(name => state.collectibleOwned[name]);
   const minStar = allOwned ? Math.min(...set.items.map(name => state.collectibleStars[name] || 0)) : -1;
   let tierIdx = 0;
@@ -583,40 +614,21 @@ function renderCollectibleSetPanel(set) {
     }
   }
 
-  const panel = el('div', { class: 'set-panel' });
-  panel.appendChild(el('div', { class: 'set-header' }, [
-    el('div', { class: 'set-name' }, set.set),
-    el('div', { class: 'set-stat' }, set.stat),
-  ]));
+  const members = set.items.map(name => ({
+    name,
+    owned: !!state.collectibleOwned[name],
+    star: state.collectibleStars[name] || 0,
+  }));
 
-  const track = el('div', { class: 'set-tier-track' });
-  set.vals.forEach((v, i) => {
-    const reached = allOwned && i <= tierIdx;
-    const active = allOwned && i === tierIdx;
-    track.appendChild(el('div', {
-      class: 'tier-pip' + (reached ? ' reached' : '') + (active ? ' active' : ''),
-    }, `${COLLECTIBLE_TIER_LABELS[i]}: ${v}%`));
+  return renderSetCard({
+    kind: 'collectibles', name: set.set, statLabel: set.stat,
+    tierLabels: COLLECTIBLE_TIER_LABELS, vals: set.vals,
+    members, allOwned, minStar, tierIdx: allOwned ? tierIdx : -1,
   });
-  panel.appendChild(track);
-
-  const members = el('div', { class: 'set-members' });
-  set.items.forEach(name => {
-    const owned = !!state.collectibleOwned[name];
-    members.appendChild(el('span', { class: 'set-member' + (owned ? ' owned' : '') }, name));
-  });
-  panel.appendChild(members);
-
-  panel.appendChild(el('div', { class: 'set-current-bonus' },
-    allOwned
-      ? ['Current: ', el('b', {}, `${set.vals[tierIdx]}% ${set.stat}`), ` (min star ${minStar} across set)`]
-      : 'Not active — own every set member to unlock.'
-  ));
-
-  return panel;
 }
 
 /* ---------- Mounts & Artifacts ---------- */
-const TIER_ORDER = ['Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Immortal', 'Transcendent'];
+const TIER_ORDER = ['Common', 'Great', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Immortal', 'Transcendent'];
 
 function renderMountsOrArtifacts(kind) {
   const isMount = kind === 'mounts';
@@ -715,6 +727,87 @@ function renderMountArtifactCard(item, bucket, isMount) {
   if (resolved) {
     card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' },
       [`A${s.awaken}: `, renderTextWithSkillTags(resolved.text)]));
+  }
+
+  return card;
+}
+
+/* ---------- Pets ---------- */
+function renderPets() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Pet roster. Battle Skill level reflects your pet\'s level tier (1★ at Lv1, up to 5★ at Lv80+). Only Mythic and above awaken — the Awaken control only appears where it applies.'));
+
+  const groups = buildTierGroups(DB.pets);
+  groups.forEach(g => {
+    wrap.appendChild(el('div', { class: 'tier-group-title', id: `pets-${g.slug}` }, g.tier));
+    const grid = el('div', { class: 'card-grid cols-3' });
+    g.items.forEach(item => grid.appendChild(renderPetCard(item)));
+    wrap.appendChild(grid);
+  });
+
+  return wrap;
+}
+
+const BATTLE_LV_KEYS = ['Lv1 (pet lv 1+)', 'Lv2 (pet lv 20+)', 'Lv3 (pet lv 40+)', 'Lv4 (pet lv 60+)', 'Lv5 (pet lv 80+)'];
+
+function resolvePetAwakenEffect(item, awakenLevel) {
+  for (let lvl = awakenLevel; lvl >= 0; lvl--) {
+    const text = item.awaken_effects && item.awaken_effects[`A${lvl}`];
+    if (text) return { level: lvl, text };
+  }
+  return null;
+}
+
+function renderPetCard(item) {
+  const s = getPetState(item.idx);
+  const hasAwaken = item.awaken_effects && Object.keys(item.awaken_effects).length > 0;
+
+  const card = el('div', { class: `item-card r-${item.tier}` });
+  card.appendChild(el('div', { class: 'card-header-row' }, [
+    el('div', { class: 'header-left' }, [
+      renderThumb('pets', item),
+      el('div', { class: 'item-name' }, item.n),
+    ]),
+  ]));
+  card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
+
+  const battleStepper = el('div', { class: 'stepper-row' }, [
+    el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Battle Lv'),
+    renderStepper(`pet-${item.idx}-battlelv`, s.battleLv, 1, 5,
+      (next) => { s.battleLv = next; saveState(); render(); }),
+  ]);
+
+  const steppersCol = [battleStepper];
+  if (hasAwaken) {
+    steppersCol.push(el('div', { class: 'stepper-row' }, [
+      el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
+      renderStepper(`pet-${item.idx}-awaken`, s.awaken, 0, 10,
+        (next) => { s.awaken = next; saveState(); render(); },
+        (v) => `A${v}`),
+    ]));
+  }
+
+  card.appendChild(el('div', { class: 'card-controls-row' }, [
+    renderOwnedBadge(s.owned, (checked) => { s.owned = checked; saveState(); render(); }),
+    el('div', { class: 'steppers-col' }, steppersCol),
+  ]));
+
+  if (!s.owned) return card;
+
+  const skillText = item.battle_skills && item.battle_skills[BATTLE_LV_KEYS[s.battleLv - 1]];
+  if (skillText) {
+    card.appendChild(el('div', { class: 'item-effect' }, [`Lv${s.battleLv}: `, renderTextWithSkillTags(skillText)]));
+  } else {
+    card.appendChild(el('div', { class: 'item-effect placeholder' }, 'No skill data at this level yet'));
+  }
+
+  if (hasAwaken) {
+    const resolved = resolvePetAwakenEffect(item, s.awaken);
+    if (resolved) {
+      card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' },
+        [`A${s.awaken}: `, renderTextWithSkillTags(resolved.text)]));
+    }
   }
 
   return card;

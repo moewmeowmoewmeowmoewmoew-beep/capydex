@@ -3245,7 +3245,7 @@
       }
     },
     {
-      "id": "",
+      "id": null,
       "n": "Bronze Statue of Shiva as Nataraja",
       "type": "",
       "effect": "In the first 3 turns of battle, hero's combo damage +45%",
@@ -4651,7 +4651,7 @@
       }
     },
     {
-      "id": "",
+      "id": null,
       "n": "Bronze Owl-shaped You",
       "type": "",
       "effect": "",
@@ -5400,7 +5400,7 @@
     },
     {
       "id": "1375058",
-      "n": "Franks Casket",
+      "n": "Frank Casket",
       "type": "",
       "effect": "",
       "rarity": "Legendary",
@@ -6151,7 +6151,7 @@
       "effect_5star": "At the start of battle, throw 3 daggers; enemies become Poisoned and Bleeding"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Holy Grail (Mythic Treasure)",
       "type": "",
       "effect": "When hitting an enemy with HP >30%, hero's final damage bonus +20%",
@@ -6779,7 +6779,7 @@
       "effect_5star": "During the first turn after the battle starts, each combo deals an additional 200% ATK combo damage. After triggering, the hero gains +5% lifesteal for 5 turns"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Spartan Shield",
       "type": "",
       "effect": "When Hero HP <70%, Final DMG Reduction +20%",
@@ -6829,7 +6829,7 @@
       "effect_5star": "When Hero HP <60%, Final DMG Reduction +10%"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Nio Armor",
       "type": "",
       "effect": "After taking cumulative damage equal to 30% of Max HP for the first time, increases Protagonist's Final DMG Reduc. by +10% and CRIT DMG Reduc. by +20% until the end of battle.",
@@ -6892,7 +6892,7 @@
       "effect_5star": "After taking cumulative damage equal to 50% of Max HP for the first time, increases Protagonist's Final DMG Reduc. by +6% and CRIT DMG Reduc. by +20% until the end of battle."
     },
     {
-      "id": "",
+      "id": null,
       "n": "Holy Spear",
       "type": "",
       "effect": "After the first Normal ATK each round, increases Protagonist's Final DMG Bonus by +2%. Stacks up to 4 times and lasts until the end of battle. At 3 stacks, grants Crit DMG +20% and Final DMG Bonus +3%.",
@@ -7068,7 +7068,7 @@
       "effect_5star": "After each dagger, dagger final damage +2%, stackable up to 5 stacks"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Li Gang's Mace",
       "type": "",
       "effect": "After Hero CRIT, 100% chance to gain. Final DMG Bonus +1%, stacking up to 10 times. When fully stacked, gain an additional Final DMG Bonus +10%.",
@@ -7118,7 +7118,7 @@
       "effect_5star": "After Hero CRIT, 50% chance to gain Final DMG Bonus +1% (Stacks up to 10 times)"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Spartan Scimitar",
       "type": "",
       "effect": "For every 10% of Max HP lost, Protagonist's Final DMG +2% (Max 5 stacks). At max stacks, Final DMG +10% additional.",
@@ -7168,7 +7168,7 @@
       "effect_5star": "Each time the protagonist cumulatively takes damage equal to 10% of Max HP, increases the protagonist's Final DMG+2%, stackable up to5times"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Cold Moon Blade",
       "type": "",
       "effect": "Final Basic Attack DMG Boost increased to 15%, and grants the Protagonist a Skill Shield equal to 3% of Max HP",
@@ -7218,7 +7218,7 @@
       "effect_5star": "Final Basic Attack DMG Boost increased to 10%"
     },
     {
-      "id": "",
+      "id": null,
       "n": "Radiant Armor",
       "type": "",
       "effect": "Can be stacked an additional time, with each stack increasing the final damage reduction to 5%",
@@ -7418,7 +7418,7 @@
           "Phoenix Feather",
           "Trojan Horse",
           "Tang Sanzang's Kasaya",
-          "Franks Casket"
+          "Frank Casket"
         ],
         "tracked": true
       },

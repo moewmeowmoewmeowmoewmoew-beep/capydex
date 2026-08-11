@@ -361,7 +361,7 @@ def build_relics():
         prior = existing_by_name.get(name, {})
         unmatched_existing.discard(name)
         entry = {
-            'id': prior.get('id', ''),
+            'id': prior.get('id') or None,  # None (not '') when unknown — empty strings collide as a shared app state key
             'n': name,
             'type': prior.get('type', ''),
             'effect': prior.get('effect', ''),
