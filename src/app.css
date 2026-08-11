@@ -24,6 +24,19 @@
   --font-mono: 'SF Mono', 'Cascadia Code', Consolas, monospace;
 }
 
+[data-theme="light"] {
+  --bg-deep: #F4F5F8;
+  --bg-panel: #FFFFFF;
+  --bg-panel-2: #ECEEF3;
+  --bg-card: #FFFFFF;
+  --ink: #1A1D24;
+  --ink-dim: #565D6D;
+  --ink-faint: #828895;
+  --accent: #0FA89B;
+  --accent-dim: #0C8B80;
+  --hairline: #DDE1E8;
+}
+
 html { scroll-behavior: smooth; }
 
 * { box-sizing: border-box; }
@@ -53,6 +66,20 @@ body {
 
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand-mark { color: var(--accent); font-size: 20px; }
+
+.theme-toggle {
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  color: var(--ink-dim);
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  font-size: 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.theme-toggle:hover { border-color: var(--accent-dim); color: var(--ink); }
 .brand-name {
   font-family: var(--font-display);
   font-size: 19px;

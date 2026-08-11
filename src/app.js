@@ -404,7 +404,7 @@ const BULK_CONFIG = {
   collectibles: {
     getOwned: (name) => !!state.collectibleOwned[name],
     getStar: (name) => state.collectibleStars[name] || 0,
-    maxStar: (item) => item.star_vals.length - 1,
+    maxStar: () => 10,
     apply: (name, owned, star) => { state.collectibleOwned[name] = owned; state.collectibleStars[name] = star; },
   },
 };
@@ -727,7 +727,7 @@ function renderCollectibleGroups(container) {
 
 function renderCollectibleCard(item) {
   const owned = !!state.collectibleOwned[item.n];
-  const maxStar = item.star_vals.length - 1;
+  const maxStar = 10;
   const stars = Math.min(state.collectibleStars[item.n] || 0, maxStar);
   const card = el('div', { class: `item-card r-${item.rarity}` + (selectMode.collectibles && selectedItems.collectibles.has(item.n) ? ' selected' : '') });
   if (selectMode.collectibles) card.appendChild(renderSelectionOverlay('collectibles', item.n));
@@ -1018,6 +1018,29 @@ window.addEventListener('scroll', () => {
   backToTopBtn.classList.toggle('visible', y > 400 && !selectMode.relics && !selectMode.collectibles);
   lastScrollY = y;
 }, { passive: true });
+
+/* ============================================================
+   Light / dark theme toggle — persisted across sessions
+   ============================================================ */
+const THEME_KEY = 'capydex_theme_v1';
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggleBtn.textContent = theme === 'light' ? '☀' : '☾';
+}
+
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (e) { /* ignore */ }
+  applyTheme(saved === 'light' ? 'light' : 'dark');
+})();
+
+themeToggleBtn.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  applyTheme(next);
+  try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* ignore */ }
+});
 
 /* ============================================================
    Init
