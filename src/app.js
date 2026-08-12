@@ -202,13 +202,26 @@ function formatStatBlockNodes(stats, showSign) {
 const root = document.getElementById('app-root');
 let activeMainTab = 'collection';
 
+const mainTabsNav = document.getElementById('main-tabs');
+const hamburgerBtn = document.getElementById('hamburger-toggle');
+hamburgerBtn.addEventListener('click', () => {
+  mainTabsNav.classList.toggle('open');
+});
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeMainTab = btn.dataset.tab;
+    mainTabsNav.classList.remove('open');
     render();
   });
+});
+
+document.addEventListener('click', (e) => {
+  if (mainTabsNav.classList.contains('open') && !mainTabsNav.contains(e.target) && e.target !== hamburgerBtn) {
+    mainTabsNav.classList.remove('open');
+  }
 });
 
 function tierSlug(tier) {
@@ -248,8 +261,10 @@ function render() {
 
   if (activeMainTab === 'collection') {
     root.appendChild(renderCollectionShell());
+  } else if (activeMainTab === 'calculator') {
+    root.appendChild(renderCalculator());
   } else {
-    const labels = { equipment: 'Equipment', inheritance: 'Inheritance Tree', calculator: 'Calculator' };
+    const labels = { equipment: 'Equipment', inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
   }
 
@@ -413,40 +428,30 @@ const selectMode = { relics: false, collectibles: false };
 const selectedItems = { relics: new Set(), collectibles: new Set() };
 
 function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
-  const cfg = BULK_CONFIG[kind];
-  const allOwned = groupItems.length > 0 && groupItems.every(it => cfg.getOwned(it.n));
   const allSelected = groupItems.length > 0 && groupItems.every(it => selectedItems[kind].has(it.n));
 
   const header = el('div', { class: 'tier-group-header' });
   header.appendChild(el('div', { class: 'tier-group-title', id: groupId, style: 'margin:0;border:none;padding:0;' }, tierLabel));
 
   const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
-  if (selectMode[kind]) {
-    btnRow.appendChild(el('button', {
-      class: 'bulk-action-btn',
-      onclick: () => {
-        if (allSelected) {
-          // Deselect just this tier's items, leaving any others untouched
-          groupItems.forEach(it => selectedItems[kind].delete(it.n));
-        } else {
-          // Select ONLY this tier — replaces whatever was selected before,
-          // rather than adding on top of it (that additive behavior was
-          // the source of an earlier bug: clicking this on multiple tiers
-          // in a row silently selected everything at once).
-          selectedItems[kind] = new Set(groupItems.map(it => it.n));
-        }
-        render();
-      },
-    }, allSelected ? 'Deselect Tier' : 'Select Only This Tier'));
-  }
   btnRow.appendChild(el('button', {
     class: 'bulk-action-btn',
     onclick: () => {
-      groupItems.forEach(it => cfg.apply(it.n, !allOwned, allOwned ? 0 : cfg.getStar(it.n)));
-      saveState();
+      if (allSelected) {
+        // Deselect just this tier's items, leaving any others untouched
+        groupItems.forEach(it => selectedItems[kind].delete(it.n));
+      } else {
+        // Select ONLY this tier — replaces whatever was selected before
+        // (selection is always scoped to one tier at a time), and
+        // auto-enters selection mode so this button alone is enough to
+        // get to the Mark Owned / Star Update actions without a separate
+        // "Select multiple…" toggle first.
+        selectMode[kind] = true;
+        selectedItems[kind] = new Set(groupItems.map(it => it.n));
+      }
       render();
     },
-  }, allOwned ? 'Unown All' : 'Own All'));
+  }, allSelected ? 'Deselect Tier' : 'Select Tier'));
   header.appendChild(btnRow);
 
   return header;
@@ -480,12 +485,12 @@ function renderBulkActionBar(kind) {
           saveState();
           render();
         },
-      }, 'Mark Owned'),
+      }, 'Mark as Owned'),
       el('button', {
         class: 'bulk-action-btn',
         disabled: count === 0 ? 'true' : null,
         onclick: () => { if (count > 0) openStarAssignModal(kind); },
-      }, 'Set Stars…'),
+      }, 'Star Update'),
       el('button', { class: 'bulk-action-btn secondary', onclick: () => toggleSelectMode(kind) }, 'Done'),
     ]),
   ]);
@@ -545,7 +550,7 @@ function openStarAssignModal(kind) {
 function renderRelics() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Treasure Collection relics, 0★–10★. Set bonuses key off the lowest star level among owned set members.'));
+    'Treasure Collection relics, 0★–10★. Filter by tier, multi-select relics within a tier, then mark them owned or assign stars to the whole selection at once. Set bonuses key off the lowest star level among owned set members.'));
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
@@ -553,6 +558,19 @@ function renderRelics() {
     oninput: (e) => { relicSearch = e.target.value.toLowerCase(); renderRelicGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
+  ['All', 'Rare', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
+    const chip = el('button', {
+      class: 'filter-chip' + (relicRarityFilter === r ? ' active' : ''),
+      onclick: () => {
+        relicRarityFilter = r;
+        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderRelicGroups(groupsWrap);
+      },
+    }, r);
+    chip.dataset.tier = 'true';
+    toolbar.appendChild(chip);
+  });
   toolbar.appendChild(el('button', {
     class: 'filter-chip' + (selectMode.relics ? ' active' : ''),
     onclick: () => toggleSelectMode('relics'),
@@ -575,7 +593,11 @@ function renderRelics() {
 
 function renderRelicGroups(container) {
   container.innerHTML = '';
-  const items = DB.relics.filter(r => !relicSearch || r.n.toLowerCase().includes(relicSearch));
+  const items = DB.relics.filter(r => {
+    if (relicRarityFilter !== 'All' && r.rarity !== relicRarityFilter) return false;
+    if (relicSearch && !r.n.toLowerCase().includes(relicSearch)) return false;
+    return true;
+  });
   const groups = buildTierGroups(items, 'rarity');
   groups.forEach(g => {
     container.appendChild(renderTierGroupHeader('relics', g.tier, `relics-${g.slug}`, g.items));
@@ -680,6 +702,7 @@ function renderRelicSetPanel(set) {
 
 /* ---------- Collectibles ---------- */
 let collectibleSearch = '';
+let collectibleRarityFilter = 'All';
 
 function renderCollectibles() {
   const wrap = el('div', {});
@@ -692,6 +715,19 @@ function renderCollectibles() {
     oninput: (e) => { collectibleSearch = e.target.value.toLowerCase(); renderCollectibleGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
+  ['All', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
+    const chip = el('button', {
+      class: 'filter-chip' + (collectibleRarityFilter === r ? ' active' : ''),
+      onclick: () => {
+        collectibleRarityFilter = r;
+        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderCollectibleGroups(groupsWrap);
+      },
+    }, r);
+    chip.dataset.tier = 'true';
+    toolbar.appendChild(chip);
+  });
   toolbar.appendChild(el('button', {
     class: 'filter-chip' + (selectMode.collectibles ? ' active' : ''),
     onclick: () => toggleSelectMode('collectibles'),
@@ -713,7 +749,11 @@ function renderCollectibles() {
 
 function renderCollectibleGroups(container) {
   container.innerHTML = '';
-  const items = DB.collectibles.filter(c => !collectibleSearch || c.n.toLowerCase().includes(collectibleSearch));
+  const items = DB.collectibles.filter(c => {
+    if (collectibleRarityFilter !== 'All' && c.rarity !== collectibleRarityFilter) return false;
+    if (collectibleSearch && !c.n.toLowerCase().includes(collectibleSearch)) return false;
+    return true;
+  });
   const groups = buildTierGroups(items, 'rarity');
   groups.forEach(g => {
     container.appendChild(renderTierGroupHeader('collectibles', g.tier, `collectibles-${g.slug}`, g.items));
@@ -986,9 +1026,158 @@ function renderPetCard(item) {
 }
 
 /* ============================================================
-   Back-to-top FAB + measure topbar height for sticky offsets +
-   hide-on-scroll-down / reveal-on-scroll-up for the mobile dropdown
-   ============================================================ */
+   Calculator — PvP stat aggregation engine
+   ============================================================
+   Pulls a flat map of every numeric stat from everything already
+   tracked in Collection (owned + starred). A fixed, curated list of named
+   PvP-relevant stats (CALC_STAT_DEFS below) then pulls whichever raw keys
+   feed into each one — some stats (Crit Rate, Combo Rate) are the sum of
+   several differently-named keys across relics/mounts/artifacts/
+   collectibles that all mean the same thing in-game. */
+
+function sumBlockAtLevel(item, stars, awaken) {
+  const starDelta = stars > 0 ? item.star_up.deltas[String(stars)] : null;
+  const awakenDelta = awaken > 0 ? item.awaken.deltas[`A${awaken}`] : null;
+  return sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
+}
+
+function aggregatePvpStats() {
+  const totals = {}; // key -> value (flat, no categorization)
+  const add = (key, val) => {
+    if (typeof val !== 'number' || Number.isNaN(val)) return;
+    totals[key] = (totals[key] || 0) + val;
+  };
+
+  // Relics — star_stats at current star level
+  DB.relics.forEach(r => {
+    if (!state.relicOwned[r.n]) return;
+    const star = state.relicStars[r.n] || 0;
+    Object.entries(r.star_stats || {}).forEach(([key, vals]) => add(key, vals[star] || 0));
+  });
+
+  // Collectibles — single stat at current star level
+  DB.collectibles.forEach(c => {
+    if (!state.collectibleOwned[c.n]) return;
+    const star = Math.min(state.collectibleStars[c.n] || 0, 10);
+    add(c.stat_key, (c.star_vals[star] || 0) * 100); // stored as fraction, display as %
+  });
+
+  // Mounts & Artifacts — full base+star+awaken total at current levels
+  [['mounts', 'mountState'], ['artifacts', 'artifactState']].forEach(([kind, bucketKey]) => {
+    DB[kind].forEach(item => {
+      if (item.n === 'None' || !item.star_up) return;
+      const s = getMountOrArtifactState(bucketKey, item.idx);
+      if (!s.owned) return;
+      const block = sumBlockAtLevel(item, s.stars, s.awaken);
+      Object.entries(block).forEach(([key, val]) => add(key, val));
+    });
+  });
+
+  return totals;
+}
+
+// The fixed, curated list of PvP-relevant stats shown on the Calculator —
+// each pulls and sums whichever raw keys represent that stat across every
+// data source, since the same real-world stat often ended up with
+// different key names in relics vs. mounts/artifacts vs. collectibles.
+const CALC_STAT_DEFS = [
+  { label: 'Tenacity', keys: ['tenacity'], notPct: true },
+  { label: 'Ignore Tenacity', keys: ['tenacity_res'], notPct: true },
+  { label: 'Armor Break', keys: ['armor_break'], notPct: true },
+  { label: 'Ignore Armor Break', keys: ['armor_break_res'], notPct: true },
+  { label: 'DMG Red', keys: ['basic_atk_dmg_reduction', 'skill_dmg_reduction', 'dmg_reduction_pct'] },
+  { label: 'FDR', keys: ['final_basic_atk_dmg_reduction', 'final_skill_dmg_reduction'], highlight: true },
+  { label: 'Additional Damage Boost', keys: ['basic_atk_dmg', 'skill_dmg', 'pet_dmg_pct'], caption: 'Affected by enemy tenacity' },
+  { label: 'Final Damage Boost', keys: ['final_basic_atk_dmg', 'final_skill_dmg'], highlight: true },
+  { label: 'Final Basic Damage Boost', keys: ['final_basic_atk_dmg'] },
+  { label: 'Final Basic Attack Damage Reduction', keys: ['final_basic_atk_dmg_reduction'] },
+  { label: 'Final Skill Damage Boost', keys: ['final_skill_dmg'] },
+  { label: 'Final Skill Damage Reduction', keys: ['final_skill_dmg_reduction'] },
+  { label: 'Crit Rate', keys: ['basic_atk_crit_rate', 'skill_crit_rate', 'dotcritrate', 'crit_rate_pct'] },
+  { label: 'Ignore Crit Rate', keys: ['ignore_basic_atk_crit_rate', 'ignore_skill_crit', 'ignoredotcritrate', 'ignore_crit_pct'] },
+  { label: 'Crit Damage', keys: ['crit_dmg', 'dagger_crit_dmg'] },
+  { label: 'Ignore Crit Damage', keys: ['crit_dmg_reduction'] },
+  { label: 'Combo Rate', keys: ['combo', 'combo_rate_pct'] },
+  { label: 'Ignore Combo Rate', keys: ['ignore_combo', 'ignore_combo_pct'] },
+  { label: 'Counter Rate', keys: ['counter', 'counter_rate_pct'] },
+  { label: 'Ignore Counter Rate', keys: ['ignore_counter', 'ignore_counter_pct'] },
+  { label: 'Block', keys: ['block'], notPct: true },
+];
+
+function pctEffectiveness(delta) {
+  const A = 7000, cap = 0.85;
+  return Math.min(Math.max(0, delta) / (A + Math.max(0, delta)), cap) * 100;
+}
+
+/* ---------- Calculator UI ---------- */
+function renderCalculator() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('div', { class: 'section-title' }, 'Calculator'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Auto-pulls PvP-relevant stats from everything owned and starred in Collection. Equipment and Inheritance will feed in here too once those tabs are built.'));
+
+  const totals = aggregatePvpStats();
+
+  // Final ATK / Final HP — base stat × (1 + %-bonuses), same pattern
+  // Effective HP is built from. No absolute Final DEF is shown since
+  // nothing tracked so far grants a flat DEF value — only Global DEF% —
+  // so that's shown as its own % card instead of a fabricated total.
+  const flatATK = totals.atk || 0;
+  const atkPctBonus = (totals.atk_pct || 0) + (totals.global_atk || 0) + (totals.global_attack_pct || 0);
+  const finalATK = flatATK * (1 + atkPctBonus / 100);
+
+  const flatHP = totals.hp || 0;
+  const hpPctBonus = (totals.hp_pct || 0) + (totals.global_hp || 0) + (totals.global_hp_pct || 0);
+  const finalHP = flatHP * (1 + hpPctBonus / 100);
+
+  const dmgRed = ['basic_atk_dmg_reduction', 'skill_dmg_reduction', 'dmg_reduction_pct'].reduce((a, k) => a + (totals[k] || 0), 0);
+  const fdr = ['final_basic_atk_dmg_reduction', 'final_skill_dmg_reduction'].reduce((a, k) => a + (totals[k] || 0), 0);
+  const ehp = finalHP > 0 ? finalHP / ((1 - Math.min(dmgRed, 99) / 100) * (1 - Math.min(fdr, 99) / 100)) : 0;
+
+  const cards = [];
+  cards.push(renderStatCard('Final ATK', formatBigNumber(finalATK)));
+  cards.push(renderStatCard('Final HP', formatBigNumber(finalHP)));
+  cards.push(renderStatCard('Global DEF%', `${(totals.global_def_pct || 0).toFixed(1)}%`));
+  cards.push(renderStatCard('Effective HP', formatBigNumber(ehp), 'With DMG Red and FDR', true));
+
+  CALC_STAT_DEFS.forEach(def => {
+    const sum = def.keys.reduce((a, k) => a + (totals[k] || 0), 0);
+    const value = def.notPct ? sum.toLocaleString() : `${sum.toFixed(1)}%`;
+    cards.push(renderStatCard(def.label, value, def.caption, def.highlight));
+  });
+
+  const tenacity = totals.tenacity || 0;
+  const armorBreak = totals.armor_break || 0;
+  cards.push(renderStatCard('Tenacity Eff', `${pctEffectiveness(tenacity).toFixed(1)}%`, null, false, pctEffectiveness(tenacity)));
+  cards.push(renderStatCard('Armor Break Eff', `${pctEffectiveness(armorBreak).toFixed(1)}%`, null, false, pctEffectiveness(armorBreak)));
+
+  wrap.appendChild(el('div', { class: 'calc-stat-grid' }, cards));
+
+  wrap.appendChild(el('p', { class: 'section-desc', style: 'margin-top:16px;font-size:11px;' },
+    'Effective HP = Final HP \u00f7 [(1 \u2212 DMG Red%) \u00d7 (1 \u2212 FDR%)] \u2014 the two reduction layers apply sequentially, not added together. Tenacity/Armor Break Eff show how much of the 85% diminishing-returns cap your current investment reaches on its own, without an opponent to compare against.'));
+
+  return wrap;
+}
+
+function formatBigNumber(n) {
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
+  return Math.round(n).toLocaleString();
+}
+
+function renderStatCard(label, value, caption, highlight, effPct) {
+  const children = [
+    el('div', { class: 'calc-stat-card-label' }, label),
+    el('div', { class: 'calc-stat-card-value' + (highlight ? ' highlight' : '') }, value),
+  ];
+  if (caption) children.push(el('div', { class: 'calc-stat-card-caption' }, caption));
+  if (typeof effPct === 'number') {
+    children.push(el('div', { class: 'calc-stat-card-bar' },
+      el('div', { class: 'calc-stat-card-bar-fill', style: `width:${Math.min(effPct / 85 * 100, 100)}%` })));
+  }
+  return el('div', { class: 'calc-stat-card' }, children);
+}
+
+
 function syncTopbarHeight() {
   const topbar = document.querySelector('.topbar');
   if (topbar) document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`);

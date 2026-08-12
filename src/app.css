@@ -38,6 +38,7 @@
 }
 
 html { scroll-behavior: smooth; }
+body { max-width: 100vw; }
 
 * { box-sizing: border-box; }
 
@@ -102,6 +103,19 @@ body {
   transition: color 0.15s, border-color 0.15s;
 }
 .tab-btn:hover { color: var(--ink); }
+
+.hamburger-toggle {
+  display: none;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  color: var(--ink);
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-left: auto;
+}
 .tab-btn.active {
   color: var(--accent);
   border-color: var(--accent-dim);
@@ -354,6 +368,7 @@ body {
 
 .card-controls-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
@@ -364,6 +379,7 @@ body {
   flex-direction: column;
   gap: 6px;
   align-items: flex-end;
+  min-width: 0;
 }
 .steppers-col .stepper-row { margin-top: 0; }
 
@@ -534,6 +550,7 @@ body {
 /* ---- Tier group header (title + Own All button) ---- */
 .tier-group-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
@@ -686,6 +703,31 @@ body {
   .card-grid.cols-3 { grid-template-columns: 1fr; }
   .sets-grid { grid-template-columns: 1fr; }
   .owned-badge { padding: 9px 14px; min-height: 32px; }
+  /* Force the search box onto its own full-width row, so filter chips +
+     "Select multiple…" always wrap cleanly onto a second line below it
+     instead of interleaving awkwardly with whatever room is left. */
+  .toolbar .search-input { flex: 1 1 100%; min-width: 0; }
+  .stepper-row .val { min-width: 44px; }
+
+  /* Collapse the top nav into a hamburger dropdown — four tab buttons
+     plus the brand and theme toggle don't fit comfortably on one row. */
+  .hamburger-toggle { display: block; }
+  .tabs {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--hairline);
+    padding: 8px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    z-index: 65;
+  }
+  .tabs.open { display: flex; }
+  .tab-btn { text-align: left; padding: 12px 14px; }
 }
 
 /* ---- On smaller viewports, the sidenav is replaced by a native
@@ -727,4 +769,52 @@ body {
 @media (max-width: 560px) {
   .topbar { padding: 12px 16px; }
   .brand-name { font-size: 16px; }
+}
+
+/* ---- Calculator ---- */
+.calc-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.calc-stat-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+.calc-stat-card-label {
+  font-size: 12px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 8px;
+}
+.calc-stat-card-value {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.calc-stat-card-caption {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 6px;
+}
+.calc-stat-card-value.highlight { color: #6FD98A; }
+.calc-stat-card-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-panel-2);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.calc-stat-card-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
 }
