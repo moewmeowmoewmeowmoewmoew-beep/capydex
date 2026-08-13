@@ -12,6 +12,7 @@ function defaultState() {
     mountState: {},         // idx -> { owned, stars(0-5), awaken(0-10) }
     artifactState: {},      // idx -> { owned, stars(0-5), awaken(0-10) }
     petState: {},           // idx -> { owned, battleLv(1-5), awaken(0-10) }
+    equipment: {},           // slotId -> { itemName, quality, surpass, arcana, psionics[4], gems[5] }
   };
 }
 
@@ -253,6 +254,266 @@ function renderPlaceholder(label) {
   ]);
 }
 
+/* ============================================================
+   Equipment
+   ============================================================ */
+const EQUIPMENT_SLOTS = [
+  { id: 'weapon', label: 'Weapon', dataKey: 'weapons', psiKey: 'weapon', gemKey: 'weapon', imgKind: 'weapons' },
+  { id: 'armor', label: 'Armor', dataKey: 'armors', psiKey: 'armor', gemKey: 'armor', imgKind: 'armors' },
+  { id: 'ring1', label: 'Ring 1', dataKey: 'rings', psiKey: 'ring', gemKey: 'ring', imgKind: 'rings' },
+  { id: 'ring2', label: 'Ring 2', dataKey: 'rings', psiKey: 'ring', gemKey: 'ring', imgKind: 'rings' },
+  { id: 'accessory1', label: 'Accessory 1', dataKey: 'accessories', psiKey: 'accessory', gemKey: 'accessory', imgKind: 'accessories' },
+  { id: 'accessory2', label: 'Accessory 2', dataKey: 'accessories', psiKey: 'accessory', gemKey: 'accessory', imgKind: 'accessories' },
+];
+
+const GEM_TIER_NAMES = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Immortal', 'Transcendent', 'Peerless'];
+
+function getEquipState(slotId) {
+  if (!state.equipment[slotId]) {
+    state.equipment[slotId] = {
+      itemName: '', quality: '', surpass: 0, arcana: -1, // -1 = "No Arcana"
+      psionics: [0, 1, 2, 3].map(() => ({ stat: '', val: 0 })),
+      gems: [0, 1, 2, 3, 4].map(() => ({ gemId: '', tier: 9 })), // tier 9 = Peerless
+    };
+  }
+  return state.equipment[slotId];
+}
+
+function renderEquipment() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('div', { class: 'section-title' }, 'Equipment'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Weapon, Armor, 2 Rings, 2 Accessories. Quality defaults to the highest available (usually Mythic) when you pick an item — change it if yours is lower. Gem rarity defaults to Peerless the same way.'));
+
+  const grid = el('div', { class: 'equip-grid' });
+  EQUIPMENT_SLOTS.forEach(slotDef => grid.appendChild(renderEquipCard(slotDef)));
+  wrap.appendChild(grid);
+
+  return wrap;
+}
+
+// Arcana bonuses are cumulative (confirmed against the datamine's own
+// comments) — so instead of listing "A0: ...", "A1: ...", etc as separate
+// lines, sum same-named numeric bonuses across every level up to the
+// selected one into one condensed line. Lines that don't end in a clean
+// "+N%" (procs, stack counts, mid-sentence percentages) can't be summed
+// meaningfully, so those pass through verbatim instead of being dropped.
+function collateArcanaEffects(descs, upToIndex) {
+  const totals = {};
+  const order = [];
+  const raw = [];
+  for (let i = 0; i <= upToIndex && i < descs.length; i++) {
+    const desc = descs[i];
+    const m = desc.match(/^(.*?)\s*\+(\d+(?:\.\d+)?)%\s*(?:\(not tracked\))?$/);
+    if (m) {
+      const name = m[1].trim();
+      const val = parseFloat(m[2]);
+      if (!(name in totals)) { totals[name] = 0; order.push(name); }
+      totals[name] += val;
+    } else {
+      raw.push(desc);
+    }
+  }
+  const parts = order.map(name => `${name} +${Math.round(totals[name] * 100) / 100}%`);
+  return [...parts, ...raw].join(', ');
+}
+
+function renderEquipCard(slotDef) {
+  const s = getEquipState(slotDef.id);
+  // Items with no tier assigned aren't real equippable gear — confirmed
+  // safe to drop entirely rather than show under a catch-all "Other" group.
+  const items = (DB[slotDef.dataKey] || []).filter(it => it.n !== 'None' && it.tier);
+  const item = items.find(it => it.n === s.itemName) || null;
+
+  const card = el('div', { class: 'equip-card' });
+
+  // ---- Header: image + slot label ----
+  const headerImg = item
+    ? el('img', { src: itemImagePath(slotDef.imgKind, item), alt: item.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, slotDef.label)]));
+
+  // ---- Equipped ----
+  card.appendChild(equipFieldLabel('Equipped'));
+  const tierOrder = ['SS', 'S', 'Basic'];
+  const itemsByTier = {};
+  items.forEach(it => { (itemsByTier[it.tier] = itemsByTier[it.tier] || []).push(it); });
+  const orderedTiers = [...tierOrder.filter(t => itemsByTier[t]), ...Object.keys(itemsByTier).filter(t => !tierOrder.includes(t))];
+  const equippedSelect = el('select', { class: 'equip-select' }, [
+    el('option', { value: '' }, '— None —'),
+    ...orderedTiers.map(tier => el('optgroup', { label: tier },
+      itemsByTier[tier].map(it => el('option', { value: it.n, selected: it.n === s.itemName ? 'true' : null }, it.n)))),
+  ]);
+  equippedSelect.addEventListener('change', (e) => {
+    s.itemName = e.target.value;
+    const newItem = items.find(it => it.n === s.itemName);
+    s.quality = newItem && newItem.q && newItem.q.length ? newItem.q[newItem.q.length - 1] : ''; // highest tier = last entry, usually Mythic
+    s.surpass = 0;
+    s.arcana = -1;
+    saveState();
+    render();
+  });
+  card.appendChild(equippedSelect);
+
+  // Empty state: nothing past "Equipped" shows until an item is actually
+  // selected — matches the reference card exactly.
+  if (!item) return card;
+
+  // ---- Quality ----
+  card.appendChild(equipFieldLabel('Quality'));
+  const qualOpts = item.q || [];
+  const qualitySelect = el('select', { class: 'equip-select', disabled: qualOpts.length ? null : 'true' },
+    qualOpts.length
+      ? qualOpts.map(q => el('option', { value: q, selected: q === s.quality ? 'true' : null }, q))
+      : [el('option', { value: '' }, '—')]);
+  qualitySelect.addEventListener('change', (e) => { s.quality = e.target.value; saveState(); render(); });
+  card.appendChild(qualitySelect);
+
+  // ---- Surpass ----
+  card.appendChild(equipFieldLabel('Surpass'));
+  const surpassMax = item.surpass_max || 0;
+  const surpassOpts = Array.from({ length: surpassMax + 1 }, (_, i) => i);
+  const surpassSelect = el('select', { class: 'equip-select' },
+    surpassOpts.map(n => el('option', { value: String(n), selected: n === s.surpass ? 'true' : null }, `+${n}`)));
+  surpassSelect.addEventListener('change', (e) => { s.surpass = parseInt(e.target.value, 10); saveState(); render(); });
+  card.appendChild(surpassSelect);
+
+  // ---- Arcana ----
+  card.appendChild(equipFieldLabel('Arcana'));
+  const arcanaDescs = item.arcana_descs || [];
+  const arcanaSelect = el('select', { class: 'equip-select', disabled: arcanaDescs.length ? null : 'true' }, [
+    el('option', { value: '-1', selected: s.arcana === -1 ? 'true' : null }, 'No Arcana'),
+    ...arcanaDescs.map((_, i) => el('option', { value: String(i), selected: i === s.arcana ? 'true' : null }, `A${i}`)),
+  ]);
+  arcanaSelect.addEventListener('change', (e) => { s.arcana = parseInt(e.target.value, 10); saveState(); render(); });
+  card.appendChild(arcanaSelect);
+
+  if (s.arcana >= 0 && arcanaDescs.length) {
+    const collated = collateArcanaEffects(arcanaDescs, s.arcana);
+    card.appendChild(el('div', { class: 'equip-arcana-writeup' }, collated));
+  }
+
+  // Psionic Attributes only ever roll on SS-tier gear — confirmed. Hide the
+  // whole section rather than show it disabled/inapplicable for S/Basic.
+  if (item.tier === 'SS') {
+    card.appendChild(el('hr', { class: 'equip-divider' }));
+    card.appendChild(el('div', { class: 'equip-section-title' }, 'Psionic Attributes'));
+    const psiOptions = DB.psionics[slotDef.psiKey] || [];
+    s.psionics.forEach((slot, i) => {
+      card.appendChild(equipFieldLabel(`Slot ${i + 1}`));
+      card.appendChild(renderPsionicSlot(slotDef.id, i, slot, psiOptions));
+    });
+  }
+
+  card.appendChild(el('hr', { class: 'equip-divider' }));
+
+  // ---- Gems ----
+  card.appendChild(el('div', { class: 'equip-section-title' }, 'Gems'));
+  const gemOptions = DB.gems[slotDef.gemKey] || [];
+  s.gems.forEach((slot, i) => {
+    card.appendChild(equipFieldLabel(`Slot ${i + 1}`));
+    card.appendChild(renderGemSlot(slotDef.id, i, slot, gemOptions));
+  });
+
+  return card;
+}
+
+function equipFieldLabel(text) {
+  return el('div', { class: 'equip-field-label' }, text);
+}
+
+function psiOptionLabel(o) {
+  return `${o.n} — ${o.k === 'n' ? 'Normal' : 'Special'}`;
+}
+
+function renderPsionicSlot(slotId, slotIdx, slotState, options) {
+  const listId = `psi-opts-${slotId}-${slotIdx}`;
+  const wrap = el('div', { class: 'equip-inline-row' });
+
+  // Normal options first, then Special — datalist has no real <optgroup>
+  // support across browsers, so the category is folded into the visible
+  // label instead ("Stat Name — Normal" / "— Special").
+  const sortedOptions = [...options].sort((a, b) => (a.k === b.k ? 0 : a.k === 'n' ? -1 : 1));
+  const datalist = el('datalist', { id: listId },
+    sortedOptions.map(o => el('option', { value: psiOptionLabel(o) })));
+
+  const currentMeta = options.find(o => o.c === slotState.stat);
+  const input = el('input', {
+    class: 'equip-combo-input', list: listId, placeholder: 'Search stat…',
+    value: currentMeta ? psiOptionLabel(currentMeta) : '',
+  });
+  input.addEventListener('input', (e) => {
+    const match = options.find(o => psiOptionLabel(o) === e.target.value);
+    if (match) {
+      slotState.stat = match.c;
+      saveState();
+      render();
+    }
+  });
+
+  const valInput = el('input', {
+    type: 'number', class: 'equip-num-input', value: String(slotState.val || 0),
+    oninput: (e) => { slotState.val = parseFloat(e.target.value) || 0; saveState(); },
+    onblur: () => render(),
+  });
+
+  wrap.appendChild(datalist);
+  wrap.appendChild(input);
+  wrap.appendChild(el('div', { class: 'equip-pct-input-group' }, [valInput, el('span', {}, '%')]));
+
+  const container = el('div', {}, [wrap]);
+  if (slotState.stat) {
+    const meta = options.find(o => o.c === slotState.stat);
+    container.appendChild(el('div', { class: 'equip-writeup' }, `${meta ? meta.n : slotState.stat} +${slotState.val}%`));
+  }
+  return container;
+}
+
+function renderGemSlot(slotId, slotIdx, slotState, options) {
+  const listId = `gem-opts-${slotId}-${slotIdx}`;
+  const wrap = el('div', { class: 'equip-inline-row' });
+
+  const datalist = el('datalist', { id: listId },
+    options.map(o => el('option', { value: o.n })));
+
+  const input = el('input', {
+    class: 'equip-combo-input', list: listId, placeholder: 'Search gem…',
+    value: slotState.gemId ? (options.find(o => o.id === slotState.gemId) || {}).n || '' : '',
+  });
+  input.addEventListener('input', (e) => {
+    const match = options.find(o => o.n === e.target.value);
+    if (match) {
+      slotState.gemId = match.id;
+      if (!slotState.tier) slotState.tier = 9; // default Peerless
+      saveState();
+      render();
+    }
+  });
+
+  const tierSelect = el('select', { class: 'equip-select equip-tier-select', disabled: slotState.gemId ? null : 'true' },
+    GEM_TIER_NAMES.map((name, i) => el('option', { value: String(i + 1), selected: (i + 1) === slotState.tier ? 'true' : null }, name)));
+  tierSelect.addEventListener('change', (e) => { slotState.tier = parseInt(e.target.value, 10); saveState(); render(); });
+
+  const tierIcon = slotState.gemId
+    ? el('img', { class: 'equip-gem-tier-icon', src: `assets/images/gem_tiers/${slugify(GEM_TIER_NAMES[slotState.tier - 1])}.webp`, onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-gem-tier-icon placeholder' });
+
+  wrap.appendChild(datalist);
+  wrap.appendChild(input);
+  wrap.appendChild(tierSelect);
+  wrap.appendChild(tierIcon);
+
+  const container = el('div', {}, [wrap]);
+  if (slotState.gemId) {
+    const meta = options.find(o => o.id === slotState.gemId);
+    const val = meta && meta.t ? meta.t[slotState.tier - 1] : null;
+    if (meta && val != null) {
+      container.appendChild(el('div', { class: 'equip-writeup' }, `${meta.n} +${val}%`));
+    }
+  }
+  return container;
+}
+
 let scrollObserver;
 
 function render() {
@@ -263,8 +524,10 @@ function render() {
     root.appendChild(renderCollectionShell());
   } else if (activeMainTab === 'calculator') {
     root.appendChild(renderCalculator());
+  } else if (activeMainTab === 'equipment') {
+    root.appendChild(renderEquipment());
   } else {
-    const labels = { equipment: 'Equipment', inheritance: 'Inheritance Tree' };
+    const labels = { inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
   }
 

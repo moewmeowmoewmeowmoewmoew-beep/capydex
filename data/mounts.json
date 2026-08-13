@@ -1735,8 +1735,8 @@
         },
         "deltas": {
           "1": {
-            "speed": 10,
-            "global_attack_pct": 2
+            "global_attck_pct": 2,
+            "speed": 10
           },
           "2": {
             "global_attack_pct": 4,

@@ -387,6 +387,105 @@ def build_relics():
     print(f"  wrote data/relics.json ({len(new_relics)} entries, relic_sets preserved as-is)")
 
 
+def build_pet_armaments():
+    import openpyxl as ox
+    wb = ox.load_workbook(sys.argv[1], data_only=True)
+
+    print("\n--- Pet Armaments ---")
+    items, warnings = extract_collection_sheet(wb, 'Pet Armament', ASSETS_DIR / 'pet_armaments')
+    out = [{'idx': i, 'n': it['n'], 'tier': it['tier']} for i, it in enumerate(items, start=1)]
+    for w in warnings:
+        print(w)
+    json.dump({'pet_armaments': out}, open(DATA_DIR / 'pet_armaments.json', 'w'), indent=2, ensure_ascii=False)
+    print(f"  {len(out)} pet armaments, wrote data/pet_armaments.json")
+
+
+def build_pets():
+    import openpyxl as ox
+    wb = ox.load_workbook(sys.argv[1], data_only=True)
+    ws = wb['Pets']
+    rows = list(ws.iter_rows(min_row=1, values_only=True))
+    header = rows[0]
+
+    print("\n--- Pets ---")
+    BATTLE_LV_LABELS = ['Lv1 (pet lv 1+)', 'Lv2 (pet lv 20+)', 'Lv3 (pet lv 40+)', 'Lv4 (pet lv 60+)', 'Lv5 (pet lv 80+)']
+
+    # Look up column positions by header text rather than hardcoded indices —
+    # a sheet column insertion (like adding "Arcana image") silently breaks
+    # fixed offsets otherwise, which is exactly what happened once already.
+    def col_idx(*name_options):
+        for i, h in enumerate(header):
+            if h and str(h).strip() in name_options:
+                return i
+        return None
+
+    name_col = col_idx('Name')
+    tier_col = col_idx('Rarity')
+    img_col = col_idx('Image')
+    arcana_img_col = col_idx('Arcana image', 'Arcana Image')
+    battle_start = col_idx(*[f'Battle skill {lbl}' for lbl in BATTLE_LV_LABELS])
+    if battle_start is None:
+        # header text includes the "Battle skill " prefix; match by substring instead
+        for i, h in enumerate(header):
+            if h and 'Battle skill Lv 1' in str(h):
+                battle_start = i
+                break
+    awaken_start = col_idx('A0')
+
+    missing = [n for n, c in [('Name', name_col), ('Rarity', tier_col), ('Image', img_col),
+                               ('Battle skill Lv1', battle_start), ('A0', awaken_start)] if c is None]
+    if missing:
+        print(f"  [!] Could not find expected column(s): {missing} — check the Pets sheet header row hasn't changed shape.")
+        return
+
+    out_dir = ASSETS_DIR / 'pets'
+    arcana_dir = ASSETS_DIR / 'pet_arcana'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    arcana_dir.mkdir(parents=True, exist_ok=True)
+
+    anchor = {}
+    for img in ws._images:
+        frm = img.anchor._from
+        key = (frm.row + 1, frm.col)
+        anchor.setdefault(key, []).append(img)
+
+    pets = []
+    idx = 1
+    main_saved, arcana_saved = 0, 0
+    for i, row in enumerate(rows[1:], start=2):
+        name = row[name_col]
+        if not name or name == 'Name':  # skip repeated header rows mid-sheet
+            continue
+        tier = clean_text(row[tier_col])
+        battle_skills = {BATTLE_LV_LABELS[k]: clean_text(row[battle_start + k]) for k in range(5)}
+        awaken_effects = {}
+        for k in range(11):
+            val = clean_text(row[awaken_start + k])
+            if val:
+                awaken_effects[f'A{k}'] = val
+        pets.append({'idx': idx, 'n': str(name).strip(), 'tier': tier,
+                      'battle_skills': battle_skills, 'awaken_effects': awaken_effects})
+        idx += 1
+
+        slug = slugify(name)
+        main_imgs = anchor.get((i, img_col))
+        if main_imgs:
+            data = main_imgs[0].ref.getvalue() if hasattr(main_imgs[0].ref, 'getvalue') else main_imgs[0]._data()
+            Image.open(io.BytesIO(data)).convert('RGBA').resize((96, 96), Image.LANCZOS).save(out_dir / f'{slug}.webp', 'WEBP', quality=90)
+            main_saved += 1
+
+        if arcana_img_col is not None:
+            arcana_imgs = anchor.get((i, arcana_img_col))
+            if arcana_imgs:
+                data = arcana_imgs[0].ref.getvalue() if hasattr(arcana_imgs[0].ref, 'getvalue') else arcana_imgs[0]._data()
+                Image.open(io.BytesIO(data)).convert('RGBA').resize((96, 96), Image.LANCZOS).save(arcana_dir / f'{slug}.webp', 'WEBP', quality=90)
+                arcana_saved += 1
+
+    print(f"  {len(pets)} pets | {main_saved} main image(s) | {arcana_saved} arcana image(s)")
+    json.dump({'pets': pets}, open(DATA_DIR / 'pets.json', 'w'), indent=2, ensure_ascii=False)
+    print(f"  wrote data/pets.json")
+
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python3 scripts/refresh_data.py path/to/Database.xlsx")
@@ -401,6 +500,8 @@ def main():
     build_mounts_or_artifacts('mounts', 'Mount Collection', 'Mounts StarUpAwakening', MOUNT_RARITIES)
     build_mounts_or_artifacts('artifacts', 'Artifact Collection', 'Artifacts StarUpAwakening', ARTIFACT_RARITIES)
     build_relics()
+    build_pets()
+    build_pet_armaments()
 
     print("\nDone. Next steps:")
     print("  python3 build.py")

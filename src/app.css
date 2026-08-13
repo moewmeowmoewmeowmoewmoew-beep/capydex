@@ -693,13 +693,13 @@ body {
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 
 
-/* ---- Card grid: 3 col desktop -> 2 col tablet -> 1 col mobile,
-   sized so the top-right Owned badge stays comfortably tappable ---- */
-@media (max-width: 1024px) {
-  .card-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
-  .sets-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px) {
+/* ---- Mobile breakpoint: 844px (roughly mobile landscape width) is the
+   single point where the whole site switches into its compact/mobile
+   layout — sidenav becomes a dropdown, nav becomes a hamburger, card grids
+   drop straight to 1 column, toolbars wrap. Kept as one threshold rather
+   than several different ones so "mobile mode" starts consistently
+   everywhere, instead of different pieces switching at different widths. ---- */
+@media (max-width: 844px) {
   .card-grid.cols-3 { grid-template-columns: 1fr; }
   .sets-grid { grid-template-columns: 1fr; }
   .owned-badge { padding: 9px 14px; min-height: 32px; }
@@ -727,14 +727,11 @@ body {
     z-index: 65;
   }
   .tabs.open { display: flex; }
-  .tab-btn { text-align: left; padding: 12px 14px; }
-}
+  .tab-btn { text-align: left; padding: 12px 14px; gap: 2px; font-size: 12px; }
 
-/* ---- On smaller viewports, the sidenav is replaced by a native
-   dropdown — a native <select> is immune to the fixed-position/
-   z-index bugs a custom drawer toggle is prone to, and gives a
-   larger, OS-native touch target. ---- */
-@media (max-width: 1150px) {
+  /* Sidenav becomes a native dropdown — immune to the fixed-position/
+     z-index bugs a custom drawer toggle is prone to, and gives a larger,
+     OS-native touch target. */
   .mobile-section-select {
     display: block;
     width: 100%;
@@ -761,9 +758,6 @@ body {
 
   .collection-content { padding: 20px 16px 80px; }
   .placeholder-view, #app-root > div:not(.collection-shell) { padding: 20px 16px 80px; }
-
-  .tabs { gap: 2px; }
-  .tab-btn { padding: 7px 9px; font-size: 12px; }
 }
 
 @media (max-width: 560px) {
@@ -817,4 +811,151 @@ body {
   height: 100%;
   background: var(--accent);
   border-radius: 2px;
+}
+
+/* ---- Equipment ---- */
+.equip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+@media (max-width: 844px) {
+  .equip-grid { grid-template-columns: 1fr; }
+}
+
+.equip-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.equip-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.equip-card-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--bg-panel-2);
+  flex-shrink: 0;
+}
+.equip-card-thumb.placeholder { border: 1px dashed var(--hairline); }
+.equip-card-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.equip-field-label {
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin: 18px 0 6px;
+}
+.equip-field-label:first-of-type { margin-top: 0; }
+
+.equip-select {
+  width: 100%;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  padding: 10px 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ACB3C4' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.equip-select:disabled { opacity: 0.45; cursor: not-allowed; }
+.equip-select:focus { outline: none; border-color: var(--accent); }
+
+.equip-divider { border: none; border-top: 1px solid var(--hairline); margin: 24px 0; }
+
+.equip-section-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.equip-inline-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.equip-combo-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  padding: 10px 12px;
+}
+.equip-combo-input:focus { outline: none; border-color: var(--accent); }
+.equip-num-input {
+  width: 64px;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  border-radius: 5px 0 0 5px;
+  border-right: none;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  padding: 10px 8px;
+  text-align: right;
+}
+.equip-num-input::-webkit-outer-spin-button,
+.equip-num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.equip-num-input:focus { outline: none; border-color: var(--accent); }
+.equip-pct-input-group {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+.equip-pct-input-group span {
+  display: flex;
+  align-items: center;
+  background: var(--bg-panel-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 5px 5px 0;
+  color: var(--ink-dim);
+  font-size: 13px;
+  padding: 0 10px;
+}
+
+.equip-tier-select { width: auto; flex-shrink: 0; min-width: 130px; }
+.equip-gem-tier-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 5px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--bg-panel-2);
+}
+.equip-gem-tier-icon.placeholder { border: 1px dashed var(--hairline); }
+
+.equip-writeup {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.equip-arcana-writeup {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
 }

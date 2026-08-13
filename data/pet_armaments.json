@@ -1,0 +1,254 @@
+{
+  "pet_armaments": [
+    {
+      "idx": 1,
+      "n": "Exclusive | Dynamic Speaker",
+      "tier": "Transcendent"
+    },
+    {
+      "idx": 2,
+      "n": "Exclusive | Spirit Snake Jade Pendant",
+      "tier": "Immortal"
+    },
+    {
+      "idx": 3,
+      "n": "Exclusive | Cat Spirit Earrings",
+      "tier": "Immortal"
+    },
+    {
+      "idx": 4,
+      "n": "Exclusive | Ruyi of Wealth",
+      "tier": "Immortal"
+    },
+    {
+      "idx": 5,
+      "n": "Exclusive | Frost Crown",
+      "tier": "Immortal"
+    },
+    {
+      "idx": 6,
+      "n": "Exclusive | Rainbow Horn",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 7,
+      "n": "Exclusive | Heart of the Magic Fox",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 8,
+      "n": "Exclusive | Thunder Pocket Watch",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 9,
+      "n": "Exclusive | Slime Crown",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 10,
+      "n": "Exclusive | Eye of the Progenitor Dragon",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 11,
+      "n": "Monarch Beast Sigil",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 12,
+      "n": "Divine Realm Pendant",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 13,
+      "n": "Primal Beast Core",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 14,
+      "n": "Heart of Awakening",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 15,
+      "n": "Resonance of Monarch Ring",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 16,
+      "n": "Eternal Sigil",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 17,
+      "n": "Heritage Insignia",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 18,
+      "n": "Super Energy Crystal",
+      "tier": "Mythic"
+    },
+    {
+      "idx": 19,
+      "n": "Elemental Holy Crystal",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 20,
+      "n": "Ring of Authority",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 21,
+      "n": "Chain of Fate",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 22,
+      "n": "Evolution Runestone",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 23,
+      "n": "Holy Beast Sigil",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 24,
+      "n": "Ancient Core",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 25,
+      "n": "Mysterious Artifact",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 26,
+      "n": "Astral Pendant",
+      "tier": "Legendary"
+    },
+    {
+      "idx": 27,
+      "n": "Arcane Sigil",
+      "tier": "Epic"
+    },
+    {
+      "idx": 28,
+      "n": "Arcane Armlet",
+      "tier": "Epic"
+    },
+    {
+      "idx": 29,
+      "n": "Spirit Bird Feather",
+      "tier": "Epic"
+    },
+    {
+      "idx": 30,
+      "n": "Starry Collar",
+      "tier": "Epic"
+    },
+    {
+      "idx": 31,
+      "n": "Arcane Amber",
+      "tier": "Epic"
+    },
+    {
+      "idx": 32,
+      "n": "Giant Rhino Horn",
+      "tier": "Epic"
+    },
+    {
+      "idx": 33,
+      "n": "Victory Talisman",
+      "tier": "Epic"
+    },
+    {
+      "idx": 34,
+      "n": "Epic Crystal Core",
+      "tier": "Epic"
+    },
+    {
+      "idx": 35,
+      "n": "Bewitchment Badge",
+      "tier": "Epic"
+    },
+    {
+      "idx": 36,
+      "n": "Mystic Talisman",
+      "tier": "Epic"
+    },
+    {
+      "idx": 37,
+      "n": "Mammoth Tusk",
+      "tier": "Epic"
+    },
+    {
+      "idx": 38,
+      "n": "Arcane Pendant",
+      "tier": "Epic"
+    },
+    {
+      "idx": 39,
+      "n": "Beast Talisman",
+      "tier": "Rare"
+    },
+    {
+      "idx": 40,
+      "n": "Beast Badge",
+      "tier": "Rare"
+    },
+    {
+      "idx": 41,
+      "n": "Beast Coin",
+      "tier": "Rare"
+    },
+    {
+      "idx": 42,
+      "n": "Energy Ring",
+      "tier": "Rare"
+    },
+    {
+      "idx": 43,
+      "n": "Guardian Stone",
+      "tier": "Rare"
+    },
+    {
+      "idx": 44,
+      "n": "Spirit Breath Pendant",
+      "tier": "Rare"
+    },
+    {
+      "idx": 45,
+      "n": "Wind Bow Tie",
+      "tier": "Rare"
+    },
+    {
+      "idx": 46,
+      "n": "Elf Bell",
+      "tier": "Rare"
+    },
+    {
+      "idx": 47,
+      "n": "Breeze Bell",
+      "tier": "Rare"
+    },
+    {
+      "idx": 48,
+      "n": "Crystal Necklace",
+      "tier": "Rare"
+    },
+    {
+      "idx": 49,
+      "n": "Footprint Fossil",
+      "tier": "Rare"
+    },
+    {
+      "idx": 50,
+      "n": "Glimmer Earrings",
+      "tier": "Rare"
+    }
+  ]
+}
