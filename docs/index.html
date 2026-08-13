@@ -827,6 +827,7 @@ body {
 }
 @media (max-width: 844px) {
   .equip-grid { grid-template-columns: 1fr; }
+  .equip-card { margin: 0 16px; }
 }
 
 .equip-card {
@@ -834,6 +835,10 @@ body {
   border: 1px solid var(--hairline);
   border-radius: 8px;
   padding: 22px;
+  min-width: 0; /* let the card shrink to its grid track instead of being
+                   forced wider by content like the gem row (input + tier
+                   select + icon) — without this, a filled-in card can end
+                   up visibly wider than an empty one on narrow screens */
 }
 
 .equip-card-header {
@@ -893,6 +898,7 @@ body {
 
 .equip-inline-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
 }
@@ -1386,7 +1392,6 @@ function renderEquipCard(slotDef) {
   // Psionic Attributes only ever roll on SS-tier gear — confirmed. Hide the
   // whole section rather than show it disabled/inapplicable for S/Basic.
   if (item.tier === 'SS') {
-    card.appendChild(el('hr', { class: 'equip-divider' }));
     card.appendChild(el('div', { class: 'equip-section-title' }, 'Psionic Attributes'));
     const psiOptions = DB.psionics[slotDef.psiKey] || [];
     s.psionics.forEach((slot, i) => {

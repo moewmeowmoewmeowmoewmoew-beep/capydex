@@ -396,7 +396,6 @@ function renderEquipCard(slotDef) {
   // Psionic Attributes only ever roll on SS-tier gear — confirmed. Hide the
   // whole section rather than show it disabled/inapplicable for S/Basic.
   if (item.tier === 'SS') {
-    card.appendChild(el('hr', { class: 'equip-divider' }));
     card.appendChild(el('div', { class: 'equip-section-title' }, 'Psionic Attributes'));
     const psiOptions = DB.psionics[slotDef.psiKey] || [];
     s.psionics.forEach((slot, i) => {
