@@ -823,11 +823,10 @@ body {
 .equip-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  gap: 30px;
 }
 @media (max-width: 844px) {
   .equip-grid { grid-template-columns: 1fr; }
-  .equip-card { margin: 0 16px; }
 }
 
 .equip-card {
@@ -861,6 +860,15 @@ body {
   font-size: 18px;
   color: var(--ink);
 }
+
+.equip-prefill-note {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  line-height: 1.5;
+  margin: -6px 0 18px;
+}
+.equip-collection-link { color: var(--accent); text-decoration: underline; cursor: pointer; }
+.equip-collection-link:hover { color: var(--accent-dim); }
 
 .equip-field-label {
   font-size: 12px;
@@ -1009,6 +1017,11 @@ function defaultState() {
     artifactState: {},      // idx -> { owned, stars(0-5), awaken(0-10) }
     petState: {},           // idx -> { owned, battleLv(1-5), awaken(0-10) }
     equipment: {},           // slotId -> { itemName, quality, surpass, arcana, psionics[4], gems[5] }
+    petSlot: { itemName: '', arcana: -1, level: 0 },
+    mountSlots: [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }], // 3 deployed — awaken skill each
+    mountMainSlot: { itemIdx: null }, // 1 main — star skill
+    artifactSlots: [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }],
+    artifactMainSlot: { itemIdx: null },
   };
 }
 
@@ -1285,7 +1298,203 @@ function renderEquipment() {
   EQUIPMENT_SLOTS.forEach(slotDef => grid.appendChild(renderEquipCard(slotDef)));
   wrap.appendChild(grid);
 
+  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Pet'));
+  const petGrid = el('div', { class: 'equip-grid' });
+  petGrid.appendChild(renderEquipPetCard());
+  wrap.appendChild(petGrid);
+
+  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Mounts'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    '3 deployed mounts (each shows its Awaken skill) plus 1 main mount (shows its Star skill).'));
+  const mountGrid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => mountGrid.appendChild(renderDeployCard('mount', 'awaken', i)));
+  mountGrid.appendChild(renderDeployCard('mount', 'star', null));
+  wrap.appendChild(mountGrid);
+
+  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Artifacts'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    '3 deployed artifacts (each shows its Awaken skill) plus 1 main artifact (shows its Star skill).'));
+  const artifactGrid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => artifactGrid.appendChild(renderDeployCard('artifact', 'awaken', i)));
+  artifactGrid.appendChild(renderDeployCard('artifact', 'star', null));
+  wrap.appendChild(artifactGrid);
+
   return wrap;
+}
+
+// Jumps to a Collection section from a different tab — switches tabs first,
+// then scrolls once the new content has actually rendered.
+function goToCollectionSection(sectionId) {
+  activeMainTab = 'collection';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === 'collection'));
+  render();
+  setTimeout(() => {
+    const target = document.getElementById(sectionId);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 0);
+}
+
+/* ---------- Pet card ---------- */
+function renderEquipPetCard() {
+  const s = state.petSlot;
+  const pets = DB.pets || [];
+  const pet = pets.find(p => p.n === s.itemName) || null;
+
+  const card = el('div', { class: 'equip-card' });
+  const headerImg = pet
+    ? el('img', { src: itemImagePath('pets', pet), alt: pet.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, 'Pet')]));
+
+  card.appendChild(equipFieldLabel('Pet'));
+  const listId = 'pet-slot-search';
+  const datalist = el('datalist', { id: listId }, pets.map(p => el('option', { value: p.n })));
+  const input = el('input', {
+    class: 'equip-combo-input', list: listId, placeholder: 'Search pets…',
+    value: s.itemName || '',
+  });
+  input.addEventListener('input', (e) => {
+    const match = pets.find(p => p.n === e.target.value);
+    if (match) {
+      s.itemName = match.n;
+      s.arcana = -1;
+      saveState();
+      render();
+    }
+  });
+  card.appendChild(datalist);
+  card.appendChild(input);
+
+  if (!pet) return card;
+
+  const hasAwaken = pet.awaken_effects && Object.keys(pet.awaken_effects).length > 0;
+  if (hasAwaken) {
+    card.appendChild(equipFieldLabel('Arcana'));
+    const levels = [];
+    for (let i = 0; i <= 10; i++) if (pet.awaken_effects[`A${i}`]) levels.push(i);
+    const arcanaSelect = el('select', { class: 'equip-select' }, [
+      el('option', { value: '-1', selected: s.arcana === -1 ? 'true' : null }, 'No Arcana'),
+      ...levels.map(i => el('option', { value: String(i), selected: i === s.arcana ? 'true' : null }, `A${i}`)),
+    ]);
+    arcanaSelect.addEventListener('change', (e) => { s.arcana = parseInt(e.target.value, 10); saveState(); render(); });
+    card.appendChild(arcanaSelect);
+
+    if (s.arcana >= 0) {
+      card.appendChild(el('div', { class: 'equip-writeup' }, `A${s.arcana}: ${pet.awaken_effects[`A${s.arcana}`]}`));
+    }
+  }
+
+  card.appendChild(el('div', { class: 'equip-section-title' }, 'Battle Skills'));
+  card.appendChild(equipFieldLabel('Pet Level'));
+  const levelInput = el('input', {
+    type: 'number', class: 'equip-select', min: '1', max: '100', value: String(s.level || ''),
+    placeholder: 'e.g. 23',
+  });
+  levelInput.addEventListener('input', (e) => {
+    s.level = parseInt(e.target.value, 10) || 0;
+    saveState();
+    render();
+  });
+  card.appendChild(levelInput);
+
+  if (s.level > 0) {
+    const battleSkillKeys = Object.keys(pet.battle_skills || {});
+    const thresholds = [1, 20, 40, 60, 80];
+    let activeIdx = -1;
+    for (let i = 0; i < thresholds.length; i++) if (s.level >= thresholds[i]) activeIdx = i;
+    const activeKey = activeIdx >= 0 ? battleSkillKeys[activeIdx] : null;
+    const activeText = activeKey ? pet.battle_skills[activeKey] : null;
+    card.appendChild(equipFieldLabel(activeKey || 'Battle Skill'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, activeText || '—'));
+  }
+
+  return card;
+}
+
+/* ---------- Deployed Mount / Artifact card ---------- */
+function renderDeployCard(kind, mode, slotIndex) {
+  const isMount = kind === 'mount';
+  const isAwakenMode = mode === 'awaken';
+  const s = slotIndex === null
+    ? state[isMount ? 'mountMainSlot' : 'artifactMainSlot']
+    : state[isMount ? 'mountSlots' : 'artifactSlots'][slotIndex];
+
+  const all = (DB[isMount ? 'mounts' : 'artifacts'] || []).filter(it => it.n !== 'None');
+  const bucketKey = isMount ? 'mountState' : 'artifactState';
+  const ownedItems = all.filter(it => {
+    const st = state[bucketKey][it.idx];
+    return st && st.owned;
+  });
+  const item = ownedItems.find(it => it.idx === s.itemIdx) || null;
+  const itemState = item ? getMountOrArtifactState(bucketKey, item.idx) : null;
+
+  const cardTitle = slotIndex === null
+    ? `Main ${isMount ? 'Mount' : 'Artifact'}`
+    : `Deployed ${isMount ? 'Mount' : 'Artifact'} ${slotIndex + 1}`;
+
+  const card = el('div', { class: 'equip-card' });
+  const headerImg = item
+    ? el('img', { src: itemImagePath(isMount ? 'mounts' : 'artifacts', item), alt: item.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, cardTitle)]));
+
+  const linkText = `Information prefilled from your Collections. To update it, please change it `;
+  const link = el('a', {
+    href: '#', class: 'equip-collection-link',
+    onclick: (e) => { e.preventDefault(); goToCollectionSection(isMount ? 'mounts' : 'artifacts'); },
+  }, 'here');
+  card.appendChild(el('p', { class: 'equip-prefill-note' }, [linkText, link, '.']));
+
+  card.appendChild(equipFieldLabel(cardTitle));
+  if (!ownedItems.length) {
+    card.appendChild(el('div', { class: 'equip-writeup' },
+      `You haven't marked any ${isMount ? 'mounts' : 'artifacts'} as owned in Collection yet.`));
+    return card;
+  }
+
+  const select = el('select', { class: 'equip-select' }, [
+    el('option', { value: '' }, '— None —'),
+    ...ownedItems.map(it => el('option', { value: String(it.idx), selected: it.idx === s.itemIdx ? 'true' : null }, it.n)),
+  ]);
+  select.addEventListener('change', (e) => {
+    s.itemIdx = e.target.value ? parseInt(e.target.value, 10) : null;
+    saveState();
+    render();
+  });
+  card.appendChild(select);
+
+  if (!item) return card;
+
+  card.appendChild(equipFieldLabel('Tier'));
+  card.appendChild(el('div', { class: 'equip-writeup' }, item.tier || '—'));
+
+  if (isAwakenMode) {
+    card.appendChild(equipFieldLabel('Awaken'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, `A${itemState.awaken}`));
+    if (item.star_up) {
+      const resolved = resolveAwakenEffect(item, itemState.awaken);
+      card.appendChild(equipFieldLabel('Awaken Skill'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, resolved ? resolved.text : '—'));
+    }
+  } else {
+    card.appendChild(equipFieldLabel('Stars'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
+    if (item.star_effects) {
+      const starEff = item.star_effects[String(itemState.stars)];
+      card.appendChild(equipFieldLabel('Star Skill'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, starEff || '—'));
+    }
+  }
+
+  if (item.star_up) {
+    const starDelta = itemState.stars > 0 ? item.star_up.deltas[String(itemState.stars)] : null;
+    const awakenDelta = itemState.awaken > 0 ? item.awaken.deltas[`A${itemState.awaken}`] : null;
+    const total = sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
+    card.appendChild(equipFieldLabel('Current Stats'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, formatStatBlockNodes(total, true)));
+  }
+
+  return card;
 }
 
 // Arcana bonuses are cumulative (confirmed against the datamine's own
