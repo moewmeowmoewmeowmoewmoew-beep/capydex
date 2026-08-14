@@ -625,14 +625,42 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--bg-panel);
-  border: 2px solid var(--accent);
   border-radius: 12px;
   padding: 14px 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
 }
-.bulk-action-count { font-size: 13px; color: var(--ink-dim); font-weight: 600; }
+.bulk-action-count { font-size: 13px; font-weight: 600; }
 .bulk-action-bar .bulk-action-btn:disabled { opacity: 0.5; }
+
+/* The bar deliberately uses the OPPOSITE theme's palette from whatever's
+   active — swapping light-on-dark for dark-on-light and vice versa makes it
+   stand out against the page in a way matching the current theme's own
+   colors doesn't, since everything else on screen already uses those. */
+.bulk-action-bar {
+  background: #FFFFFF;
+  border: 2px solid #0FA89B;
+}
+.bulk-action-count { color: #565D6D; }
+.bulk-action-bar .bulk-action-btn {
+  background: #ECEEF3;
+  border-color: #DDE1E8;
+  color: #1A1D24;
+}
+.bulk-action-bar .bulk-action-btn.secondary { color: #565D6D; }
+.bulk-action-bar .bulk-action-btn:hover { border-color: #0C8B80; color: #1A1D24; }
+
+[data-theme="light"] .bulk-action-bar {
+  background: #141924;
+  border-color: #2EC9C0;
+}
+[data-theme="light"] .bulk-action-count { color: #ACB3C4; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn {
+  background: #1B2130;
+  border-color: #262D3D;
+  color: #E8EAED;
+}
+[data-theme="light"] .bulk-action-bar .bulk-action-btn.secondary { color: #ACB3C4; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn:hover { border-color: #17A79B; color: #E8EAED; }
 
 /* ---- Star-assign modal ---- */
 .modal-overlay {
@@ -714,6 +742,12 @@ body {
      instead of interleaving awkwardly with whatever room is left. */
   .toolbar .search-input { flex: 1 1 100%; min-width: 0; }
   .stepper-row .val { min-width: 44px; }
+
+  /* Owned badge + star/awaken steppers stack vertically on mobile instead
+     of trying to stay side-by-side — there's enough width for that on
+     desktop, but not on a narrow phone. */
+  .card-controls-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .steppers-col { align-items: flex-start; }
 
   /* Collapse the top nav into a hamburger dropdown — four tab buttons
      plus the brand and theme toggle don't fit comfortably on one row. */

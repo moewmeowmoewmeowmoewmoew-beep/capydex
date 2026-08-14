@@ -287,42 +287,59 @@ function getEquipState(slotId) {
   return state.equipment[slotId];
 }
 
-function renderEquipment() {
+function buildEquipmentSectionContent() {
   const wrap = el('div', {});
-  wrap.appendChild(el('div', { class: 'section-title' }, 'Equipment'));
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Weapon, Armor, 2 Rings, 2 Accessories. Quality defaults to the highest available (usually Mythic) when you pick an item — change it if yours is lower. Gem rarity defaults to Peerless the same way.'));
-
   const grid = el('div', { class: 'equip-grid' });
   EQUIPMENT_SLOTS.forEach(slotDef => grid.appendChild(renderEquipCard(slotDef)));
   wrap.appendChild(grid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Pet'));
+function buildPetSectionContent() {
+  const wrap = el('div', {});
   const petGrid = el('div', { class: 'equip-grid' });
   petGrid.appendChild(renderEquipPetCard());
   wrap.appendChild(petGrid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Mounts'));
+function buildMountsSectionContent() {
+  const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Main mount (its Skill depends on Stars) plus 3 deployed mounts (each shows its Awaken-based skill).'));
-  const mountMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
-  mountMainGrid.appendChild(renderDeployCard('mount', 'star', null));
-  wrap.appendChild(mountMainGrid);
-  const mountGrid = el('div', { class: 'equip-grid' });
-  [0, 1, 2].forEach(i => mountGrid.appendChild(renderDeployCard('mount', 'awaken', i)));
-  wrap.appendChild(mountGrid);
+  const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  mainGrid.appendChild(renderDeployCard('mount', 'star', null));
+  wrap.appendChild(mainGrid);
+  const grid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => grid.appendChild(renderDeployCard('mount', 'awaken', i)));
+  wrap.appendChild(grid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Artifacts'));
+function buildArtifactsSectionContent() {
+  const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Main artifact (its Skill depends on Stars) plus 3 deployed artifacts (each shows its Awaken-based skill).'));
-  const artifactMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
-  artifactMainGrid.appendChild(renderDeployCard('artifact', 'star', null));
-  wrap.appendChild(artifactMainGrid);
-  const artifactGrid = el('div', { class: 'equip-grid' });
-  [0, 1, 2].forEach(i => artifactGrid.appendChild(renderDeployCard('artifact', 'awaken', i)));
-  wrap.appendChild(artifactGrid);
-
+  const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  mainGrid.appendChild(renderDeployCard('artifact', 'star', null));
+  wrap.appendChild(mainGrid);
+  const grid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => grid.appendChild(renderDeployCard('artifact', 'awaken', i)));
+  wrap.appendChild(grid);
   return wrap;
+}
+
+const EQUIPMENT_SECTIONS = [
+  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent },
+  { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
+  { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
+  { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
+];
+
+function renderEquipmentShell() {
+  return renderSectionShell(EQUIPMENT_SECTIONS);
 }
 
 // Jumps to a Collection section from a different tab — switches tabs first,
@@ -729,7 +746,7 @@ function render() {
   } else if (activeMainTab === 'calculator') {
     root.appendChild(renderCalculator());
   } else if (activeMainTab === 'equipment') {
-    root.appendChild(renderEquipment());
+    root.appendChild(renderEquipmentShell());
   } else {
     const labels = { inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
@@ -738,7 +755,7 @@ function render() {
   focusActiveStepperInput();
 }
 
-function renderCollectionShell() {
+function renderSectionShell(sections) {
   const shell = el('div', { class: 'collection-shell' });
 
   // Click handler shared by all sidenav anchor links. Deliberately does NOT
@@ -768,7 +785,7 @@ function renderCollectionShell() {
   });
   mobileSelect.appendChild(el('option', { value: '' }, 'Jump to section…'));
 
-  COLLECTION_SECTIONS.forEach(sec => {
+  sections.forEach(sec => {
     const li = el('li', {});
     li.appendChild(el('a', { href: `#${sec.id}`, class: 'sidenav-link', onclick: (e) => scrollToAnchor(e, `#${sec.id}`) }, sec.label));
     mobileSelect.appendChild(el('option', { value: `#${sec.id}` }, sec.label));
@@ -792,7 +809,7 @@ function renderCollectionShell() {
   nav.appendChild(linksList);
 
   const content = el('div', { class: 'collection-content' });
-  COLLECTION_SECTIONS.forEach(sec => {
+  sections.forEach(sec => {
     const section = el('section', { id: sec.id, class: 'page-section' });
     section.appendChild(el('h2', { class: 'section-title' }, sec.label));
     section.appendChild(sec.build());
@@ -805,6 +822,10 @@ function renderCollectionShell() {
 
   setupScrollSpy(nav);
   return shell;
+}
+
+function renderCollectionShell() {
+  return renderSectionShell(COLLECTION_SECTIONS);
 }
 
 function setupScrollSpy(navEl) {

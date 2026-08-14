@@ -631,14 +631,42 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  background: var(--bg-panel);
-  border: 2px solid var(--accent);
   border-radius: 12px;
   padding: 14px 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
 }
-.bulk-action-count { font-size: 13px; color: var(--ink-dim); font-weight: 600; }
+.bulk-action-count { font-size: 13px; font-weight: 600; }
 .bulk-action-bar .bulk-action-btn:disabled { opacity: 0.5; }
+
+/* The bar deliberately uses the OPPOSITE theme's palette from whatever's
+   active — swapping light-on-dark for dark-on-light and vice versa makes it
+   stand out against the page in a way matching the current theme's own
+   colors doesn't, since everything else on screen already uses those. */
+.bulk-action-bar {
+  background: #FFFFFF;
+  border: 2px solid #0FA89B;
+}
+.bulk-action-count { color: #565D6D; }
+.bulk-action-bar .bulk-action-btn {
+  background: #ECEEF3;
+  border-color: #DDE1E8;
+  color: #1A1D24;
+}
+.bulk-action-bar .bulk-action-btn.secondary { color: #565D6D; }
+.bulk-action-bar .bulk-action-btn:hover { border-color: #0C8B80; color: #1A1D24; }
+
+[data-theme="light"] .bulk-action-bar {
+  background: #141924;
+  border-color: #2EC9C0;
+}
+[data-theme="light"] .bulk-action-count { color: #ACB3C4; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn {
+  background: #1B2130;
+  border-color: #262D3D;
+  color: #E8EAED;
+}
+[data-theme="light"] .bulk-action-bar .bulk-action-btn.secondary { color: #ACB3C4; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn:hover { border-color: #17A79B; color: #E8EAED; }
 
 /* ---- Star-assign modal ---- */
 .modal-overlay {
@@ -720,6 +748,12 @@ body {
      instead of interleaving awkwardly with whatever room is left. */
   .toolbar .search-input { flex: 1 1 100%; min-width: 0; }
   .stepper-row .val { min-width: 44px; }
+
+  /* Owned badge + star/awaken steppers stack vertically on mobile instead
+     of trying to stay side-by-side — there's enough width for that on
+     desktop, but not on a narrow phone. */
+  .card-controls-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .steppers-col { align-items: flex-start; }
 
   /* Collapse the top nav into a hamburger dropdown — four tab buttons
      plus the brand and theme toggle don't fit comfortably on one row. */
@@ -1299,42 +1333,59 @@ function getEquipState(slotId) {
   return state.equipment[slotId];
 }
 
-function renderEquipment() {
+function buildEquipmentSectionContent() {
   const wrap = el('div', {});
-  wrap.appendChild(el('div', { class: 'section-title' }, 'Equipment'));
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Weapon, Armor, 2 Rings, 2 Accessories. Quality defaults to the highest available (usually Mythic) when you pick an item — change it if yours is lower. Gem rarity defaults to Peerless the same way.'));
-
   const grid = el('div', { class: 'equip-grid' });
   EQUIPMENT_SLOTS.forEach(slotDef => grid.appendChild(renderEquipCard(slotDef)));
   wrap.appendChild(grid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Pet'));
+function buildPetSectionContent() {
+  const wrap = el('div', {});
   const petGrid = el('div', { class: 'equip-grid' });
   petGrid.appendChild(renderEquipPetCard());
   wrap.appendChild(petGrid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Mounts'));
+function buildMountsSectionContent() {
+  const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Main mount (its Skill depends on Stars) plus 3 deployed mounts (each shows its Awaken-based skill).'));
-  const mountMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
-  mountMainGrid.appendChild(renderDeployCard('mount', 'star', null));
-  wrap.appendChild(mountMainGrid);
-  const mountGrid = el('div', { class: 'equip-grid' });
-  [0, 1, 2].forEach(i => mountGrid.appendChild(renderDeployCard('mount', 'awaken', i)));
-  wrap.appendChild(mountGrid);
+  const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  mainGrid.appendChild(renderDeployCard('mount', 'star', null));
+  wrap.appendChild(mainGrid);
+  const grid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => grid.appendChild(renderDeployCard('mount', 'awaken', i)));
+  wrap.appendChild(grid);
+  return wrap;
+}
 
-  wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Artifacts'));
+function buildArtifactsSectionContent() {
+  const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Main artifact (its Skill depends on Stars) plus 3 deployed artifacts (each shows its Awaken-based skill).'));
-  const artifactMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
-  artifactMainGrid.appendChild(renderDeployCard('artifact', 'star', null));
-  wrap.appendChild(artifactMainGrid);
-  const artifactGrid = el('div', { class: 'equip-grid' });
-  [0, 1, 2].forEach(i => artifactGrid.appendChild(renderDeployCard('artifact', 'awaken', i)));
-  wrap.appendChild(artifactGrid);
-
+  const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  mainGrid.appendChild(renderDeployCard('artifact', 'star', null));
+  wrap.appendChild(mainGrid);
+  const grid = el('div', { class: 'equip-grid' });
+  [0, 1, 2].forEach(i => grid.appendChild(renderDeployCard('artifact', 'awaken', i)));
+  wrap.appendChild(grid);
   return wrap;
+}
+
+const EQUIPMENT_SECTIONS = [
+  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent },
+  { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
+  { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
+  { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
+];
+
+function renderEquipmentShell() {
+  return renderSectionShell(EQUIPMENT_SECTIONS);
 }
 
 // Jumps to a Collection section from a different tab — switches tabs first,
@@ -1741,7 +1792,7 @@ function render() {
   } else if (activeMainTab === 'calculator') {
     root.appendChild(renderCalculator());
   } else if (activeMainTab === 'equipment') {
-    root.appendChild(renderEquipment());
+    root.appendChild(renderEquipmentShell());
   } else {
     const labels = { inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
@@ -1750,7 +1801,7 @@ function render() {
   focusActiveStepperInput();
 }
 
-function renderCollectionShell() {
+function renderSectionShell(sections) {
   const shell = el('div', { class: 'collection-shell' });
 
   // Click handler shared by all sidenav anchor links. Deliberately does NOT
@@ -1780,7 +1831,7 @@ function renderCollectionShell() {
   });
   mobileSelect.appendChild(el('option', { value: '' }, 'Jump to section…'));
 
-  COLLECTION_SECTIONS.forEach(sec => {
+  sections.forEach(sec => {
     const li = el('li', {});
     li.appendChild(el('a', { href: `#${sec.id}`, class: 'sidenav-link', onclick: (e) => scrollToAnchor(e, `#${sec.id}`) }, sec.label));
     mobileSelect.appendChild(el('option', { value: `#${sec.id}` }, sec.label));
@@ -1804,7 +1855,7 @@ function renderCollectionShell() {
   nav.appendChild(linksList);
 
   const content = el('div', { class: 'collection-content' });
-  COLLECTION_SECTIONS.forEach(sec => {
+  sections.forEach(sec => {
     const section = el('section', { id: sec.id, class: 'page-section' });
     section.appendChild(el('h2', { class: 'section-title' }, sec.label));
     section.appendChild(sec.build());
@@ -1817,6 +1868,10 @@ function renderCollectionShell() {
 
   setupScrollSpy(nav);
   return shell;
+}
+
+function renderCollectionShell() {
+  return renderSectionShell(COLLECTION_SECTIONS);
 }
 
 function setupScrollSpy(navEl) {
