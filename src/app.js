@@ -18,6 +18,9 @@ function defaultState() {
     mountMainSlot: { itemIdx: null }, // 1 main — star skill
     artifactSlots: [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }],
     artifactMainSlot: { itemIdx: null },
+    adventurerSlot: { name: '', stars: 0 },
+    heroSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
+    brandSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
   };
 }
 
@@ -331,11 +334,207 @@ function buildArtifactsSectionContent() {
   return wrap;
 }
 
+/* ---------- Adventurer, Heroes & Brands ---------- */
+
+// Adventurer tier_effects mix skill descriptions with plain stat-buff lines
+// ("Adventurer's ATK +25%"). The "main skill" shown at any star level is the
+// latest non-buff entry at or below that level; buffs are summed separately
+// across every buff entry up to that level (confirmed additive, same as
+// every other tiered-bonus system in this app).
+function parseAdventurerStatBuff(text) {
+  const m = text && text.match(/^Adventurer'?s (\w+) \+(\d+(?:\.\d+)?)%$/);
+  return m ? { stat: m[1], val: parseFloat(m[2]) } : null;
+}
+function computeAdventurerDisplay(tierEffects, stars) {
+  let mainSkillIdx = -1, mainSkillText = null;
+  const statTotals = {};
+  for (let i = 0; i <= stars && i < (tierEffects || []).length; i++) {
+    const text = tierEffects[i];
+    if (!text) continue;
+    const buff = parseAdventurerStatBuff(text);
+    if (buff) statTotals[buff.stat] = (statTotals[buff.stat] || 0) + buff.val;
+    else { mainSkillIdx = i; mainSkillText = text; }
+  }
+  return { mainSkillIdx, mainSkillText, statTotals };
+}
+
+function renderAdventurerCard() {
+  const s = state.adventurerSlot;
+  const advs = (DB.adventurers || []).filter(a => a.n !== 'None');
+  const adv = advs.find(a => a.n === s.name);
+
+  const card = el('div', { class: 'equip-card' });
+  const headerImg = adv
+    ? el('img', { src: itemImagePath('adventurers', adv), alt: adv.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, 'Adventurer')]));
+
+  card.appendChild(equipFieldLabel('Adventurer'));
+  card.appendChild(renderSearchCombo({
+    value: s.name,
+    options: advs.map(a => a.n),
+    placeholder: 'Search adventurers…',
+    onSelect: (name) => { s.name = name; s.stars = 0; saveState(); render(); },
+    onClear: () => { s.name = ''; s.stars = 0; saveState(); render(); },
+  }));
+
+  if (!adv) return card;
+
+  card.appendChild(equipFieldLabel('Stars'));
+  card.appendChild(el('input', {
+    type: 'number', class: 'equip-select', min: '0', max: '10', value: String(s.stars || 0),
+    oninput: (e) => {
+      const n = parseInt(e.target.value, 10);
+      s.stars = Number.isNaN(n) ? 0 : Math.max(0, Math.min(10, n));
+      saveState();
+      render();
+    },
+  }));
+
+  const { mainSkillIdx, mainSkillText, statTotals } = computeAdventurerDisplay(adv.tier_effects, s.stars);
+  if (mainSkillText) {
+    card.appendChild(equipFieldLabel(`Main Skill (level ${mainSkillIdx} skill)`));
+    card.appendChild(el('div', { class: 'equip-writeup' }, mainSkillText));
+  }
+  const buffParts = Object.entries(statTotals).map(([k, v]) => `${k} +${Math.round(v * 100) / 100}%`);
+  if (buffParts.length) {
+    card.appendChild(equipFieldLabel('Adventurer Stat Buffs'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, buffParts.join(', ')));
+  }
+
+  return card;
+}
+
+// NOTE ON CATEGORIZATION: the source data has no S/Basic split for heroes,
+// or SS/S/Basic split for brands — only the 4 named Inheritance Heroes are
+// confirmed. Everything else defaults into one placeholder bucket below
+// until that classification is provided; flagged clearly so it's not
+// mistaken for confirmed data.
+const INHERITANCE_HERO_NAMES = new Set(['Legendary Ranger', 'Legendary Knight', 'Ghost Princess', 'Bone King']);
+function classifyHero(name) {
+  return INHERITANCE_HERO_NAMES.has(name) ? 'Inheritance Heroes' : 'Basic Heroes';
+}
+function classifyBrand(name) {
+  return 'Basic Brands';
+}
+
+function hasRealPolarization(entity) {
+  return Object.values(entity.polarization_effects || {}).some(v => v != null);
+}
+
+function renderHeroOrBrandCard(kind, slotIndex) {
+  const isHero = kind === 'hero';
+  const s = isHero ? state.heroSlots[slotIndex] : state.brandSlots[slotIndex];
+  const all = isHero ? (DB.heroes || []).filter(h => h.n !== 'None') : (DB.brands || []);
+  const classify = isHero ? classifyHero : classifyBrand;
+  const groupOrder = isHero ? ['S Heroes', 'Basic Heroes', 'Inheritance Heroes'] : ['SS Brands', 'S Brands', 'Basic Brands'];
+
+  // Hide non-allowed Inheritance Heroes entirely — future-proofed even
+  // though every Inheritance-classified hero we have today is allowed.
+  const options = isHero
+    ? all.filter(h => classify(h.n) !== 'Inheritance Heroes' || INHERITANCE_HERO_NAMES.has(h.n))
+    : all;
+
+  const entity = options.find(x => x.n === s.name);
+  const label = isHero ? `Hero ${slotIndex + 1}` : `Brand ${slotIndex + 1}`;
+  const imgKind = isHero ? 'heroes' : 'brands';
+
+  const card = el('div', { class: 'equip-card' });
+  const headerImg = entity
+    ? el('img', { src: itemImagePath(imgKind, entity), alt: entity.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, label)]));
+
+  card.appendChild(equipFieldLabel(label));
+  const byGroup = {};
+  options.forEach(o => { (byGroup[classify(o.n)] = byGroup[classify(o.n)] || []).push(o); });
+  const select = el('select', { class: 'equip-select' }, [
+    el('option', { value: '' }, '— None —'),
+    ...groupOrder.filter(g => byGroup[g]).map(g => el('optgroup', { label: g },
+      byGroup[g].map(o => el('option', { value: o.n, selected: o.n === s.name ? 'true' : null }, o.n)))),
+  ]);
+  select.addEventListener('change', (e) => {
+    s.name = e.target.value;
+    const newEntity = options.find(x => x.n === s.name);
+    s.quality = newEntity && newEntity.q && newEntity.q.length ? newEntity.q[newEntity.q.length - 1] : '';
+    s.polarization = 0;
+    saveState();
+    render();
+  });
+  card.appendChild(select);
+
+  if (!entity) return card;
+
+  card.appendChild(equipFieldLabel('Quality'));
+  const qualOpts = entity.q || [];
+  const qualitySelect = el('select', { class: 'equip-select', disabled: qualOpts.length ? null : 'true' },
+    qualOpts.length
+      ? qualOpts.map(q => el('option', { value: q, selected: q === s.quality ? 'true' : null }, q))
+      : [el('option', { value: '' }, '—')]);
+  qualitySelect.addEventListener('change', (e) => { s.quality = e.target.value; saveState(); render(); });
+  card.appendChild(qualitySelect);
+
+  const showPolarization = hasRealPolarization(entity);
+  if (showPolarization) {
+    const isMythic = s.quality === 'Mythic';
+    card.appendChild(equipFieldLabel('Polarization'));
+    const polOpts = Array.from({ length: 10 }, (_, i) => i + 1);
+    const polSelect = el('select', { class: 'equip-select', disabled: isMythic ? null : 'true' }, [
+      el('option', { value: '0', selected: !isMythic || s.polarization === 0 ? 'true' : null }, 'Not Polarised'),
+      ...polOpts.map(p => el('option', { value: String(p), selected: p === s.polarization ? 'true' : null }, `P${p}`)),
+    ]);
+    polSelect.addEventListener('change', (e) => { s.polarization = parseInt(e.target.value, 10); saveState(); render(); });
+    card.appendChild(polSelect);
+  }
+
+  if (entity.quality_effects && s.quality) {
+    const text = entity.quality_effects[s.quality];
+    if (text) {
+      card.appendChild(equipFieldLabel(`${s.quality} Skill`));
+      card.appendChild(el('div', { class: 'equip-writeup' }, text));
+    }
+  }
+  if (showPolarization && s.quality === 'Mythic' && s.polarization > 0) {
+    const text = entity.polarization_effects[`P${s.polarization}`];
+    if (text) {
+      card.appendChild(equipFieldLabel(`P${s.polarization} Bonus`));
+      card.appendChild(el('div', { class: 'equip-writeup' }, text));
+    }
+  }
+
+  return card;
+}
+
+function buildAdventurerHeroBrandSectionContent() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Adventurer, 2 Heroes, 4 Brands. Note: hero/brand tier categorization (S vs Basic, SS vs S vs Basic) is a placeholder below — the source data only confirms which 4 heroes are Inheritance Heroes, not a full grade split yet.'));
+
+  wrap.appendChild(el('div', { class: 'equip-section-title' }, 'Adventurer'));
+  const advGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  advGrid.appendChild(renderAdventurerCard());
+  wrap.appendChild(advGrid);
+
+  wrap.appendChild(el('div', { class: 'equip-section-title' }, 'Heroes'));
+  const heroGrid = el('div', { class: 'equip-grid' });
+  [0, 1].forEach(i => heroGrid.appendChild(renderHeroOrBrandCard('hero', i)));
+  wrap.appendChild(heroGrid);
+
+  wrap.appendChild(el('div', { class: 'equip-section-title' }, 'Brands'));
+  const brandGrid = el('div', { class: 'equip-grid' });
+  [0, 1, 2, 3].forEach(i => brandGrid.appendChild(renderHeroOrBrandCard('brand', i)));
+  wrap.appendChild(brandGrid);
+
+  return wrap;
+}
+
+
 const EQUIPMENT_SECTIONS = [
   { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent, clearAll: () => clearAllEquipment() },
   { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
   { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
   { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
+  { id: 'equip-adv-hero-brand', label: 'Adventurer, Heroes & Brands', build: buildAdventurerHeroBrandSectionContent },
 ];
 
 function renderEquipmentShell() {

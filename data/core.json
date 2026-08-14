@@ -1141,7 +1141,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +10%",
+        "Rare": "Global ATK +15%",
+        "Epic": "After dealing DMG, 20% chance to steal 2% ATK from the enemy (Max 3% of your own ATK). Triggers up to 3 times/round, stacks up to 6 times. Lasts until battle ends.",
+        "Legendary": "Chance increased to 40%, ATK stolen increased to 3% of enemy's ATK (Max 5% of your own ATK). Max stacks increased to 9.",
+        "Mythic": "Max triggers per round increased to 6. Max stacks increased to 12. At max stacks, Protagonist Final DMG +15%"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Brutal Wild Vulture",
@@ -1149,7 +1168,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Combo rate +10%, combo count limit +1",
+        "Legendary": "Combo rate increased to 15%, each combo increases global combo damage +5%, stacking up to 20 times",
+        "Mythic": "Final combo damage +15%, combo count +1 for the first 3 rounds before battle"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Cleopatra",
@@ -1157,7 +1195,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Triggers 1 Flame Dagger each turn, Global Dagger Damage +10%",
+        "Legendary": "All Daggers have a 40% chance to trigger Flame Wave, Final Dagger Damage +10%",
+        "Mythic": "Every 3 Daggers increase Dagger Coefficient by +3%, Final Dagger Damage +3%, stacks up to 5 times until battle ends"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Frankenstein",
@@ -1165,7 +1222,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Final Damage Reduction +5%, in a single turn after each time the hero takes damage, Final Damage Reduction +1%, stacks up to 15 times, lasts for 1 turn",
+        "Legendary": "Final Damage Reduction +10%, in a single turn after each time the hero takes damage, Final Damage Reduction +1.5%, stacks up to 15 times, lasts for 1 turn",
+        "Mythic": "Final Damage Reduction +20%, in a single turn after each time the hero takes damage, Final Damage Reduction +2%, stacks up to 15 times, lasts for 1 turn"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.8%",
+        "P2": "Final Damage Reduction +1.6%",
+        "P3": "Final Damage Reduction +2.4%",
+        "P4": "Final Damage Reduction +3.2%",
+        "P5": "Final Damage Reduction +4.0%",
+        "P6": "Final Damage Reduction +4.8%",
+        "P7": "Final Damage Reduction +5.6%",
+        "P8": "Final Damage Reduction +6.4%",
+        "P9": "Final Damage Reduction +7.2%",
+        "P10": "Final Damage Reduction +8.0%"
+      }
     },
     {
       "n": "Mechanical Magic Eye",
@@ -1173,7 +1249,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Final Damage Reduction +5%, in a single turn after each time the hero takes damage, Final Damage Reduction +1%, stacks up to 15 times, lasts for 1 turn",
+        "Legendary": "Final Damage Reduction +10%, in a single turn after each time the hero takes damage, Final Damage Reduction +1.5%, stacks up to 15 times, lasts for 1 turn",
+        "Mythic": "Final Damage Reduction +20%, in a single turn after each time the hero takes damage, Final Damage Reduction +2%, stacks up to 15 times, lasts for 1 turn"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.8%",
+        "P2": "Final Damage Reduction +1.6%",
+        "P3": "Final Damage Reduction +2.4%",
+        "P4": "Final Damage Reduction +3.2%",
+        "P5": "Final Damage Reduction +4.0%",
+        "P6": "Final Damage Reduction +4.8%",
+        "P7": "Final Damage Reduction +5.6%",
+        "P8": "Final Damage Reduction +6.4%",
+        "P9": "Final Damage Reduction +7.2%",
+        "P10": "Final Damage Reduction +8.0%"
+      }
     },
     {
       "n": "Naga Siren",
@@ -1181,7 +1276,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Initially obtain [Turn Light Spear], global counterattack damage +10%",
+        "Legendary": "Initially obtain [Turn Light Spear+], final counterattack damage +10%",
+        "Mythic": "Light Spear additionally deals 25% of hero's attack as counterattack damage; each Light Spear increases final counterattack damage by +1%, up to 15 stacks"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Ootengu",
@@ -1189,7 +1303,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Every 3 times of Sword Qi grant the Protagonist 1 stack of [Sword Glow], lasting until battle ends. Sword Glow: Each stack increases the Protagonist's Combo Rate by 1% (Max 15 stacks). When having [Sword Glow], increases the Protagonist's Combo count by +1.",
+        "Legendary": "Each stack of [Sword Glow] increases the Protagonist's Global Sword Qi DMG by +5%. At 10 stacks of [Sword Glow], increases the Protagonist's Combo Rate by +5%.",
+        "Mythic": "Each stack of [Sword Glow] increases the Protagonist's Final Sword Qi DMG by +1%. At 15 stacks of [Sword Glow], the Protagonist's Combo triggers an additional 1 instance of Sword Qi."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Prince of Sanctuary",
@@ -1197,7 +1330,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Gain [Normal Attack Sword Aura]. Global Sword Qi DMG +10%.",
+        "Legendary": "Gain [Normal Attack Sword Aura+]. Final Sword Aura DMG +10%.",
+        "Mythic": "Sword Qi DMG Coefficient +10%. Each Sword Qi increases Final Sword Qi DMG by +1% (up to 15 stacks)."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Silly Sorcerer",
@@ -1205,7 +1357,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Global Lightning DMG +10%, Final Lightning DMG +5%.",
+        "Legendary": "Global Lightning DMG +20%, Final Lightning DMG +10%.",
+        "Mythic": "Lightning Crit Rate +15%. After each lightning strike, 50% chance to deal lightning DMG equal to 75% of the hero's ATK to enemies, triggering up to 10 times per turn."
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
     },
     {
       "n": "Thousand-Change Demon Eye",
@@ -1213,7 +1384,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Gain [Turn Lightning]. Global Lightning DMG +10%.",
+        "Legendary": "Gain [Turn Lightning+]. Final Lightning DMG +10%.",
+        "Mythic": "Lightning converts 50% of damage dealt into a shield (shield ≤10% hero's max HP). While shield is active, Final Lightning DMG increased by +15%."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "White Robe Wizard",
@@ -1221,7 +1411,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +10%",
+        "Rare": "Global ATK +15%",
+        "Epic": "After a critical hit, the hero's Crit DMG increases by +10%, stacking up to 8 times. Can trigger up to 2 times per turn.",
+        "Legendary": "After a critical hit, the hero's Crit DMG increase effect rises to +15%, stacking up to 12 times. Can trigger up to 3 times per turn.",
+        "Mythic": "Crit DMG cap +2× (raises Crit DMG cap to 700%)."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.8%",
+        "P2": "Final Damage Reduction +1.6%",
+        "P3": "Final Damage Reduction +2.4%",
+        "P4": "Final Damage Reduction +3.2%",
+        "P5": "Final Damage Reduction +4.0%",
+        "P6": "Final Damage Reduction +4.8%",
+        "P7": "Final Damage Reduction +5.6%",
+        "P8": "Final Damage Reduction +6.4%",
+        "P9": "Final Damage Reduction +7.2%",
+        "P10": "Final Damage Reduction +8.0%"
+      }
     },
     {
       "n": "White Tiger",
@@ -1229,7 +1438,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +10%",
+        "Rare": "Global HP +15%",
+        "Epic": "Gain [Combo]. Combo Rate +15%. Global Combo DMG +10%.",
+        "Legendary": "Gain [Combo+]. Combo Rate +25%. Final Combo DMG +10%.",
+        "Mythic": "Combo Rate +25%. Final Combo DMG +15%. Weapon Crit Rate +15%. Normal attacks have a 15% chance to become a super critical hit."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
     },
     {
       "n": "Fantasy Joker",
@@ -1237,47 +1465,180 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "After weapon crit hit, throw 1 Joker Card which randomly triggers 1 Flame Wave, Lightning Bolt or Rage Recovery. Up to 2 cards can be thrown per turn. Joker Cards count towards dagger-related effects but do not trigger multi-dagger or other dagger effects.",
+        "Legendary": "Number of cards thrown after crit +1 (max 2 throws per turn).",
+        "Mythic": "Every 3 daggers thrown increases the main character's Global Skill DMG by +2%, stacking up to 20 times (max +40%)."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
     },
     {
       "n": "Lava Giant",
       "q": [
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Max Burn stacks +4",
+        "Legendary": "Max Burn Stacks +6",
+        "Mythic": "Every 3 flame waves released, increases the protagonist's global burn damage by 5%, stackable up to 10 times"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
     },
     {
       "n": "Mecha Titan",
       "q": [
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Counter Move +10%",
+        "Legendary": "When counterattacking, deal additional counterattack damage equal to 100% of the shield value, up to 30 times the hero's ATK.",
+        "Mythic": "All shield values +20%, shield value cap +100%"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.5%",
+        "P2": "Final Damage +1.0%",
+        "P3": "Final Damage +1.5%",
+        "P4": "Final Damage +2.0%",
+        "P5": "Final Damage +2.5%",
+        "P6": "Final Damage +3.0%",
+        "P7": "Final Damage +3.5%",
+        "P8": "Final Damage +4.0%",
+        "P9": "Final Damage +4.5%",
+        "P10": "Final Damage +5.0%"
+      }
     },
     {
       "n": "Phantom Assassin",
       "q": [
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Global Physical DMG +5%",
+        "Legendary": "Global Physical DMG +10%",
+        "Mythic": "Dagger, Sword Aura, Light Spear Crit Rate +10%"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.5%",
+        "P2": "Final Damage +1.0%",
+        "P3": "Final Damage +1.5%",
+        "P4": "Final Damage +2.0%",
+        "P5": "Final Damage +2.5%",
+        "P6": "Final Damage +3.0%",
+        "P7": "Final Damage +3.5%",
+        "P8": "Final Damage +4.0%",
+        "P9": "Final Damage +4.5%",
+        "P10": "Final Damage +5.0%"
+      }
     },
     {
       "n": "Skeleton Spellblade",
       "q": [
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "When cumulative skill damage received within 1 turn exceeds 70% of max HP, gain a skill shield equal to 50% of the protagonist's max HP. Can trigger at most 1 time per battle.",
+        "Legendary": "After a normal attack, gain a skill shield equal to 25% of the protagonist's attack, up to 3 times per turn.",
+        "Mythic": "When cumulative skill damage received within 1 turn exceeds 50% of max HP, gain a skill shield equal to 100% of the protagonist's max HP. Can trigger at most 1 time per battle."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.5%",
+        "P2": "Final Damage +1.0%",
+        "P3": "Final Damage +1.5%",
+        "P4": "Final Damage +2.0%",
+        "P5": "Final Damage +2.5%",
+        "P6": "Final Damage +3.0%",
+        "P7": "Final Damage +3.5%",
+        "P8": "Final Damage +4.0%",
+        "P9": "Final Damage +4.5%",
+        "P10": "Final Damage +5.0%"
+      }
     },
     {
       "n": "Stone Golem",
       "q": [
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [Basic Attack Shield), Shield Value +10%",
+        "Legendary": "Start with [Basic Attack Shield+), Shield Value +10%",
+        "Mythic": "Global DMG increase by +10% when shielded"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
     },
     {
       "n": "Undead Swordsman",
       "q": [
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Global Basic ATK DMG +10%",
+        "Legendary": "Global Basic ATK DMG +10%",
+        "Mythic": "15% chance for Basic ATK Crits to become Super Crit, doubling crit DMG"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.5%",
+        "P2": "Final Damage +1.0%",
+        "P3": "Final Damage +1.5%",
+        "P4": "Final Damage +2.0%",
+        "P5": "Final Damage +2.5%",
+        "P6": "Final Damage +3.0%",
+        "P7": "Final Damage +3.5%",
+        "P8": "Final Damage +4.0%",
+        "P9": "Final Damage +4.5%",
+        "P10": "Final Damage +5.0%"
+      }
     },
     {
       "n": "Wild Vulture",
@@ -1285,7 +1646,26 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Combo rate +10%",
+        "Legendary": "Max combo count +1",
+        "Mythic": "Each combo increases global combo DMG by +5%, stacks up to 20 times"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.5%",
+        "P2": "Final Damage +1.0%",
+        "P3": "Final Damage +1.5%",
+        "P4": "Final Damage +2.0%",
+        "P5": "Final Damage +2.5%",
+        "P6": "Final Damage +3.0%",
+        "P7": "Final Damage +3.5%",
+        "P8": "Final Damage +4.0%",
+        "P9": "Final Damage +4.5%",
+        "P10": "Final Damage +5.0%"
+      }
     },
     {
       "n": "Wise Archdemon",
@@ -1293,77 +1673,286 @@
         "Epic",
         "Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": "Global HP +5%",
+        "Rare": "Global HP +10%",
+        "Epic": "Global Fire, Lightning, Ice, and Poison Damage +10%",
+        "Legendary": "Global Fire, Lightning, Ice, and Poison Damage +20%",
+        "Mythic": "Skill Crit Rate +15%"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
     },
     {
       "n": "Bone Club Golem",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [Heavy Blow]",
+        "Legendary": "Critical DMG +40%",
+        "Mythic": "Start with [Heavy Blow+]"
+      },
+      "polarization_effects": {
+        "P1": "ATK% +3.0",
+        "P2": "ATK% +6.0",
+        "P3": "ATK% +9.0",
+        "P4": "ATK% +12.0",
+        "P5": "ATK% +15.0%",
+        "P6": "ATK% +18.0",
+        "P7": "ATK% +21.0",
+        "P8": "ATK% +24.0",
+        "P9": "ATK% +27.0",
+        "P10": "ATK% +30.0"
+      }
     },
     {
       "n": "Dwarf Gunner",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Global DMG to shielded enemies +10%",
+        "Legendary": "Global DMG to shielded enemies +10%",
+        "Mythic": "Global DMG to shielded enemies +20%"
+      },
+      "polarization_effects": {
+        "P1": "ATK% +3.0",
+        "P2": "ATK% +6.0",
+        "P3": "ATK% +9.0",
+        "P4": "ATK% +12.0",
+        "P5": "ATK% +15.0%",
+        "P6": "ATK% +18.0",
+        "P7": "ATK% +21.0",
+        "P8": "ATK% +24.0",
+        "P9": "ATK% +27.0",
+        "P10": "ATK% +30.0"
+      }
     },
     {
       "n": "Goblin Warrior",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Turn Light Spear ]",
+        "Legendary": "Global Light Spear DMG +10%",
+        "Mythic": "Start with [ Turn Light Spear+ ]"
+      },
+      "polarization_effects": {
+        "P1": "HP% +3.0",
+        "P2": "HP% +6.0",
+        "P3": "HP% +9.0",
+        "P4": "HP% +12.0",
+        "P5": "HP% +15.0%",
+        "P6": "HP% +18.0",
+        "P7": "HP% +21.0",
+        "P8": "HP% +24.0",
+        "P9": "HP% +27.0",
+        "P10": "HP% +30.0"
+      }
     },
     {
       "n": "Green Slime",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Each Basic Attack or Ultimate: 25% chance to reduce enemy healing by -30%",
+        "Legendary": "Healing effectiveness -20%",
+        "Mythic": "Trigger chance +50%"
+      },
+      "polarization_effects": {
+        "P1": "HP% +3.0",
+        "P2": "HP% +6.0",
+        "P3": "HP% +9.0",
+        "P4": "HP% +12.0",
+        "P5": "HP% +15.0%",
+        "P6": "HP% +18.0",
+        "P7": "HP% +21.0",
+        "P8": "HP% +24.0",
+        "P9": "HP% +27.0",
+        "P10": "HP% +30.0"
+      }
     },
     {
       "n": "Harpy",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Turn Lightning ]",
+        "Legendary": "Global Lightning DMG +10%",
+        "Mythic": "Start with [ Turn Lightning+ ]"
+      },
+      "polarization_effects": {
+        "P1": "HP% +3.0",
+        "P2": "HP% +6.0",
+        "P3": "HP% +9.0",
+        "P4": "HP% +12.0",
+        "P5": "HP% +15.0%",
+        "P6": "HP% +18.0",
+        "P7": "HP% +21.0",
+        "P8": "HP% +24.0",
+        "P9": "HP% +27.0",
+        "P10": "HP% +30.0"
+      }
     },
     {
       "n": "Hellhound",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Turn Firewave ]",
+        "Legendary": "Burning DMG +15%",
+        "Mythic": "Start with [ Turn Firewave+ ]"
+      },
+      "polarization_effects": {
+        "P1": "ATK% +3.0",
+        "P2": "ATK% +6.0",
+        "P3": "ATK% +9.0",
+        "P4": "ATK% +12.0",
+        "P5": "ATK% +15.0%",
+        "P6": "ATK% +18.0",
+        "P7": "ATK% +21.0",
+        "P8": "ATK% +24.0",
+        "P9": "ATK% +27.0",
+        "P10": "ATK% +30.0"
+      }
     },
     {
       "n": "Nimble Murloc",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Combo ]",
+        "Legendary": "Global Combo DMG +10%",
+        "Mythic": "Start with [ Combo+ ]"
+      },
+      "polarization_effects": {
+        "P1": "HP% +3.0",
+        "P2": "HP% +6.0",
+        "P3": "HP% +9.0",
+        "P4": "HP% +12.0",
+        "P5": "HP% +15.0%",
+        "P6": "HP% +18.0",
+        "P7": "HP% +21.0",
+        "P8": "HP% +24.0",
+        "P9": "HP% +27.0",
+        "P10": "HP% +30.0"
+      }
     },
     {
       "n": "Pirate Swordsman",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Basic Attack Sword Aura ]",
+        "Legendary": "Global Sword Aura DMG +10%",
+        "Mythic": "Start with [ Basic Attack Sword Aura+ ]"
+      },
+      "polarization_effects": {
+        "P1": "ATK% +3.0",
+        "P2": "ATK% +6.0",
+        "P3": "ATK% +9.0",
+        "P4": "ATK% +12.0",
+        "P5": "ATK% +15.0%",
+        "P6": "ATK% +18.0",
+        "P7": "ATK% +21.0",
+        "P8": "ATK% +24.0",
+        "P9": "ATK% +27.0",
+        "P10": "ATK% +30.0"
+      }
     },
     {
       "n": "Sharp Rogue",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Release [ Flame Dagger ] every 4 turns. [ Flame Dagger ] has a 50% chance to trigger [ Flame Wave ].",
+        "Legendary": "Release [ Flame Dagger ] every 3 turns.",
+        "Mythic": "All Daggers may trigger Fire Wave."
+      },
+      "polarization_effects": {
+        "P1": "ATK% +3.0",
+        "P2": "ATK% +6.0",
+        "P3": "ATK% +9.0",
+        "P4": "ATK% +12.0",
+        "P5": "ATK% +15.0%",
+        "P6": "ATK% +18.0",
+        "P7": "ATK% +21.0",
+        "P8": "ATK% +24.0",
+        "P9": "ATK% +27.0",
+        "P10": "ATK% +30.0"
+      }
     },
     {
       "n": "Spiked Club Cactus",
       "q": [
         "Epic/Legendary",
         "Mythic"
-      ]
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global HP +10%",
+        "Epic": "Start with [ Counter ]",
+        "Legendary": "Global Counter DMG +10%",
+        "Mythic": "Start with [ Counter+ ]"
+      },
+      "polarization_effects": {
+        "P1": "HP% +3.0",
+        "P2": "HP% +6.0",
+        "P3": "HP% +9.0",
+        "P4": "HP% +12.0",
+        "P5": "HP% +15.0%",
+        "P6": "HP% +18.0",
+        "P7": "HP% +21.0",
+        "P8": "HP% +24.0",
+        "P9": "HP% +27.0",
+        "P10": "HP% +30.0"
+      }
     }
   ]
 }
