@@ -213,8 +213,20 @@ body {
   margin: 0 0 4px;
   padding-top: 8px;
 }
-.page-section + .page-section .section-title { margin-top: 12px; border-top: 1px solid var(--hairline); padding-top: 40px; }
+.page-section + .page-section .section-title,
+.page-section + .page-section .section-title-row { margin-top: 12px; border-top: 1px solid var(--hairline); padding-top: 40px; }
 .section-desc { color: var(--ink-dim); font-size: 13px; margin-bottom: 18px; max-width: 640px; line-height: 1.5; }
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 4px;
+  padding-top: 8px;
+}
+.section-title-row .section-title { margin: 0; padding: 0; }
+.section-title-row .clear-all-btn { margin-bottom: 0; flex-shrink: 0; }
 
 .toolbar {
   display: flex;
@@ -222,6 +234,15 @@ body {
   align-items: center;
   margin-bottom: 18px;
   flex-wrap: wrap;
+}
+.toolbar-stacked { flex-direction: column; align-items: stretch; }
+.toolbar-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.toolbar-row-label {
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  min-width: 44px;
 }
 .search-input {
   background: var(--bg-panel);
@@ -262,6 +283,11 @@ body {
   border-radius: 4px;
   padding: 14px 14px 12px;
   position: relative;
+  min-width: 0; /* prevents a grid item's own content (long chip rows,
+                   stepper controls, etc) from forcing it wider than its
+                   grid track — the classic cause of a card silently
+                   overflowing past the page's intended 16px mobile
+                   padding even though nothing looks obviously wrong */
 }
 .item-card.r-Rare, .item-card.r-Uncommon { border-top-color: var(--rarity-rare); }
 .item-card.r-Epic { border-top-color: var(--rarity-epic); }
@@ -342,6 +368,7 @@ body {
   font-size: 12px;
   color: var(--ink-dim);
   line-height: 1.5;
+  margin-top: 8px;
   margin-bottom: 10px;
   min-height: 32px;
 }
@@ -471,6 +498,10 @@ body {
   border: 1px solid var(--hairline);
   border-radius: 6px;
   padding: 16px 18px;
+  min-width: 0; /* same grid-item overflow issue as .item-card — a card
+                   can be forced wider than its track by its own content
+                   (member rows, tier pips) unless explicitly allowed to
+                   shrink below that content's natural width */
 }
 .set-card-header {
   display: flex;
@@ -724,7 +755,30 @@ body {
 .modal-star-input::-webkit-outer-spin-button,
 .modal-star-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .modal-note { font-size: 11.5px; color: var(--ink-faint); text-align: center; margin-bottom: 12px; }
+.modal-confirm-text { font-size: 13.5px; color: var(--ink-dim); line-height: 1.5; margin-bottom: 4px; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+.bulk-action-btn.destructive {
+  background: #D64545;
+  border-color: #D64545;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.bulk-action-btn.destructive:hover { background: #B83838; border-color: #B83838; color: #FFFFFF; }
+
+.clear-all-btn {
+  display: block;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--ink-dim);
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.clear-all-btn:hover { border-color: #D64545; color: #D64545; }
 
 
 /* ---- Mobile breakpoint: 844px (roughly mobile landscape width) is the
@@ -793,7 +847,15 @@ body {
     transform: translateY(-150%);
   }
 
-  .collection-shell { flex-direction: column; }
+  /* align-items: flex-start on .collection-shell (set for the desktop row
+     layout) has a very different effect once flex-direction switches to
+     column here: in a column flex container, align-items governs the
+     WIDTH axis, not height, and flex-start means children size to their
+     own preferred content width instead of stretching to fill the parent.
+     That's what was actually causing collection-content — and everything
+     inside it — to render wider than the viewport, not any individual
+     card. Overriding back to stretch fixes it at the source. */
+  .collection-shell { flex-direction: column; align-items: stretch; }
   .collection-shell .sidenav { display: none; }
 
   .collection-content { padding: 20px 16px 80px; }
@@ -880,7 +942,7 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 8px;
 }
 .equip-card-thumb {
   width: 44px;
@@ -901,7 +963,7 @@ body {
   font-size: 11.5px;
   color: var(--ink-faint);
   line-height: 1.5;
-  margin: -6px 0 18px;
+  margin: 0 0 8px;
 }
 .equip-collection-link { color: var(--accent); text-decoration: underline; cursor: pointer; }
 .equip-collection-link:hover { color: var(--accent-dim); }
@@ -909,7 +971,7 @@ body {
 .equip-field-label {
   font-size: 12px;
   color: var(--ink-dim);
-  margin: 18px 0 6px;
+  margin: 8px 0 8px;
 }
 .equip-field-label:first-of-type { margin-top: 0; }
 
@@ -931,13 +993,13 @@ body {
 .equip-select:disabled { opacity: 0.45; cursor: not-allowed; }
 .equip-select:focus { outline: none; border-color: var(--accent); }
 
-.equip-divider { border: none; border-top: 1px solid var(--hairline); margin: 24px 0; }
+.equip-divider { border: none; border-top: 1px solid var(--hairline); margin: 8px 0; }
 
 .equip-section-title {
   font-family: var(--font-display);
   font-size: 15px;
   color: var(--ink);
-  margin-bottom: 6px;
+  margin: 8px 0 8px;
 }
 
 .equip-inline-row {
@@ -958,6 +1020,57 @@ body {
   padding: 10px 12px;
 }
 .equip-combo-input:focus { outline: none; border-color: var(--accent); }
+
+.search-combo {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+.search-combo .equip-combo-input { padding-right: 30px; }
+.search-combo-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--ink-faint);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+.search-combo-clear:hover { color: var(--ink); }
+.search-combo-clear.hidden { display: none; }
+.search-combo-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 30;
+}
+.search-combo-dropdown.hidden { display: none; }
+.search-combo-option {
+  padding: 9px 12px;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.search-combo-option:hover { background: var(--bg-panel-2); }
+.search-combo-empty {
+  padding: 9px 12px;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
 .equip-num-input {
   width: 64px;
   background: var(--bg-panel-2);
@@ -1004,7 +1117,7 @@ body {
   font-size: 12px;
   color: var(--ink-faint);
   font-style: italic;
-  margin-top: 6px;
+  margin-top: 8px;
   line-height: 1.4;
 }
 .equip-arcana-writeup {
@@ -1012,6 +1125,4 @@ body {
   color: var(--ink-faint);
   line-height: 1.6;
   margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--hairline);
 }

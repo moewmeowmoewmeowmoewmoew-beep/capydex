@@ -245,10 +245,10 @@ function buildTierGroups(items, field = 'tier') {
 }
 
 const COLLECTION_SECTIONS = [
-  { id: 'relics', label: 'Relics', build: renderRelics, sub: () => buildTierGroups(DB.relics, 'rarity') },
-  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity') },
-  { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')) },
-  { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')) },
+  { id: 'relics', label: 'Relics', build: renderRelics, sub: () => buildTierGroups(DB.relics, 'rarity'), clearAll: () => clearAllRelics() },
+  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity'), clearAll: () => clearAllCollectibles() },
+  { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('mounts') },
+  { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('artifacts') },
   // Pets deliberately hidden from Collection for now (still fully built —
   // Equipment tab's Pet card already covers pet selection/arcana/skills).
   // Remind J this section still exists next time Collection scope comes up.
@@ -332,7 +332,7 @@ function buildArtifactsSectionContent() {
 }
 
 const EQUIPMENT_SECTIONS = [
-  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent },
+  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent, clearAll: () => clearAllEquipment() },
   { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
   { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
   { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
@@ -340,6 +340,47 @@ const EQUIPMENT_SECTIONS = [
 
 function renderEquipmentShell() {
   return renderSectionShell(EQUIPMENT_SECTIONS);
+}
+
+function clearAllEquipment() {
+  state.equipment = {};
+  state.petSlot = { itemName: '', arcana: -1, level: 0 };
+  state.mountSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
+  state.mountMainSlot = { itemIdx: null };
+  state.artifactSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
+  state.artifactMainSlot = { itemIdx: null };
+  saveState();
+  render();
+}
+
+// Reusable "Clear All" trigger + confirmation modal, used at the top of
+// every Collection section and the whole Equipment tab. Destructive confirm
+// button is visually distinct from the neutral cancel button — the trigger
+// itself stays low-key until someone actually commits to the modal.
+function renderClearAllButton(label, onConfirm) {
+  return el('button', {
+    class: 'clear-all-btn',
+    onclick: () => openClearAllModal(label, onConfirm),
+  }, 'Clear All');
+}
+
+function openClearAllModal(label, onConfirm) {
+  const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
+  const box = el('div', { class: 'modal-box' }, [
+    el('div', { class: 'modal-title' }, `Clear ${label}?`),
+    el('p', { class: 'modal-confirm-text' },
+      `All the data you've entered in "${label}" will be cleared. Are you sure you want to continue?`),
+    el('div', { class: 'modal-actions' }, [
+      el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
+      el('button', {
+        class: 'bulk-action-btn destructive',
+        onclick: () => { onConfirm(); closeModal(); },
+      }, 'Continue'),
+    ]),
+  ]);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  function closeModal() { overlay.remove(); }
 }
 
 // Jumps to a Collection section from a different tab — switches tabs first,
@@ -355,6 +396,64 @@ function goToCollectionSection(sectionId) {
 }
 
 /* ---------- Pet card ---------- */
+// A proper custom combobox — text input + a clickable filtered dropdown —
+// replacing the native <input list> + <datalist> pattern, which has real
+// cross-browser reliability problems (Safari's support is especially
+// unreliable) and had no way to actually clear a selection once made: the
+// box could look empty while the old value stayed active underneath.
+// Filtering while typing updates only the dropdown's own DOM locally, not
+// a full app re-render, so the input never loses focus mid-type.
+function renderSearchCombo({ value, options, placeholder, onSelect, onClear }) {
+  const container = el('div', { class: 'search-combo' });
+  const input = el('input', {
+    type: 'text', class: 'equip-combo-input', placeholder, value: value || '',
+    autocomplete: 'off',
+  });
+  const clearBtn = el('button', {
+    type: 'button', class: 'search-combo-clear' + (value ? '' : ' hidden'),
+    onclick: (e) => { e.stopPropagation(); input.value = ''; closeDropdown(); if (onClear) onClear(); },
+  }, '×');
+  const dropdown = el('div', { class: 'search-combo-dropdown hidden' });
+
+  function closeDropdown() { dropdown.classList.add('hidden'); dropdown.innerHTML = ''; }
+
+  function openDropdown(filterText) {
+    const q = (filterText || '').toLowerCase();
+    const matches = options.filter(o => o.toLowerCase().includes(q)).slice(0, 60);
+    dropdown.innerHTML = '';
+    if (!matches.length) {
+      dropdown.appendChild(el('div', { class: 'search-combo-empty' }, 'No matches'));
+    } else {
+      matches.forEach(opt => {
+        dropdown.appendChild(el('div', {
+          class: 'search-combo-option',
+          onmousedown: (e) => {
+            // mousedown (not click) fires before the input's blur, so the
+            // selection registers before the dropdown gets torn down
+            e.preventDefault();
+            input.value = opt;
+            closeDropdown();
+            onSelect(opt);
+          },
+        }, opt));
+      });
+    }
+    dropdown.classList.remove('hidden');
+  }
+
+  input.addEventListener('focus', () => openDropdown(input.value));
+  input.addEventListener('input', () => {
+    clearBtn.classList.toggle('hidden', !input.value);
+    openDropdown(input.value);
+  });
+  input.addEventListener('blur', () => closeDropdown());
+
+  container.appendChild(input);
+  container.appendChild(clearBtn);
+  container.appendChild(dropdown);
+  return container;
+}
+
 function renderEquipPetCard() {
   const s = state.petSlot;
   const pets = DB.pets || [];
@@ -367,23 +466,23 @@ function renderEquipPetCard() {
   card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, 'Pet')]));
 
   card.appendChild(equipFieldLabel('Pet'));
-  const listId = 'pet-slot-search';
-  const datalist = el('datalist', { id: listId }, pets.map(p => el('option', { value: p.n })));
-  const input = el('input', {
-    class: 'equip-combo-input', list: listId, placeholder: 'Search pets…',
-    value: s.itemName || '',
-  });
-  input.addEventListener('input', (e) => {
-    const match = pets.find(p => p.n === e.target.value);
-    if (match) {
-      s.itemName = match.n;
+  card.appendChild(renderSearchCombo({
+    value: s.itemName,
+    options: pets.map(p => p.n),
+    placeholder: 'Search pets…',
+    onSelect: (name) => {
+      s.itemName = name;
       s.arcana = -1;
       saveState();
       render();
-    }
-  });
-  card.appendChild(datalist);
-  card.appendChild(input);
+    },
+    onClear: () => {
+      s.itemName = '';
+      s.arcana = -1;
+      saveState();
+      render();
+    },
+  }));
 
   if (!pet) return card;
 
@@ -633,7 +732,7 @@ function renderEquipCard(slotDef) {
   const gemOptions = DB.gems[slotDef.gemKey] || [];
   s.gems.forEach((slot, i) => {
     card.appendChild(equipFieldLabel(`Slot ${i + 1}`));
-    card.appendChild(renderGemSlot(slotDef.id, i, slot, gemOptions));
+    card.appendChild(renderGemSlot(slotDef.id, i, slot, gemOptions, s.gems));
   });
 
   return card;
@@ -648,28 +747,23 @@ function psiOptionLabel(o) {
 }
 
 function renderPsionicSlot(slotId, slotIdx, slotState, options) {
-  const listId = `psi-opts-${slotId}-${slotIdx}`;
   const wrap = el('div', { class: 'equip-inline-row' });
 
-  // Normal options first, then Special — datalist has no real <optgroup>
-  // support across browsers, so the category is folded into the visible
-  // label instead ("Stat Name — Normal" / "— Special").
+  // Normal options first, then Special — folded into the visible label
+  // since there's no dropdown grouping in a custom combo the way <select>
+  // has <optgroup> ("Stat Name — Normal" / "— Special").
   const sortedOptions = [...options].sort((a, b) => (a.k === b.k ? 0 : a.k === 'n' ? -1 : 1));
-  const datalist = el('datalist', { id: listId },
-    sortedOptions.map(o => el('option', { value: psiOptionLabel(o) })));
 
   const currentMeta = options.find(o => o.c === slotState.stat);
-  const input = el('input', {
-    class: 'equip-combo-input', list: listId, placeholder: 'Search stat…',
+  const combo = renderSearchCombo({
     value: currentMeta ? psiOptionLabel(currentMeta) : '',
-  });
-  input.addEventListener('input', (e) => {
-    const match = options.find(o => psiOptionLabel(o) === e.target.value);
-    if (match) {
-      slotState.stat = match.c;
-      saveState();
-      render();
-    }
+    options: sortedOptions.map(psiOptionLabel),
+    placeholder: 'Search stat…',
+    onSelect: (label) => {
+      const match = options.find(o => psiOptionLabel(o) === label);
+      if (match) { slotState.stat = match.c; saveState(); render(); }
+    },
+    onClear: () => { slotState.stat = ''; saveState(); render(); },
   });
 
   const valInput = el('input', {
@@ -678,8 +772,7 @@ function renderPsionicSlot(slotId, slotIdx, slotState, options) {
     onblur: () => render(),
   });
 
-  wrap.appendChild(datalist);
-  wrap.appendChild(input);
+  wrap.appendChild(combo);
   wrap.appendChild(el('div', { class: 'equip-pct-input-group' }, [valInput, el('span', {}, '%')]));
 
   const container = el('div', {}, [wrap]);
@@ -690,25 +783,36 @@ function renderPsionicSlot(slotId, slotIdx, slotState, options) {
   return container;
 }
 
-function renderGemSlot(slotId, slotIdx, slotState, options) {
-  const listId = `gem-opts-${slotId}-${slotIdx}`;
+function gemHelperText(name, val) {
+  const n = name.toLowerCase();
+  if (n.includes('fluctuation')) return `Varies randomly, up to \u00b1${val}% — exact bounds not confirmed from source data, treat as an approximate range.`;
+  if (n.includes('chance')) return `${val}% chance to trigger.`;
+  return null;
+}
+
+function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
   const wrap = el('div', { class: 'equip-inline-row' });
 
-  const datalist = el('datalist', { id: listId },
-    options.map(o => el('option', { value: o.n })));
+  // A gem type can only be socketed once per item — having the same stat at
+  // two different rarities on one weapon doesn't make sense. Exclude gems
+  // already placed in any OTHER slot on this same card from this slot's
+  // search results.
+  const usedElsewhere = new Set(allSlots.filter((_, i) => i !== slotIdx).map(sl => sl.gemId).filter(Boolean));
+  const availableOptions = options.filter(o => !usedElsewhere.has(o.id));
 
-  const input = el('input', {
-    class: 'equip-combo-input', list: listId, placeholder: 'Search gem…',
+  const combo = renderSearchCombo({
     value: slotState.gemId ? (options.find(o => o.id === slotState.gemId) || {}).n || '' : '',
-  });
-  input.addEventListener('input', (e) => {
-    const match = options.find(o => o.n === e.target.value);
-    if (match) {
+    options: availableOptions.map(o => o.n),
+    placeholder: 'Search gem…',
+    onSelect: (name) => {
+      const match = availableOptions.find(o => o.n === name);
+      if (!match) return;
       slotState.gemId = match.id;
-      if (!slotState.tier) slotState.tier = 9; // default Peerless
+      if (!slotState.tier) slotState.tier = 9; // default Peerless — every gem's data now runs the full 9 tiers
       saveState();
       render();
-    }
+    },
+    onClear: () => { slotState.gemId = ''; saveState(); render(); },
   });
 
   const tierSelect = el('select', { class: 'equip-select equip-tier-select', disabled: slotState.gemId ? null : 'true' },
@@ -719,8 +823,7 @@ function renderGemSlot(slotId, slotIdx, slotState, options) {
     ? el('img', { class: 'equip-gem-tier-icon', src: `assets/images/gem_tiers/${slugify(GEM_TIER_NAMES[slotState.tier - 1])}.webp`, onerror: (e) => { e.target.style.visibility = 'hidden'; } })
     : el('div', { class: 'equip-gem-tier-icon placeholder' });
 
-  wrap.appendChild(datalist);
-  wrap.appendChild(input);
+  wrap.appendChild(combo);
   wrap.appendChild(tierSelect);
   wrap.appendChild(tierIcon);
 
@@ -730,6 +833,8 @@ function renderGemSlot(slotId, slotIdx, slotState, options) {
     const val = meta && meta.t ? meta.t[slotState.tier - 1] : null;
     if (meta && val != null) {
       container.appendChild(el('div', { class: 'equip-writeup' }, `${meta.n} +${val}%`));
+      const helper = gemHelperText(meta.n, val);
+      if (helper) container.appendChild(el('div', { class: 'equip-writeup', style: 'color:var(--ink-faint);font-size:11px;margin-top:2px;' }, helper));
     }
   }
   return container;
@@ -811,7 +916,14 @@ function renderSectionShell(sections) {
   const content = el('div', { class: 'collection-content' });
   sections.forEach(sec => {
     const section = el('section', { id: sec.id, class: 'page-section' });
-    section.appendChild(el('h2', { class: 'section-title' }, sec.label));
+    if (sec.clearAll) {
+      section.appendChild(el('div', { class: 'section-title-row' }, [
+        el('h2', { class: 'section-title' }, sec.label),
+        renderClearAllButton(sec.label, sec.clearAll),
+      ]));
+    } else {
+      section.appendChild(el('h2', { class: 'section-title' }, sec.label));
+    }
     section.appendChild(sec.build());
     content.appendChild(section);
   });
@@ -1136,6 +1248,13 @@ function openStarAssignModal(kind) {
   function closeModal() { overlay.remove(); }
 }
 
+function clearAllRelics() {
+  state.relicOwned = {};
+  state.relicStars = {};
+  saveState();
+  render();
+}
+
 function renderRelics() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
@@ -1219,7 +1338,7 @@ function renderRelicCard(relic) {
       el('div', { class: 'item-name' }, relic.n),
     ]),
   ]));
-  card.appendChild(el('div', { class: 'item-rarity' }, relic.rarity + (relic.type ? ' · ' + relic.type : '')));
+  card.appendChild(el('div', { class: 'item-rarity' }, relic.rarity));
 
   const stepper = renderStepper(
     `relic-${relic.n}`, star, 0, 10,
@@ -1237,9 +1356,22 @@ function renderRelicCard(relic) {
   ]));
 
   if (owned) {
-    if (relic.effect) {
+    // Relics with base/5★/10★ effect text (35 of them, from the "Relic
+    // Equip effect" sheet) should show whichever tier actually matches the
+    // current star level — not always the 10★ version regardless of where
+    // the star stepper actually sits. Relics with only a single "effect"
+    // field (no tiered variants) keep showing that one either way, since
+    // it's all the source data has.
+    let effectText = relic.effect;
+    let effectLabel = '10★';
+    if (relic.effect_base) {
+      if (star < 5) { effectText = relic.effect_base; effectLabel = '0★'; }
+      else if (star < 10) { effectText = relic.effect_5star; effectLabel = '5★'; }
+      else { effectText = relic.effect; effectLabel = '10★'; }
+    }
+    if (effectText) {
       card.appendChild(el('div', { class: 'item-effect' },
-        el('span', {}, ['10★: ', renderTextWithSkillTags(relic.effect)])));
+        el('span', {}, [`${effectLabel}: `, renderTextWithSkillTags(effectText)])));
     }
 
     if (relic.star_stats) {
@@ -1292,6 +1424,13 @@ function renderRelicSetPanel(set) {
 /* ---------- Collectibles ---------- */
 let collectibleSearch = '';
 let collectibleRarityFilter = 'All';
+
+function clearAllCollectibles() {
+  state.collectibleOwned = {};
+  state.collectibleStars = {};
+  saveState();
+  render();
+}
 
 function renderCollectibles() {
   const wrap = el('div', {});
@@ -1436,6 +1575,13 @@ const mountArtifactFilters = {
   artifacts: { search: '', tier: 'All', owned: 'All' },
 };
 
+function clearAllMountsOrArtifacts(kind) {
+  const bucketKey = kind === 'mounts' ? 'mountState' : 'artifactState';
+  state[bucketKey] = {};
+  saveState();
+  render();
+}
+
 function renderMountsOrArtifacts(kind) {
   const isMount = kind === 'mounts';
   const bucket = isMount ? 'mountState' : 'artifactState';
@@ -1447,13 +1593,15 @@ function renderMountsOrArtifacts(kind) {
       ? 'Transformation pool. Stat deltas from Star and Awaken levels add on top of base stats, same as artifacts — the card shows your totals live as you adjust the steppers.'
       : 'Equipped artifact pool. Stat deltas from Star and Awaken levels add on top of base stats — the card shows your totals live as you adjust the steppers.'));
 
-  const toolbar = el('div', { class: 'toolbar' });
+  const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
   const search = el('input', {
     class: 'search-input', type: 'text', placeholder: `Search ${kind}…`,
     oninput: (e) => { filters.search = e.target.value.toLowerCase(); renderMountArtifactGroups(kind, groupsWrap); },
   });
   toolbar.appendChild(search);
 
+  const tierRow = el('div', { class: 'toolbar-row' });
+  tierRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Tier'));
   const allItems = (isMount ? DB.mounts : DB.artifacts).filter(x => x.n !== 'None');
   const tierOptions = ['All', ...buildTierGroups(allItems).map(g => g.tier)];
   tierOptions.forEach(t => {
@@ -1461,33 +1609,34 @@ function renderMountsOrArtifacts(kind) {
       class: 'filter-chip' + (filters.tier === t ? ' active' : ''),
       onclick: () => {
         filters.tier = t;
-        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        tierRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         renderMountArtifactGroups(kind, groupsWrap);
       },
     }, t);
-    chip.dataset.tier = 'true';
-    toolbar.appendChild(chip);
+    tierRow.appendChild(chip);
   });
+  toolbar.appendChild(tierRow);
 
+  const ownedRow = el('div', { class: 'toolbar-row' });
+  ownedRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Owned'));
   ['All', 'Owned', 'Not Owned'].forEach(o => {
     const chip = el('button', {
       class: 'filter-chip' + (filters.owned === o ? ' active' : ''),
       onclick: () => {
         filters.owned = o;
-        toolbar.querySelectorAll('.filter-chip[data-owned]').forEach(c => c.classList.remove('active'));
+        ownedRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         renderMountArtifactGroups(kind, groupsWrap);
       },
     }, o);
-    chip.dataset.owned = 'true';
-    toolbar.appendChild(chip);
+    ownedRow.appendChild(chip);
   });
-
-  toolbar.appendChild(el('button', {
+  ownedRow.appendChild(el('button', {
     class: 'filter-chip' + (selectMode[kind] ? ' active' : ''),
     onclick: () => toggleSelectMode(kind),
   }, selectMode[kind] ? 'Cancel selecting' : 'Select multiple…'));
+  toolbar.appendChild(ownedRow);
   wrap.appendChild(toolbar);
 
   const groupsWrap = el('div', {});
