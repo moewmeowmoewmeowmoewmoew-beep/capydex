@@ -202,7 +202,13 @@ body {
 
 /* ---- Layout ---- */
 #app-root { min-height: calc(100vh - 61px); }
-.collection-content { flex: 1; min-width: 0; padding: 24px 32px 100px; max-width: 1100px; margin: 0 auto; }
+/* .collection-content deliberately doesn't center itself the way the
+   placeholder-view/other-pages rule does — it sits inside .collection-shell
+   next to a 220px sidenav, so centering it in the *remaining* flex space
+   (rather than the full viewport) made its left edge drift out of
+   alignment with every other page's content on wide screens. Left-aligned
+   with the same padding keeps both consistent instead. */
+.collection-content { flex: 1; min-width: 0; padding: 24px 32px 100px; max-width: 1100px; }
 .placeholder-view, #app-root > div:not(.collection-shell) { padding: 24px 32px 100px; max-width: 1100px; margin: 0 auto; }
 
 .page-section { scroll-margin-top: 70px; }
@@ -824,7 +830,9 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
+  margin-bottom: 30px;
 }
+.equip-grid-single { grid-template-columns: 1fr; }
 @media (max-width: 844px) {
   .equip-grid { grid-template-columns: 1fr; }
 }
@@ -1253,7 +1261,10 @@ const COLLECTION_SECTIONS = [
   { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity') },
   { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')) },
   { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')) },
-  { id: 'pets', label: 'Pets', build: renderPets, sub: () => buildTierGroups(DB.pets) },
+  // Pets deliberately hidden from Collection for now (still fully built —
+  // Equipment tab's Pet card already covers pet selection/arcana/skills).
+  // Remind J this section still exists next time Collection scope comes up.
+  // { id: 'pets', label: 'Pets', build: renderPets, sub: () => buildTierGroups(DB.pets) },
 ];
 
 function renderPlaceholder(label) {
@@ -1305,18 +1316,22 @@ function renderEquipment() {
 
   wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Mounts'));
   wrap.appendChild(el('p', { class: 'section-desc' },
-    '3 deployed mounts (each shows its Awaken skill) plus 1 main mount (shows its Star skill).'));
+    'Main mount (its Skill depends on Stars) plus 3 deployed mounts (each shows its Awaken-based skill).'));
+  const mountMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  mountMainGrid.appendChild(renderDeployCard('mount', 'star', null));
+  wrap.appendChild(mountMainGrid);
   const mountGrid = el('div', { class: 'equip-grid' });
   [0, 1, 2].forEach(i => mountGrid.appendChild(renderDeployCard('mount', 'awaken', i)));
-  mountGrid.appendChild(renderDeployCard('mount', 'star', null));
   wrap.appendChild(mountGrid);
 
   wrap.appendChild(el('div', { class: 'section-title', style: 'font-size:20px;margin-top:32px;' }, 'Artifacts'));
   wrap.appendChild(el('p', { class: 'section-desc' },
-    '3 deployed artifacts (each shows its Awaken skill) plus 1 main artifact (shows its Star skill).'));
+    'Main artifact (its Skill depends on Stars) plus 3 deployed artifacts (each shows its Awaken-based skill).'));
+  const artifactMainGrid = el('div', { class: 'equip-grid equip-grid-single' });
+  artifactMainGrid.appendChild(renderDeployCard('artifact', 'star', null));
+  wrap.appendChild(artifactMainGrid);
   const artifactGrid = el('div', { class: 'equip-grid' });
   [0, 1, 2].forEach(i => artifactGrid.appendChild(renderDeployCard('artifact', 'awaken', i)));
-  artifactGrid.appendChild(renderDeployCard('artifact', 'star', null));
   wrap.appendChild(artifactGrid);
 
   return wrap;
@@ -1465,9 +1480,6 @@ function renderDeployCard(kind, mode, slotIndex) {
 
   if (!item) return card;
 
-  card.appendChild(equipFieldLabel('Tier'));
-  card.appendChild(el('div', { class: 'equip-writeup' }, item.tier || '—'));
-
   if (isAwakenMode) {
     card.appendChild(equipFieldLabel('Awaken'));
     card.appendChild(el('div', { class: 'equip-writeup' }, `A${itemState.awaken}`));
@@ -1481,7 +1493,7 @@ function renderDeployCard(kind, mode, slotIndex) {
     card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
     if (item.star_effects) {
       const starEff = item.star_effects[String(itemState.stars)];
-      card.appendChild(equipFieldLabel('Star Skill'));
+      card.appendChild(equipFieldLabel('Skill'));
       card.appendChild(el('div', { class: 'equip-writeup' }, starEff || '—'));
     }
   }
@@ -1878,24 +1890,57 @@ function renderSetCard({ kind, name, statLabel, tierLabels, vals, members, allOw
    ============================================================ */
 const BULK_CONFIG = {
   relics: {
+    idKey: (it) => it.n,
     getOwned: (name) => !!state.relicOwned[name],
     getStar: (name) => state.relicStars[name] || 0,
     maxStar: () => 10,
     apply: (name, owned, star) => { state.relicOwned[name] = owned; state.relicStars[name] = star; },
   },
   collectibles: {
+    idKey: (it) => it.n,
     getOwned: (name) => !!state.collectibleOwned[name],
     getStar: (name) => state.collectibleStars[name] || 0,
     maxStar: () => 10,
     apply: (name, owned, star) => { state.collectibleOwned[name] = owned; state.collectibleStars[name] = star; },
   },
+  mounts: {
+    idKey: (it) => it.idx,
+    hasAwaken: true,
+    getOwned: (idx) => !!(state.mountState[idx] && state.mountState[idx].owned),
+    getStar: (idx) => (state.mountState[idx] && state.mountState[idx].stars) || 0,
+    getAwaken: (idx) => (state.mountState[idx] && state.mountState[idx].awaken) || 0,
+    maxStar: () => 5,
+    maxAwaken: () => 10,
+    apply: (idx, owned, star, awaken) => {
+      const s = getMountOrArtifactState('mountState', idx);
+      s.owned = owned;
+      if (star !== undefined) s.stars = star;
+      if (awaken !== undefined) s.awaken = awaken;
+    },
+  },
+  artifacts: {
+    idKey: (it) => it.idx,
+    hasAwaken: true,
+    getOwned: (idx) => !!(state.artifactState[idx] && state.artifactState[idx].owned),
+    getStar: (idx) => (state.artifactState[idx] && state.artifactState[idx].stars) || 0,
+    getAwaken: (idx) => (state.artifactState[idx] && state.artifactState[idx].awaken) || 0,
+    maxStar: () => 5,
+    maxAwaken: () => 10,
+    apply: (idx, owned, star, awaken) => {
+      const s = getMountOrArtifactState('artifactState', idx);
+      s.owned = owned;
+      if (star !== undefined) s.stars = star;
+      if (awaken !== undefined) s.awaken = awaken;
+    },
+  },
 };
 
-const selectMode = { relics: false, collectibles: false };
-const selectedItems = { relics: new Set(), collectibles: new Set() };
+const selectMode = { relics: false, collectibles: false, mounts: false, artifacts: false };
+const selectedItems = { relics: new Set(), collectibles: new Set(), mounts: new Set(), artifacts: new Set() };
 
 function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
-  const allSelected = groupItems.length > 0 && groupItems.every(it => selectedItems[kind].has(it.n));
+  const cfg = BULK_CONFIG[kind];
+  const allSelected = groupItems.length > 0 && groupItems.every(it => selectedItems[kind].has(cfg.idKey(it)));
 
   const header = el('div', { class: 'tier-group-header' });
   header.appendChild(el('div', { class: 'tier-group-title', id: groupId, style: 'margin:0;border:none;padding:0;' }, tierLabel));
@@ -1906,7 +1951,7 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
     onclick: () => {
       if (allSelected) {
         // Deselect just this tier's items, leaving any others untouched
-        groupItems.forEach(it => selectedItems[kind].delete(it.n));
+        groupItems.forEach(it => selectedItems[kind].delete(cfg.idKey(it)));
       } else {
         // Select ONLY this tier — replaces whatever was selected before
         // (selection is always scoped to one tier at a time), and
@@ -1914,7 +1959,7 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
         // get to the Mark Owned / Star Update actions without a separate
         // "Select multiple…" toggle first.
         selectMode[kind] = true;
-        selectedItems[kind] = new Set(groupItems.map(it => it.n));
+        selectedItems[kind] = new Set(groupItems.map(cfg.idKey));
       }
       render();
     },
@@ -1930,9 +1975,9 @@ function toggleSelectMode(kind) {
   render();
 }
 
-function toggleItemSelected(kind, name) {
+function toggleItemSelected(kind, id) {
   const set = selectedItems[kind];
-  if (set.has(name)) set.delete(name); else set.add(name);
+  if (set.has(id)) set.delete(id); else set.add(id);
   render();
 }
 
@@ -1948,7 +1993,7 @@ function renderBulkActionBar(kind) {
         disabled: count === 0 ? 'true' : null,
         onclick: () => {
           if (count === 0) return;
-          [...selectedItems[kind]].forEach(n => cfg.apply(n, true, cfg.getStar(n)));
+          [...selectedItems[kind]].forEach(id => cfg.apply(id, true, cfg.getStar(id), cfg.hasAwaken ? cfg.getAwaken(id) : undefined));
           saveState();
           render();
         },
@@ -1956,11 +2001,79 @@ function renderBulkActionBar(kind) {
       el('button', {
         class: 'bulk-action-btn',
         disabled: count === 0 ? 'true' : null,
-        onclick: () => { if (count > 0) openStarAssignModal(kind); },
-      }, 'Star Update'),
+        onclick: () => { if (count > 0) { cfg.hasAwaken ? openStarAwakenModal(kind) : openStarAssignModal(kind); } },
+      }, cfg.hasAwaken ? 'Star & Awaken Update' : 'Star Update'),
       el('button', { class: 'bulk-action-btn secondary', onclick: () => toggleSelectMode(kind) }, 'Done'),
     ]),
   ]);
+}
+
+function openStarAwakenModal(kind) {
+  const cfg = BULK_CONFIG[kind];
+  const ids = [...selectedItems[kind]];
+  const dataKey = kind === 'mounts' ? 'mounts' : 'artifacts';
+  const itemsById = Object.fromEntries(DB[dataKey].map(it => [it.idx, it]));
+  const maxStar = cfg.maxStar();
+  const maxAwaken = cfg.maxAwaken();
+  let starVal = maxStar;
+  let awakenVal = maxAwaken;
+
+  const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
+
+  const starDisplay = el('div', { class: 'modal-star-value' }, `${starVal}★`);
+  const starInput = el('input', {
+    type: 'number', class: 'modal-star-input', min: '0', max: String(maxStar), value: String(starVal),
+    oninput: (e) => {
+      const n = parseInt(e.target.value, 10);
+      starVal = Number.isNaN(n) ? 0 : Math.max(0, Math.min(maxStar, n));
+      starDisplay.textContent = `${starVal}★`;
+    },
+  });
+  const awakenDisplay = el('div', { class: 'modal-star-value' }, `A${awakenVal}`);
+  const awakenInput = el('input', {
+    type: 'number', class: 'modal-star-input', min: '0', max: String(maxAwaken), value: String(awakenVal),
+    oninput: (e) => {
+      const n = parseInt(e.target.value, 10);
+      awakenVal = Number.isNaN(n) ? 0 : Math.max(0, Math.min(maxAwaken, n));
+      awakenDisplay.textContent = `A${awakenVal}`;
+    },
+  });
+
+  const box = el('div', { class: 'modal-box' }, [
+    el('div', { class: 'modal-title' }, `Set stars & awaken for ${ids.length} item${ids.length === 1 ? '' : 's'}`),
+    el('div', { class: 'modal-input-label', style: 'text-align:center;margin-bottom:6px;' }, 'Stars'),
+    el('div', { class: 'modal-star-picker' }, [
+      el('button', { class: 'modal-star-btn', onclick: () => { starVal = Math.max(0, starVal - 1); starDisplay.textContent = `${starVal}★`; starInput.value = String(starVal); } }, '−'),
+      starDisplay,
+      el('button', { class: 'modal-star-btn', onclick: () => { starVal = Math.min(maxStar, starVal + 1); starDisplay.textContent = `${starVal}★`; starInput.value = String(starVal); } }, '+'),
+    ]),
+    el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), starInput]),
+    el('div', { class: 'modal-input-label', style: 'text-align:center;margin:14px 0 6px;' }, 'Awaken'),
+    el('div', { class: 'modal-star-picker' }, [
+      el('button', { class: 'modal-star-btn', onclick: () => { awakenVal = Math.max(0, awakenVal - 1); awakenDisplay.textContent = `A${awakenVal}`; awakenInput.value = String(awakenVal); } }, '−'),
+      awakenDisplay,
+      el('button', { class: 'modal-star-btn', onclick: () => { awakenVal = Math.min(maxAwaken, awakenVal + 1); awakenDisplay.textContent = `A${awakenVal}`; awakenInput.value = String(awakenVal); } }, '+'),
+    ]),
+    el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), awakenInput]),
+    el('div', { class: 'modal-actions' }, [
+      el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
+      el('button', {
+        class: 'bulk-action-btn primary',
+        onclick: () => {
+          ids.forEach(id => cfg.apply(id, true, starVal, awakenVal));
+          saveState();
+          selectedItems[kind].clear();
+          selectMode[kind] = false;
+          closeModal();
+          render();
+        },
+      }, 'Apply'),
+    ]),
+  ]);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  function closeModal() { overlay.remove(); }
 }
 
 function openStarAssignModal(kind) {
@@ -2309,10 +2422,15 @@ function renderCollectibleSetPanel(set) {
 /* ---------- Mounts & Artifacts ---------- */
 const TIER_ORDER = ['Common', 'Great', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Immortal', 'Transcendent'];
 
+const mountArtifactFilters = {
+  mounts: { search: '', tier: 'All', owned: 'All' },
+  artifacts: { search: '', tier: 'All', owned: 'All' },
+};
+
 function renderMountsOrArtifacts(kind) {
   const isMount = kind === 'mounts';
   const bucket = isMount ? 'mountState' : 'artifactState';
-  const items = (isMount ? DB.mounts : DB.artifacts).filter(x => x.n !== 'None');
+  const filters = mountArtifactFilters[kind];
 
   const wrap = el('div', { class: isMount ? 'scope-mounts' : '' });
   wrap.appendChild(el('p', { class: 'section-desc' },
@@ -2320,15 +2438,82 @@ function renderMountsOrArtifacts(kind) {
       ? 'Transformation pool. Stat deltas from Star and Awaken levels add on top of base stats, same as artifacts — the card shows your totals live as you adjust the steppers.'
       : 'Equipped artifact pool. Stat deltas from Star and Awaken levels add on top of base stats — the card shows your totals live as you adjust the steppers.'));
 
-  const groups = buildTierGroups(items);
-  groups.forEach(g => {
-    wrap.appendChild(el('div', { class: 'tier-group-title', id: `${kind}-${g.slug}` }, g.tier));
-    const grid = el('div', { class: 'card-grid cols-3' });
-    g.items.forEach(item => grid.appendChild(renderMountArtifactCard(item, bucket, isMount)));
-    wrap.appendChild(grid);
+  const toolbar = el('div', { class: 'toolbar' });
+  const search = el('input', {
+    class: 'search-input', type: 'text', placeholder: `Search ${kind}…`,
+    oninput: (e) => { filters.search = e.target.value.toLowerCase(); renderMountArtifactGroups(kind, groupsWrap); },
+  });
+  toolbar.appendChild(search);
+
+  const allItems = (isMount ? DB.mounts : DB.artifacts).filter(x => x.n !== 'None');
+  const tierOptions = ['All', ...buildTierGroups(allItems).map(g => g.tier)];
+  tierOptions.forEach(t => {
+    const chip = el('button', {
+      class: 'filter-chip' + (filters.tier === t ? ' active' : ''),
+      onclick: () => {
+        filters.tier = t;
+        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderMountArtifactGroups(kind, groupsWrap);
+      },
+    }, t);
+    chip.dataset.tier = 'true';
+    toolbar.appendChild(chip);
   });
 
+  ['All', 'Owned', 'Not Owned'].forEach(o => {
+    const chip = el('button', {
+      class: 'filter-chip' + (filters.owned === o ? ' active' : ''),
+      onclick: () => {
+        filters.owned = o;
+        toolbar.querySelectorAll('.filter-chip[data-owned]').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderMountArtifactGroups(kind, groupsWrap);
+      },
+    }, o);
+    chip.dataset.owned = 'true';
+    toolbar.appendChild(chip);
+  });
+
+  toolbar.appendChild(el('button', {
+    class: 'filter-chip' + (selectMode[kind] ? ' active' : ''),
+    onclick: () => toggleSelectMode(kind),
+  }, selectMode[kind] ? 'Cancel selecting' : 'Select multiple…'));
+  wrap.appendChild(toolbar);
+
+  const groupsWrap = el('div', {});
+  wrap.appendChild(groupsWrap);
+  renderMountArtifactGroups(kind, groupsWrap);
+
   return wrap;
+}
+
+function renderMountArtifactGroups(kind, container) {
+  container.innerHTML = '';
+  const isMount = kind === 'mounts';
+  const bucket = isMount ? 'mountState' : 'artifactState';
+  const filters = mountArtifactFilters[kind];
+
+  const allItems = (isMount ? DB.mounts : DB.artifacts).filter(it => it.n !== 'None');
+  const items = allItems.filter(it => {
+    if (filters.tier !== 'All' && it.tier !== filters.tier) return false;
+    if (filters.search && !it.n.toLowerCase().includes(filters.search)) return false;
+    const owned = !!(state[bucket][it.idx] && state[bucket][it.idx].owned);
+    if (filters.owned === 'Owned' && !owned) return false;
+    if (filters.owned === 'Not Owned' && owned) return false;
+    return true;
+  });
+
+  const groups = buildTierGroups(items);
+  groups.forEach(g => {
+    container.appendChild(renderTierGroupHeader(kind, g.tier, `${kind}-${g.slug}`, g.items));
+    const grid = el('div', { class: 'card-grid cols-3' });
+    g.items.forEach(item => grid.appendChild(renderMountArtifactCard(item, bucket, isMount)));
+    container.appendChild(grid);
+  });
+
+  const bar = renderBulkActionBar(kind);
+  if (bar) container.appendChild(bar);
 }
 
 function sumStatBlocks(...blocks) {
@@ -2353,8 +2538,10 @@ function resolveAwakenEffect(item, awakenLevel) {
 }
 
 function renderMountArtifactCard(item, bucket, isMount) {
+  const kind = isMount ? 'mounts' : 'artifacts';
   const s = getMountOrArtifactState(bucket, item.idx);
-  const card = el('div', { class: `item-card r-${item.tier}` });
+  const card = el('div', { class: `item-card r-${item.tier}` + (selectMode[kind] && selectedItems[kind].has(item.idx) ? ' selected' : '') });
+  if (selectMode[kind]) card.appendChild(renderSelectionOverlay(kind, item.idx));
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb(isMount ? 'mounts' : 'artifacts', item),
