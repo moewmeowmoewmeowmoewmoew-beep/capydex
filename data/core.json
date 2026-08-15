@@ -182,7 +182,7 @@
         "Global Rage Skill DMG +10% when Bishop Staff is equipped",
         "Bishop Staff ATK +10%",
         "Global Rage Skill DMG +15% when Bishop Staff is equipped",
-        "Mythic Bishop Staff: Initial Skill [Rage Skill Combo】"
+        "Mythic Bishop Staff: Initial Skill [ Rage Skill Combo ]"
       ]
     },
     {
@@ -815,16 +815,16 @@
       "tier": "S",
       "surpass_max": 3,
       "arcana_descs": [
-        "[Unique Passive] Rare skill of Dragon Ball Ring: Cooldown - 1.",
+        "[ Unique Passive ] Rare skill of Dragon Ball Ring: Cooldown - 1.",
         "Dragon Ball Ring ATK and DEF +6%.",
-        "[Unique Passive] Global ATK +5% when equipped with Dragon Ball Ring.",
+        "[ Unique Passive ] Global ATK +5% when equipped with Dragon Ball Ring.",
         "Dragon Ball Ring ATK and DEF +6%.",
-        "[Unique Passive] Global Basic Attack damage reduction +5% when equipped with Dragon Ball Ring.",
-        "[Unique Passive] Basic Attack CRIT rate +15% when equipped with a Legendary-quality Dragon Ball Ring.",
+        "[ Unique Passive ] Global Basic Attack damage reduction +5% when equipped with Dragon Ball Ring.",
+        "[ Unique Passive ] Basic Attack CRIT rate +15% when equipped with a Legendary-quality Dragon Ball Ring.",
         "Dragon Ball Ring ATK and DEF +8%.",
-        "[Unique Passive] Global Basic Attack DMG +7% when equipped with Dragon Ball Ring.",
+        "[ Unique Passive ] Global Basic Attack DMG +7% when equipped with Dragon Ball Ring.",
         "Dragon Ball Ring ATK and DEF +10%.",
-        "[Unique Passive] Global Basic Attack DMG +8% when equipped with Dragon Ball Ring.",
+        "[ Unique Passive ] Global Basic Attack DMG +8% when equipped with Dragon Ball Ring.",
         "Mythic-quality Dragon Ball Ring enhances skills: every 1% Basic Attack CRIT rate grants an additional 0.4% Global Basic Attack DMG (max 40%)."
       ]
     },
@@ -842,13 +842,13 @@
         "Judgment Ring ATK, DEF +6%",
         "[Unique Passive) When equipping the Judgment Ring, global ATK +5%",
         "Judgment Ring ATK, DEF +6%",
-        "[Unique Passive] Equipping Judgment Ring increases Global Skill DMG +10% against shielded targets.",
-        "[Unique Passive] Equipping a Legendary-quality Judgment Ring increases skill CRIT rate by +10%.",
+        "[ Unique Passive ] Equipping Judgment Ring increases Global Skill DMG +10% against shielded targets.",
+        "[ Unique Passive ] Equipping a Legendary-quality Judgment Ring increases skill CRIT rate by +10%.",
         "Judgment Ring ATK and DEF +8%.",
-        "[Unique Passive] Global Skill DMG +7% when equipped with Judgment Ring.",
+        "[ Unique Passive ] Global Skill DMG +7% when equipped with Judgment Ring.",
         "Judgment Ring ATK and DEF+10%.",
-        "[Unique Passive] Global Skill DMG +8% when equipped with Judgment Ring.",
-        "[Unique Passive] Mythic-quality Judgment Ring enhances skills: every 1% skill CRIT rate grants an additional 0.4% Global Skill DMG (max 40%)."
+        "[ Unique Passive ] Global Skill DMG +8% when equipped with Judgment Ring.",
+        "[ Unique Passive ] Mythic-quality Judgment Ring enhances skills: every 1% skill CRIT rate grants an additional 0.4% Global Skill DMG (max 40%)."
       ]
     },
     {
@@ -863,14 +863,14 @@
       "arcana_descs": [
         "Rare skill of Shadow Ring enhanced, cooldown time -1 turn.",
         "Shadow Ring ATK and DEF +6%.",
-        "[Unique Passive] Global ATK +5% when equipped with Shadow Ring.",
+        "[ Unique Passive ] Global ATK +5% when equipped with Shadow Ring.",
         "Shadow Ring ATK and DEF +6%.",
-        "[Unique Passive] Global Lightning, Ice, Fire, and Poison DMG +5% when equipped with Shadow Ring.",
-        "[Unique Passive] Equipping a Legendary-quality Shadow Ring grants Ice Spikes a chance to trigger Ice Storm, dealing Ice DMG equal to 100% of the main character's ATK.",
+        "[ Unique Passive ] Global Lightning, Ice, Fire, and Poison DMG +5% when equipped with Shadow Ring.",
+        "[ Unique Passive ] Equipping a Legendary-quality Shadow Ring grants Ice Spikes a chance to trigger Ice Storm, dealing Ice DMG equal to 100% of the main character's ATK.",
         "Shadow Ring ATK and DEF+8%.",
-        "[Unique Passive] Global Lightning, Ice, Fire, and Poison DMG +10% when equipped with Shadow Ring.",
+        "[ Unique Passive ] Global Lightning, Ice, Fire, and Poison DMG +10% when equipped with Shadow Ring.",
         "Shadow Ring ATK and DEF +10%",
-        "[Unique Passive] Global Lightning, Ice, Fire, and Poison DMG +15%",
+        "[ Unique Passive ] Global Lightning, Ice, Fire, and Poison DMG +15%",
         "[Unique Passive) When equipping the Mythic Shadow Ring, each Ice Spike reduces enemy control resistance by -3%, stacking up to 5 times"
       ]
     },
@@ -886,15 +886,15 @@
       "arcana_descs": [
         "Skyflame Ring's rare skill triggers Flame Wave from turn 3, and from turn 2 at Mythic quality.",
         "Skyflame Ring ATK and DEF+6%.",
-        "[Unique Passive] Global ATK +5% when equipped with Skyflame Ring.",
+        "[ Unique Passive ] Global ATK +5% when equipped with Skyflame Ring.",
         "Skyflame Ring ATK and DEF +6%.",
-        "[Unique Passive] Global Fire and Poison DMG +5% when equipped with Skyflame Ring.",
-        "[Unique Passive] Wearing a Legendary-quality Skyflame Ring greatly increases the chance of Flame Wave causing Burn.",
+        "[ Unique Passive ] Global Fire and Poison DMG +5% when equipped with Skyflame Ring.",
+        "[ Unique Passive ] Wearing a Legendary-quality Skyflame Ring greatly increases the chance of Flame Wave causing Burn.",
         "Skyflame Ring ATK and DEF +8%.",
-        "[Unique Passive] Global Fire and Poison DMG +7% when equipped with Skyflame Ring.",
+        "[ Unique Passive ] Global Fire and Poison DMG +7% when equipped with Skyflame Ring.",
         "Skyflame Ring ATK and DEF+10%.",
-        "[Unique Passive] Global Fire and Poison DMG +8% when equipped with Skyflame Ring.",
-        "[Unique Passive] Wearing a Mythic-quality Skyflame Ring adds +1% extra damage to Flame Wave."
+        "[ Unique Passive ] Global Fire and Poison DMG +8% when equipped with Skyflame Ring.",
+        "[ Unique Passive ] Wearing a Mythic-quality Skyflame Ring adds +1% extra damage to Flame Wave."
       ]
     },
     {
@@ -1064,15 +1064,15 @@
       "arcana_descs": [
         "Rare skill enhancement for Glorious Proof: Normal attacks deal additional damage equal to 3% (Epic) or 4% (Legendary) of current HP",
         "Proof of Glory HP and DEF +6%.",
-        "[Unique Passive] Global HP +5% when equipped with Proof of Glory.",
+        "[ Unique Passive ] Global HP +5% when equipped with Proof of Glory.",
         "Proof of Glory HP and DEF+6%.",
-        "[Unique Passive] Global Skill DMG reduction +5% when equipped with Proof of Glory.",
+        "[ Unique Passive ] Global Skill DMG reduction +5% when equipped with Proof of Glory.",
         "When wearing a Legendary Glorious Proof, additional normal attack damage is based on 4% and 6% of max HP (Legendary)",
         "Proof of Glory HP and DEF +8%.",
-        "[Unique Passive] Global Basic Attack DMG +7% when equipped with Proof of Glory.",
+        "[ Unique Passive ] Global Basic Attack DMG +7% when equipped with Proof of Glory.",
         "Proof of Glory HP and DEF+10%.",
-        "[Unique Passive] Global Basic Attack DMG +8% when equipped with Proof of Glory.",
-        "[Unique Passive] When wearing Mythic-quality Proof of Glory, Lifesteal Rate +15% and Lifesteal Effect +25%."
+        "[ Unique Passive ] Global Basic Attack DMG +8% when equipped with Proof of Glory.",
+        "[ Unique Passive ] When wearing Mythic-quality Proof of Glory, Lifesteal Rate +15% and Lifesteal Effect +25%."
       ]
     },
     {
@@ -1085,16 +1085,16 @@
       "tier": "S",
       "surpass_max": 3,
       "arcana_descs": [
-        "[Unique Passive] Skill DMG to shielded targets +10% when equipped with Reckoning Badge.",
+        "[ Unique Passive ] Skill DMG to shielded targets +10% when equipped with Reckoning Badge.",
         "Reckoning Badge HP and DEF +6%.",
-        "[Unique Passive] Global HP +5% when equipped with Reckoning Badge.",
+        "[ Unique Passive ] Global HP +5% when equipped with Reckoning Badge.",
         "Reckoning Badge HP and DEF +6%.",
-        "[Unique Passive] Ignore Combo Rate +5% when equipped with Reckoning Badge.",
+        "[ Unique Passive ] Ignore Combo Rate +5% when equipped with Reckoning Badge.",
         "[Unique Passive) When equipping Legendary Reckoning Badge, bonus damage effect +25% (Legendary), +40% (Mythic)",
         "Reckoning Badge HP and DEF +8%.",
-        "[Unique Passive] Global Skill DMG +7% when equipped with Reckoning Badge.",
+        "[ Unique Passive ] Global Skill DMG +7% when equipped with Reckoning Badge.",
         "Reckoning Badge HP and DEF+10%.",
-        "[Unique Passive] Global Skill DMG +8% when equipped with Reckoning Badge.",
+        "[ Unique Passive ] Global Skill DMG +8% when equipped with Reckoning Badge.",
         "[Unique Passive) When equipping Mythic Reckoning Badge, against targets with less than 70% HP: Skill Crit Rate +10%, Skill Crit Damage +40%"
       ]
     },
@@ -1280,8 +1280,8 @@
       "quality_effects": {
         "Common": "Global HP +10%",
         "Rare": "Global HP +15%",
-        "Epic": "Initially obtain [Turn Light Spear], global counterattack damage +10%",
-        "Legendary": "Initially obtain [Turn Light Spear+], final counterattack damage +10%",
+        "Epic": "Initially obtain [ Turn Light Spear ], global counterattack damage +10%",
+        "Legendary": "Initially obtain [ Turn Light Spear+ ], final counterattack damage +10%",
         "Mythic": "Light Spear additionally deals 25% of hero's attack as counterattack damage; each Light Spear increases final counterattack damage by +1%, up to 15 stacks"
       },
       "polarization_effects": {
@@ -1307,9 +1307,9 @@
       "quality_effects": {
         "Common": "Global HP +10%",
         "Rare": "Global HP +15%",
-        "Epic": "Every 3 times of Sword Qi grant the Protagonist 1 stack of [Sword Glow], lasting until battle ends. Sword Glow: Each stack increases the Protagonist's Combo Rate by 1% (Max 15 stacks). When having [Sword Glow], increases the Protagonist's Combo count by +1.",
-        "Legendary": "Each stack of [Sword Glow] increases the Protagonist's Global Sword Qi DMG by +5%. At 10 stacks of [Sword Glow], increases the Protagonist's Combo Rate by +5%.",
-        "Mythic": "Each stack of [Sword Glow] increases the Protagonist's Final Sword Qi DMG by +1%. At 15 stacks of [Sword Glow], the Protagonist's Combo triggers an additional 1 instance of Sword Qi."
+        "Epic": "Every 3 times of Sword Qi grant the Protagonist 1 stack of [ Sword Glow ], lasting until battle ends. Sword Glow: Each stack increases the Protagonist's Combo Rate by 1% (Max 15 stacks). When having [ Sword Glow ], increases the Protagonist's Combo count by +1.",
+        "Legendary": "Each stack of [ Sword Glow ] increases the Protagonist's Global Sword Qi DMG by +5%. At 10 stacks of [ Sword Glow ], increases the Protagonist's Combo Rate by +5%.",
+        "Mythic": "Each stack of [ Sword Glow ] increases the Protagonist's Final Sword Qi DMG by +1%. At 15 stacks of [ Sword Glow ], the Protagonist's Combo triggers an additional 1 instance of Sword Qi."
       },
       "polarization_effects": {
         "P1": "Final Damage +0.8%",
@@ -1334,8 +1334,8 @@
       "quality_effects": {
         "Common": "Global HP +10%",
         "Rare": "Global HP +15%",
-        "Epic": "Gain [Normal Attack Sword Aura]. Global Sword Qi DMG +10%.",
-        "Legendary": "Gain [Normal Attack Sword Aura+]. Final Sword Aura DMG +10%.",
+        "Epic": "Gain [ Normal Attack Sword Aura ]. Global Sword Qi DMG +10%.",
+        "Legendary": "Gain [ Normal Attack Sword Aura+ ]. Final Sword Aura DMG +10%.",
         "Mythic": "Sword Qi DMG Coefficient +10%. Each Sword Qi increases Final Sword Qi DMG by +1% (up to 15 stacks)."
       },
       "polarization_effects": {
@@ -1388,8 +1388,8 @@
       "quality_effects": {
         "Common": "Global HP +10%",
         "Rare": "Global HP +15%",
-        "Epic": "Gain [Turn Lightning]. Global Lightning DMG +10%.",
-        "Legendary": "Gain [Turn Lightning+]. Final Lightning DMG +10%.",
+        "Epic": "Gain [ Turn Lightning ]. Global Lightning DMG +10%.",
+        "Legendary": "Gain [ Turn Lightning+ ]. Final Lightning DMG +10%.",
         "Mythic": "Lightning converts 50% of damage dealt into a shield (shield ≤10% hero's max HP). While shield is active, Final Lightning DMG increased by +15%."
       },
       "polarization_effects": {
@@ -1442,8 +1442,8 @@
       "quality_effects": {
         "Common": "Global HP +10%",
         "Rare": "Global HP +15%",
-        "Epic": "Gain [Combo]. Combo Rate +15%. Global Combo DMG +10%.",
-        "Legendary": "Gain [Combo+]. Combo Rate +25%. Final Combo DMG +10%.",
+        "Epic": "Gain [ Combo ]. Combo Rate +15%. Global Combo DMG +10%.",
+        "Legendary": "Gain [ Combo+ ]. Combo Rate +25%. Final Combo DMG +10%.",
         "Mythic": "Combo Rate +25%. Final Combo DMG +15%. Weapon Crit Rate +15%. Normal attacks have a 15% chance to become a super critical hit."
       },
       "polarization_effects": {
@@ -1703,9 +1703,9 @@
       "quality_effects": {
         "Common": null,
         "Rare": "Global HP +10%",
-        "Epic": "Start with [Heavy Blow]",
+        "Epic": "Start with [ Heavy Blow ]",
         "Legendary": "Critical DMG +40%",
-        "Mythic": "Start with [Heavy Blow+]"
+        "Mythic": "Start with [ Heavy Blow+ ]"
       },
       "polarization_effects": {
         "P1": "ATK% +3.0",

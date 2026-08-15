@@ -288,7 +288,7 @@
       "n": "Heaven's Mark",
       "tier": "Mythic",
       "base_effect": "Every 4 Sword Chi triggered releases 1 Unrivaled Sword Chi, dealing 500% ATK DMG.",
-      "awaken_base_effect": "Deals 5 times artifact attack power 50% sword energy damage to the enemy, with a 50% chance to gain 1 layer of [Sword Intent]. Sword Intent: Increases sword energy damage by 10%, stackable up to 10 layers, lasts until the end of the battle.",
+      "awaken_base_effect": "Deals 5 times artifact attack power 50% sword energy damage to the enemy, with a 50% chance to gain 1 layer of [ Sword Intent ]. Sword Intent: Increases sword energy damage by 10%, stackable up to 10 layers, lasts until the end of the battle.",
       "star_up": {
         "base_stats": {
           "ignore_combo_pct": 10.0,
@@ -361,7 +361,7 @@
       "n": "Pan Gu Axe",
       "tier": "Mythic",
       "base_effect": "Skill triggers cumulatively 10 times, unleashing divine punishment, causing skill damage of 300% of the protagonist's attack power. When the target has a shield, damage is increased by 40%, up to 4 times per turn.",
-      "awaken_base_effect": "Pan Gu Axe releases [Thunder Call ], dealing 5 instances of 50% of artifact attack power as skill damage to enemies, with a 40% chance to [ Stun ] the target's mount for 1 turn. Stun: The target cannot trigger mount awakening skills (including effects after death).",
+      "awaken_base_effect": "Pan Gu Axe releases [ Thunder Call ], dealing 5 instances of 50% of artifact attack power as skill damage to enemies, with a 40% chance to [ Stun ] the target's mount for 1 turn. Stun: The target cannot trigger mount awakening skills (including effects after death).",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 10.0,
@@ -791,7 +791,7 @@
         "A7": "[ Meteorfall Forbidden Array ] damage coefficient is increased to 900%, and [ Meteorfall ] increases the maximum lightning damage enemies take to 150%.",
         "A8": "No additional effect (Suppression only).",
         "A9": "No additional effect (Suppression only).",
-        "A10": "[Meteorfall ] reduces enemies' shield strength by -60%, and when it ends, has a 50% chance to inflict [ Silence ] for 1 turn."
+        "A10": "[ Meteorfall ] reduces enemies' shield strength by -60%, and when it ends, has a 50% chance to inflict [ Silence ] for 1 turn."
       }
     },
     {
@@ -997,8 +997,8 @@
         "1": "Holy Sword Judgment — Every 6 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 850% of the hero's Attack. For every 1% of enemy HP lost, [ Holy Sword Verdict ] damage increases by 1.2%. Each cast also deals additional skill damage equal to 5% of the enemy's max HP (up to 50x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round.",
         "2": "Holy Sword Judgment — Every 6 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 900% of the hero's Attack. For every 1% of enemy HP lost, [ Holy Sword Verdict ] damage increases by 1.2%. Each cast also deals additional skill damage equal to 6% of the enemy's max HP (up to 60x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round.",
         "3": "Holy Sword Judgment — Every 6 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 950% of the hero's Attack. For every 1% of enemy HP lost, [ Holy Sword Verdict ] damage increases by 1.5%. Each cast also deals additional skill damage equal to 6% of the enemy's max HP (up to 60x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round.",
-        "4": "Holy Sword Judgment — Every 6 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 1050% of the hero's Attack. For every 1% of enemy HP lost, [Holy Sword Verdict] damage increases by 1.5%. Each cast also deals additional skill damage equal to 7.5% of the enemy's max HP (up to 75x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round.",
-        "5": "Holy Sword Judgment — Every 5 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 1100% of the hero's Attack. For every 1% of enemy HP lost, [Holy Sword Verdict] damage increases by 1.5%. Each cast also deals additional skill damage equal to 7.5% of the enemy's max HP (up to 75x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round."
+        "4": "Holy Sword Judgment — Every 6 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 1050% of the hero's Attack. For every 1% of enemy HP lost, [ Holy Sword Verdict ] damage increases by 1.5%. Each cast also deals additional skill damage equal to 7.5% of the enemy's max HP (up to 75x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round.",
+        "5": "Holy Sword Judgment — Every 5 skill triggers, cast [ Holy Sword Verdict ], dealing skill damage equal to 1100% of the hero's Attack. For every 1% of enemy HP lost, [ Holy Sword Verdict ] damage increases by 1.5%. Each cast also deals additional skill damage equal to 7.5% of the enemy's max HP (up to 75x the hero's Attack). [ Holy Sword Verdict ] can trigger up to 4 times per round."
       },
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
@@ -1018,7 +1018,7 @@
       "n": "Ancestor's Rage",
       "tier": "Transcendent",
       "base_effect": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 750% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 1% and Shield Bonus by 1%. Upon ending, each stack deals Skill DMG equal to 1% of target's Max HP (Max 10x ATK). Max 5 stacks, lasts 1 turn.",
-      "awaken_base_effect": "World-Ending Flame — Ancestor's Rage unleashes [ World-Ending Flame ], dealing 3 hits of 150% Artifact ATK Skill DMG and inflicting [Disintegration] for 2 turns. Disintegration: Final DMG Reduc. -5%; when the enemy gains a Shield, they take Skill DMG equal to 50% of your ATK (triggers up to 2 times/turn).",
+      "awaken_base_effect": "World-Ending Flame — Ancestor's Rage unleashes [ World-Ending Flame ], dealing 3 hits of 150% Artifact ATK Skill DMG and inflicting [ Disintegration ] for 2 turns. Disintegration: Final DMG Reduc. -5%; when the enemy gains a Shield, they take Skill DMG equal to 50% of your ATK (triggers up to 2 times/turn).",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20,
@@ -1070,7 +1070,7 @@
         "1": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 850% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 1.5% and Shield Bonus by 1%. Upon ending, each stack deals Skill DMG equal to 1% of target's Max HP (Max 10x ATK). Max 5 stacks, lasts 1 turn.",
         "2": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing 900% ATK Skill DMG and inflicting 1-2 stacks of [ Destruction ] (Max 4/turn). Destruction: Final DMG Reduc. -1.5%, Shield Bonus -1.5%. When ending, each stack deals 1% Max HP Skill DMG (Max 10x ATK). Stacks up to 5, lasts 1 turn.",
         "3": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 950% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by -2% and Shield Bonus by 1.5%. Upon ending, each stack deals Skill DMG equal to 1% of target's Max HP (Max 10x ATK). Max 5 stacks, lasts 1 turn.",
-        "4": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 1050% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 2% and Shield Bonus by 2%. Upon ending, each stack deals Skill DMG equal to 1.5% of target's Max HP (Max 15x ATK). Max 5 stacks, lasts 1 turn.",
+        "4": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 1050% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 2% and Shield Bonus by 2%. Upon ending, each stack deals Skill DMG equal to 1.5% of target's Max HP (Max 15x ATK). Max 5 stacks, lasts 1 turn.",
         "5": "Wrathful Flame — Every 5 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 1100% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 2% and Shield Bonus by 2%. Upon ending, each stack deals Skill DMG equal to 1.5% of target's Max HP (Max 15x ATK). Max 5 stacks, lasts 1 turn."
       },
       "awaken_effects": {
@@ -1080,7 +1080,7 @@
         "A4": "[ Disintegration ] lasts 4 turns; hero gains +10% CRIT Rate and Final DMG Bonus for 2 turns.",
         "A5": "No additional effect (Suppression only).",
         "A6": "No additional effect (Suppression only).",
-        "A7": "Base Skill DMG increased to 350% per hit, and [Disintegration] Final DMG Reduc increased to -15%.",
+        "A7": "Base Skill DMG increased to 350% per hit, and [ Disintegration ] Final DMG Reduc increased to -15%.",
         "A8": "No additional effect (Suppression only).",
         "A9": "No additional effect (Suppression only).",
         "A10": "[ Disintegration ] Shield DMG increased to 100% ATK. Added [ Soul Burn ]: 50% chance to [ Silence ] and damage enemies upon resurrection."
@@ -1091,7 +1091,7 @@
       "n": "Abyssal Devourer",
       "tier": "Transcendent",
       "base_effect": "Abyssal Bite — After every 4 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 750% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -1% and Ignore Combo Rate by -0.5%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 1.5% of Max HP, not exceeding 15 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times.",
-      "awaken_base_effect": "Abyssal Rift Beam — Unable to suppress the Power of the Abyss, the Abyssal Devourer unleashes the [ Abyssal Rift Beam ], dealing 3 instances of Combo DMG equal to 150% of the Artifact's ATK to the enemy, granting the Protagonist [ Power of the Abyss ] for 1 round and 1 stack of [Breath of the Abyss]. Power of the Abyss: Protagonist's Final Combo DMG +5%, Combo count +1. The increased Combo count cannot stack with other Artifacts or Mounts. Breath of the Abyss: Upon taking a single instance of Skill DMG greater than 10% of the Protagonist's Max HP, removes [ Breath of the Abyss ], reduces this damage by 30%, and reduces the enemy's Shield Bonus by -30% for 3 rounds.",
+      "awaken_base_effect": "Abyssal Rift Beam — Unable to suppress the Power of the Abyss, the Abyssal Devourer unleashes the [ Abyssal Rift Beam ], dealing 3 instances of Combo DMG equal to 150% of the Artifact's ATK to the enemy, granting the Protagonist [ Power of the Abyss ] for 1 round and 1 stack of [ Breath of the Abyss ]. Power of the Abyss: Protagonist's Final Combo DMG +5%, Combo count +1. The increased Combo count cannot stack with other Artifacts or Mounts. Breath of the Abyss: Upon taking a single instance of Skill DMG greater than 10% of the Protagonist's Max HP, removes [ Breath of the Abyss ], reduces this damage by 30%, and reduces the enemy's Shield Bonus by -30% for 3 rounds.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20,
@@ -1144,7 +1144,7 @@
         "2": "Abyssal Bite — After every 4 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 900% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -1.5% and Ignore Combo Rate by -1%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 1.5% of Max HP, not exceeding 15 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times.",
         "3": "Abyssal Bite — After every 4 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 950% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -2% and Ignore Combo Rate by -1%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 1.5% of Max HP, not exceeding 15 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times.",
         "4": "Abyssal Bite — After every 4 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 1050% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -2% and Ignore Combo Rate by -1%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 2% of Max HP, not exceeding 20 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times.",
-        "5": "Abyssal Bite — After every 3 Basic Attacks, the Abyssal Devourer casts [Abyssal Bite], dealing Combo DMG equal to 1100% of the Protagonist's ATK to the enemy and inflicting 1 stack of [Abyssal Rift], lasting until the end of the battle. Abyssal Rift: Each stack of [Abyssal Rift] reduces the enemy's Final Basic Attack DMG Reduction by -2% and Ignore Combo Rate by -1%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 2% of Max HP, not exceeding 20 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times."
+        "5": "Abyssal Bite — After every 3 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 1100% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -2% and Ignore Combo Rate by -1%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 2% of Max HP, not exceeding 20 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times."
       },
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",

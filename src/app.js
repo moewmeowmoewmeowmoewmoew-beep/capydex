@@ -390,7 +390,7 @@ function getEquipState(slotId) {
 function buildEquipmentSectionContent() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Weapon, Armor, 2 Rings, 2 Accessories. Quality defaults to the highest available (usually Mythic) when you pick an item — change it if yours is lower. Gem rarity defaults to Peerless the same way.'));
+    'Quality defaults to Mythic and gems default to peerless'));
   const grid = el('div', { class: 'equip-grid' });
   EQUIPMENT_SLOTS.forEach(slotDef => grid.appendChild(renderEquipCard(slotDef)));
   wrap.appendChild(grid);
@@ -399,8 +399,6 @@ function buildEquipmentSectionContent() {
 
 function buildPetSectionContent() {
   const wrap = el('div', {});
-  wrap.appendChild(el('p', { class: 'section-desc' },
-    'Up to 3 deployable pets. Each has Arcana, Battle Skills, a Pet Armament, and 5 independently-rolled skill slots.'));
   const petGrid = el('div', { class: 'equip-grid' });
   [0, 1, 2].forEach(i => petGrid.appendChild(renderEquipPetCard(i)));
   wrap.appendChild(petGrid);
@@ -410,7 +408,7 @@ function buildPetSectionContent() {
 function buildMountsSectionContent() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Main mount (its Skill depends on Stars) plus 3 deployed mounts (each shows its Awaken-based skill).'));
+    'Mounts that are marked as owned in collections are allowed to be equipped here.'));
   const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
   mainGrid.appendChild(renderDeployCard('mount', 'star', null));
   wrap.appendChild(mainGrid);
@@ -423,7 +421,7 @@ function buildMountsSectionContent() {
 function buildArtifactsSectionContent() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Main artifact (its Skill depends on Stars) plus 3 deployed artifacts (each shows its Awaken-based skill).'));
+    'Artifacts that are marked as owned in collections are allowed to be equipped here.'));
   const mainGrid = el('div', { class: 'equip-grid equip-grid-single' });
   mainGrid.appendChild(renderDeployCard('artifact', 'star', null));
   wrap.appendChild(mainGrid);
@@ -547,27 +545,37 @@ function renderHeroOrBrandCard(kind, slotIndex) {
   card.appendChild(equipFieldLabel(label));
   const byGroup = {};
   options.forEach(o => { (byGroup[classify(o.n)] = byGroup[classify(o.n)] || []).push(o); });
-  const select = el('select', { class: 'equip-select' }, [
-    el('option', { value: '' }, '— None —'),
-    ...groupOrder.filter(g => byGroup[g]).map(g => el('optgroup', { label: g },
-      byGroup[g].map(o => el('option', { value: o.n, selected: o.n === s.name ? 'true' : null }, o.n)))),
-  ]);
-  select.addEventListener('change', (e) => {
-    s.name = e.target.value;
-    const newEntity = options.find(x => x.n === s.name);
-    // Inheritance Heroes default to Rare, not the usual highest-available —
-    // they're the low-investment tier tied to the inheritance tree, so
-    // assuming Mythic like everything else doesn't fit.
-    if (newEntity && classify(newEntity.n) === 'Inheritance Heroes' && (newEntity.q || []).includes('Rare')) {
-      s.quality = 'Rare';
-    } else {
-      s.quality = newEntity && newEntity.q && newEntity.q.length ? newEntity.q[newEntity.q.length - 1] : '';
-    }
-    s.polarization = 0;
-    saveState();
-    render();
-  });
-  card.appendChild(select);
+  const sortedOptions = groupOrder.filter(g => byGroup[g]).flatMap(g => byGroup[g]);
+  const optionLabel = (o) => `${o.n} \u2014 ${classify(o.n)}`;
+
+  card.appendChild(renderSearchCombo({
+    value: entity ? optionLabel(entity) : '',
+    options: sortedOptions.map(optionLabel),
+    placeholder: `Search ${isHero ? 'heroes' : 'brands'}…`,
+    onSelect: (chosenLabel) => {
+      const newEntity = sortedOptions.find(o => optionLabel(o) === chosenLabel);
+      if (!newEntity) return;
+      s.name = newEntity.n;
+      // Inheritance Heroes default to Rare, not the usual highest-available —
+      // they're the low-investment tier tied to the inheritance tree, so
+      // assuming Mythic like everything else doesn't fit.
+      if (classify(newEntity.n) === 'Inheritance Heroes' && (newEntity.q || []).includes('Rare')) {
+        s.quality = 'Rare';
+      } else {
+        s.quality = newEntity.q && newEntity.q.length ? newEntity.q[newEntity.q.length - 1] : '';
+      }
+      s.polarization = 0;
+      saveState();
+      render();
+    },
+    onClear: () => {
+      s.name = '';
+      s.quality = '';
+      s.polarization = 0;
+      saveState();
+      render();
+    },
+  }));
 
   if (!entity) return card;
 
@@ -613,8 +621,6 @@ function renderHeroOrBrandCard(kind, slotIndex) {
 
 function buildAdventurerHeroBrandSectionContent() {
   const wrap = el('div', {});
-  wrap.appendChild(el('p', { class: 'section-desc' },
-    'Adventurer, 2 Heroes, 4 Brands. Note: hero/brand tier categorization (S vs Basic, SS vs S vs Basic) is a placeholder below — the source data only confirms which 4 heroes are Inheritance Heroes, not a full grade split yet.'));
 
   wrap.appendChild(el('div', { class: 'equip-section-title' }, 'Adventurer'));
   const advGrid = el('div', { class: 'equip-grid equip-grid-single' });
@@ -654,7 +660,7 @@ const RELIC_DEPLOY_SLOTS = [
 function buildRelicsSectionContent() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    '2 Totem, 1 Core, 1 Guardian — only relics of the matching type that you\u2019ve marked owned in Collection are selectable here. Equipped relics only ever step through 0★/5★/10★ breakpoints, not the full 0–10 range.'));
+    'Relics that are marked as owned in collections are allowed to be equipped here'));
   const grid = el('div', { class: 'equip-grid' });
   RELIC_DEPLOY_SLOTS.forEach(slot => grid.appendChild(renderRelicDeployCard(slot)));
   wrap.appendChild(grid);
@@ -663,7 +669,7 @@ function buildRelicsSectionContent() {
 
 function renderRelicDeployCard(slotDef) {
   const relics = (DB.relics || []).filter(r => r.deploy_type === slotDef.type);
-  const ownedOptions = relics.filter(r => state.relicOwned[r.n]);
+  const ownedOptions = sortByTierDesc(relics.filter(r => state.relicOwned[r.n]), 'rarity');
   const currentName = state.relicSlots[slotDef.key];
   const relic = ownedOptions.find(r => r.n === currentName) || null;
 
@@ -866,7 +872,7 @@ const PET_SKILL_HELPER_TEXT = {
 
 function renderEquipPetCard(petIndex) {
   const s = state.petSlots[petIndex];
-  const pets = DB.pets || [];
+  const pets = sortByTierDesc(DB.pets || []);
   const pet = pets.find(p => p.n === s.itemName) || null;
 
   const card = el('div', { class: 'equip-card' });
@@ -1037,10 +1043,10 @@ function renderDeployCard(kind, mode, slotIndex) {
 
   const all = (DB[isMount ? 'mounts' : 'artifacts'] || []).filter(it => it.n !== 'None');
   const bucketKey = isMount ? 'mountState' : 'artifactState';
-  const ownedItems = all.filter(it => {
+  const ownedItems = sortByTierDesc(all.filter(it => {
     const st = state[bucketKey][it.idx];
     return st && st.owned;
-  });
+  }));
   const item = ownedItems.find(it => it.idx === s.itemIdx) || null;
   const itemState = item ? getMountOrArtifactState(bucketKey, item.idx) : null;
 
@@ -2104,7 +2110,18 @@ function renderCollectibleSetPanel(set) {
 }
 
 /* ---------- Mounts & Artifacts ---------- */
-const TIER_ORDER = ['Common', 'Great', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Immortal', 'Transcendent'];
+const TIER_ORDER = ['Transcendent', 'Immortal', 'Mythic', 'Legendary', 'Epic', 'Rare', 'Uncommon', 'Great', 'Common'];
+
+// Highest tier first, matching TIER_ORDER — used anywhere a dropdown or
+// search list needs items sorted by tier rather than left in whatever
+// order they happened to load from the source data.
+function sortByTierDesc(items, field = 'tier') {
+  return [...items].sort((a, b) => {
+    const ai = TIER_ORDER.indexOf(a[field]);
+    const bi = TIER_ORDER.indexOf(b[field]);
+    return (ai === -1 ? TIER_ORDER.length : ai) - (bi === -1 ? TIER_ORDER.length : bi);
+  });
+}
 
 const mountArtifactFilters = {
   mounts: { search: '', tier: 'All', owned: 'All' },
