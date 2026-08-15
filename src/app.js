@@ -1183,7 +1183,12 @@ function renderEquipPetCard(petIndex) {
     const container = el('div', {}, [wrap]);
     if (slot.stat) {
       container.appendChild(el('div', { class: 'equip-writeup' }, `${slot.stat} +${slot.val}%`));
-      const helper = PET_SKILL_HELPER_TEXT[slot.stat];
+      // Fixed-tier (SS/SSS) skills already spell out both breakpoints
+      // right in the stat name/value shown above — the extra plain-English
+      // helper paragraph is redundant for those specifically, unlike the
+      // free-typed skills where it's the only explanation of what the
+      // stat actually does.
+      const helper = !isFixed && PET_SKILL_HELPER_TEXT[slot.stat];
       if (helper) container.appendChild(el('div', { class: 'equip-writeup', style: 'color:var(--ink-faint);font-size:11px;' }, helper));
     }
     card.appendChild(container);
@@ -2709,6 +2714,21 @@ const RELIC_KEY_TO_LABEL = {
   pet_dmg_pct: 'Pet DMG', speed: 'Speed', suppression: 'Ignore Suppression',
   control_immunity: 'Control Immunity Rate', ignore_control_immunity: 'Ignore Control Immunity Rate',
   dotcritrate: 'DoT Crit Rates', ignoredotcritrate: 'Ignore DoT Crit',
+  // Collectibles use a different (but conceptually identical) key-naming
+  // convention than relics/mounts/artifacts — without these, their
+  // contributions were silently computed but never shown, since the
+  // fallback (raw stat_label text, e.g. "Crit DMG %") never matches any
+  // of the Calculator's exact category label strings. Only added where
+  // the concept is an unambiguous match to an existing category — stats
+  // with no real Calculator category (gold gain, AFK gains, lifesteal,
+  // shield bonus, etc.) are deliberately left out rather than force-fit.
+  crit_dmg: 'Crit DMG (Default to 200% as base)', crit_dmg_reduction: 'Crit DMG Reduction',
+  combo_dmg: 'Combo DMG', combo_dmg_reduction: 'Combo DMG Reduction',
+  counter_dmg: 'Counter DMG', counter_dmg_reduction: 'Counter DMG Reduction',
+  lightning_dmg: 'Lightning DMG', lightning_dmg_reduction: 'Lightning DMG Reduction',
+  fire_dmg: 'Fire DMG',
+  dot_crit_rate: 'DoT Crit Rates',
+  ignore_skill_crit_rate: 'Ignore Skill Crit', ignore_normal_attack_crit_rate: 'Ignore Normal ATK Crit',
 };
 
 function aggregateFullStatsWithSources() {
