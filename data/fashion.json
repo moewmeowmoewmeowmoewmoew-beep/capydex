@@ -1,0 +1,255 @@
+{
+  "fashion_levels": [
+    null,
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+5% HP, +5% ATK, +5% DEF",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+1% FDR, +1% FD",
+      "fdr": 0.01,
+      "fd": 0.01
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+5% HP, +5% ATK, +5% DEF",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+1% FDR, +1% FD",
+      "fdr": 0.01,
+      "fd": 0.01
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+5% HP, +5% ATK, +5% DEF",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+1% FDR, +1% FD",
+      "fdr": 0.01,
+      "fd": 0.01
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+5% HP, +5% ATK, +5% DEF",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+1% FDR, +1% FD",
+      "fdr": 0.01,
+      "fd": 0.01
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+5% HP, +5% ATK, +5% DEF",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% HP",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+2% ATK",
+      "fdr": 0,
+      "fd": 0
+    },
+    {
+      "note": "+1% FDR, +1% FD",
+      "fdr": 0.01,
+      "fd": 0.01
+    }
+  ]
+}

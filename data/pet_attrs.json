@@ -1,0 +1,1108 @@
+{
+  "pet_attrs": [
+    {
+      "name": "Global ATK%",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          2.5
+        ],
+        [
+          2.5,
+          5
+        ],
+        [
+          5,
+          7.5
+        ],
+        [
+          7.5,
+          10
+        ],
+        [
+          10,
+          12.5
+        ],
+        [
+          12.5,
+          15
+        ],
+        [
+          14.88,
+          17.5
+        ],
+        [
+          17.78,
+          20
+        ]
+      ]
+    },
+    {
+      "name": "Global HP%",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          2.5
+        ],
+        [
+          2.5,
+          5
+        ],
+        [
+          5,
+          7.5
+        ],
+        [
+          7.5,
+          10
+        ],
+        [
+          10,
+          12.5
+        ],
+        [
+          12.5,
+          15
+        ],
+        [
+          14.88,
+          17.5
+        ],
+        [
+          17.78,
+          20
+        ]
+      ]
+    },
+    {
+      "name": "Global DEF%",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          2.5
+        ],
+        [
+          2.5,
+          5
+        ],
+        [
+          5,
+          7.5
+        ],
+        [
+          7.5,
+          10
+        ],
+        [
+          10,
+          12.5
+        ],
+        [
+          12.5,
+          15
+        ],
+        [
+          14.88,
+          17.5
+        ],
+        [
+          17.78,
+          20
+        ]
+      ]
+    },
+    {
+      "name": "Combo DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          12.5
+        ],
+        [
+          12.5,
+          25
+        ],
+        [
+          25,
+          37.5
+        ],
+        [
+          37.5,
+          50
+        ],
+        [
+          50,
+          62.5
+        ],
+        [
+          62.5,
+          75
+        ],
+        [
+          74.38,
+          87.5
+        ],
+        [
+          88.88,
+          100
+        ]
+      ]
+    },
+    {
+      "name": "Combo DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          12.5
+        ],
+        [
+          12.5,
+          25
+        ],
+        [
+          25,
+          37.5
+        ],
+        [
+          37.5,
+          50
+        ],
+        [
+          50,
+          62.5
+        ],
+        [
+          62.5,
+          75
+        ],
+        [
+          74.38,
+          87.5
+        ],
+        [
+          88.88,
+          100
+        ]
+      ]
+    },
+    {
+      "name": "Counter DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          12.5
+        ],
+        [
+          12.5,
+          25
+        ],
+        [
+          25,
+          37.5
+        ],
+        [
+          37.5,
+          50
+        ],
+        [
+          50,
+          62.5
+        ],
+        [
+          62.5,
+          75
+        ],
+        [
+          74.38,
+          87.5
+        ],
+        [
+          88.88,
+          100
+        ]
+      ]
+    },
+    {
+      "name": "Counter DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          12.5
+        ],
+        [
+          12.5,
+          25
+        ],
+        [
+          25,
+          37.5
+        ],
+        [
+          37.5,
+          50
+        ],
+        [
+          50,
+          62.5
+        ],
+        [
+          62.5,
+          75
+        ],
+        [
+          74.38,
+          87.5
+        ],
+        [
+          88.88,
+          100
+        ]
+      ]
+    },
+    {
+      "name": "Crit DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Crit DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Skill DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Skill DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Basic ATK DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Basic ATK DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Pet DMG",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Pet DMG Reduction",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Recovery Effect",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "DMG to BOSS",
+      "rate": 3.18,
+      "ranges": [
+        [
+          0,
+          4
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          13.33,
+          20
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          28.8,
+          36
+        ],
+        [
+          36.67,
+          44
+        ],
+        [
+          44.2,
+          52
+        ],
+        [
+          53.33,
+          60
+        ]
+      ]
+    },
+    {
+      "name": "Burn Damage",
+      "rate": 0.32,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Burn Damage Reduction",
+      "rate": 0.32,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Poison DMG",
+      "rate": 0.32,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Poison DMG Reduction",
+      "rate": 0.32,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Increased Damage Over Time",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Damage Over Time Reduction",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        [
+          8,
+          10
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          24,
+          30
+        ]
+      ],
+      "minTier": 4
+    },
+    {
+      "name": "Mutation (Pet Base Stats)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          50,
+          50
+        ],
+        [
+          75,
+          75
+        ],
+        [
+          100,
+          100
+        ]
+      ],
+      "minTier": 5,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Giant (Pet DMG)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          90,
+          90
+        ],
+        [
+          120,
+          120
+        ],
+        [
+          150,
+          150
+        ]
+      ],
+      "minTier": 5,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Epic Leader (Epic Pet DMG)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          60,
+          60
+        ],
+        [
+          90,
+          90
+        ],
+        [
+          120,
+          120
+        ]
+      ],
+      "minTier": 5,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Legendary Leader",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          60,
+          60
+        ],
+        [
+          90,
+          90
+        ],
+        [
+          120,
+          120
+        ]
+      ],
+      "minTier": 5,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Mythic Leader",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          60,
+          60
+        ],
+        [
+          90,
+          90
+        ],
+        [
+          120,
+          120
+        ]
+      ],
+      "minTier": 5,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Fierce (Combo Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Sturdy (Counter Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Brutal (Crit Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Agile (Ignore Combo Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Majestic (Ignore Counter Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Resilience (Ignore Crit Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "minTier": 6,
+      "fixed": true,
+      "slotRestricted": true
+    },
+    {
+      "name": "Unmovable (Control Immunity Rate)",
+      "rate": 3.18,
+      "ranges": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        [
+          5,
+          5
+        ]
+      ],
+      "minTier": 7,
+      "fixed": true,
+      "slotRestricted": true
+    }
+  ],
+  "pet_fixed_tier_skills": [
+    "Fierce (Combo Rate)",
+    "Sturdy (Counter Rate)",
+    "Brutal (Crit Rate)",
+    "Agile (Ignore Combo Rate)",
+    "Majestic (Ignore Counter Rate)",
+    "Resilience (Ignore Crit Rate)"
+  ]
+}

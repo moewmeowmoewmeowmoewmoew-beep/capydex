@@ -213,7 +213,14 @@ body {
   margin: 0 0 4px;
   padding-top: 8px;
 }
-.page-section + .page-section .section-title,
+/* Direct-child combinator (>) is deliberate here — a plain <h2> without a
+   Clear All button IS a direct child of .page-section, but one wrapped in
+   .section-title-row is a grandchild, not a direct child. Using a
+   descendant selector for both matched the title twice (once directly,
+   once via its wrapping row), doubling the border/padding and pushing the
+   title's own box tall enough to visibly misalign it against the button
+   sitting next to it in the same row. */
+.page-section + .page-section > .section-title,
 .page-section + .page-section .section-title-row { margin-top: 12px; border-top: 1px solid var(--hairline); padding-top: 40px; }
 .section-desc { color: var(--ink-dim); font-size: 13px; margin-bottom: 18px; max-width: 640px; line-height: 1.5; }
 
@@ -869,6 +876,83 @@ body {
 }
 
 /* ---- Calculator ---- */
+.accordion {
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.accordion.ghost {
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0;
+}
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  background: var(--bg-panel);
+  user-select: none;
+}
+.accordion.ghost > .accordion-header {
+  background: transparent;
+  padding: 8px 0;
+}
+.accordion-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); }
+.accordion.ghost > .accordion-header .accordion-title { font-size: 20px; }
+.accordion-chevron {
+  color: var(--ink-faint);
+  transition: transform 0.15s ease;
+  transform: rotate(-90deg);
+}
+.accordion.open .accordion-chevron { transform: rotate(0deg); }
+.accordion-body {
+  display: none;
+  padding: 0 18px 14px;
+}
+.accordion.ghost > .accordion-body { padding: 0; }
+.accordion.open .accordion-body { display: block; }
+
+.calc-full-table-controls { display: flex; gap: 8px; margin: 4px 0 16px; }
+.equip-section-title.calc-category-title { margin-top: 36px; }
+.equip-section-title.calc-category-title:first-of-type { margin-top: 8px; }
+.calc-full-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.calc-full-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink-dim);
+  vertical-align: top;
+}
+.calc-full-table tr:last-child td { border-bottom: none; }
+.calc-full-table-stat-row td {
+  font-weight: 600;
+  color: var(--ink);
+  padding-top: 18px;
+  padding-bottom: 6px;
+}
+.calc-full-table-stat-row:first-child td { padding-top: 8px; }
+.calc-full-table-stat-row.clickable { cursor: pointer; }
+.calc-full-table-stat-row.clickable:hover td { color: var(--accent); }
+.calc-row-hidden { display: none !important; }
+.calc-full-table-chevron {
+  display: inline-block;
+  color: var(--ink-faint);
+  font-size: 10px;
+  margin-right: 6px;
+  transition: transform 0.15s ease;
+  transform: rotate(-90deg);
+}
+.calc-full-table-chevron.expanded { transform: rotate(0deg); }
+.calc-full-table-source-row td:first-child { padding-left: 22px; color: var(--ink-faint); font-size: 11.5px; }
+.calc-full-table-source-row.collapsed { display: none; }
+.calc-full-table-total { font-family: var(--font-mono); text-align: right; white-space: nowrap; }
+
 .calc-stat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

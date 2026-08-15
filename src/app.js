@@ -11,13 +11,20 @@ function defaultState() {
     relicStars: {},         // relicName -> 0-10
     mountState: {},         // idx -> { owned, stars(0-5), awaken(0-10) }
     artifactState: {},      // idx -> { owned, stars(0-5), awaken(0-10) }
+    fashionLevel: 0,
+    homestead: {},           // buildingId -> level (0 = not owned)
     petState: {},           // idx -> { owned, battleLv(1-5), awaken(0-10) }
     equipment: {},           // slotId -> { itemName, quality, surpass, arcana, psionics[4], gems[5] }
-    petSlot: { itemName: '', arcana: -1, level: 0 },
+    petSlots: [
+      { itemName: '', arcana: -1, level: 0, armament: '', armamentLevel: 1, skills: [{ stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }] },
+      { itemName: '', arcana: -1, level: 0, armament: '', armamentLevel: 1, skills: [{ stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }] },
+      { itemName: '', arcana: -1, level: 0, armament: '', armamentLevel: 1, skills: [{ stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }] },
+    ],
     mountSlots: [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }], // 3 deployed — awaken skill each
     mountMainSlot: { itemIdx: null }, // 1 main — star skill
     artifactSlots: [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }],
     artifactMainSlot: { itemIdx: null },
+    relicSlots: { totem1: null, totem2: null, core: null, guardian: null }, // relic name per slot
     adventurerSlot: { name: '', stars: 0 },
     heroSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
     brandSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
@@ -252,11 +259,101 @@ const COLLECTION_SECTIONS = [
   { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity'), clearAll: () => clearAllCollectibles() },
   { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('mounts') },
   { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('artifacts') },
+  { id: 'fashion', label: 'Fashion Level', build: buildFashionSectionContent, clearAll: () => { state.fashionLevel = 0; saveState(); render(); } },
+  { id: 'homestead', label: 'Homestead', build: buildHomesteadSectionContent, clearAll: () => { state.homestead = {}; saveState(); render(); } },
   // Pets deliberately hidden from Collection for now (still fully built —
   // Equipment tab's Pet card already covers pet selection/arcana/skills).
   // Remind J this section still exists next time Collection scope comes up.
   // { id: 'pets', label: 'Pets', build: renderPets, sub: () => buildTierGroups(DB.pets) },
 ];
+
+function parseFashionNoteStats(note) {
+  const result = {};
+  if (!note) return result;
+  note.split(',').forEach(part => {
+    const m = part.trim().match(/^\+(\d+(?:\.\d+)?)%\s+(HP|ATK|DEF)$/);
+    if (m) result[m[2]] = parseFloat(m[1]);
+  });
+  return result;
+}
+
+function buildFashionSectionContent() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Cumulative bonuses from Fashion Level 1 up to your selected level — every stat stacks from every level along the way, not just the one you land on.'));
+
+  const levels = DB.fashion_levels || [];
+  const levelInput = el('input', {
+    type: 'number', class: 'equip-select', style: 'max-width:220px;', min: '0', max: '50', placeholder: '0',
+    value: state.fashionLevel ? String(state.fashionLevel) : '',
+  });
+  levelInput.addEventListener('input', (e) => {
+    const n = parseInt(e.target.value, 10);
+    state.fashionLevel = Number.isNaN(n) ? 0 : Math.max(0, Math.min(50, n));
+    saveState();
+  });
+  levelInput.addEventListener('blur', () => render());
+  wrap.appendChild(equipFieldLabel('Fashion Level'));
+  wrap.appendChild(levelInput);
+
+  if (state.fashionLevel > 0) {
+    let totalFd = 0, totalFdr = 0;
+    const statTotals = {};
+    for (let i = 1; i <= state.fashionLevel; i++) {
+      const lv = levels[i];
+      if (!lv) continue;
+      totalFd += lv.fd || 0;
+      totalFdr += lv.fdr || 0;
+      Object.entries(parseFashionNoteStats(lv.note)).forEach(([stat, val]) => {
+        statTotals[stat] = (statTotals[stat] || 0) + val;
+      });
+    }
+    const parts = [
+      `Final DMG +${Math.round(totalFd * 10000) / 100}%`,
+      `Final DMG Reduction +${Math.round(totalFdr * 10000) / 100}%`,
+      ...Object.entries(statTotals).map(([stat, val]) => `${stat} +${Math.round(val * 100) / 100}%`),
+    ];
+    wrap.appendChild(equipFieldLabel('Totals at this level'));
+    wrap.appendChild(el('div', { class: 'equip-writeup' }, parts.join(' · ')));
+  }
+
+  return wrap;
+}
+
+function buildHomesteadSectionContent() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Buildings you own grant passive stats at whichever level you\u2019ve upgraded them to. Set each to Level 0 if you don\u2019t own it.'));
+
+  const buildings = DB.homestead_buildings || [];
+  const card = el('div', { class: 'equip-card' });
+  buildings.forEach(b => {
+    const currentLevel = state.homestead[b.id] || 0;
+    card.appendChild(equipFieldLabel(`${b.name}${b.event ? ` (${b.event})` : ''} — ${b.label}`));
+    const select = el('select', { class: 'equip-select' }, [
+      el('option', { value: '0', selected: currentLevel === 0 ? 'true' : null }, 'Level 0 (not owned)'),
+      ...b.values.map((v, i) => {
+        const lv = i + 1;
+        return el('option', { value: String(lv), selected: lv === currentLevel ? 'true' : null }, `Level ${lv}`);
+      }),
+    ]);
+    select.addEventListener('change', (e) => {
+      const lv = parseInt(e.target.value, 10);
+      if (lv === 0) delete state.homestead[b.id];
+      else state.homestead[b.id] = lv;
+      saveState();
+      render();
+    });
+    card.appendChild(select);
+    if (currentLevel > 0) {
+      const val = b.values[currentLevel - 1];
+      const pct = Math.round(val * 10000) / 100;
+      card.appendChild(el('div', { class: 'equip-writeup' }, `${b.label} +${pct}%`));
+    }
+  });
+  wrap.appendChild(el('div', { class: 'equip-grid equip-grid-single' }, [card]));
+  return wrap;
+}
 
 function renderPlaceholder(label) {
   return el('div', {}, [
@@ -302,8 +399,10 @@ function buildEquipmentSectionContent() {
 
 function buildPetSectionContent() {
   const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Up to 3 deployable pets. Each has Arcana, Battle Skills, a Pet Armament, and 5 independently-rolled skill slots.'));
   const petGrid = el('div', { class: 'equip-grid' });
-  petGrid.appendChild(renderEquipPetCard());
+  [0, 1, 2].forEach(i => petGrid.appendChild(renderEquipPetCard(i)));
   wrap.appendChild(petGrid);
   return wrap;
 }
@@ -539,10 +638,96 @@ function buildAdventurerHeroBrandSectionContent() {
 const EQUIPMENT_SECTIONS = [
   { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent, clearAll: () => clearAllEquipment() },
   { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
+  { id: 'equip-relics', label: 'Relics', build: buildRelicsSectionContent, clearAll: () => { state.relicSlots = { totem1: null, totem2: null, core: null, guardian: null }; saveState(); render(); } },
   { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
   { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
   { id: 'equip-adv-hero-brand', label: 'Adventurer, Heroes & Brands', build: buildAdventurerHeroBrandSectionContent },
 ];
+
+const RELIC_DEPLOY_SLOTS = [
+  { key: 'totem1', label: 'Totem 1', type: 'totem' },
+  { key: 'totem2', label: 'Totem 2', type: 'totem' },
+  { key: 'core', label: 'Core', type: 'core' },
+  { key: 'guardian', label: 'Guardian', type: 'guardian' },
+];
+
+function buildRelicsSectionContent() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    '2 Totem, 1 Core, 1 Guardian — only relics of the matching type that you\u2019ve marked owned in Collection are selectable here. Equipped relics only ever step through 0★/5★/10★ breakpoints, not the full 0–10 range.'));
+  const grid = el('div', { class: 'equip-grid' });
+  RELIC_DEPLOY_SLOTS.forEach(slot => grid.appendChild(renderRelicDeployCard(slot)));
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function renderRelicDeployCard(slotDef) {
+  const relics = (DB.relics || []).filter(r => r.deploy_type === slotDef.type);
+  const ownedOptions = relics.filter(r => state.relicOwned[r.n]);
+  const currentName = state.relicSlots[slotDef.key];
+  const relic = ownedOptions.find(r => r.n === currentName) || null;
+
+  const card = el('div', { class: 'equip-card' });
+  const headerImg = relic
+    ? el('img', { src: itemImagePath('relics', relic), alt: relic.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
+    : el('div', { class: 'equip-card-thumb placeholder' });
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, slotDef.label)]));
+
+  const linkText = 'Information prefilled from your Collections. To update it, please change it ';
+  const link = el('a', {
+    href: '#', class: 'equip-collection-link',
+    onclick: (e) => { e.preventDefault(); goToCollectionSection('relics'); },
+  }, 'here');
+  card.appendChild(el('p', { class: 'equip-prefill-note' }, [linkText, link, '.']));
+
+  card.appendChild(equipFieldLabel(slotDef.label));
+  if (!ownedOptions.length) {
+    card.appendChild(el('div', { class: 'equip-writeup' },
+      `You haven't marked any owned ${slotDef.type}-type relics in Collection yet.`));
+    return card;
+  }
+
+  const select = el('select', { class: 'equip-select' }, [
+    el('option', { value: '' }, '— None —'),
+    ...ownedOptions.map(r => el('option', { value: r.n, selected: r.n === currentName ? 'true' : null }, r.n)),
+  ]);
+  select.addEventListener('change', (e) => {
+    state.relicSlots[slotDef.key] = e.target.value || null;
+    saveState();
+    render();
+  });
+  card.appendChild(select);
+
+  if (!relic) return card;
+
+  const star = state.relicStars[relic.n] || 0;
+  card.appendChild(equipFieldLabel('Stars'));
+  card.appendChild(el('div', { class: 'equip-writeup' }, `${star}★`));
+
+  // Same tiered-effect logic as the Collection relic card — the same
+  // 0★/5★/10★ breakpoints, since deployed relics don't get finer granularity.
+  let effectText = relic.effect;
+  let effectLabel = '10★';
+  if (relic.effect_base) {
+    if (star < 5) { effectText = relic.effect_base; effectLabel = '0★'; }
+    else if (star < 10) { effectText = relic.effect_5star; effectLabel = '5★'; }
+    else { effectText = relic.effect; effectLabel = '10★'; }
+  }
+  if (effectText) {
+    card.appendChild(equipFieldLabel(`${effectLabel} Skill`));
+    card.appendChild(el('div', { class: 'equip-writeup' }, effectText));
+  }
+
+  if (relic.star_stats) {
+    const nodes = formatStatBlockNodes(
+      Object.fromEntries(Object.entries(relic.star_stats).map(([stat, vals]) => [stat, vals[star]]))
+    );
+    card.appendChild(equipFieldLabel('Stats'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, nodes));
+  }
+
+  return card;
+}
 
 function renderEquipmentShell() {
   return renderSectionShell(EQUIPMENT_SECTIONS);
@@ -550,11 +735,15 @@ function renderEquipmentShell() {
 
 function clearAllEquipment() {
   state.equipment = {};
-  state.petSlot = { itemName: '', arcana: -1, level: 0 };
+  state.petSlots = state.petSlots.map(() => ({
+    itemName: '', arcana: -1, level: 0, armament: '', armamentLevel: 1,
+    skills: [{ stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }],
+  }));
   state.mountSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
   state.mountMainSlot = { itemIdx: null };
   state.artifactSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
   state.artifactMainSlot = { itemIdx: null };
+  state.relicSlots = { totem1: null, totem2: null, core: null, guardian: null };
   saveState();
   render();
 }
@@ -660,8 +849,23 @@ function renderSearchCombo({ value, options, placeholder, onSelect, onClear }) {
   return container;
 }
 
-function renderEquipPetCard() {
-  const s = state.petSlot;
+const PET_SKILL_HELPER_TEXT = {
+  'Fierce (Combo Rate)': "Gives this pet's hero a chance to trigger a Combo attack — 5% at SS, 10% at SSS.",
+  'Sturdy (Counter Rate)': "Gives this pet's hero a chance to Counterattack — 5% at SS, 10% at SSS.",
+  'Brutal (Crit Rate)': "Gives this pet's hero a chance to land a Critical Hit — 5% at SS, 10% at SSS.",
+  'Agile (Ignore Combo Rate)': "Gives this pet's hero a chance to stop the enemy from Comboing them — 5% at SS, 10% at SSS.",
+  'Majestic (Ignore Counter Rate)': "Gives this pet's hero a chance to stop the enemy from Countering them — 5% at SS, 10% at SSS.",
+  'Resilience (Ignore Crit Rate)': "Gives this pet's hero a chance to stop the enemy from landing a Critical Hit on them — 5% at SS, 10% at SSS.",
+  'Mutation (Pet Base Stats)': "Boosts this pet's own base stats.",
+  'Giant (Pet DMG)': "Boosts this pet's own damage output.",
+  'Epic Leader (Epic Pet DMG)': 'Boosts the damage of every Epic-rarity pet you have deployed.',
+  'Legendary Leader': 'Boosts the damage of every Legendary-rarity pet you have deployed.',
+  'Mythic Leader': 'Boosts the damage of every Mythic-rarity pet you have deployed.',
+  'Unmovable (Control Immunity Rate)': "Gives this pet's hero a chance to be immune to control effects (like stun or freeze).",
+};
+
+function renderEquipPetCard(petIndex) {
+  const s = state.petSlots[petIndex];
   const pets = DB.pets || [];
   const pet = pets.find(p => p.n === s.itemName) || null;
 
@@ -669,7 +873,7 @@ function renderEquipPetCard() {
   const headerImg = pet
     ? el('img', { src: itemImagePath('pets', pet), alt: pet.n, class: 'equip-card-thumb', onerror: (e) => { e.target.style.visibility = 'hidden'; } })
     : el('div', { class: 'equip-card-thumb placeholder' });
-  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, 'Pet')]));
+  card.appendChild(el('div', { class: 'equip-card-header' }, [headerImg, el('div', { class: 'equip-card-title' }, `Pet ${petIndex + 1}`)]));
 
   card.appendChild(equipFieldLabel('Pet'));
   card.appendChild(renderSearchCombo({
@@ -732,6 +936,93 @@ function renderEquipPetCard() {
     card.appendChild(equipFieldLabel(activeKey || 'Battle Skill'));
     card.appendChild(el('div', { class: 'equip-writeup' }, activeText || '—'));
   }
+
+  // ---- Pet Armament ----
+  card.appendChild(el('div', { class: 'equip-section-title' }, 'Pet Armament'));
+  const armaments = DB.pet_armaments || [];
+  const armament = armaments.find(a => a.n === s.armament);
+  card.appendChild(equipFieldLabel('Armament'));
+  card.appendChild(renderSearchCombo({
+    value: s.armament,
+    options: armaments.map(a => a.n),
+    placeholder: 'Search armaments…',
+    onSelect: (name) => { s.armament = name; s.armamentLevel = 1; saveState(); render(); },
+    onClear: () => { s.armament = ''; saveState(); render(); },
+  }));
+  if (armament) {
+    card.appendChild(equipFieldLabel('Level'));
+    const levelSelect = el('select', { class: 'equip-select' },
+      Array.from({ length: 10 }, (_, i) => i + 1).map(lv =>
+        el('option', { value: String(lv), selected: lv === s.armamentLevel ? 'true' : null }, `Lv.${lv}`)));
+    levelSelect.addEventListener('change', (e) => { s.armamentLevel = parseInt(e.target.value, 10); saveState(); render(); });
+    card.appendChild(levelSelect);
+    const descText = armament.level_descs && armament.level_descs[s.armamentLevel - 1];
+    if (descText) card.appendChild(el('div', { class: 'equip-writeup' }, descText));
+  }
+
+  // ---- 5 Skill Slots ----
+  card.appendChild(el('div', { class: 'equip-section-title' }, 'Pet Skills'));
+  const allAttrs = DB.pet_attrs || [];
+  const fixedTierSkills = new Set(DB.pet_fixed_tier_skills || []);
+  const slotRestrictedNames = new Set(allAttrs.filter(a => a.slotRestricted).map(a => a.name));
+
+  // Stats used elsewhere on THIS pet can't repeat; slotRestricted "leader"
+  // style stats additionally can't repeat across ANY of the 3 pets' slots.
+  const usedRestrictedElsewhere = new Set();
+  state.petSlots.forEach((otherPet, pi) => {
+    if (pi === petIndex) return;
+    otherPet.skills.forEach(sl => { if (sl.stat && slotRestrictedNames.has(sl.stat)) usedRestrictedElsewhere.add(sl.stat); });
+  });
+
+  s.skills.forEach((slot, si) => {
+    card.appendChild(equipFieldLabel(`Skill ${si + 1}`));
+    const wrap = el('div', { class: 'equip-inline-row' });
+
+    const usedOnThisPetOtherSlots = new Set(s.skills.filter((_, i) => i !== si).map(sl => sl.stat).filter(Boolean));
+    const availableAttrs = allAttrs.filter(a =>
+      !usedOnThisPetOtherSlots.has(a.name) && !usedRestrictedElsewhere.has(a.name));
+
+    const combo = renderSearchCombo({
+      value: slot.stat,
+      options: availableAttrs.map(a => a.name),
+      placeholder: 'Search skill…',
+      onSelect: (name) => { slot.stat = name; slot.val = 0; saveState(); render(); },
+      onClear: () => { slot.stat = ''; slot.val = 0; saveState(); render(); },
+    });
+    wrap.appendChild(combo);
+
+    const isFixed = slot.stat && fixedTierSkills.has(slot.stat);
+    if (isFixed) {
+      const tierSelect = el('select', { class: 'equip-select equip-tier-select' }, [
+        el('option', { value: '5', selected: slot.val === 5 ? 'true' : null }, 'SS (5%)'),
+        el('option', { value: '10', selected: slot.val === 10 ? 'true' : null }, 'SSS (10%)'),
+      ]);
+      tierSelect.addEventListener('change', (e) => { slot.val = parseInt(e.target.value, 10); saveState(); render(); });
+      wrap.appendChild(tierSelect);
+    } else {
+      const valInput = el('input', {
+        type: 'number', class: 'equip-num-input', min: '0', placeholder: '0',
+        value: slot.val ? String(slot.val) : '',
+        oninput: (e) => {
+          const n = parseFloat(e.target.value);
+          if (n < 0) { e.target.classList.add('input-error'); return; }
+          e.target.classList.remove('input-error');
+          slot.val = Number.isNaN(n) ? 0 : n;
+          saveState();
+        },
+        onblur: (e) => { e.target.classList.remove('input-error'); render(); },
+      });
+      wrap.appendChild(el('div', { class: 'equip-pct-input-group' }, [valInput, el('span', {}, '%')]));
+    }
+
+    const container = el('div', {}, [wrap]);
+    if (slot.stat) {
+      container.appendChild(el('div', { class: 'equip-writeup' }, `${slot.stat} +${slot.val}%`));
+      const helper = PET_SKILL_HELPER_TEXT[slot.stat];
+      if (helper) container.appendChild(el('div', { class: 'equip-writeup', style: 'color:var(--ink-faint);font-size:11px;' }, helper));
+    }
+    card.appendChild(container);
+  });
 
   return card;
 }
@@ -1765,10 +2056,14 @@ function renderCollectibleCard(item) {
       card.appendChild(el('div', { class: 'item-effect placeholder' },
         `${item.stat_label}: not documented at ${stars}★ yet`));
     } else {
-      const pct = Math.round(val * 10000) / 100; // trim float noise, keep up to 2 decimals
+      // New source data gives raw numbers directly (percent stats are
+      // already whole percentages like 1.0 = 1%, not a 0.01 fraction) —
+      // no more ×100 conversion, and flat stats (HP/ATK/DEF/Block) get no
+      // "%" at all since they're not percentages to begin with.
+      const display = item.is_percent ? `${val}%` : `${val}`;
       card.appendChild(el('div', { class: 'item-effect' }, [
-        item.stat_label + ': ',
-        el('span', { class: 'stat-value-live' }, `${pct}%`),
+        item.stat_label.replace(/\s*%$/, '') + ': ',
+        el('span', { class: 'stat-value-live' }, display),
       ]));
     }
   }
@@ -2116,6 +2411,10 @@ function aggregatePvpStats() {
     totals[key] = (totals[key] || 0) + val;
   };
 
+  // Every character starts with 200% Crit DMG before any bonuses — confirmed
+  // base value, not something owned gear grants.
+  add('crit_dmg', 200);
+
   // Relics — star_stats at current star level
   DB.relics.forEach(r => {
     if (!state.relicOwned[r.n]) return;
@@ -2123,11 +2422,14 @@ function aggregatePvpStats() {
     Object.entries(r.star_stats || {}).forEach(([key, vals]) => add(key, vals[star] || 0));
   });
 
-  // Collectibles — single stat at current star level
+  // Collectibles — single stat at current star level. Values are already
+  // in natural percent-scale straight from source (e.g. 12 = 12%, not a
+  // 0.12 fraction needing ×100) — matches how relics store star_stats.
   DB.collectibles.forEach(c => {
     if (!state.collectibleOwned[c.n]) return;
     const star = Math.min(state.collectibleStars[c.n] || 0, 10);
-    add(c.stat_key, (c.star_vals[star] || 0) * 100); // stored as fraction, display as %
+    const val = c.star_vals[star];
+    if (val != null) add(c.stat_key, val);
   });
 
   // Mounts & Artifacts — full base+star+awaken total at current levels
@@ -2142,6 +2444,283 @@ function aggregatePvpStats() {
   });
 
   return totals;
+}
+
+// ---- Full-detail stat table (with per-source attribution) ----
+// Walks every structured, numeric data source in the app — equipment
+// psionics, gems with a real numeric value, pet skills, relics,
+// collectibles, mounts/artifacts, adventurer stat buffs, fashion, and
+// homestead — and records not just the total per stat but exactly which
+// item contributed how much, keyed by the same display label used
+// throughout the app (mostly the psionic stat names, since those already
+// match this table's requested labels almost one-to-one).
+//
+// Deliberately NOT included: Hero and Brand quality/polarization bonuses.
+// Those only exist as free-form prose ("Camera Smash reduces enemy final
+// damage bonus by 15%") with no structured stat-key + numeric-value pair
+// to aggregate — extracting one reliably would mean guessing at a parser
+// for arbitrary game-design text, which risks being silently wrong rather
+// than just incomplete. They're still visible on their own cards.
+//
+// Also NOT included: a round-by-round (R1–R5) breakdown. Some sources are
+// genuinely conditional on turn count ("first 3 turns", "every 3 turns"),
+// but that timing lives only in unstructured effect text, not as tagged
+// data — building a fabricated 5-column split from that would look far
+// more precise than it actually is.
+const RELIC_KEY_TO_LABEL = {
+  armor_break: 'Armor Break', armor_break_res: 'Armor Break Resistance',
+  tenacity: 'Tenacity', tenacity_res: 'Tenacity Resistance',
+  hp: 'HP', hp_pct: 'HP%', atk: 'ATK', atk_pct: 'ATK%',
+  global_hp: 'Global HP', global_hp_pct: 'Global HP%', global_atk: 'Global ATK', global_attack_pct: 'Global ATK', global_def_pct: 'Global DEF%',
+  combo: 'Combo Rate', counter: 'Counter Rate',
+  combo_rate_pct: 'Combo Rate', counter_rate_pct: 'Counter Rate',
+  crit_rate_pct: 'Crit Rate (Generic)', ignore_crit_pct: 'Ignore Crit',
+  skill_crit_rate: 'Skill Crit Rate', basic_atk_crit_rate: 'Basic ATK Crit Rate', ignore_basic_atk_crit_rate: 'Ignore Normal ATK Crit', ignore_skill_crit: 'Ignore Skill Crit',
+  ignore_combo: 'Ignore Combo', ignore_combo_pct: 'Ignore Combo', ignore_counter: 'Ignore Counter', ignore_counter_pct: 'Ignore Counter',
+  dmg_reduction_pct: 'Generic DMG Reduction', skill_dmg: 'Skill DMG', skill_dmg_reduction: 'Skill DMG Reduction',
+  basic_atk_dmg: 'Basic ATK DMG', basic_atk_dmg_reduction: 'Basic ATK DMG Reduction',
+  final_skill_dmg: 'Final Skill Damage', final_skill_dmg_reduction: 'Skill Damage Final Damage Reduction',
+  final_basic_atk_dmg: 'Final Normal ATK DMG', final_basic_atk_dmg_reduction: 'Basic Attack Final Damage Reduction',
+  pet_dmg_pct: 'Pet DMG', speed: 'Speed', suppression: 'Ignore Suppression',
+  control_immunity: 'Control Immunity Rate', ignore_control_immunity: 'Ignore Control Immunity Rate',
+  dotcritrate: 'DoT Crit Rates', ignoredotcritrate: 'Ignore DoT Crit',
+};
+
+function aggregateFullStatsWithSources() {
+  const stats = {}; // label -> { total, sources: [{name, val}] }
+  const add = (label, val, sourceName) => {
+    if (typeof val !== 'number' || Number.isNaN(val) || val === 0) return;
+    if (!stats[label]) stats[label] = { total: 0, sources: [] };
+    stats[label].total += val;
+    stats[label].sources.push({ name: sourceName, val });
+  };
+
+  add('Crit DMG (Default to 200% as base)', 200, 'Base');
+  add('Speed', 5, 'Base');
+
+  // Relics
+  DB.relics.forEach(r => {
+    if (!state.relicOwned[r.n]) return;
+    const star = state.relicStars[r.n] || 0;
+    Object.entries(r.star_stats || {}).forEach(([key, vals]) => {
+      const val = vals[star];
+      const label = RELIC_KEY_TO_LABEL[key];
+      if (label && val) add(label, val, `${r.n} (${star}★)`);
+    });
+  });
+
+  // Collectibles
+  DB.collectibles.forEach(c => {
+    if (!state.collectibleOwned[c.n]) return;
+    const star = Math.min(state.collectibleStars[c.n] || 0, 10);
+    const val = c.star_vals[star];
+    const label = RELIC_KEY_TO_LABEL[c.stat_key] || (c.is_percent ? c.stat_label : null);
+    if (label && val) add(label, val, `${c.n} (${star}★)`);
+  });
+
+  // Mounts & Artifacts
+  [['mounts', 'mountState'], ['artifacts', 'artifactState']].forEach(([kind, bucketKey]) => {
+    DB[kind].forEach(item => {
+      if (item.n === 'None' || !item.star_up) return;
+      const s = getMountOrArtifactState(bucketKey, item.idx);
+      if (!s.owned) return;
+      const block = sumBlockAtLevel(item, s.stars, s.awaken);
+      Object.entries(block).forEach(([key, val]) => {
+        const label = RELIC_KEY_TO_LABEL[key];
+        if (label && val) add(label, val, `${item.n} (${s.stars}★/A${s.awaken})`);
+      });
+    });
+  });
+
+  // Equipment Psionics — stat name already matches this table's labels directly
+  EQUIPMENT_SLOTS.forEach(slotDef => {
+    const s = state.equipment[slotDef.id];
+    if (!s || !s.psionics) return;
+    const psiOptions = DB.psionics[slotDef.psiKey] || [];
+    s.psionics.forEach(slot => {
+      if (!slot.stat || !slot.val) return;
+      const meta = psiOptions.find(o => o.c === slot.stat);
+      if (meta) add(meta.n, slot.val, `${slotDef.label} psionic`);
+    });
+  });
+
+  // Equipment Gems with a real numeric value
+  EQUIPMENT_SLOTS.forEach(slotDef => {
+    const s = state.equipment[slotDef.id];
+    if (!s || !s.gems) return;
+    const gemOptions = DB.gems[slotDef.gemKey] || [];
+    s.gems.forEach(slot => {
+      if (!slot.gemId) return;
+      const meta = gemOptions.find(o => o.id === slot.gemId);
+      const val = meta && meta.t ? meta.t[slot.tier - 1] : null;
+      if (meta && val != null) add(meta.n, val, `${slotDef.label} gem`);
+    });
+  });
+
+  // Pet Skills — stat name already matches this table's labels directly
+  state.petSlots.forEach((p, pi) => {
+    if (!p.itemName) return;
+    p.skills.forEach(sl => {
+      if (!sl.stat || !sl.val) return;
+      add(sl.stat, sl.val, `Pet ${pi + 1}: ${p.itemName}`);
+    });
+  });
+
+  // Adventurer stat buffs (ATK/HP only — the only structured numeric part)
+  const adv = state.adventurerSlot;
+  if (adv && adv.name) {
+    const advData = (DB.adventurers || []).find(a => a.n === adv.name);
+    if (advData) {
+      const { statTotals } = computeAdventurerDisplay(advData.tier_effects, adv.stars);
+      Object.entries(statTotals).forEach(([stat, val]) => add(`${stat}%`, val, `Adventurer: ${adv.name}`));
+    }
+  }
+
+  // Fashion Level
+  if (state.fashionLevel > 0) {
+    const levels = DB.fashion_levels || [];
+    let totalFd = 0, totalFdr = 0;
+    const statTotals = {};
+    for (let i = 1; i <= state.fashionLevel; i++) {
+      const lv = levels[i];
+      if (!lv) continue;
+      totalFd += lv.fd || 0;
+      totalFdr += lv.fdr || 0;
+      Object.entries(parseFashionNoteStats(lv.note)).forEach(([stat, val]) => { statTotals[stat] = (statTotals[stat] || 0) + val; });
+    }
+    if (totalFd) add('General Final Damage', Math.round(totalFd * 10000) / 100, `Fashion Level ${state.fashionLevel}`);
+    if (totalFdr) add('General Final Damage Reduction', Math.round(totalFdr * 10000) / 100, `Fashion Level ${state.fashionLevel}`);
+    Object.entries(statTotals).forEach(([stat, val]) => add(`${stat}%`, val, `Fashion Level ${state.fashionLevel}`));
+  }
+
+  // Homestead
+  (DB.homestead_buildings || []).forEach(b => {
+    const lv = state.homestead[b.id];
+    if (!lv) return;
+    const val = b.values[lv - 1];
+    if (val == null) return;
+    const pct = Math.round(val * 10000) / 100;
+    const label = RELIC_KEY_TO_LABEL[b.calc] || (b.label === 'Final DMG Boost' ? 'General Final Damage' : b.label === 'Final DMG Red' ? 'General Final Damage Reduction' : b.label);
+    add(label, pct, `${b.name} (Lv.${lv})`);
+  });
+
+  return stats;
+}
+
+const CALC_TABLE_CATEGORIES = [
+  { title: 'Final Damage Reduction', labels: ['General Final Damage Reduction', 'Skill Damage Final Damage Reduction', 'Basic Attack Final Damage Reduction', 'Conditional Final Damage Reduction', 'Adventurer Final Damage Reduction', 'Artifact Final Damage Reduction', 'Mount Final Damage Reduction', 'Pet Final Damage Reduction'] },
+  { title: 'Final Damage', labels: ['General Final Damage', 'Final Skill Damage', 'Final Lightning DMG', 'Final Sword Qi DMG', 'Final Dagger DMG', 'Final Combo DMG', 'Final Counter DMG', 'Final Normal ATK DMG'] },
+  { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate'] },
+  { title: 'Crit Rates', labels: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
+  { title: 'DMG Reduction', labels: ['Generic DMG Reduction', 'Skill DMG Reduction', 'Basic ATK DMG Reduction', 'Combo DMG Reduction', 'Counter DMG Reduction', 'Lightning DMG Reduction', 'Dagger DMG Reduction', 'Sword Qi DMG Reduction', 'Light Spear DMG Red', 'Fire DMG Reduction', 'DoT DMG Reduction', 'Crit DMG Reduction', 'Skill Crit DMG Red', 'Basic ATK Crit DMG Red', 'DoT Crit DMG Red'] },
+  { title: 'Speed', labels: ['Speed'] },
+  { title: 'Tenacity & Armor', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
+  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG (Default to 200% as base)', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG'] },
+  { title: 'Damage Coefficients', labels: ['General DMG Coef', 'Skill DMG Coef', 'Normal ATK DMG Coef', 'Combo DMG Coef', 'Counter DMG Coef', 'Lightning DMG Coef', 'Dagger DMG Coef', 'Sword Qi DMG Coef', 'Fire DMG Coef'] },
+  { title: 'Ignore Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Counter'] },
+];
+
+// Simple collapsible accordion — pure DOM toggle, no state persistence
+// needed since it's just a display convenience, not something worth
+// remembering across renders. ghost=true drops the boxed-card look (no
+// border/background) for cases that just need the collapse behavior
+// without looking like a distinct container.
+function renderAccordion(title, contentEl, defaultOpen, ghost) {
+  const wrap = el('div', { class: 'accordion' + (defaultOpen ? ' open' : '') + (ghost ? ' ghost' : '') });
+  const header = el('div', { class: 'accordion-header' }, [
+    el('span', { class: 'accordion-title' }, title),
+    el('span', { class: 'accordion-chevron' }, '\u25BE'),
+  ]);
+  const body = el('div', { class: 'accordion-body' }, contentEl);
+  header.addEventListener('click', () => {
+    wrap.classList.toggle('open');
+  });
+  wrap.appendChild(header);
+  wrap.appendChild(body);
+  return wrap;
+}
+
+const CALC_NON_PERCENT_LABELS = new Set(['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Speed']);
+
+function buildFullCalcTable() {
+  const wrap = el('div', {});
+  const stats = aggregateFullStatsWithSources();
+
+  const controls = el('div', { class: 'calc-full-table-controls' });
+  let allExpanded = false;
+  let emptyHidden = false;
+  const allEntries = []; // { statRow, sourceRows, chevron, hasSources, emptyRow }
+
+  const expandAllBtn = el('button', { class: 'filter-chip' }, 'Expand All');
+  const hideEmptyBtn = el('button', { class: 'filter-chip' }, 'Hide Empty');
+  expandAllBtn.addEventListener('click', () => {
+    allExpanded = !allExpanded;
+    expandAllBtn.textContent = allExpanded ? 'Collapse All' : 'Expand All';
+    allEntries.forEach(({ sourceRows, chevron, hasSources }) => {
+      if (!hasSources) return;
+      sourceRows.forEach(r => r.classList.toggle('collapsed', !allExpanded));
+      chevron.classList.toggle('expanded', allExpanded);
+    });
+  });
+  hideEmptyBtn.addEventListener('click', () => {
+    emptyHidden = !emptyHidden;
+    hideEmptyBtn.textContent = emptyHidden ? 'Show Empty' : 'Hide Empty';
+    allEntries.forEach(({ statRow, hasSources, emptyRow }) => {
+      if (hasSources) return;
+      statRow.classList.toggle('calc-row-hidden', emptyHidden);
+      if (emptyRow) emptyRow.classList.toggle('calc-row-hidden', emptyHidden);
+    });
+  });
+  controls.appendChild(expandAllBtn);
+  controls.appendChild(hideEmptyBtn);
+  wrap.appendChild(controls);
+
+  CALC_TABLE_CATEGORIES.forEach(cat => {
+    wrap.appendChild(el('div', { class: 'equip-section-title calc-category-title' }, cat.title));
+    const table = el('table', { class: 'calc-full-table' });
+    const tbody = el('tbody', {});
+    cat.labels.forEach(label => {
+      const entry = stats[label];
+      const total = entry ? Math.round(entry.total * 100) / 100 : 0;
+      const suffix = CALC_NON_PERCENT_LABELS.has(label) ? '' : '%';
+      const hasSources = entry && entry.sources.length > 0;
+
+      const sourceRows = [];
+      let emptyRow = null;
+      if (hasSources) {
+        entry.sources.forEach(s => {
+          sourceRows.push(el('tr', { class: 'calc-full-table-source-row collapsed' }, [
+            el('td', {}, s.name),
+            el('td', { class: 'calc-full-table-total' }, `+${Math.round(s.val * 100) / 100}`),
+          ]));
+        });
+      } else {
+        emptyRow = el('tr', { class: 'calc-full-table-source-row collapsed' }, [
+          el('td', {}, '\u2014'), el('td', {}, ''),
+        ]);
+        sourceRows.push(emptyRow);
+      }
+
+      const chevron = hasSources ? el('span', { class: 'calc-full-table-chevron' }, '\u25BE') : null;
+      const statRow = el('tr', {
+        class: 'calc-full-table-stat-row' + (hasSources ? ' clickable' : ''),
+        onclick: hasSources ? () => {
+          sourceRows.forEach(r => r.classList.toggle('collapsed'));
+          chevron.classList.toggle('expanded');
+        } : null,
+      }, [
+        el('td', {}, [chevron, label]),
+        el('td', { class: 'calc-full-table-total' }, `${total}${suffix}`),
+      ]);
+      tbody.appendChild(statRow);
+      sourceRows.forEach(r => tbody.appendChild(r));
+      allEntries.push({ statRow, sourceRows, chevron, hasSources, emptyRow });
+    });
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+  });
+
+  return wrap;
 }
 
 // The fixed, curated list of PvP-relevant stats shown on the Calculator —
@@ -2181,10 +2760,11 @@ function pctEffectiveness(delta) {
 function renderCalculator() {
   const wrap = el('div', {});
   wrap.appendChild(el('div', { class: 'section-title' }, 'Calculator'));
-  wrap.appendChild(el('p', { class: 'section-desc' },
-    'Auto-pulls PvP-relevant stats from everything owned and starred in Collection. Equipment and Inheritance will feed in here too once those tabs are built.'));
+  wrap.appendChild(el('p', { class: 'section-desc' }, 'Values will auto populate as changes are made to the sheet'));
 
   const totals = aggregatePvpStats();
+
+  wrap.appendChild(renderAccordion('Full Stat Breakdown', buildFullCalcTable(), true, true));
 
   // Final ATK / Final HP — base stat × (1 + %-bonuses), same pattern
   // Effective HP is built from. No absolute Final DEF is shown since
@@ -2206,7 +2786,7 @@ function renderCalculator() {
   cards.push(renderStatCard('Final ATK', formatBigNumber(finalATK)));
   cards.push(renderStatCard('Final HP', formatBigNumber(finalHP)));
   cards.push(renderStatCard('Global DEF%', `${(totals.global_def_pct || 0).toFixed(1)}%`));
-  cards.push(renderStatCard('Effective HP', formatBigNumber(ehp), 'With DMG Red and FDR', true));
+  cards.push(renderStatCard('Effective HP', formatBigNumber(ehp), null, true));
 
   CALC_STAT_DEFS.forEach(def => {
     const sum = def.keys.reduce((a, k) => a + (totals[k] || 0), 0);
@@ -2219,10 +2799,7 @@ function renderCalculator() {
   cards.push(renderStatCard('Tenacity Eff', `${pctEffectiveness(tenacity).toFixed(1)}%`, null, false, pctEffectiveness(tenacity)));
   cards.push(renderStatCard('Armor Break Eff', `${pctEffectiveness(armorBreak).toFixed(1)}%`, null, false, pctEffectiveness(armorBreak)));
 
-  wrap.appendChild(el('div', { class: 'calc-stat-grid' }, cards));
-
-  wrap.appendChild(el('p', { class: 'section-desc', style: 'margin-top:16px;font-size:11px;' },
-    'Effective HP = Final HP \u00f7 [(1 \u2212 DMG Red%) \u00d7 (1 \u2212 FDR%)] \u2014 the two reduction layers apply sequentially, not added together. Tenacity/Armor Break Eff show how much of the 85% diminishing-returns cap your current investment reaches on its own, without an opponent to compare against.'));
+  wrap.appendChild(renderAccordion('Quick Stats', el('div', { class: 'calc-stat-grid' }, cards), true, true));
 
   return wrap;
 }

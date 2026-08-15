@@ -2550,7 +2550,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, the hero's damage bonus +10%",
-      "effect_5star": "In the first 3 turns of battle, the hero's damage bonus +22.5%"
+      "effect_5star": "In the first 3 turns of battle, the hero's damage bonus +22.5%",
+      "deploy_type": "core"
     },
     {
       "id": "1375002",
@@ -2602,7 +2603,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, the hero's dagger damage +15%",
-      "effect_5star": "In the first 3 turns of battle, the hero's dagger damage +30%"
+      "effect_5star": "In the first 3 turns of battle, the hero's dagger damage +30%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375003",
@@ -2704,7 +2706,8 @@
         ]
       },
       "effect_base": "Counterattack Damage +10%",
-      "effect_5star": "Counterattack Damage +20%"
+      "effect_5star": "Counterattack Damage +20%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375005",
@@ -2756,7 +2759,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, hero's counterattack damage +15%",
-      "effect_5star": "In the first 3 turns of battle, hero's counterattack damage +30%"
+      "effect_5star": "In the first 3 turns of battle, hero's counterattack damage +30%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375006",
@@ -2808,7 +2812,8 @@
         ]
       },
       "effect_base": "When hitting an enemy with HP >50%, hero's damage bonus +7.5%",
-      "effect_5star": "When hitting an enemy with HP >50%, hero's damage bonus +15%"
+      "effect_5star": "When hitting an enemy with HP >50%, hero's damage bonus +15%",
+      "deploy_type": "core"
     },
     {
       "id": "1375007",
@@ -3062,7 +3067,8 @@
         ]
       },
       "effect_base": "Combo Damage +10%",
-      "effect_5star": "Combo Damage +20%"
+      "effect_5star": "Combo Damage +20%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375012",
@@ -3114,7 +3120,8 @@
         ]
       },
       "effect_base": "When hero HP <75%, damage reduction +10%",
-      "effect_5star": "When hero HP <75%, damage reduction +20%"
+      "effect_5star": "When hero HP <75%, damage reduction +20%",
+      "deploy_type": "guardian"
     },
     {
       "id": "1375013",
@@ -3266,7 +3273,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, hero's combo damage +15%",
-      "effect_5star": "In the first 3 turns of battle, hero's combo damage +30%"
+      "effect_5star": "In the first 3 turns of battle, hero's combo damage +30%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375016",
@@ -3368,7 +3376,8 @@
         ]
       },
       "effect_base": "Dagger Damage +10%",
-      "effect_5star": "Dagger Damage +20%"
+      "effect_5star": "Dagger Damage +20%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375018",
@@ -3420,7 +3429,8 @@
         ]
       },
       "effect_base": "Lightning Damage +10%",
-      "effect_5star": "Lightning Damage +20%"
+      "effect_5star": "Lightning Damage +20%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375019",
@@ -3472,7 +3482,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, hero's Sword Qi Damage +15%",
-      "effect_5star": "In the first 3 turns of battle, hero's Sword Qi Damage +30%"
+      "effect_5star": "In the first 3 turns of battle, hero's Sword Qi Damage +30%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375020",
@@ -4224,7 +4235,8 @@
         ]
       },
       "effect_base": "Sword Qi Damage +10%",
-      "effect_5star": "Sword Qi Damage +20%"
+      "effect_5star": "Sword Qi Damage +20%",
+      "deploy_type": "totem"
     },
     {
       "id": "1375035",
@@ -4876,7 +4888,8 @@
         ]
       },
       "effect_base": "In the first 3 turns of battle, hero's damage reduction +15%",
-      "effect_5star": "In the first 3 turns of battle, hero's damage reduction +30%"
+      "effect_5star": "In the first 3 turns of battle, hero's damage reduction +30%",
+      "deploy_type": "guardian"
     },
     {
       "id": "1375048",
@@ -6078,7 +6091,8 @@
         ]
       },
       "effect_base": "At the start of battle, throw 3 daggers",
-      "effect_5star": "At the start of battle, throw 3 daggers; enemies become Poisoned and Bleeding"
+      "effect_5star": "At the start of battle, throw 3 daggers; enemies become Poisoned and Bleeding",
+      "deploy_type": "totem"
     },
     {
       "id": null,
@@ -6130,7 +6144,8 @@
         ]
       },
       "effect_base": "When hitting an enemy with HP >70%, hero's final damage bonus +5%",
-      "effect_5star": "When hitting an enemy with HP >50%, hero's final damage bonus +10%"
+      "effect_5star": "When hitting an enemy with HP >50%, hero's final damage bonus +10%",
+      "deploy_type": "core"
     },
     {
       "id": "1376003",
@@ -6182,7 +6197,8 @@
         ]
       },
       "effect_base": "After a Combo, final Combo damage +1%, can stack up to 5 layers",
-      "effect_5star": "After a Combo, final Combo damage +2%, can stack up to 5 layers"
+      "effect_5star": "After a Combo, final Combo damage +2%, can stack up to 5 layers",
+      "deploy_type": "totem"
     },
     {
       "id": "1376004",
@@ -6234,7 +6250,8 @@
         ]
       },
       "effect_base": "After each Lightning strike, Final Lightning Damage is increased by +1%, stacking up to 5 stacks",
-      "effect_5star": "After each Lightning hit, Final Lightning Damage is increased by +2%, stacking up to 5 times"
+      "effect_5star": "After each Lightning hit, Final Lightning Damage is increased by +2%, stacking up to 5 times",
+      "deploy_type": "totem"
     },
     {
       "id": "1376005",
@@ -6286,7 +6303,8 @@
         ]
       },
       "effect_base": "After the first Normal Attack at the start of battle, release 2 Sword Qi waves",
-      "effect_5star": "After the first Normal Attack at the start of battle, release 2 Sword Qi waves; after release, hero's final damage to shields +5% for 5 turns"
+      "effect_5star": "After the first Normal Attack at the start of battle, release 2 Sword Qi waves; after release, hero's final damage to shields +5% for 5 turns",
+      "deploy_type": "totem"
     },
     {
       "id": "1376006",
@@ -6338,7 +6356,8 @@
         ]
       },
       "effect_base": "At the start of battle, gain [ Mighty Power ] for 3 turns. [ Mighty Power ]: hero's final damage bonus +5%",
-      "effect_5star": "At the start of battle, gain [ Mighty Power ] for 3 turns. [ Mighty Power ]: hero's final damage bonus +10%"
+      "effect_5star": "At the start of battle, gain [ Mighty Power ] for 3 turns. [ Mighty Power ]: hero's final damage bonus +10%",
+      "deploy_type": "core"
     },
     {
       "id": "1376007",
@@ -6390,7 +6409,8 @@
         ]
       },
       "effect_base": "At the start of battle, release 2 Lightning",
-      "effect_5star": "At the start of battle, release 2 Lightning; after release, 50% chance to paralyze enemies for 1 turn"
+      "effect_5star": "At the start of battle, release 2 Lightning; after release, 50% chance to paralyze enemies for 1 turn",
+      "deploy_type": "totem"
     },
     {
       "id": "1376008",
@@ -6442,7 +6462,8 @@
         ]
       },
       "effect_base": "At the start of battle, gain [ Iron Shield ] for 3 turns. [ Iron Shield ]: hero's final damage reduction +5%",
-      "effect_5star": "At the start of battle, gain [ Iron Shield ] for 3 turns. [ Iron Shield ]: hero's final damage reduction +10%"
+      "effect_5star": "At the start of battle, gain [ Iron Shield ] for 3 turns. [ Iron Shield ]: hero's final damage reduction +10%",
+      "deploy_type": "guardian"
     },
     {
       "id": "1376009",
@@ -6494,7 +6515,8 @@
         ]
       },
       "effect_base": "When critically hit, the hero's final damage reduction increases by +1%, stacking up to 5 layers",
-      "effect_5star": "When critically hit, the hero's final damage reduction increases by +2%, stacking up to 5 layers"
+      "effect_5star": "When critically hit, the hero's final damage reduction increases by +2%, stacking up to 5 layers",
+      "deploy_type": "guardian"
     },
     {
       "id": "1376010",
@@ -6546,7 +6568,8 @@
         ]
       },
       "effect_base": "After the first counterattack at the start of battle, release 2 light spears.",
-      "effect_5star": "After the first counterattack at the start of battle, release 2 light spears. After releasing, the hero gains a shield equal to 30% of Max HP"
+      "effect_5star": "After the first counterattack at the start of battle, release 2 light spears. After releasing, the hero gains a shield equal to 30% of Max HP",
+      "deploy_type": "totem"
     },
     {
       "id": "1376011",
@@ -6598,7 +6621,8 @@
         ]
       },
       "effect_base": "After Counter, Final Counter DMG +1% (Stacks up to 5 times)",
-      "effect_5star": "After Counter, Final Counter DMG +2% (Stacks up to 5 times)"
+      "effect_5star": "After Counter, Final Counter DMG +2% (Stacks up to 5 times)",
+      "deploy_type": "totem"
     },
     {
       "id": "1376012",
@@ -6650,7 +6674,8 @@
         ]
       },
       "effect_base": "During the first turn after the battle starts, each combo deals an additional 200% ATK combo damage.",
-      "effect_5star": "During the first turn after the battle starts, each combo deals an additional 200% ATK combo damage. After triggering, the hero gains +5% lifesteal for 5 turns"
+      "effect_5star": "During the first turn after the battle starts, each combo deals an additional 200% ATK combo damage. After triggering, the hero gains +5% lifesteal for 5 turns",
+      "deploy_type": "totem"
     },
     {
       "id": null,
@@ -6662,7 +6687,8 @@
       "rarity": "Mythic",
       "star_stats": {},
       "effect_base": "When Hero HP <50%, Final DMG Reduction +5%",
-      "effect_5star": "When Hero HP <60%, Final DMG Reduction +10%"
+      "effect_5star": "When Hero HP <60%, Final DMG Reduction +10%",
+      "deploy_type": "guardian"
     },
     {
       "id": null,
@@ -6714,7 +6740,8 @@
         ]
       },
       "effect_base": "After taking cumulative damage equal to 50% of Max HP for the first time, increases Protagonist's Final DMG Reduc. by +3% until the end of battle.",
-      "effect_5star": "After taking cumulative damage equal to 50% of Max HP for the first time, increases Protagonist's Final DMG Reduc. by +6% and CRIT DMG Reduc. by +20% until the end of battle."
+      "effect_5star": "After taking cumulative damage equal to 50% of Max HP for the first time, increases Protagonist's Final DMG Reduc. by +6% and CRIT DMG Reduc. by +20% until the end of battle.",
+      "deploy_type": "guardian"
     },
     {
       "id": null,
@@ -6766,7 +6793,8 @@
         ]
       },
       "effect_base": "After the first Basic ATK each round, increases Protagonist's Final DMG Bonus by +1%. Stacks up to 3 times until the end of battle.",
-      "effect_5star": "After the first Normal ATK each round, increases Protagonist's Final DMG Bonus by +2%. Stacks up to 3 times and lasts until the end of battle. At 3 stacks, grants Crit DMG +20% and Final DMG Bonus +3%."
+      "effect_5star": "After the first Normal ATK each round, increases Protagonist's Final DMG Bonus by +2%. Stacks up to 3 times and lasts until the end of battle. At 3 stacks, grants Crit DMG +20% and Final DMG Bonus +3%.",
+      "deploy_type": "core"
     },
     {
       "id": "1376013",
@@ -6818,7 +6846,8 @@
         ]
       },
       "effect_base": "After each Sword Aura, Final Sword Aura DMG +1%, stacks 5 times",
-      "effect_5star": "After each Sword Aura, Final Sword Aura DMG +2%, stacks 5 times"
+      "effect_5star": "After each Sword Aura, Final Sword Aura DMG +2%, stacks 5 times",
+      "deploy_type": "totem"
     },
     {
       "id": "1376014",
@@ -6870,7 +6899,8 @@
         ]
       },
       "effect_base": "After each dagger, dagger final damage +1%, stackable up to 5 stacks",
-      "effect_5star": "After each dagger, dagger final damage +2%, stackable up to 5 stacks"
+      "effect_5star": "After each dagger, dagger final damage +2%, stackable up to 5 stacks",
+      "deploy_type": "totem"
     },
     {
       "id": null,
@@ -6922,7 +6952,8 @@
         ]
       },
       "effect_base": "After Hero CRIT, 50% chance to gain Final DMG Bonus +1% (Stacks up to 5 times)",
-      "effect_5star": "After Hero CRIT, 50% chance to gain Final DMG Bonus +1% (Stacks up to 10 times)"
+      "effect_5star": "After Hero CRIT, 50% chance to gain Final DMG Bonus +1% (Stacks up to 10 times)",
+      "deploy_type": "core"
     },
     {
       "id": null,
@@ -6974,7 +7005,8 @@
         ]
       },
       "effect_base": "For every 20% of Max HP lost, Protagonist's Final DMG +1%. Stacks up to 5 times.",
-      "effect_5star": "Each time the protagonist cumulatively takes damage equal to 10% of Max HP, increases the protagonist's Final DMG+2%, stackable up to5times"
+      "effect_5star": "Each time the protagonist cumulatively takes damage equal to 10% of Max HP, increases the protagonist's Final DMG+2%, stackable up to5times",
+      "deploy_type": "totem"
     },
     {
       "id": null,
@@ -7026,7 +7058,8 @@
         ]
       },
       "effect_base": "After a Basic Attack crits, increases the Protagonist's Final Basic Attack DMG by +5% for 1 round",
-      "effect_5star": "Final Basic Attack DMG Boost increased to 10%"
+      "effect_5star": "Final Basic Attack DMG Boost increased to 10%",
+      "deploy_type": "totem"
     },
     {
       "id": null,
@@ -7038,7 +7071,8 @@
       "rarity": "Mythic",
       "star_stats": {},
       "effect_base": "After the battle starts, the protagonist's final damage reduction will be increased by 2% each round, up to 3 stacks.",
-      "effect_5star": "Each round increases the final damage reduction to4%"
+      "effect_5star": "Each round increases the final damage reduction to4%",
+      "deploy_type": "guardian"
     }
   ],
   "relic_sets": {
