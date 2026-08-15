@@ -1142,27 +1142,14 @@ function renderEquipPetCard(petIndex) {
   card.appendChild(el('div', { class: 'equip-section-title' }, 'Pet Skills'));
   const allAttrs = DB.pet_attrs || [];
   const fixedTierSkills = new Set(DB.pet_fixed_tier_skills || []);
-  const slotRestrictedNames = new Set(allAttrs.filter(a => a.slotRestricted).map(a => a.name));
-
-  // Stats used elsewhere on THIS pet can't repeat; slotRestricted "leader"
-  // style stats additionally can't repeat across ANY of the 3 pets' slots.
-  const usedRestrictedElsewhere = new Set();
-  state.petSlots.forEach((otherPet, pi) => {
-    if (pi === petIndex) return;
-    otherPet.skills.forEach(sl => { if (sl.stat && slotRestrictedNames.has(sl.stat)) usedRestrictedElsewhere.add(sl.stat); });
-  });
 
   s.skills.forEach((slot, si) => {
     card.appendChild(equipFieldLabel(`Skill ${si + 1}`));
     const wrap = el('div', { class: 'equip-inline-row' });
 
-    const usedOnThisPetOtherSlots = new Set(s.skills.filter((_, i) => i !== si).map(sl => sl.stat).filter(Boolean));
-    const availableAttrs = allAttrs.filter(a =>
-      !usedOnThisPetOtherSlots.has(a.name) && !usedRestrictedElsewhere.has(a.name));
-
     const combo = renderSearchCombo({
       value: slot.stat,
-      options: availableAttrs.map(a => a.name),
+      options: allAttrs.map(a => a.name),
       placeholder: 'Search skill…',
       onSelect: (name) => { slot.stat = name; slot.val = 0; saveState(); render(); },
       onClear: () => { slot.stat = ''; slot.val = 0; saveState(); render(); },
