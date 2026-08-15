@@ -5,17 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CapyDex — Capybara Go PvP Companion</title>
   <style>/* ---- Tokens ---- */
+/* GMK Olivia colorway — dusty rose/blush accent on warm charcoal (dark) or
+   warm cream (light), replacing the original teal. Pulled directly from
+   the actual keycap set renders (Olivia "Light Core" + Olivia++ "Dark Core
+   Kit"), not a generic pink swap — both modes keep a warm undertone in
+   their backgrounds to match the plastic rather than defaulting to neutral
+   gray. */
 :root {
-  --bg-deep: #0B0E14;
-  --bg-panel: #141924;
-  --bg-panel-2: #1B2130;
-  --bg-card: #171D2B;
-  --ink: #E8EAED;
-  --ink-dim: #ACB3C4;
-  --ink-faint: #828AA0;
-  --accent: #2EC9C0;
-  --accent-dim: #17A79B;
-  --hairline: #262D3D;
+  --bg-deep: #1C1B1A;
+  --bg-panel: #242322;
+  --bg-panel-2: #2E2C2A;
+  --bg-card: #242322;
+  --ink: #EDE2D8;
+  --ink-dim: #A89C92;
+  --ink-faint: #7A7068;
+  --accent: #E5B2A6;
+  --accent-dim: #C4907F;
+  --hairline: #3A3836;
 
   --rarity-rare: #6FA3E0;
   --rarity-epic: #A672E0;
@@ -31,16 +37,16 @@
 }
 
 [data-theme="light"] {
-  --bg-deep: #F4F5F8;
-  --bg-panel: #FFFFFF;
-  --bg-panel-2: #ECEEF3;
+  --bg-deep: #EDECE9;
+  --bg-panel: #FAF9F7;
+  --bg-panel-2: #EFEDE9;
   --bg-card: #FFFFFF;
-  --ink: #1A1D24;
-  --ink-dim: #565D6D;
-  --ink-faint: #828895;
-  --accent: #0FA89B;
-  --accent-dim: #0C8B80;
-  --hairline: #DDE1E8;
+  --ink: #3A3836;
+  --ink-dim: #6B655F;
+  --ink-faint: #9C9690;
+  --accent: #D9A89D;
+  --accent-dim: #B8887C;
+  --hairline: #DEDAD4;
 }
 
 html { scroll-behavior: smooth; }
@@ -682,30 +688,30 @@ body {
    stand out against the page in a way matching the current theme's own
    colors doesn't, since everything else on screen already uses those. */
 .bulk-action-bar {
-  background: #FFFFFF;
-  border: 2px solid #0FA89B;
+  background: #FAF9F7;
+  border: 2px solid #D9A89D;
 }
-.bulk-action-count { color: #565D6D; }
+.bulk-action-count { color: #6B655F; }
 .bulk-action-bar .bulk-action-btn {
-  background: #ECEEF3;
-  border-color: #DDE1E8;
-  color: #1A1D24;
+  background: #EFEDE9;
+  border-color: #DEDAD4;
+  color: #3A3836;
 }
-.bulk-action-bar .bulk-action-btn.secondary { color: #565D6D; }
-.bulk-action-bar .bulk-action-btn:hover { border-color: #0C8B80; color: #1A1D24; }
+.bulk-action-bar .bulk-action-btn.secondary { color: #6B655F; }
+.bulk-action-bar .bulk-action-btn:hover { border-color: #B8887C; color: #3A3836; }
 
 [data-theme="light"] .bulk-action-bar {
-  background: #141924;
-  border-color: #2EC9C0;
+  background: #242322;
+  border-color: #E5B2A6;
 }
-[data-theme="light"] .bulk-action-count { color: #ACB3C4; }
+[data-theme="light"] .bulk-action-count { color: #A89C92; }
 [data-theme="light"] .bulk-action-bar .bulk-action-btn {
-  background: #1B2130;
-  border-color: #262D3D;
-  color: #E8EAED;
+  background: #2E2C2A;
+  border-color: #3A3836;
+  color: #EDE2D8;
 }
-[data-theme="light"] .bulk-action-bar .bulk-action-btn.secondary { color: #ACB3C4; }
-[data-theme="light"] .bulk-action-bar .bulk-action-btn:hover { border-color: #17A79B; color: #E8EAED; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn.secondary { color: #A89C92; }
+[data-theme="light"] .bulk-action-bar .bulk-action-btn:hover { border-color: #C4907F; color: #EDE2D8; }
 
 /* ---- Star-assign modal ---- */
 .modal-overlay {
