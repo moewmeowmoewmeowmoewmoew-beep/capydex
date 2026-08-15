@@ -28,6 +28,11 @@ function defaultState() {
     adventurerSlot: { name: '', stars: 0 },
     heroSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
     brandSlots: [{ name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }, { name: '', quality: '', polarization: 0 }],
+    inheritance: {
+      activeTree: 'sk',       // which tree is deployed in battle — sk/kn/rn/gh only, Dragon isn't selectable as active
+      viewingTree: 'sk',      // which tree's tab is currently open for viewing/editing (independent of activeTree)
+      progress: { sk: {}, kn: {}, rn: {}, gh: {}, dr: {} }, // treeKey -> nodeId -> invested points
+    },
   };
 }
 
@@ -185,6 +190,11 @@ function renderTextWithSkillTags(text) {
   let match;
   while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+    // Each [ Skill Name ] reference gets its own line rather than flowing
+    // inline with the surrounding prose — easier to spot at a glance, and
+    // the nowrap on .skill-tag means the bracket text itself never splits
+    // across two lines once it's isolated like this.
+    frag.appendChild(el('br'));
     frag.appendChild(el('span', { class: 'skill-tag' }, match[0]));
     lastIndex = match.index + match[0].length;
   }
@@ -363,6 +373,168 @@ function renderPlaceholder(label) {
 }
 
 /* ============================================================
+   Inheritance Tree
+   ============================================================ */
+const INHERIT_TREE_NAMES = { sk: 'Skeleton', kn: 'Knight', rn: 'Ranger', gh: 'Ghost', dr: 'Dragon' };
+// Active-tree dropdown deliberately excludes Dragon — matches what was
+// asked for explicitly. Dragon is still fully viewable/editable via its
+// own tab, just not selectable as the "deployed" tree.
+const INHERIT_ACTIVE_TREE_OPTIONS = ['sk', 'kn', 'rn', 'gh'];
+
+function getInheritNodeValue(treeKey, nodeId) {
+  return state.inheritance.progress[treeKey][nodeId] || 0;
+}
+
+function setInheritNodeValue(treeKey, nodeId, val) {
+  state.inheritance.progress[treeKey][nodeId] = val;
+}
+
+function renderInheritNodeInput(treeKey, nodeId, max) {
+  if (max === 0) return el('span', { class: 'inherit-node-na' }, '\u2014');
+  const val = getInheritNodeValue(treeKey, nodeId);
+  const input = el('input', {
+    type: 'number', class: 'inherit-node-input', min: '0', max: String(max), value: String(val),
+    oninput: (e) => {
+      const n = parseInt(e.target.value, 10);
+      const clamped = Number.isNaN(n) ? 0 : Math.max(0, Math.min(max, n));
+      setInheritNodeValue(treeKey, nodeId, clamped);
+      saveState();
+    },
+    onblur: () => render(),
+  });
+  return el('div', { class: 'inherit-node-input-wrap' }, [input, el('span', { class: 'inherit-node-max' }, `/${max}`)]);
+}
+
+function renderInheritNodeRow(treeKey, nodeId, name, max) {
+  return el('div', { class: 'inherit-node-row' }, [
+    el('span', { class: 'inherit-node-name' }, name || '(unnamed)'),
+    renderInheritNodeInput(treeKey, nodeId, max),
+  ]);
+}
+
+function renderInheritTriplet(treeKey, seg, td, tm) {
+  const idx = seg - 1;
+  const row = el('div', { class: 'inherit-triplet-row' });
+
+  const leftCol = el('div', { class: 'inherit-col' });
+  ['a', 'b', 'c'].forEach((sub, i) => {
+    const key = `l${seg}${sub}`;
+    if (tm[key] !== undefined) leftCol.appendChild(renderInheritNodeBox(treeKey, key, td.left[idx][i], tm[key]));
+  });
+
+  const midCol = el('div', { class: 'inherit-col inherit-col-mid' });
+  const midKey = `m${seg}`;
+  if (tm[midKey] !== undefined) midCol.appendChild(renderInheritNodeBox(treeKey, midKey, td.mid[idx], tm[midKey]));
+
+  const rightCol = el('div', { class: 'inherit-col' });
+  ['a', 'b', 'c'].forEach((sub, i) => {
+    const key = `r${seg}${sub}`;
+    if (tm[key] !== undefined) rightCol.appendChild(renderInheritNodeBox(treeKey, key, td.right[idx][i], tm[key]));
+  });
+
+  row.appendChild(leftCol);
+  row.appendChild(midCol);
+  row.appendChild(rightCol);
+  return row;
+}
+
+function renderInheritNodeBox(treeKey, nodeId, name, max) {
+  return el('div', { class: 'inherit-node-box' }, [
+    el('span', { class: 'inherit-node-name' }, name || '(unnamed)'),
+    renderInheritNodeInput(treeKey, nodeId, max),
+  ]);
+}
+
+function renderInheritanceShell() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('div', { class: 'section-title' }, 'Inheritance Tree'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'The Active Tree is the deployed tree in battle, not the current skill level for the tree.'));
+
+  // Active tree dropdown — sits above the tabs, deliberately a separate
+  // concept from "which tab am I viewing right now."
+  const activeRow = el('div', { class: 'inherit-active-row' });
+  activeRow.appendChild(el('span', { class: 'equip-field-label' }, 'Active Tree'));
+  const activeSelect = el('select', { class: 'equip-select', style: 'max-width:220px;' },
+    INHERIT_ACTIVE_TREE_OPTIONS.map(k => el('option', { value: k, selected: k === state.inheritance.activeTree ? 'true' : null }, INHERIT_TREE_NAMES[k])));
+  activeSelect.addEventListener('change', (e) => {
+    state.inheritance.activeTree = e.target.value;
+    saveState();
+    render();
+  });
+  activeRow.appendChild(activeSelect);
+  wrap.appendChild(activeRow);
+
+  // Tree tabs
+  const tabRow = el('div', { class: 'inherit-tab-row' });
+  Object.keys(INHERIT_TREE_NAMES).forEach(k => {
+    const isActive = k === state.inheritance.viewingTree;
+    const isDeployed = k === state.inheritance.activeTree;
+    tabRow.appendChild(el('button', {
+      class: 'inherit-tab-btn' + (isActive ? ' active' : ''),
+      onclick: () => { state.inheritance.viewingTree = k; render(); },
+    }, [INHERIT_TREE_NAMES[k], isDeployed ? el('span', { class: 'inherit-deployed-dot' }) : null]));
+  });
+  wrap.appendChild(tabRow);
+
+  const treeKey = state.inheritance.viewingTree;
+  const td = DB.inherit_def[treeKey];
+  const tm = DB.inherit_max[treeKey];
+
+  const toolRow = el('div', { class: 'inherit-tool-row' });
+  toolRow.appendChild(el('button', {
+    class: 'bulk-action-btn primary',
+    onclick: () => {
+      Object.entries(tm).forEach(([nodeId, max]) => setInheritNodeValue(treeKey, nodeId, max));
+      saveState();
+      render();
+    },
+  }, 'Fill to Max'));
+  toolRow.appendChild(el('button', {
+    class: 'bulk-action-btn secondary',
+    onclick: () => {
+      state.inheritance.progress[treeKey] = {};
+      saveState();
+      render();
+    },
+  }, 'Clear Tree'));
+  wrap.appendChild(toolRow);
+
+  const grid = el('div', { class: 'inherit-chain' });
+
+  // Hero node — only meaningfully investable at segment 1 (h2-h6 are empty
+  // visual placeholders in the source data, no cost/function), sits at the
+  // very top of the chain like the reference layout shows.
+  const heroName = td.hero[0] || '';
+  grid.appendChild(el('div', { class: 'inherit-chain-node inherit-chain-hero' }, [
+    el('span', { class: 'inherit-node-name' }, heroName || 'Hero'),
+    renderInheritNodeInput(treeKey, 'h1', tm.h1),
+  ]));
+
+  // The tree is really one continuous chain, not 6 independent groups:
+  // each Left/Mid/Right triplet is followed by a standalone named
+  // skill-rank node (Skeleton Recruit → ... → Bone King) before the next
+  // triplet begins — confirmed against the reference layout and the
+  // source data (skill[i-1] pairs with node s{i}, for i=1..5; s6 has no
+  // name and max 0, so the chain just ends after the 6th triplet).
+  for (let seg = 1; seg <= td.segments; seg++) {
+    grid.appendChild(renderInheritTriplet(treeKey, seg, td, tm));
+
+    const skillKey = `s${seg}`;
+    const skillName = td.skill[seg - 1];
+    if (tm[skillKey] !== undefined && tm[skillKey] > 0 && skillName) {
+      grid.appendChild(el('div', { class: 'inherit-chain-node inherit-chain-skillname' }, [
+        el('span', { class: 'inherit-node-name' }, skillName),
+        renderInheritNodeInput(treeKey, skillKey, tm[skillKey]),
+      ]));
+    }
+  }
+  wrap.appendChild(grid);
+
+  return wrap;
+}
+
+/* ============================================================
    Equipment
    ============================================================ */
 const EQUIPMENT_SLOTS = [
@@ -491,7 +663,7 @@ function renderAdventurerCard() {
   const { mainSkillIdx, mainSkillText, statTotals } = computeAdventurerDisplay(adv.tier_effects, s.stars);
   if (mainSkillText) {
     card.appendChild(equipFieldLabel(`Main Skill (level ${mainSkillIdx} skill)`));
-    card.appendChild(el('div', { class: 'equip-writeup' }, mainSkillText));
+    card.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(mainSkillText)));
   }
   const buffParts = Object.entries(statTotals).map(([k, v]) => `${k} +${Math.round(v * 100) / 100}%`);
   if (buffParts.length) {
@@ -605,14 +777,14 @@ function renderHeroOrBrandCard(kind, slotIndex) {
     const text = entity.quality_effects[s.quality];
     if (text) {
       card.appendChild(equipFieldLabel(`${s.quality} Skill`));
-      card.appendChild(el('div', { class: 'equip-writeup' }, text));
+      card.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(text)));
     }
   }
   if (showPolarization && s.quality === 'Mythic' && s.polarization > 0) {
     const text = entity.polarization_effects[`P${s.polarization}`];
     if (text) {
       card.appendChild(equipFieldLabel(`P${s.polarization} Bonus`));
-      card.appendChild(el('div', { class: 'equip-writeup' }, text));
+      card.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(text)));
     }
   }
 
@@ -721,7 +893,7 @@ function renderRelicDeployCard(slotDef) {
   }
   if (effectText) {
     card.appendChild(equipFieldLabel(`${effectLabel} Skill`));
-    card.appendChild(el('div', { class: 'equip-writeup' }, effectText));
+    card.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(effectText)));
   }
 
   if (relic.star_stats) {
@@ -928,8 +1100,8 @@ function renderEquipPetCard(petIndex) {
   levelInput.addEventListener('input', (e) => {
     s.level = parseInt(e.target.value, 10) || 0;
     saveState();
-    render();
   });
+  levelInput.addEventListener('blur', () => render());
   card.appendChild(levelInput);
 
   if (s.level > 0) {
@@ -940,7 +1112,7 @@ function renderEquipPetCard(petIndex) {
     const activeKey = activeIdx >= 0 ? battleSkillKeys[activeIdx] : null;
     const activeText = activeKey ? pet.battle_skills[activeKey] : null;
     card.appendChild(equipFieldLabel(activeKey || 'Battle Skill'));
-    card.appendChild(el('div', { class: 'equip-writeup' }, activeText || '—'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, activeText ? renderTextWithSkillTags(activeText) : '—'));
   }
 
   // ---- Pet Armament ----
@@ -963,7 +1135,7 @@ function renderEquipPetCard(petIndex) {
     levelSelect.addEventListener('change', (e) => { s.armamentLevel = parseInt(e.target.value, 10); saveState(); render(); });
     card.appendChild(levelSelect);
     const descText = armament.level_descs && armament.level_descs[s.armamentLevel - 1];
-    if (descText) card.appendChild(el('div', { class: 'equip-writeup' }, descText));
+    if (descText) card.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(descText)));
   }
 
   // ---- 5 Skill Slots ----
@@ -1096,7 +1268,7 @@ function renderDeployCard(kind, mode, slotIndex) {
     if (item.star_up) {
       const resolved = resolveAwakenEffect(item, showAwaken ? itemState.awaken : 0);
       card.appendChild(equipFieldLabel('Awaken Skill'));
-      card.appendChild(el('div', { class: 'equip-writeup' }, resolved ? resolved.text : '—'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, resolved ? renderTextWithSkillTags(resolved.text) : '—'));
     }
   } else {
     const showStars = hasStarProgression(item);
@@ -1107,7 +1279,7 @@ function renderDeployCard(kind, mode, slotIndex) {
     if (item.star_effects) {
       const starEff = showStars ? item.star_effects[String(itemState.stars)] : item.star_effects['0'];
       card.appendChild(equipFieldLabel('Skill'));
-      card.appendChild(el('div', { class: 'equip-writeup' }, starEff || '—'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, starEff ? renderTextWithSkillTags(starEff) : '—'));
     }
   }
 
@@ -1373,7 +1545,7 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
       // effect) was never accurate to begin with.
       const realText = meta.tier_desc && meta.tier_desc[slotState.tier];
       if (realText) {
-        container.appendChild(el('div', { class: 'equip-writeup' }, realText));
+        container.appendChild(el('div', { class: 'equip-writeup' }, renderTextWithSkillTags(realText)));
       } else if (meta.t && meta.t[slotState.tier - 1] != null) {
         container.appendChild(el('div', { class: 'equip-writeup' }, `${meta.n} +${meta.t[slotState.tier - 1]}%`));
       } else {
@@ -1396,6 +1568,8 @@ function render() {
     root.appendChild(renderCalculator());
   } else if (activeMainTab === 'equipment') {
     root.appendChild(renderEquipmentShell());
+  } else if (activeMainTab === 'inheritance') {
+    root.appendChild(renderInheritanceShell());
   } else {
     const labels = { inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
@@ -1823,7 +1997,7 @@ function clearAllRelics() {
 function renderRelics() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Treasure Collection relics, 0★–10★. Filter by tier, multi-select relics within a tier, then mark them owned or assign stars to the whole selection at once. Set bonuses key off the lowest star level among owned set members.'));
+    'You may filter relics by tier, multi-select them and either mark them as owned or assign stars to the selection. Relics marked as owned here will be selectable in the equipments page.'));
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
@@ -2000,7 +2174,7 @@ function clearAllCollectibles() {
 function renderCollectibles() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Common Collection items, 0★–10★ per item. Set bonuses key off the lowest star level among all four members, same mechanic as relic sets.'));
+    'You may filter collectibles by tier, multi-select them and either mark them as owned or assign stars to the selection.'));
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
@@ -2175,8 +2349,8 @@ function renderMountsOrArtifacts(kind) {
   const wrap = el('div', { class: isMount ? 'scope-mounts' : '' });
   wrap.appendChild(el('p', { class: 'section-desc' },
     isMount
-      ? 'Transformation pool. Stat deltas from Star and Awaken levels add on top of base stats, same as artifacts — the card shows your totals live as you adjust the steppers.'
-      : 'Equipped artifact pool. Stat deltas from Star and Awaken levels add on top of base stats — the card shows your totals live as you adjust the steppers.'));
+      ? 'You may filter mounts by tier, multi-select them and either mark them as owned or assign stars to the selection. Mounts marked as owned here will be selectable in the equipments page.'
+      : 'You may filter artifacts by tier, multi-select them and either mark them as owned or assign stars to the selection. Artifacts marked as owned here will be selectable in the equipments page.'));
 
   const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
   const search = el('input', {

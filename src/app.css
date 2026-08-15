@@ -21,7 +21,7 @@
   --rarity-epic: #A672E0;
   --rarity-legendary: #F0A947;
   --rarity-mythic: #F06868;
-  --tier-uncommon: #8AA0AE;
+  --tier-uncommon: #A6D368;
   --tier-immortal: #F080B8;
   --tier-transcendent: #C9A8F0;
 
@@ -883,6 +883,99 @@ body {
   .topbar { padding: 12px 16px; }
   .brand-name { font-size: 16px; }
 }
+
+/* ---- Inheritance Tree ---- */
+.inherit-active-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 20px;
+}
+.inherit-tab-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+.inherit-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+}
+.inherit-tab-btn.active { border-color: var(--accent); color: var(--ink); background: var(--bg-panel-2); }
+.inherit-deployed-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.inherit-tool-row { display: flex; gap: 8px; margin-bottom: 20px; }
+/* Vertical chain layout — mirrors the in-game tree: a centered column of
+   boxed nodes (Hero, then named skill-rank nodes) with Left/Right stat
+   triplets flanking each Mid box on either side. */
+.inherit-chain { display: flex; flex-direction: column; gap: 0; }
+.inherit-chain-node {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  margin: 6px 0;
+}
+.inherit-chain-hero { border-color: var(--accent-dim); }
+.inherit-triplet-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 700px) {
+  .inherit-triplet-row { grid-template-columns: 1fr; }
+}
+.inherit-col { display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+.inherit-col-mid { justify-content: center; }
+.inherit-node-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+}
+.inherit-node-name { color: var(--ink-dim); font-size: 12.5px; }
+.inherit-node-input-wrap { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.inherit-node-input {
+  width: 50px;
+  padding: 4px 6px;
+  border: 1px solid var(--hairline);
+  border-radius: 5px;
+  background: var(--bg-panel);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+}
+.inherit-node-input:focus { outline: none; border-color: var(--accent); }
+.inherit-node-max { color: var(--ink-faint); font-size: 11px; font-family: var(--font-mono); }
+.inherit-node-na { color: var(--ink-faint); font-size: 12px; }
 
 /* ---- Calculator ---- */
 .accordion {
