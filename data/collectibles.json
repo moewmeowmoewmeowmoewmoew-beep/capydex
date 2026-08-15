@@ -950,13 +950,13 @@
         0.015,
         0.02,
         0.025,
-        0.025,
-        0.025,
-        0.025,
-        0.025,
-        0.025,
-        0.025,
-        0.025
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
       ],
       "set": "Spirit's Blessing"
     },

@@ -456,7 +456,14 @@ function renderHeroOrBrandCard(kind, slotIndex) {
   select.addEventListener('change', (e) => {
     s.name = e.target.value;
     const newEntity = options.find(x => x.n === s.name);
-    s.quality = newEntity && newEntity.q && newEntity.q.length ? newEntity.q[newEntity.q.length - 1] : '';
+    // Inheritance Heroes default to Rare, not the usual highest-available —
+    // they're the low-investment tier tied to the inheritance tree, so
+    // assuming Mythic like everything else doesn't fit.
+    if (newEntity && classify(newEntity.n) === 'Inheritance Heroes' && (newEntity.q || []).includes('Rare')) {
+      s.quality = 'Rare';
+    } else {
+      s.quality = newEntity && newEntity.q && newEntity.q.length ? newEntity.q[newEntity.q.length - 1] : '';
+    }
     s.polarization = 0;
     saveState();
     render();
@@ -792,10 +799,13 @@ function renderDeployCard(kind, mode, slotIndex) {
       card.appendChild(el('div', { class: 'equip-writeup' }, resolved ? resolved.text : '—'));
     }
   } else {
-    card.appendChild(equipFieldLabel('Stars'));
-    card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
+    const showStars = !isMount || hasMountStarProgression(item);
+    if (showStars) {
+      card.appendChild(equipFieldLabel('Stars'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
+    }
     if (item.star_effects) {
-      const starEff = item.star_effects[String(itemState.stars)];
+      const starEff = showStars ? item.star_effects[String(itemState.stars)] : item.star_effects['0'];
       card.appendChild(equipFieldLabel('Skill'));
       card.appendChild(el('div', { class: 'equip-writeup' }, starEff || '—'));
     }
@@ -920,7 +930,7 @@ function renderEquipCard(slotDef) {
     const psiOptions = DB.psionics[slotDef.psiKey] || [];
     s.psionics.forEach((slot, i) => {
       card.appendChild(equipFieldLabel(`Slot ${i + 1}`));
-      card.appendChild(renderPsionicSlot(slotDef.id, i, slot, psiOptions));
+      card.appendChild(renderPsionicSlot(slotDef.id, i, slot, psiOptions, s.psionics));
     });
   }
 
@@ -945,7 +955,7 @@ function psiOptionLabel(o) {
   return `${o.n} — ${o.k === 'n' ? 'Normal' : 'Special'}`;
 }
 
-function renderPsionicSlot(slotId, slotIdx, slotState, options) {
+function renderPsionicSlot(slotId, slotIdx, slotState, options, allSlots) {
   const wrap = el('div', { class: 'equip-inline-row' });
 
   // Normal options first, then Special — folded into the visible label
@@ -953,40 +963,57 @@ function renderPsionicSlot(slotId, slotIdx, slotState, options) {
   // has <optgroup> ("Stat Name — Normal" / "— Special").
   const sortedOptions = [...options].sort((a, b) => (a.k === b.k ? 0 : a.k === 'n' ? -1 : 1));
 
+  // A stat can only be rolled once across the 4 slots on one item, and at
+  // most 2 of the 4 can be "Special" category stats — matching the game's
+  // real roll rules, not just a UI nicety.
+  const usedStatsElsewhere = new Set(allSlots.filter((_, i) => i !== slotIdx).map(sl => sl.stat).filter(Boolean));
+  const specialsElsewhere = allSlots.filter((sl, i) => i !== slotIdx && sl.stat
+    && (options.find(o => o.c === sl.stat) || {}).k === 's').length;
+  const specialsCapped = specialsElsewhere >= 2;
+  const availableOptions = sortedOptions.filter(o => !usedStatsElsewhere.has(o.c) && !(specialsCapped && o.k === 's'));
+
   const currentMeta = options.find(o => o.c === slotState.stat);
   const combo = renderSearchCombo({
     value: currentMeta ? psiOptionLabel(currentMeta) : '',
-    options: sortedOptions.map(psiOptionLabel),
+    options: availableOptions.map(psiOptionLabel),
     placeholder: 'Search stat…',
     onSelect: (label) => {
-      const match = options.find(o => psiOptionLabel(o) === label);
+      const match = availableOptions.find(o => psiOptionLabel(o) === label);
       if (match) { slotState.stat = match.c; saveState(); render(); }
     },
     onClear: () => { slotState.stat = ''; saveState(); render(); },
   });
 
+  const isSpeed = currentMeta && currentMeta.n === 'Speed'; // flat number, not a percentage
   const valInput = el('input', {
-    type: 'number', class: 'equip-num-input', value: String(slotState.val || 0),
-    oninput: (e) => { slotState.val = parseFloat(e.target.value) || 0; saveState(); },
-    onblur: () => render(),
+    type: 'number', class: 'equip-num-input', min: '0', placeholder: '0',
+    value: slotState.val ? String(slotState.val) : '',
+    oninput: (e) => {
+      const n = parseFloat(e.target.value);
+      // Negative rolls aren't a real state in-game — clamp rather than let
+      // a negative value quietly sit in state, and flag the box red while
+      // it's happening so it doesn't look like a silent no-op.
+      if (n < 0) {
+        e.target.classList.add('input-error');
+        return;
+      }
+      e.target.classList.remove('input-error');
+      slotState.val = Number.isNaN(n) ? 0 : n;
+      saveState();
+    },
+    onblur: (e) => { e.target.classList.remove('input-error'); render(); },
   });
 
   wrap.appendChild(combo);
-  wrap.appendChild(el('div', { class: 'equip-pct-input-group' }, [valInput, el('span', {}, '%')]));
+  wrap.appendChild(el('div', { class: 'equip-pct-input-group' }, isSpeed ? [valInput] : [valInput, el('span', {}, '%')]));
 
   const container = el('div', {}, [wrap]);
   if (slotState.stat) {
     const meta = options.find(o => o.c === slotState.stat);
-    container.appendChild(el('div', { class: 'equip-writeup' }, `${meta ? meta.n : slotState.stat} +${slotState.val}%`));
+    const suffix = meta && meta.n === 'Speed' ? '' : '%';
+    container.appendChild(el('div', { class: 'equip-writeup' }, `${meta ? meta.n : slotState.stat} +${slotState.val}${suffix}`));
   }
   return container;
-}
-
-function gemHelperText(name, val) {
-  const n = name.toLowerCase();
-  if (n.includes('fluctuation')) return `Varies randomly, up to \u00b1${val}% — exact bounds not confirmed from source data, treat as an approximate range.`;
-  if (n.includes('chance')) return `${val}% chance to trigger.`;
-  return null;
 }
 
 function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
@@ -1029,11 +1056,20 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
   const container = el('div', {}, [wrap]);
   if (slotState.gemId) {
     const meta = options.find(o => o.id === slotState.gemId);
-    const val = meta && meta.t ? meta.t[slotState.tier - 1] : null;
-    if (meta && val != null) {
-      container.appendChild(el('div', { class: 'equip-writeup' }, `${meta.n} +${val}%`));
-      const helper = gemHelperText(meta.n, val);
-      if (helper) container.appendChild(el('div', { class: 'equip-writeup', style: 'color:var(--ink-faint);font-size:11px;margin-top:2px;' }, helper));
+    if (meta) {
+      // tier_desc carries the real per-tier wording straight from source —
+      // e.g. "Increased Damage to Shielded Targets +40%" at Transcendent —
+      // rather than a generic short name + computed percentage, which for
+      // most gems (the ones with no clean numeric value, only a described
+      // effect) was never accurate to begin with.
+      const realText = meta.tier_desc && meta.tier_desc[slotState.tier];
+      if (realText) {
+        container.appendChild(el('div', { class: 'equip-writeup' }, realText));
+      } else if (meta.t && meta.t[slotState.tier - 1] != null) {
+        container.appendChild(el('div', { class: 'equip-writeup' }, `${meta.n} +${meta.t[slotState.tier - 1]}%`));
+      } else {
+        container.appendChild(el('div', { class: 'equip-writeup placeholder' }, 'No effect documented at this tier.'));
+      }
     }
   }
   return container;
@@ -1177,6 +1213,7 @@ function renderSetCard({ kind, name, statLabel, tierLabels, vals, members, allOw
     el('div', { class: 'set-card-count' + (ownedCount === members.length ? ' complete' : '') },
       `${ownedCount}/${members.length} owned`),
   ]));
+  if (statLabel) card.appendChild(el('div', { class: 'set-card-stat-label' }, `Increases: ${statLabel}`));
 
   const memberList = el('div', { class: 'set-member-list' });
   members.forEach(m => {
@@ -1724,11 +1761,16 @@ function renderCollectibleCard(item) {
 
   if (owned) {
     const val = item.star_vals[stars];
-    const pct = Math.round(val * 10000) / 100; // trim float noise, keep up to 2 decimals
-    card.appendChild(el('div', { class: 'item-effect' }, [
-      item.stat_label + ': ',
-      el('span', { class: 'stat-value-live' }, `${pct}%`),
-    ]));
+    if (val == null) {
+      card.appendChild(el('div', { class: 'item-effect placeholder' },
+        `${item.stat_label}: not documented at ${stars}★ yet`));
+    } else {
+      const pct = Math.round(val * 10000) / 100; // trim float noise, keep up to 2 decimals
+      card.appendChild(el('div', { class: 'item-effect' }, [
+        item.stat_label + ': ',
+        el('span', { class: 'stat-value-live' }, `${pct}%`),
+      ]));
+    }
   }
   return card;
 }
@@ -1894,6 +1936,12 @@ function resolveAwakenEffect(item, awakenLevel) {
   return null;
 }
 
+function hasMountStarProgression(item) {
+  const deltas = item.star_up && item.star_up.deltas;
+  if (!deltas) return false;
+  return Object.values(deltas).some(d => d && Object.keys(d).length > 0);
+}
+
 function renderMountArtifactCard(item, bucket, isMount) {
   const kind = isMount ? 'mounts' : 'artifacts';
   const s = getMountOrArtifactState(bucket, item.idx);
@@ -1907,21 +1955,30 @@ function renderMountArtifactCard(item, bucket, isMount) {
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
 
-  const starsStepper = el('div', { class: 'stepper-row' }, [
-    el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Stars'),
-    renderStepper(`${bucket}-${item.idx}-stars`, s.stars, 0, 5,
-      (next) => { s.stars = next; saveState(); render(); }),
-  ]);
-  const awakenStepper = el('div', { class: 'stepper-row' }, [
+  // Uncommon/Rare/Epic mounts have a star stepper in-game that does
+  // nothing — confirmed by every star delta being an empty object, unlike
+  // Legendary+ mounts where starring up genuinely changes stats. Showing
+  // the stepper there is misleading, so it's hidden for those tiers.
+  const showStars = !isMount || hasMountStarProgression(item);
+
+  const stepperRows = [];
+  if (showStars) {
+    stepperRows.push(el('div', { class: 'stepper-row' }, [
+      el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Stars'),
+      renderStepper(`${bucket}-${item.idx}-stars`, s.stars, 0, 5,
+        (next) => { s.stars = next; saveState(); render(); }),
+    ]));
+  }
+  stepperRows.push(el('div', { class: 'stepper-row' }, [
     el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
     renderStepper(`${bucket}-${item.idx}-awaken`, s.awaken, 0, 10,
       (next) => { s.awaken = next; saveState(); render(); },
       (v) => `A${v}`),
-  ]);
+  ]));
 
   card.appendChild(el('div', { class: 'card-controls-row' }, [
     renderOwnedBadge(s.owned, (checked) => { s.owned = checked; saveState(); render(); }),
-    el('div', { class: 'steppers-col' }, [starsStepper, awakenStepper]),
+    el('div', { class: 'steppers-col' }, stepperRows),
   ]));
 
   if (!s.owned) return card;
@@ -1937,13 +1994,13 @@ function renderMountArtifactCard(item, bucket, isMount) {
   // at all, so star_up.base_stats is empty there — awaken.base_stats is the
   // one reliable source, and it's identical to star_up.base_stats for
   // artifacts anyway, so this works for both without branching.)
-  const starDelta = s.stars > 0 ? item.star_up.deltas[String(s.stars)] : null;
+  const starDelta = showStars && s.stars > 0 ? item.star_up.deltas[String(s.stars)] : null;
   const awakenDelta = s.awaken > 0 ? item.awaken.deltas[`A${s.awaken}`] : null;
   const total = sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
   card.appendChild(el('div', { class: 'item-effect', style: 'margin-top:8px;border-top:1px solid var(--hairline);padding-top:8px;' },
-    [`At ${s.stars}★ / A${s.awaken}: `, formatStatBlockNodes(total, true)]));
+    [showStars ? `At ${s.stars}★ / A${s.awaken}: ` : `At A${s.awaken}: `, formatStatBlockNodes(total, true)]));
 
-  const starEff = item.star_effects && item.star_effects[String(s.stars)];
+  const starEff = showStars && item.star_effects && item.star_effects[String(s.stars)];
   if (starEff) card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' }, [`★${s.stars}: `, renderTextWithSkillTags(starEff)]));
 
   const resolved = resolveAwakenEffect(item, s.awaken);
