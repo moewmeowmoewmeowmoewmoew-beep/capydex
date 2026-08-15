@@ -1088,15 +1088,18 @@ function renderDeployCard(kind, mode, slotIndex) {
   if (!item) return card;
 
   if (isAwakenMode) {
-    card.appendChild(equipFieldLabel('Awaken'));
-    card.appendChild(el('div', { class: 'equip-writeup' }, `A${itemState.awaken}`));
+    const showAwaken = hasAwakenProgression(item);
+    if (showAwaken) {
+      card.appendChild(equipFieldLabel('Awaken'));
+      card.appendChild(el('div', { class: 'equip-writeup' }, `A${itemState.awaken}`));
+    }
     if (item.star_up) {
-      const resolved = resolveAwakenEffect(item, itemState.awaken);
+      const resolved = resolveAwakenEffect(item, showAwaken ? itemState.awaken : 0);
       card.appendChild(equipFieldLabel('Awaken Skill'));
       card.appendChild(el('div', { class: 'equip-writeup' }, resolved ? resolved.text : '—'));
     }
   } else {
-    const showStars = !isMount || hasMountStarProgression(item);
+    const showStars = hasStarProgression(item);
     if (showStars) {
       card.appendChild(equipFieldLabel('Stars'));
       card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
@@ -1283,7 +1286,7 @@ function renderPsionicSlot(slotId, slotIdx, slotState, options, allSlots) {
 
   const isSpeed = currentMeta && currentMeta.n === 'Speed'; // flat number, not a percentage
   const valInput = el('input', {
-    type: 'number', class: 'equip-num-input', min: '0', placeholder: '0',
+    type: 'number', class: 'equip-num-input' + (isSpeed ? ' equip-num-input-standalone' : ''), min: '0', placeholder: '0',
     value: slotState.val ? String(slotState.val) : '',
     oninput: (e) => {
       const n = parseFloat(e.target.value);
@@ -1323,12 +1326,21 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
   const usedElsewhere = new Set(allSlots.filter((_, i) => i !== slotIdx).map(sl => sl.gemId).filter(Boolean));
   const availableOptions = options.filter(o => !usedElsewhere.has(o.id));
 
+  // Gem names are baked with their Peerless (max-tier) numbers, but the
+  // helper text below shows the number for whichever tier is actually
+  // selected — those two numbers only match at Peerless. Showing both at
+  // once looks like conflicting data, so the dropdown masks its own number
+  // to X% and lets the helper text underneath be the one real source of
+  // the actual selected-tier value. Confirmed no two gems in any slot
+  // collide once masked, so matching on the masked label is still safe.
+  const maskGemName = (name) => name.replace(/\d+(\.\d+)?%/g, 'X%');
+
   const combo = renderSearchCombo({
-    value: slotState.gemId ? (options.find(o => o.id === slotState.gemId) || {}).n || '' : '',
-    options: availableOptions.map(o => o.n),
+    value: slotState.gemId ? maskGemName((options.find(o => o.id === slotState.gemId) || {}).n || '') : '',
+    options: availableOptions.map(o => maskGemName(o.n)),
     placeholder: 'Search gem…',
-    onSelect: (name) => {
-      const match = availableOptions.find(o => o.n === name);
+    onSelect: (maskedName) => {
+      const match = availableOptions.find(o => maskGemName(o.n) === maskedName);
       if (!match) return;
       slotState.gemId = match.id;
       if (!slotState.tier) slotState.tier = 9; // default Peerless — every gem's data now runs the full 9 tiers
@@ -1599,26 +1611,31 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
   const header = el('div', { class: 'tier-group-header' });
   header.appendChild(el('div', { class: 'tier-group-title', id: groupId, style: 'margin:0;border:none;padding:0;' }, tierLabel));
 
-  const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
-  btnRow.appendChild(el('button', {
-    class: 'bulk-action-btn',
-    onclick: () => {
-      if (allSelected) {
-        // Deselect just this tier's items, leaving any others untouched
-        groupItems.forEach(it => selectedItems[kind].delete(cfg.idKey(it)));
-      } else {
-        // Select ONLY this tier — replaces whatever was selected before
-        // (selection is always scoped to one tier at a time), and
-        // auto-enters selection mode so this button alone is enough to
-        // get to the Mark Owned / Star Update actions without a separate
-        // "Select multiple…" toggle first.
-        selectMode[kind] = true;
-        selectedItems[kind] = new Set(groupItems.map(cfg.idKey));
-      }
-      render();
-    },
-  }, allSelected ? 'Deselect Tier' : 'Select Tier'));
-  header.appendChild(btnRow);
+  // Bulk-selecting a tier only makes sense when there's more than one item
+  // in it — with just one, "Select Tier" is a pointless extra step before
+  // doing exactly what tapping the item directly would do.
+  if (groupItems.length > 1) {
+    const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
+    btnRow.appendChild(el('button', {
+      class: 'bulk-action-btn',
+      onclick: () => {
+        if (allSelected) {
+          // Deselect just this tier's items, leaving any others untouched
+          groupItems.forEach(it => selectedItems[kind].delete(cfg.idKey(it)));
+        } else {
+          // Select ONLY this tier — replaces whatever was selected before
+          // (selection is always scoped to one tier at a time), and
+          // auto-enters selection mode so this button alone is enough to
+          // get to the Mark Owned / Star Update actions without a separate
+          // "Select multiple…" toggle first.
+          selectMode[kind] = true;
+          selectedItems[kind] = new Set(groupItems.map(cfg.idKey));
+        }
+        render();
+      },
+    }, allSelected ? 'Deselect Tier' : 'Select Tier'));
+    header.appendChild(btnRow);
+  }
 
   return header;
 }
@@ -1672,6 +1689,16 @@ function openStarAwakenModal(kind) {
   let starVal = maxStar;
   let awakenVal = maxAwaken;
 
+  // Uncommon/Rare/Epic mounts have no real star progression, and at least
+  // one artifact (Sword of Victory Oath) has neither stars nor awaken —
+  // both confirmed by every delta being empty for those items. Showing a
+  // picker for a dimension that does nothing is just confusing. Bulk
+  // selection is always scoped to a single tier at a time, so this only
+  // ever needs to check the first selected item.
+  const firstItem = ids.length ? itemsById[ids[0]] : null;
+  const showStars = !firstItem || hasStarProgression(firstItem);
+  const showAwaken = !firstItem || hasAwakenProgression(firstItem);
+
   const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
 
   const starDisplay = el('div', { class: 'modal-star-value' }, `${starVal}★`);
@@ -1693,28 +1720,33 @@ function openStarAwakenModal(kind) {
     },
   });
 
+  const titleParts = [];
+  if (showStars) titleParts.push('stars');
+  if (showAwaken) titleParts.push('awaken');
   const box = el('div', { class: 'modal-box' }, [
-    el('div', { class: 'modal-title' }, `Set stars & awaken for ${ids.length} item${ids.length === 1 ? '' : 's'}`),
-    el('div', { class: 'modal-input-label', style: 'text-align:center;margin-bottom:6px;' }, 'Stars'),
-    el('div', { class: 'modal-star-picker' }, [
+    el('div', { class: 'modal-title' }, titleParts.length
+      ? `Set ${titleParts.join(' & ')} for ${ids.length} item${ids.length === 1 ? '' : 's'}`
+      : `Nothing to set for ${ids.length} item${ids.length === 1 ? '' : 's'}`),
+    showStars ? el('div', { class: 'modal-input-label', style: 'text-align:center;margin-bottom:6px;' }, 'Stars') : null,
+    showStars ? el('div', { class: 'modal-star-picker' }, [
       el('button', { class: 'modal-star-btn', onclick: () => { starVal = Math.max(0, starVal - 1); starDisplay.textContent = `${starVal}★`; starInput.value = String(starVal); } }, '−'),
       starDisplay,
       el('button', { class: 'modal-star-btn', onclick: () => { starVal = Math.min(maxStar, starVal + 1); starDisplay.textContent = `${starVal}★`; starInput.value = String(starVal); } }, '+'),
-    ]),
-    el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), starInput]),
-    el('div', { class: 'modal-input-label', style: 'text-align:center;margin:14px 0 6px;' }, 'Awaken'),
-    el('div', { class: 'modal-star-picker' }, [
+    ]) : null,
+    showStars ? el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), starInput]) : null,
+    showAwaken ? el('div', { class: 'modal-input-label', style: `text-align:center;margin:${showStars ? '14px' : '0'} 0 6px;` }, 'Awaken') : null,
+    showAwaken ? el('div', { class: 'modal-star-picker' }, [
       el('button', { class: 'modal-star-btn', onclick: () => { awakenVal = Math.max(0, awakenVal - 1); awakenDisplay.textContent = `A${awakenVal}`; awakenInput.value = String(awakenVal); } }, '−'),
       awakenDisplay,
       el('button', { class: 'modal-star-btn', onclick: () => { awakenVal = Math.min(maxAwaken, awakenVal + 1); awakenDisplay.textContent = `A${awakenVal}`; awakenInput.value = String(awakenVal); } }, '+'),
-    ]),
-    el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), awakenInput]),
+    ]) : null,
+    showAwaken ? el('div', { class: 'modal-input-row' }, [el('span', { class: 'modal-input-label' }, 'or type a number:'), awakenInput]) : null,
     el('div', { class: 'modal-actions' }, [
       el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
       el('button', {
         class: 'bulk-action-btn primary',
         onclick: () => {
-          ids.forEach(id => cfg.apply(id, true, starVal, awakenVal));
+          ids.forEach(id => cfg.apply(id, true, showStars ? starVal : undefined, showAwaken ? awakenVal : undefined));
           saveState();
           selectedItems[kind].clear();
           selectMode[kind] = false;
@@ -1795,8 +1827,8 @@ function renderRelics() {
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
-    class: 'search-input', type: 'text', placeholder: 'Search relics…',
-    oninput: (e) => { relicSearch = e.target.value.toLowerCase(); renderRelicGroups(groupsWrap); },
+    class: 'search-input', type: 'text', placeholder: 'Search relics…', value: relicSearch,
+    oninput: (e) => { relicSearch = e.target.value; renderRelicGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
   ['All', 'Rare', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
@@ -1836,7 +1868,7 @@ function renderRelicGroups(container) {
   container.innerHTML = '';
   const items = DB.relics.filter(r => {
     if (relicRarityFilter !== 'All' && r.rarity !== relicRarityFilter) return false;
-    if (relicSearch && !r.n.toLowerCase().includes(relicSearch)) return false;
+    if (relicSearch && !r.n.toLowerCase().includes(relicSearch.toLowerCase())) return false;
     return true;
   });
   const groups = buildTierGroups(items, 'rarity');
@@ -1972,8 +2004,8 @@ function renderCollectibles() {
 
   const toolbar = el('div', { class: 'toolbar' });
   const search = el('input', {
-    class: 'search-input', type: 'text', placeholder: 'Search collectibles…',
-    oninput: (e) => { collectibleSearch = e.target.value.toLowerCase(); renderCollectibleGroups(groupsWrap); },
+    class: 'search-input', type: 'text', placeholder: 'Search collectibles…', value: collectibleSearch,
+    oninput: (e) => { collectibleSearch = e.target.value; renderCollectibleGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
   ['All', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
@@ -2012,7 +2044,7 @@ function renderCollectibleGroups(container) {
   container.innerHTML = '';
   const items = DB.collectibles.filter(c => {
     if (collectibleRarityFilter !== 'All' && c.rarity !== collectibleRarityFilter) return false;
-    if (collectibleSearch && !c.n.toLowerCase().includes(collectibleSearch)) return false;
+    if (collectibleSearch && !c.n.toLowerCase().includes(collectibleSearch.toLowerCase())) return false;
     return true;
   });
   const groups = buildTierGroups(items, 'rarity');
@@ -2148,8 +2180,8 @@ function renderMountsOrArtifacts(kind) {
 
   const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
   const search = el('input', {
-    class: 'search-input', type: 'text', placeholder: `Search ${kind}…`,
-    oninput: (e) => { filters.search = e.target.value.toLowerCase(); renderMountArtifactGroups(kind, groupsWrap); },
+    class: 'search-input', type: 'text', placeholder: `Search ${kind}…`, value: filters.search,
+    oninput: (e) => { filters.search = e.target.value; renderMountArtifactGroups(kind, groupsWrap); },
   });
   toolbar.appendChild(search);
 
@@ -2208,7 +2240,7 @@ function renderMountArtifactGroups(kind, container) {
   const allItems = (isMount ? DB.mounts : DB.artifacts).filter(it => it.n !== 'None');
   const items = allItems.filter(it => {
     if (filters.tier !== 'All' && it.tier !== filters.tier) return false;
-    if (filters.search && !it.n.toLowerCase().includes(filters.search)) return false;
+    if (filters.search && !it.n.toLowerCase().includes(filters.search.toLowerCase())) return false;
     const owned = !!(state[bucket][it.idx] && state[bucket][it.idx].owned);
     if (filters.owned === 'Owned' && !owned) return false;
     if (filters.owned === 'Not Owned' && owned) return false;
@@ -2248,8 +2280,14 @@ function resolveAwakenEffect(item, awakenLevel) {
   return null;
 }
 
-function hasMountStarProgression(item) {
+function hasStarProgression(item) {
   const deltas = item.star_up && item.star_up.deltas;
+  if (!deltas) return false;
+  return Object.values(deltas).some(d => d && Object.keys(d).length > 0);
+}
+
+function hasAwakenProgression(item) {
+  const deltas = item.awaken && item.awaken.deltas;
   if (!deltas) return false;
   return Object.values(deltas).some(d => d && Object.keys(d).length > 0);
 }
@@ -2271,7 +2309,11 @@ function renderMountArtifactCard(item, bucket, isMount) {
   // nothing — confirmed by every star delta being an empty object, unlike
   // Legendary+ mounts where starring up genuinely changes stats. Showing
   // the stepper there is misleading, so it's hidden for those tiers.
-  const showStars = !isMount || hasMountStarProgression(item);
+  // Same idea applies per-item now, not just per-tier — Sword of Victory
+  // Oath (Legendary artifact) has neither star nor awaken progression at
+  // all, confirmed the same way.
+  const showStars = hasStarProgression(item);
+  const showAwaken = hasAwakenProgression(item);
 
   const stepperRows = [];
   if (showStars) {
@@ -2281,12 +2323,14 @@ function renderMountArtifactCard(item, bucket, isMount) {
         (next) => { s.stars = next; saveState(); render(); }),
     ]));
   }
-  stepperRows.push(el('div', { class: 'stepper-row' }, [
-    el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
-    renderStepper(`${bucket}-${item.idx}-awaken`, s.awaken, 0, 10,
-      (next) => { s.awaken = next; saveState(); render(); },
-      (v) => `A${v}`),
-  ]));
+  if (showAwaken) {
+    stepperRows.push(el('div', { class: 'stepper-row' }, [
+      el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
+      renderStepper(`${bucket}-${item.idx}-awaken`, s.awaken, 0, 10,
+        (next) => { s.awaken = next; saveState(); render(); },
+        (v) => `A${v}`),
+    ]));
+  }
 
   card.appendChild(el('div', { class: 'card-controls-row' }, [
     renderOwnedBadge(s.owned, (checked) => { s.owned = checked; saveState(); render(); }),
@@ -2309,8 +2353,11 @@ function renderMountArtifactCard(item, bucket, isMount) {
   const starDelta = showStars && s.stars > 0 ? item.star_up.deltas[String(s.stars)] : null;
   const awakenDelta = s.awaken > 0 ? item.awaken.deltas[`A${s.awaken}`] : null;
   const total = sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
+  const labelParts = [];
+  if (showStars) labelParts.push(`${s.stars}★`);
+  if (showAwaken) labelParts.push(`A${s.awaken}`);
   card.appendChild(el('div', { class: 'item-effect', style: 'margin-top:8px;border-top:1px solid var(--hairline);padding-top:8px;' },
-    [showStars ? `At ${s.stars}★ / A${s.awaken}: ` : `At A${s.awaken}: `, formatStatBlockNodes(total, true)]));
+    [labelParts.length ? `At ${labelParts.join(' / ')}: ` : '', formatStatBlockNodes(total, true)]));
 
   const starEff = showStars && item.star_effects && item.star_effects[String(s.stars)];
   if (starEff) card.appendChild(el('div', { class: 'item-effect', style: 'font-style:italic;' }, [`★${s.stars}: `, renderTextWithSkillTags(starEff)]));

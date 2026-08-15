@@ -309,7 +309,9 @@ body {
 .item-card.r-Immortal { border-top-color: var(--tier-immortal); }
 .item-card.r-Transcendent { border-top-color: var(--tier-transcendent); }
 
-.scope-mounts { --rarity-rare: #7FD9A8; --rarity-epic: #6FA3E0; }
+/* Mounts previously overrode Rare/Epic to green/blue instead of the
+   standard blue/purple used everywhere else — removed so mount rarity
+   colors match every other item type in the app. */
 
 .item-thumb-inline {
   position: relative;
@@ -1177,6 +1179,11 @@ body {
 .equip-num-input.input-error {
   border-color: #D64545;
   background: rgba(214, 69, 69, 0.12);
+}
+.equip-num-input-standalone {
+  width: 78px;
+  border-radius: 5px;
+  border-right: 1px solid var(--hairline);
 }
 .equip-num-input::-webkit-outer-spin-button,
 .equip-num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

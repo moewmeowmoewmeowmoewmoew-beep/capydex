@@ -6685,7 +6685,47 @@
       "pve": "",
       "pvp": "",
       "rarity": "Mythic",
-      "star_stats": {},
+      "star_stats": {
+        "final_skill_dmg_reduction": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11.5,
+          13,
+          14.5,
+          16,
+          17.5
+        ],
+        "armor_break_res": [
+          1000,
+          1200,
+          1400,
+          1600,
+          1800,
+          2000,
+          2300,
+          2600,
+          2900,
+          3200,
+          3500
+        ],
+        "atk": [
+          20000,
+          24000,
+          28000,
+          32000,
+          36000,
+          40000,
+          46000,
+          52000,
+          58000,
+          64000,
+          70000
+        ]
+      },
       "effect_base": "When Hero HP <50%, Final DMG Reduction +5%",
       "effect_5star": "When Hero HP <60%, Final DMG Reduction +10%",
       "deploy_type": "guardian"
@@ -7069,7 +7109,47 @@
       "pve": "",
       "pvp": "",
       "rarity": "Mythic",
-      "star_stats": {},
+      "star_stats": {
+        "final_skill_dmg_reduction": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11.5,
+          13,
+          14.5,
+          16,
+          17.5
+        ],
+        "armor_break_res": [
+          1000,
+          1200,
+          1400,
+          1600,
+          1800,
+          2000,
+          2300,
+          2600,
+          2900,
+          3200,
+          3500
+        ],
+        "hp": [
+          100000,
+          120000,
+          140000,
+          160000,
+          180000,
+          200000,
+          230000,
+          260000,
+          290000,
+          320000,
+          350000
+        ]
+      },
       "effect_base": "After the battle starts, the protagonist's final damage reduction will be increased by 2% each round, up to 3 stacks.",
       "effect_5star": "Each round increases the final damage reduction to4%",
       "deploy_type": "guardian"
