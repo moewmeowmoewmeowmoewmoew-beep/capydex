@@ -3280,25 +3280,41 @@ function aggregateFullStatsWithSources() {
     });
   });
 
-  // Equipment quality-scaled base contributions — a separate bonus baked
-  // directly into specific items at whatever quality they're set to, on
-  // top of (not instead of) that item's arcana. Formula per the datamine:
-  // qualD[qualityIndex] + surpassBonus × current Surpass level.
+  // Equipment quality-scaled base contributions — bonuses baked directly
+  // into specific items, on top of (not instead of) their arcana text.
+  // Two additive pieces: qualD[qualityIndex] + surpassBonus × Surpass
+  // (existing), plus arcanaD — a second array indexed by arcana milestone
+  // band, not a 1:1 arcana level. Confirmed against the datamine's own
+  // notes for Winter Ice Soul Guard ("Mythic passive: +10% FDR. 4★: +6%
+  // Ignore Crit. 10★: +10% FDR cumulative, +10% FD") and its own
+  // arcana_descs text: the array's 4 slots map to bands [A0-3, A4-6,
+  // A7-9, A10], since some contributions kick in at A4 and stay constant
+  // through A10 (Ignore Crit) while others only appear at A10 exactly
+  // (FDR/FD) — a single flat index wouldn't reproduce both patterns.
+  const arcanaBandIndex = (arcana) => {
+    if (arcana >= 10) return 3;
+    if (arcana >= 7) return 2;
+    if (arcana >= 4) return 1;
+    return 0;
+  };
   EQUIPMENT_SLOTS.forEach(slotDef => {
     const s = state.equipment[slotDef.id];
     if (!s || !s.itemName) return;
     const item = (DB[slotDef.dataKey] || []).find(it => it.n === s.itemName);
     if (!item || !item.quality_contributions) return;
     const qualIdx = (item.q || []).indexOf(s.quality);
-    if (qualIdx === -1) return;
     item.quality_contributions.forEach(c => {
-      const base = c.qualD ? c.qualD[qualIdx] : null;
-      if (base == null) return;
-      const surpassBonus = c.surpassBonus || 0;
-      const total = (base + surpassBonus * (s.surpass || 0)) * 100;
+      const qualPart = c.qualD && qualIdx !== -1 ? (c.qualD[qualIdx] || 0) : 0;
+      const surpassPart = c.qualD && qualIdx !== -1 ? (c.surpassBonus || 0) * (s.surpass || 0) : 0;
+      const arcanaPart = c.arcanaD && s.arcana >= 0 ? (c.arcanaD[arcanaBandIndex(s.arcana)] || 0) : 0;
+      if (!c.qualD && !c.arcanaD) return;
+      const total = (qualPart + surpassPart + arcanaPart) * 100;
       const key = `${c.calc}:${c.cond || ''}:${c.ty || ''}`;
       const label = EQUIP_CONTRIB_TO_LABEL[key];
-      if (label && total) add(label, total, `${item.n} (${s.quality}${s.surpass ? `, +${s.surpass}` : ''})`);
+      if (label && total) {
+        const qualifiers = [s.quality, s.surpass ? `+${s.surpass}` : null, s.arcana >= 0 ? `A${s.arcana}` : null].filter(Boolean).join(', ');
+        add(label, total, `${item.n} (${qualifiers})`);
+      }
     });
   });
 
