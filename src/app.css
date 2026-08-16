@@ -927,7 +927,8 @@ body {
 .import-error.hidden { display: none; }
 
 /* ---- Specialization Tree ---- */
-.spec-tab-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.spec-tab-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; }
+.spec-tab-btn-group { display: flex; gap: 8px; }
 .spec-tab-btn {
   padding: 6px 14px;
   border-radius: 6px;

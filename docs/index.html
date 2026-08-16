@@ -933,7 +933,8 @@ body {
 .import-error.hidden { display: none; }
 
 /* ---- Specialization Tree ---- */
-.spec-tab-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.spec-tab-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; }
+.spec-tab-btn-group { display: flex; gap: 8px; }
 .spec-tab-btn {
   padding: 6px 14px;
   border-radius: 6px;
@@ -2115,7 +2116,14 @@ function renderInheritNodeBox(treeKey, nodeId, name, max) {
 
 function renderInheritanceShell() {
   const wrap = el('div', {});
-  wrap.appendChild(el('div', { class: 'section-title' }, 'Inheritance Tree'));
+  wrap.appendChild(el('div', { class: 'section-title-row' }, [
+    el('div', { class: 'section-title' }, 'Inheritance Tree'),
+    renderClearAllButton('all 5 Inheritance trees', () => {
+      state.inheritance.progress = { sk: {}, kn: {}, rn: {}, gh: {}, dr: {} };
+      saveState();
+      render();
+    }),
+  ]));
   wrap.appendChild(el('p', { class: 'section-desc' },
     'The Active Tree is the deployed tree in battle, not the current skill level for the tree.'));
 
@@ -2158,11 +2166,6 @@ function renderInheritanceShell() {
       render();
     },
   }, 'Fill to Max'));
-  toolRow.appendChild(renderClearAllButton('this Inheritance tree', () => {
-    state.inheritance.progress[treeKey] = {};
-    saveState();
-    render();
-  }));
   wrap.appendChild(toolRow);
 
   const grid = el('div', { class: 'inherit-chain' });
@@ -2323,26 +2326,35 @@ function renderSpecAdventureTab() {
 
 function renderSpecializationShell() {
   const wrap = el('div', {});
-  wrap.appendChild(el('div', { class: 'section-title' }, 'Specialization'));
+  wrap.appendChild(el('div', { class: 'section-title-row' }, [
+    el('div', { class: 'section-title' }, 'Specialization'),
+    renderClearAllButton('all of Specialization (both General and Adventurer)', () => {
+      state.specialization.progress = { General: {}, Adventure: {} };
+      saveState();
+      render();
+    }),
+  ]));
   wrap.appendChild(el('p', { class: 'section-desc' },
     'Effect values shown are read directly from your own extracted data — no guessing on which numbers are real.'));
 
   const tabRow = el('div', { class: 'spec-tab-row' });
+  const tabBtnGroup = el('div', { class: 'spec-tab-btn-group' });
   [['general', 'General'], ['adventure', 'Adventurer']].forEach(([key, label]) => {
-    tabRow.appendChild(el('button', {
+    tabBtnGroup.appendChild(el('button', {
       class: 'spec-tab-btn' + (state.specialization.viewingTab === key ? ' active' : ''),
       onclick: () => { state.specialization.viewingTab = key; render(); },
     }, label));
   });
-  wrap.appendChild(tabRow);
+  tabRow.appendChild(tabBtnGroup);
 
   const isGeneral = state.specialization.viewingTab === 'general';
   const dbTab = isGeneral ? 'General' : 'Adventure';
-  wrap.appendChild(renderClearAllButton(`this ${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
+  tabRow.appendChild(renderClearAllButton(`this ${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
     state.specialization.progress[dbTab] = {};
     saveState();
     render();
   }));
+  wrap.appendChild(tabRow);
 
   wrap.appendChild(isGeneral ? renderSpecGeneralTab() : renderSpecAdventureTab());
 
@@ -2629,12 +2641,31 @@ function buildAdventurerHeroBrandSectionContent() {
 
 
 const EQUIPMENT_SECTIONS = [
-  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent, clearAll: () => clearAllEquipment() },
-  { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent },
+  { id: 'equip-equipment', label: 'Equipment', build: buildEquipmentSectionContent, clearAll: () => { state.equipment = {}; saveState(); render(); } },
+  { id: 'equip-pet', label: 'Pet', build: buildPetSectionContent, clearAll: () => {
+    state.petSlots = state.petSlots.map(() => ({
+      itemName: '', arcana: -1, level: 0, armament: '', armamentLevel: 1,
+      skills: [{ stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }, { stat: '', val: 0 }],
+    }));
+    saveState(); render();
+  } },
   { id: 'equip-relics', label: 'Relics', build: buildRelicsSectionContent, clearAll: () => { state.relicSlots = { totem1: null, totem2: null, core: null, guardian: null }; saveState(); render(); } },
-  { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent },
-  { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent },
-  { id: 'equip-adv-hero-brand', label: 'Adventurer, Heroes & Brands', build: buildAdventurerHeroBrandSectionContent },
+  { id: 'equip-mounts', label: 'Mounts', build: buildMountsSectionContent, clearAll: () => {
+    state.mountSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
+    state.mountMainSlot = { itemIdx: null };
+    saveState(); render();
+  } },
+  { id: 'equip-artifacts', label: 'Artifacts', build: buildArtifactsSectionContent, clearAll: () => {
+    state.artifactSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
+    state.artifactMainSlot = { itemIdx: null };
+    saveState(); render();
+  } },
+  { id: 'equip-adv-hero-brand', label: 'Adventurer, Heroes & Brands', build: buildAdventurerHeroBrandSectionContent, clearAll: () => {
+    state.adventurerSlot = { name: '', stars: 0 };
+    state.heroSlots = state.heroSlots.map(() => ({ name: '', quality: '', polarization: 0 }));
+    state.brandSlots = state.brandSlots.map(() => ({ name: '', quality: '', polarization: 0 }));
+    saveState(); render();
+  } },
 ];
 
 const RELIC_DEPLOY_SLOTS = [
@@ -2723,7 +2754,7 @@ function renderRelicDeployCard(slotDef) {
 }
 
 function renderEquipmentShell() {
-  return renderSectionShell(EQUIPMENT_SECTIONS);
+  return renderSectionShell(EQUIPMENT_SECTIONS, 'Equipment', clearAllEquipment);
 }
 
 function clearAllEquipment() {
@@ -2737,6 +2768,9 @@ function clearAllEquipment() {
   state.artifactSlots = [{ itemIdx: null }, { itemIdx: null }, { itemIdx: null }];
   state.artifactMainSlot = { itemIdx: null };
   state.relicSlots = { totem1: null, totem2: null, core: null, guardian: null };
+  state.adventurerSlot = { name: '', stars: 0 };
+  state.heroSlots = state.heroSlots.map(() => ({ name: '', quality: '', polarization: 0 }));
+  state.brandSlots = state.brandSlots.map(() => ({ name: '', quality: '', polarization: 0 }));
   saveState();
   render();
 }
@@ -3404,7 +3438,15 @@ function render() {
   focusActiveStepperInput();
 }
 
-function renderSectionShell(sections) {
+function renderSectionShell(sections, pageLabel, pageClearAllFn) {
+  const outer = el('div', {});
+  if (pageLabel) {
+    outer.appendChild(el('div', { class: 'section-title-row' }, [
+      el('div', { class: 'section-title' }, pageLabel),
+      pageClearAllFn ? renderClearAllButton(`all of ${pageLabel}`, pageClearAllFn) : null,
+    ]));
+  }
+
   const shell = el('div', { class: 'collection-shell' });
 
   // Click handler shared by all sidenav anchor links. Deliberately does NOT
@@ -3477,11 +3519,25 @@ function renderSectionShell(sections) {
   shell.appendChild(content);
 
   setupScrollSpy(nav);
-  return shell;
+  outer.appendChild(shell);
+  return outer;
 }
 
 function renderCollectionShell() {
-  return renderSectionShell(COLLECTION_SECTIONS);
+  return renderSectionShell(COLLECTION_SECTIONS, 'Collection', clearAllCollection);
+}
+
+// Page-wide clear for Collection — everything COLLECTION_SECTIONS' own
+// per-section clearAll callbacks cover, run together in one go.
+function clearAllCollection() {
+  clearAllRelics();
+  clearAllCollectibles();
+  clearAllMountsOrArtifacts('mounts');
+  clearAllMountsOrArtifacts('artifacts');
+  state.fashionLevel = 0;
+  state.homestead = {};
+  saveState();
+  render();
 }
 
 function setupScrollSpy(navEl) {
