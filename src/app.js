@@ -2782,6 +2782,24 @@ function extractGemScalingValue(meta, tier) {
   return null; // couldn't isolate which number scales — don't guess
 }
 
+// Most psionic stat names already match a Calculator category exactly
+// (e.g. "Combo DMG", "Lightning DMG Reduction"), but a handful use a
+// shorter/abbreviated form that doesn't — and some of those have two
+// different spellings depending on which equipment slot they're rolled
+// on (Armor uses "Final Adventurer DMG Red", Accessory uses "Adventurer
+// FDR" for the same stat). Falls back to the psionic's own name when
+// there's no override, which covers the majority case correctly.
+const PSIONIC_NAME_TO_LABEL = {
+  'Final DMG Reduction': 'General Final Damage Reduction',
+  'DMG Reduction': 'Generic DMG Reduction',
+  'Final Adventurer DMG Red': 'Adventurer Final Damage Reduction', 'Adventurer FDR': 'Adventurer Final Damage Reduction',
+  'Final Artifact DMG Red': 'Artifact Final Damage Reduction', 'Artifact FDR': 'Artifact Final Damage Reduction',
+  'Final Mount DMG Red': 'Mount Final Damage Reduction', 'Mount FDR': 'Mount Final Damage Reduction',
+  'Final Pet DMG Red': 'Pet Final Damage Reduction', 'Pet FDR': 'Pet Final Damage Reduction',
+  'DoT Crit Rate': 'DoT Crit Rates',
+  'Ignore Crit Rate': 'Ignore Crit',
+};
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -2828,7 +2846,8 @@ function aggregateFullStatsWithSources() {
     });
   });
 
-  // Equipment Psionics — stat name already matches this table's labels directly
+// Equipment Psionics — most stat names already match this table's labels
+// directly; PSIONIC_NAME_TO_LABEL covers the ones that don't.
   EQUIPMENT_SLOTS.forEach(slotDef => {
     const s = state.equipment[slotDef.id];
     if (!s || !s.psionics) return;
@@ -2836,7 +2855,7 @@ function aggregateFullStatsWithSources() {
     s.psionics.forEach(slot => {
       if (!slot.stat || !slot.val) return;
       const meta = psiOptions.find(o => o.c === slot.stat);
-      if (meta) add(meta.n, slot.val, `${slotDef.label} psionic`);
+      if (meta) add(PSIONIC_NAME_TO_LABEL[meta.n] || meta.n, slot.val, `${slotDef.label} psionic`);
     });
   });
 
