@@ -927,5 +927,1105 @@
     {
       "n": "Glimmer Earrings"
     }
-  ]
+  ],
+  "inherit_node_calc": {
+    "gh_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      }
+    ],
+    "gh_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_s1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.4,
+          0.6,
+          0.8
+        ]
+      }
+    ],
+    "gh_s2": [
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "lightspear",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "icombo",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_r2a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r2b": [
+      {
+        "calc": "dmgred",
+        "ty": "pet",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r2c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5b": [
+      {
+        "calc": "dmgred",
+        "ty": "pet",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_s1": [
+      {
+        "calc": "rate",
+        "ty": "counter",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_s2": [
+      {
+        "calc": "rate",
+        "ty": "basiccrit",
+        "vals": [
+          0.09,
+          0.12,
+          0.15
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.09,
+          0.12
+        ]
+      }
+    ],
+    "rn_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "dagger",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      }
+    ],
+    "rn_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_s1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.4,
+          0.6,
+          0.8
+        ]
+      }
+    ],
+    "rn_s2": [
+      {
+        "calc": "rate",
+        "ty": "weapcrit",
+        "vals": [
+          0.06,
+          0.08,
+          0.1
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "swordqi",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "icounter",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "sk_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_s1": [
+      {
+        "calc": "rate",
+        "ty": "combo",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "sk_s2": [
+      {
+        "calc": "rate",
+        "ty": "basiccrit",
+        "vals": [
+          0.09,
+          0.12,
+          0.15
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.09,
+          0.12
+        ]
+      }
+    ],
+    "dr_m1": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_pet",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_adv",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m4": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_art",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_mnt",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m6": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_pet",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_adv",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_art",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_mnt",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m2": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_m3": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_m5": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_r2a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r2b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r2c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r3b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r3c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r6b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r6c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_s1": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s2": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s4": [
+      {
+        "calc": "dmgred",
+        "ty": "crit",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s5": [
+      {
+        "calc": "fdr",
+        "ty": "general",
+        "vals": [
+          0.05
+        ]
+      }
+    ]
+  }
 }

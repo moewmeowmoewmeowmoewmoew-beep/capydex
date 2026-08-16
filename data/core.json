@@ -27,6 +27,15 @@
         "Ailoren Sword ATK +15% (not tracked)",
         "Global Sword Qi DMG +20%",
         "Ailoren Sword deals 5% target current HP as true damage (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -49,6 +58,25 @@
         "Nashir Scepter ATK +15% (not tracked)",
         "Global Lightning DMG +20%",
         "70% chance lightning becomes Nashir Divine Thunder (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skilldmg",
+          "qualD": [
+            0.25,
+            0.5
+          ],
+          "surpassBonus": 0.05
+        },
+        {
+          "calc": "fdr",
+          "cond": "skill",
+          "qualD": [
+            0,
+            0.1
+          ],
+          "surpassBonus": 0
+        }
       ]
     },
     {
@@ -71,6 +99,15 @@
         "Gale Elres ATK +15% (not tracked)",
         "Global Dagger DMG +20%",
         "Dagger Crit Rate +20%, Crit DMG +40% (Crit DMG not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "weapcrit",
+          "qualD": [
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -93,6 +130,15 @@
         "Helos Warblade ATK +15% (not tracked)",
         "Global Combo DMG +20%",
         "Combo Rate +12%, Basic ATK Crit +12%, Crit DMG +60% (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -115,6 +161,15 @@
         "ATK +15% (not tracked)",
         "Global Dagger DMG +20%",
         "Dagger Crit Rate +30%, Angel Dagger Coefficient +30% (Coefficient not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "weapcrit",
+          "qualD": [
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -137,6 +192,25 @@
         "Thorn-Seles ATK +15% (not tracked)",
         "Global Counter DMG +20%",
         "Thorn shield damage +3% per counter (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "basic",
+          "qualD": [
+            0,
+            0.1
+          ],
+          "surpassBonus": 0
+        },
+        {
+          "calc": "counter",
+          "qualD": [
+            0.25,
+            0.5
+          ],
+          "surpassBonus": 0.05
+        }
       ]
     },
     {
@@ -160,6 +234,18 @@
         "Angel Bow Attack +10%",
         "Angel Bow Global Dagger DMG +15%",
         "Angel Bow Mythic Skill: Global DMG +15%"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "basiccrit",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ],
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        }
       ]
     },
     {
@@ -183,6 +269,17 @@
         "Bishop Staff ATK +10%",
         "Global Rage Skill DMG +15% when Bishop Staff is equipped",
         "Mythic Bishop Staff: Initial Skill [ Rage Skill Combo ]"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -206,6 +303,16 @@
         "ATK +10% (not tracked)",
         "Global Combo DMG +15%",
         "Combo Rate +10%, Basic ATK Crit Rate +10%, +50% Crit DMG (Crit DMG not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -229,6 +336,16 @@
         "ATK +10% (not tracked)",
         "Global Counter DMG +15%",
         "Durian Hammer shield reflects +150% of ATK (not tracked: shield reflect)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "counter",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -252,6 +369,16 @@
         "ATK +10% (not tracked)",
         "Global Counter DMG +15%",
         "Extra 15% global DMG reduction with shield"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "counter",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -275,6 +402,17 @@
         "ATK +10% (not tracked)",
         "Global Lightning DMG +15%",
         "Probability of lightning becoming Death Lightning increased (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -298,6 +436,16 @@
         "ATK +10% (not tracked)",
         "Global Poison DMG +15%",
         "Poison DMG +40%, max poison stacks +6 (DMG +40% not tracked: applies to existing poison DOT separately; stack cap not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "counter",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -321,6 +469,16 @@
         "ATK +10% (not tracked)",
         "Global Sword Qi DMG +15%",
         "Sword Qi deals true DMG = 7% of target's current HP, capped at 11× ATK (not tracked: % HP)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -344,6 +502,17 @@
         "Star Staff Attack +10%",
         "Star Staff Global Fire DMG +15%",
         "Mythic Star Staff: Flame Wave triggers 2 Burn stacks, Burn duration +1"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.125,
+            0.25,
+            0.5
+          ]
+        }
       ]
     },
     {
@@ -355,6 +524,19 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -366,6 +548,19 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "combo",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -389,6 +584,23 @@
         "Whisperer ATK +10%",
         "Global Dagger DMG +15% when Whisperer is equipped",
         "Mythic Wind Whisperer skill enhancement, each time the dagger hits, increases 2% dagger crit rate and 3% dagger crit damage, up to 10 stacks"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "weapcrit",
+          "qualD": [
+            0.125,
+            0.25,
+            0.7
+          ],
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        },
+        {
+          "calc": "daggercrit",
+          "arcanaFlat": 0.1,
+          "arcanaFlatAt": 2
+        }
       ]
     },
     {
@@ -400,6 +612,20 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -411,6 +637,19 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "counter",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -422,6 +661,19 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "counter",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -433,6 +685,19 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "basiccrit",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -444,6 +709,20 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -457,7 +736,20 @@
         "Mythic"
       ],
       "tier": "Basic",
-      "surpass_max": 5
+      "surpass_max": 5,
+      "quality_contributions": [
+        {
+          "calc": "weapcrit",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
+      ]
     },
     {
       "n": "Nomad Staff",
@@ -468,6 +760,20 @@
         "Epic",
         "Legendary",
         "Mythic"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "dmgbonus",
+          "ty": "skill",
+          "qualD": [
+            0.03,
+            0.045,
+            0.06,
+            0.075,
+            0.15,
+            0.3
+          ]
+        }
       ]
     },
     {
@@ -510,6 +816,18 @@
         "HP +10% (not tracked)",
         "HP Recovery effect +15% (not tracked)",
         "100% overflow healing converts to shield (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "general",
+          "qualD": [
+            0.3,
+            0.4
+          ],
+          "surpassBonus": 0.01,
+          "legendaryNoArcana": true
+        }
       ]
     },
     {
@@ -532,6 +850,34 @@
         "HP +10% (not tracked)",
         "Global HP +15% (not tracked)",
         "Resurrection count +1 (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "general",
+          "qualV5": [
+            [
+              0.4,
+              0.4,
+              0.4,
+              0.1,
+              0.1
+            ],
+            [
+              0.4,
+              0.4,
+              0.4,
+              0.1,
+              0.1
+            ]
+          ],
+          "surpassBonus": 0.01
+        },
+        {
+          "calc": "fd",
+          "ty": "general",
+          "flat": 0.1
+        }
       ]
     },
     {
@@ -648,6 +994,43 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Counter DMG +12%",
         "Shield +10% max HP, each Forbidden Spear hit increases hero ability (not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "conditional",
+          "qualD": [
+            0.1,
+            0.15
+          ]
+        },
+        {
+          "calc": "fd",
+          "ty": "counter",
+          "arcanaV5": [
+            [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ],
+            [
+              0.1,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            [
+              0.4,
+              0.65,
+              0.65,
+              0.65,
+              0.65
+            ]
+          ]
+        }
       ]
     },
     {
@@ -670,6 +1053,40 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Combo DMG +12%",
         "Final Basic ATK DMG +20%, Smash coefficient +100% (coefficient not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fd",
+          "ty": "normal",
+          "qualD": [
+            0.1,
+            0.2
+          ]
+        },
+        {
+          "calc": "basiccrit",
+          "arcanaFlat": 0.15,
+          "arcanaFlatAt": 2
+        },
+        {
+          "calc": "combo",
+          "qualV5_0arc": [
+            [
+              0,
+              0.05,
+              0.05,
+              0.05,
+              0.05
+            ],
+            [
+              0,
+              0.05,
+              0.05,
+              0.05,
+              0.05
+            ]
+          ]
+        }
       ]
     },
     {
@@ -693,6 +1110,55 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Basic ATK DMG +12%",
         "For every 1% Basic ATK Crit Rate, Global Basic ATK DMG +% (not tracked directly)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "basiccrit",
+          "qualArcanaV5": {
+            "0,0": [
+              0.25,
+              0.25,
+              0,
+              0.25,
+              0.25
+            ],
+            "0,1": [
+              0.25,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ],
+            "1,0": [
+              0.25,
+              0.25,
+              0,
+              0.25,
+              0.25
+            ],
+            "1,1": [
+              0.25,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ],
+            "2,0": [
+              0.25,
+              0.25,
+              0,
+              0.25,
+              0.25
+            ],
+            "2,1": [
+              0.25,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          }
+        }
       ]
     },
     {
@@ -715,6 +1181,21 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Dagger DMG +12%",
         "Final Dagger DMG +20% (Rage recovery +10 also)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fd",
+          "ty": "dagger",
+          "qualD": [
+            0.1,
+            0.2
+          ]
+        },
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.15,
+          "arcanaFlatAt": 1
+        }
       ]
     },
     {
@@ -737,6 +1218,21 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Sword Qi DMG +12%",
         "Final Sword Qi DMG +20%, Void Slash Sword Qi coefficient +100% (coefficient not tracked)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fd",
+          "ty": "swordqi",
+          "qualD": [
+            0.1,
+            0.2
+          ]
+        },
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.15,
+          "arcanaFlatAt": 1
+        }
       ]
     },
     {
@@ -759,6 +1255,26 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Lightning DMG +12%",
         "For every 1% Lightning Crit Rate, Lightning DMG +% (not tracked directly)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fd",
+          "ty": "lightning",
+          "qualD": [
+            0.1,
+            0.1
+          ]
+        },
+        {
+          "calc": "fdr",
+          "cond": "general",
+          "qualD": [
+            0,
+            0.15
+          ],
+          "arcanaFlat": 0.15,
+          "arcanaFlatAt": 11
+        }
       ]
     },
     {
@@ -803,6 +1319,41 @@
         "ATK +15%, DEF +15% (not tracked)",
         "Global Skill DMG +12%",
         "For every 1% Skill Crit Rate, Global Skill DMG +% (not tracked directly)"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skillcrit",
+          "qualArcanaV5": {
+            "0,0": [
+              0.25,
+              0.25,
+              0,
+              0.25,
+              0.25
+            ],
+            "0,1": [
+              0.25,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ],
+            "1,0": [
+              0.25,
+              0.25,
+              0,
+              0.25,
+              0.25
+            ],
+            "1,1": [
+              0.25,
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          }
+        }
       ]
     },
     {
@@ -826,6 +1377,76 @@
         "Dragon Ball Ring ATK and DEF +10%.",
         "[ Unique Passive ] Global Basic Attack DMG +8% when equipped with Dragon Ball Ring.",
         "Mythic-quality Dragon Ball Ring enhances skills: every 1% Basic Attack CRIT rate grants an additional 0.4% Global Basic Attack DMG (max 40%)."
+      ],
+      "quality_contributions": [
+        {
+          "calc": "basiccrit",
+          "qualArcanaV5": {
+            "0,0": [
+              0.1,
+              0.1,
+              0,
+              0.1,
+              0.1
+            ],
+            "0,1": [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ],
+            "0,2": [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ],
+            "1,0": [
+              0.2,
+              0.2,
+              0,
+              0.2,
+              0.2
+            ],
+            "1,1": [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "1,2": [
+              0.35,
+              0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "2,0": [
+              0.2,
+              0.2,
+              0,
+              0.2,
+              0.2
+            ],
+            "2,1": [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "2,2": [
+              0.35,
+              0.35,
+              0.35,
+              0.35,
+              0.35
+            ]
+          }
+        }
       ]
     },
     {
@@ -849,6 +1470,76 @@
         "Judgment Ring ATK and DEF+10%.",
         "[ Unique Passive ] Global Skill DMG +8% when equipped with Judgment Ring.",
         "[ Unique Passive ] Mythic-quality Judgment Ring enhances skills: every 1% skill CRIT rate grants an additional 0.4% Global Skill DMG (max 40%)."
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skillcrit",
+          "qualArcanaV5": {
+            "0,0": [
+              0.1,
+              0.1,
+              0,
+              0.1,
+              0.1
+            ],
+            "0,1": [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ],
+            "0,2": [
+              0.1,
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ],
+            "1,0": [
+              0.2,
+              0.2,
+              0,
+              0.2,
+              0.2
+            ],
+            "1,1": [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "1,2": [
+              0.3,
+              0.3,
+              0.3,
+              0.3,
+              0.3
+            ],
+            "2,0": [
+              0.2,
+              0.2,
+              0,
+              0.2,
+              0.2
+            ],
+            "2,1": [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ],
+            "2,2": [
+              0.3,
+              0.3,
+              0.3,
+              0.3,
+              0.3
+            ]
+          }
+        }
       ]
     },
     {
@@ -983,6 +1674,23 @@
         "Demonseed: Bloodstained Grail HP, Defense +15%",
         "When equipped with Demonseed: Bloodstained Grail, Critical Damage +30%",
         "When wearing Mythic Demonseed: Bloodstained Grail, against Vulnerable targets there is a 50% chance to deal True Damage equal to 5% of the target's Max HP, up to 3 times per turn"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        },
+        {
+          "calc": "basiccrit",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        },
+        {
+          "calc": "icounter",
+          "arcanaFlat": 0.06,
+          "arcanaFlatAt": 2
+        }
       ]
     },
     {
@@ -1005,6 +1713,26 @@
         "Justice: Judgement Emblem HP, Defense +15%",
         "When equipped with Justice: Judgement Emblem, global skill damage +12%",
         "When wearing Mythic Justice: Judgement Emblem, against targets with HP above 35%, Skill Critical Rate +12%, Skill Critical Damage +50%"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "general",
+          "qualD": [
+            0,
+            0.1
+          ]
+        },
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.12,
+          "arcanaFlatAt": 2
+        },
+        {
+          "calc": "icombo",
+          "arcanaFlat": 0.06,
+          "arcanaFlatAt": 1
+        }
       ]
     },
     {
@@ -1027,6 +1755,41 @@
         "Winter: Frostsoul Guardian HP, Defense +15%",
         "When equipped with Winter: Frostsoul Guardian, global damage +9%",
         "When wearing Mythic Winter: Frostsoul Guardian, Final Damage Increase +10%, Final Damage Reduction +10%, when Controlled Final Damage Reduction additional +10%"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "fdr",
+          "cond": "general",
+          "qualD": [
+            0,
+            0.1
+          ],
+          "arcanaD": [
+            0,
+            0,
+            0,
+            0.1
+          ]
+        },
+        {
+          "calc": "fd",
+          "ty": "general",
+          "arcanaD": [
+            0,
+            0,
+            0,
+            0.1
+          ]
+        },
+        {
+          "calc": "icrit",
+          "arcanaD": [
+            0,
+            0.06,
+            0.06,
+            0.06
+          ]
+        }
       ]
     },
     {
@@ -1050,6 +1813,23 @@
         "Demonseed: Bloodstained Grail HP, Defense +15%",
         "When equipped with Demonseed: Bloodstained Grail, Critical Damage +30%",
         "When wearing Mythic Demonseed: Bloodstained Grail, against Vulnerable targets there is a 50% chance to deal True Damage equal to 5% of the target's Max HP, up to 3 times per turn"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        },
+        {
+          "calc": "basiccrit",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        },
+        {
+          "calc": "icounter",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 2
+        }
       ]
     },
     {
@@ -1096,6 +1876,18 @@
         "Reckoning Badge HP and DEF+10%.",
         "[ Unique Passive ] Global Skill DMG +8% when equipped with Reckoning Badge.",
         "[Unique Passive) When equipping Mythic Reckoning Badge, against targets with less than 70% HP: Skill Crit Rate +10%, Skill Crit Damage +40%"
+      ],
+      "quality_contributions": [
+        {
+          "calc": "skillcrit",
+          "arcanaFlat": 0.1,
+          "arcanaFlatAt": 2
+        },
+        {
+          "calc": "icombo",
+          "arcanaFlat": 0.05,
+          "arcanaFlatAt": 1
+        }
       ]
     },
     {

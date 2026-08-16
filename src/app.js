@@ -2839,6 +2839,58 @@ const ARCANA_NAME_TO_LABEL = {
   'Global HP': 'Global HP', 'Damage Reduction': 'Generic DMG Reduction', 'Ignore Crit Rate': 'Ignore Crit',
 };
 
+// Hero/Brand polarization text ("Final Damage Reduction +0.5%") follows
+// the same "{name} +{val}%" shape as arcana — confirmed against the
+// datamine's own structured polD/polCalc/polLabel fields for the heroes
+// that have them, which matched this text exactly. Only 4 distinct base
+// names appear across every hero/brand's polarization text; ATK%/HP%
+// have no matching category, same as everywhere else in the app.
+const POLARIZATION_NAME_TO_LABEL = {
+  'Final Damage': 'General Final Damage', 'Final Damage Reduction': 'General Final Damage Reduction',
+};
+function parsePolarizationValue(text) {
+  const m = text && text.match(/^(.*?)\s*\+(\d+(?:\.\d+)?)%$/);
+  if (!m) return null;
+  return { name: m[1].trim(), val: parseFloat(m[2]) };
+}
+
+// Inheritance tree nodes — calc/ty pairs confirmed against the datamine's
+// INHERIT_NODE_CALC table. Nodes not listed here are the ones the
+// datamine itself documents as untracked: flat HP/ATK/DEF stat-allocation
+// nodes (no calc bucket for raw stat points), HP%/ATK%/DEF% right-column
+// nodes, hero-unlock/segment-unlock slots, and a couple of "Pet DMG — no
+// bucket" nodes with no matching Calculator category.
+const INHERIT_CALC_TO_LABEL = {
+  'dmgbonus:combo': 'Combo DMG', 'dmgbonus:counter': 'Counter DMG', 'dmgbonus:critdmg': 'Crit DMG (Default to 200% as base)',
+  'dmgbonus:dagger': 'Dagger DMG', 'dmgbonus:fire': 'Fire DMG', 'dmgbonus:global_atk': 'Global ATK',
+  'dmgbonus:lightning': 'Lightning DMG', 'dmgbonus:lightspear': 'Light Spear DMG',
+  'dmgbonus:normal': 'Basic ATK DMG', 'dmgbonus:skill': 'Skill DMG', 'dmgbonus:swordqi': 'Sword Qi DMG',
+  'dmgred:combo': 'Combo DMG Reduction', 'dmgred:counter': 'Counter DMG Reduction', 'dmgred:crit': 'Crit DMG Reduction',
+  'dmgred:fdr_adv': 'Adventurer Final Damage Reduction', 'dmgred:fdr_art': 'Artifact Final Damage Reduction',
+  'dmgred:fdr_mnt': 'Mount Final Damage Reduction', 'dmgred:fdr_pet': 'Pet Final Damage Reduction',
+  'dmgred:normal': 'Basic ATK DMG Reduction', 'dmgred:skill': 'Skill DMG Reduction',
+  'fdr:general': 'General Final Damage Reduction',
+  'rate:basiccrit': 'Basic ATK Crit Rate', 'rate:combo': 'Combo Rate', 'rate:counter': 'Counter Rate',
+  'rate:icombo': 'Ignore Combo', 'rate:icounter': 'Ignore Counter',
+  'rate:skillcrit': 'Skill Crit Rate', 'rate:weapcrit': 'Weapon Crit Rate',
+};
+
+// Quality-scaled base stats baked directly into specific weapons/armors/
+// rings/accessories (confirmed against the datamine's `contributions`
+// field) — separate from that same item's arcana bonuses. "fd" here
+// means Final Damage specifically (distinct from "dmgbonus", the plain
+// Bonus Damage bucket), matching the Final Damage category's own labels.
+const EQUIP_CONTRIB_TO_LABEL = {
+  'basiccrit::': 'Basic ATK Crit Rate', 'combo::': 'Combo Rate', 'counter::': 'Counter Rate',
+  'daggercrit::': 'Dagger Crit Rate', 'dmgbonus::skill': 'Skill DMG',
+  'fd::counter': 'Final Counter DMG', 'fd::dagger': 'Final Dagger DMG', 'fd::general': 'General Final Damage',
+  'fd::lightning': 'Final Lightning DMG', 'fd::normal': 'Final Normal ATK DMG', 'fd::swordqi': 'Final Sword Qi DMG',
+  'fdr:basic:': 'Basic Attack Final Damage Reduction', 'fdr:conditional:': 'Conditional Final Damage Reduction',
+  'fdr:general:': 'General Final Damage Reduction', 'fdr:skill:': 'Skill Damage Final Damage Reduction',
+  'icombo::': 'Ignore Combo', 'icounter::': 'Ignore Counter', 'icrit::': 'Ignore Crit',
+  'skillcrit::': 'Skill Crit Rate', 'skilldmg::': 'Skill DMG', 'weapcrit::': 'Weapon Crit Rate',
+};
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -2898,6 +2950,28 @@ function aggregateFullStatsWithSources() {
     Object.entries(trackable).forEach(([name, val]) => {
       const label = ARCANA_NAME_TO_LABEL[name] || name;
       add(label, val, `${slotDef.label} arcana`);
+    });
+  });
+
+  // Equipment quality-scaled base contributions — a separate bonus baked
+  // directly into specific items at whatever quality they're set to, on
+  // top of (not instead of) that item's arcana. Formula per the datamine:
+  // qualD[qualityIndex] + surpassBonus × current Surpass level.
+  EQUIPMENT_SLOTS.forEach(slotDef => {
+    const s = state.equipment[slotDef.id];
+    if (!s || !s.itemName) return;
+    const item = (DB[slotDef.dataKey] || []).find(it => it.n === s.itemName);
+    if (!item || !item.quality_contributions) return;
+    const qualIdx = (item.q || []).indexOf(s.quality);
+    if (qualIdx === -1) return;
+    item.quality_contributions.forEach(c => {
+      const base = c.qualD ? c.qualD[qualIdx] : null;
+      if (base == null) return;
+      const surpassBonus = c.surpassBonus || 0;
+      const total = (base + surpassBonus * (s.surpass || 0)) * 100;
+      const key = `${c.calc}:${c.cond || ''}:${c.ty || ''}`;
+      const label = EQUIP_CONTRIB_TO_LABEL[key];
+      if (label && total) add(label, total, `${item.n} (${s.quality}${s.surpass ? `, +${s.surpass}` : ''})`);
     });
   });
 
@@ -2981,6 +3055,44 @@ function aggregateFullStatsWithSources() {
     const label = RELIC_KEY_TO_LABEL[b.calc] || (b.label === 'Final DMG Boost' ? 'General Final Damage' : b.label === 'Final DMG Red' ? 'General Final Damage Reduction' : b.label);
     add(label, pct, `${b.name} (Lv.${lv})`);
   });
+
+  // Hero/Brand Polarization — only Mythic quality actually rolls
+  // polarization, matching the same gate the Equipment card UI uses.
+  // Quality-tier bonuses themselves stay excluded — confirmed against the
+  // datamine that even its own community-maintained "contributions" field
+  // is empty/unmapped for those ("Stats not yet mapped"), so there's no
+  // reliable structured value to pull from, unlike polarization which the
+  // datamine documents cleanly for the heroes that have it.
+  [['heroSlots', DB.heroes], ['brandSlots', DB.brands]].forEach(([slotsKey, pool]) => {
+    (state[slotsKey] || []).forEach((s, i) => {
+      if (!s.name || s.quality !== 'Mythic' || !s.polarization) return;
+      const entity = (pool || []).find(e => e.n === s.name);
+      const text = entity && entity.polarization_effects && entity.polarization_effects[`P${s.polarization}`];
+      const parsed = parsePolarizationValue(text);
+      if (parsed) add(POLARIZATION_NAME_TO_LABEL[parsed.name] || parsed.name, parsed.val, `${s.name} (P${s.polarization})`);
+    });
+  });
+
+  // Inheritance Tree — only the Active Tree counts, matching "deployed in
+  // battle" (viewing/editing other trees doesn't apply their bonuses).
+  // Node values from INHERIT_NODE_CALC, confirmed against the datamine —
+  // most left-column stat nodes and hero-unlock slots have no calc bucket
+  // at all (flat HP/ATK/DEF or display-only), so plenty of invested points
+  // still won't show up here, which matches the source data, not a gap.
+  {
+    const treeKey = state.inheritance.activeTree;
+    const progress = state.inheritance.progress[treeKey] || {};
+    Object.entries(progress).forEach(([nodeId, points]) => {
+      if (!points) return;
+      const entries = DB.inherit_node_calc[`${treeKey}_${nodeId}`];
+      if (!entries) return;
+      entries.forEach(entry => {
+        const val = entry.vals[Math.min(points, entry.vals.length) - 1];
+        const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
+        if (label && val != null) add(label, val * 100, `${INHERIT_TREE_NAMES[treeKey]} Tree (${nodeId})`);
+      });
+    });
+  }
 
   // Relic Sets & Collectible Sets — same "lowest star among owned members"
   // rule the set panel UI already uses, just reused here instead of
