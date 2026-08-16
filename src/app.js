@@ -518,17 +518,21 @@ function setInheritNodeValue(treeKey, nodeId, val) {
 }
 
 function renderInheritNodeStatSummary(treeKey, nodeId, points) {
-  if (!points) return null;
   const entries = DB.inherit_node_calc[`${treeKey}_${nodeId}`];
-  if (!entries) return null;
-  const parts = [];
-  entries.forEach(entry => {
-    const val = entry.vals[Math.min(points, entry.vals.length) - 1];
-    const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
-    if (label && val != null) parts.push(`${label} +${Math.round(val * 10000) / 100}%`);
-  });
-  if (!parts.length) return null;
-  return el('div', { class: 'inherit-node-stats' }, parts.join(', '));
+  let text = '';
+  if (points && entries) {
+    const parts = [];
+    entries.forEach(entry => {
+      const val = entry.vals[Math.min(points, entry.vals.length) - 1];
+      const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
+      if (label && val != null) parts.push(`${label} +${Math.round(val * 10000) / 100}%`);
+    });
+    text = parts.join(', ');
+  }
+  // Always render this line, even empty — reserves the same vertical
+  // space whether or not a node has stat text, so boxes with and without
+  // a summary line still line up to the same height across the row.
+  return el('div', { class: 'inherit-node-stats' }, text || '\u00A0');
 }
 
 function renderInheritNodeInput(treeKey, nodeId, max) {
@@ -788,7 +792,7 @@ function renderSpecGeneralTab() {
     if (!dirGroups.length) return;
     const totalInvested = dirGroups.reduce((sum, g) => sum + specGroupInvested('General', g), 0);
     const content = el('div', {}, dirGroups.map(g => renderSpecTierRow('General', g)));
-    wrap.appendChild(renderAccordion(`${SPEC_DIRECTION_LABELS[dir]} (${dirGroups.length} tiers, ${totalInvested} pts)`, content, false, true));
+    wrap.appendChild(renderAccordion(`${SPEC_DIRECTION_LABELS[dir]} (${dirGroups.length} tiers, ${totalInvested} pts)`, content, true, true));
   });
 
   return wrap;

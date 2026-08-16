@@ -730,7 +730,7 @@ body {
   max-width: 360px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
 }
-.modal-title { font-family: var(--font-display); font-size: 17px; color: var(--ink); margin-bottom: 18px; }
+.modal-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); margin-bottom: 18px; }
 .modal-star-picker {
   display: flex;
   align-items: center;
@@ -993,7 +993,7 @@ body {
   .spec-drawer-handle { display: none; }
 }
 .spec-drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.spec-drawer-title { font-family: var(--font-display); font-size: 17px; color: var(--ink); }
+.spec-drawer-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); }
 .spec-drawer-close { color: var(--ink-faint); font-size: 16px; cursor: pointer; background: none; border: none; }
 .spec-track-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px; }
 .spec-track-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -1007,12 +1007,12 @@ body {
 .spec-track-name { color: var(--ink); font-size: 13px; }
 .spec-track-input-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .spec-track-input {
-  width: 42px; padding: 5px; text-align: center;
+  width: 42px; padding: 5px; text-align: right;
   background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 4px;
   color: var(--ink); font-size: 12px; font-family: var(--font-mono);
 }
 .spec-track-max { color: var(--ink-faint); font-size: 10px; }
-.spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px 32px; }
+.spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px; text-align: right; }
 
 /* ---- Inheritance Tree ---- */
 .inherit-active-row {
@@ -1140,7 +1140,7 @@ body {
   padding: 8px 0;
 }
 .accordion-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); }
-.accordion.ghost > .accordion-header .accordion-title { font-size: 20px; }
+.accordion.ghost > .accordion-header .accordion-title { font-size: 16px; }
 .accordion-chevron {
   color: var(--ink-faint);
   transition: transform 0.15s ease;
@@ -1349,7 +1349,7 @@ body {
 
 .equip-section-title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink);
   margin: 8px 0 8px;
 }

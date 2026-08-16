@@ -736,7 +736,7 @@ body {
   max-width: 360px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
 }
-.modal-title { font-family: var(--font-display); font-size: 17px; color: var(--ink); margin-bottom: 18px; }
+.modal-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); margin-bottom: 18px; }
 .modal-star-picker {
   display: flex;
   align-items: center;
@@ -999,7 +999,7 @@ body {
   .spec-drawer-handle { display: none; }
 }
 .spec-drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-.spec-drawer-title { font-family: var(--font-display); font-size: 17px; color: var(--ink); }
+.spec-drawer-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); }
 .spec-drawer-close { color: var(--ink-faint); font-size: 16px; cursor: pointer; background: none; border: none; }
 .spec-track-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px; }
 .spec-track-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -1013,12 +1013,12 @@ body {
 .spec-track-name { color: var(--ink); font-size: 13px; }
 .spec-track-input-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .spec-track-input {
-  width: 42px; padding: 5px; text-align: center;
+  width: 42px; padding: 5px; text-align: right;
   background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 4px;
   color: var(--ink); font-size: 12px; font-family: var(--font-mono);
 }
 .spec-track-max { color: var(--ink-faint); font-size: 10px; }
-.spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px 32px; }
+.spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px; text-align: right; }
 
 /* ---- Inheritance Tree ---- */
 .inherit-active-row {
@@ -1146,7 +1146,7 @@ body {
   padding: 8px 0;
 }
 .accordion-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); }
-.accordion.ghost > .accordion-header .accordion-title { font-size: 20px; }
+.accordion.ghost > .accordion-header .accordion-title { font-size: 16px; }
 .accordion-chevron {
   color: var(--ink-faint);
   transition: transform 0.15s ease;
@@ -1355,7 +1355,7 @@ body {
 
 .equip-section-title {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink);
   margin: 8px 0 8px;
 }
@@ -2037,17 +2037,21 @@ function setInheritNodeValue(treeKey, nodeId, val) {
 }
 
 function renderInheritNodeStatSummary(treeKey, nodeId, points) {
-  if (!points) return null;
   const entries = DB.inherit_node_calc[`${treeKey}_${nodeId}`];
-  if (!entries) return null;
-  const parts = [];
-  entries.forEach(entry => {
-    const val = entry.vals[Math.min(points, entry.vals.length) - 1];
-    const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
-    if (label && val != null) parts.push(`${label} +${Math.round(val * 10000) / 100}%`);
-  });
-  if (!parts.length) return null;
-  return el('div', { class: 'inherit-node-stats' }, parts.join(', '));
+  let text = '';
+  if (points && entries) {
+    const parts = [];
+    entries.forEach(entry => {
+      const val = entry.vals[Math.min(points, entry.vals.length) - 1];
+      const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
+      if (label && val != null) parts.push(`${label} +${Math.round(val * 10000) / 100}%`);
+    });
+    text = parts.join(', ');
+  }
+  // Always render this line, even empty — reserves the same vertical
+  // space whether or not a node has stat text, so boxes with and without
+  // a summary line still line up to the same height across the row.
+  return el('div', { class: 'inherit-node-stats' }, text || '\u00A0');
 }
 
 function renderInheritNodeInput(treeKey, nodeId, max) {
@@ -2307,7 +2311,7 @@ function renderSpecGeneralTab() {
     if (!dirGroups.length) return;
     const totalInvested = dirGroups.reduce((sum, g) => sum + specGroupInvested('General', g), 0);
     const content = el('div', {}, dirGroups.map(g => renderSpecTierRow('General', g)));
-    wrap.appendChild(renderAccordion(`${SPEC_DIRECTION_LABELS[dir]} (${dirGroups.length} tiers, ${totalInvested} pts)`, content, false, true));
+    wrap.appendChild(renderAccordion(`${SPEC_DIRECTION_LABELS[dir]} (${dirGroups.length} tiers, ${totalInvested} pts)`, content, true, true));
   });
 
   return wrap;
