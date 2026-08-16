@@ -975,6 +975,13 @@ body {
 }
 .inherit-node-input:focus { outline: none; border-color: var(--accent); }
 .inherit-node-max { color: var(--ink-faint); font-size: 11px; font-family: var(--font-mono); }
+.inherit-node-stats {
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin-top: 3px;
+  text-align: right;
+}
 .inherit-node-na { color: var(--ink-faint); font-size: 12px; }
 
 /* ---- Calculator ---- */
@@ -1081,7 +1088,7 @@ body {
 
 .calc-stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   margin-bottom: 20px;
 }

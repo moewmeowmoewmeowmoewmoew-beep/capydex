@@ -389,6 +389,20 @@ function setInheritNodeValue(treeKey, nodeId, val) {
   state.inheritance.progress[treeKey][nodeId] = val;
 }
 
+function renderInheritNodeStatSummary(treeKey, nodeId, points) {
+  if (!points) return null;
+  const entries = DB.inherit_node_calc[`${treeKey}_${nodeId}`];
+  if (!entries) return null;
+  const parts = [];
+  entries.forEach(entry => {
+    const val = entry.vals[Math.min(points, entry.vals.length) - 1];
+    const label = INHERIT_CALC_TO_LABEL[`${entry.calc}:${entry.ty}`];
+    if (label && val != null) parts.push(`${label} +${Math.round(val * 10000) / 100}%`);
+  });
+  if (!parts.length) return null;
+  return el('div', { class: 'inherit-node-stats' }, parts.join(', '));
+}
+
 function renderInheritNodeInput(treeKey, nodeId, max) {
   if (max === 0) return el('span', { class: 'inherit-node-na' }, '\u2014');
   const val = getInheritNodeValue(treeKey, nodeId);
@@ -402,7 +416,10 @@ function renderInheritNodeInput(treeKey, nodeId, max) {
     },
     onblur: () => render(),
   });
-  return el('div', { class: 'inherit-node-input-wrap' }, [input, el('span', { class: 'inherit-node-max' }, `/${max}`)]);
+  return el('div', {}, [
+    el('div', { class: 'inherit-node-input-wrap' }, [input, el('span', { class: 'inherit-node-max' }, `/${max}`)]),
+    renderInheritNodeStatSummary(treeKey, nodeId, val),
+  ]);
 }
 
 function renderInheritNodeRow(treeKey, nodeId, name, max) {
@@ -2651,45 +2668,17 @@ function sumBlockAtLevel(item, stars, awaken) {
   return sumStatBlocks(item.awaken.base_stats, starDelta, awakenDelta);
 }
 
+// Quick Stats used to run its own separate, much more limited aggregation
+// (only relics/collectibles/mounts/artifacts) — meaning every other fix
+// this session (gems, psionics, arcana, hero polarization, set bonuses,
+// inheritance) only ever reached the Full Stat Breakdown table, never
+// Quick Stats. This just extracts the totals from the same comprehensive
+// aggregation the full table already uses, so the two can never drift
+// out of sync with each other again.
 function aggregatePvpStats() {
-  const totals = {}; // key -> value (flat, no categorization)
-  const add = (key, val) => {
-    if (typeof val !== 'number' || Number.isNaN(val)) return;
-    totals[key] = (totals[key] || 0) + val;
-  };
-
-  // Every character starts with 200% Crit DMG before any bonuses — confirmed
-  // base value, not something owned gear grants.
-  add('crit_dmg', 200);
-
-  // Relics — star_stats at current star level
-  DB.relics.forEach(r => {
-    if (!state.relicOwned[r.n]) return;
-    const star = state.relicStars[r.n] || 0;
-    Object.entries(r.star_stats || {}).forEach(([key, vals]) => add(key, vals[star] || 0));
-  });
-
-  // Collectibles — single stat at current star level. Values are already
-  // in natural percent-scale straight from source (e.g. 12 = 12%, not a
-  // 0.12 fraction needing ×100) — matches how relics store star_stats.
-  DB.collectibles.forEach(c => {
-    if (!state.collectibleOwned[c.n]) return;
-    const star = Math.min(state.collectibleStars[c.n] || 0, 10);
-    const val = c.star_vals[star];
-    if (val != null) add(c.stat_key, val);
-  });
-
-  // Mounts & Artifacts — full base+star+awaken total at current levels
-  [['mounts', 'mountState'], ['artifacts', 'artifactState']].forEach(([kind, bucketKey]) => {
-    DB[kind].forEach(item => {
-      if (item.n === 'None' || !item.star_up) return;
-      const s = getMountOrArtifactState(bucketKey, item.idx);
-      if (!s.owned) return;
-      const block = sumBlockAtLevel(item, s.stars, s.awaken);
-      Object.entries(block).forEach(([key, val]) => add(key, val));
-    });
-  });
-
+  const full = aggregateFullStatsWithSources();
+  const totals = {};
+  Object.entries(full).forEach(([label, entry]) => { totals[label] = entry.total; });
   return totals;
 }
 
@@ -2730,7 +2719,7 @@ const RELIC_KEY_TO_LABEL = {
   final_basic_atk_dmg: 'Final Normal ATK DMG', final_basic_atk_dmg_reduction: 'Basic Attack Final Damage Reduction',
   pet_dmg_pct: 'Pet DMG', speed: 'Speed', suppression: 'Ignore Suppression',
   control_immunity: 'Control Immunity Rate', ignore_control_immunity: 'Ignore Control Immunity Rate',
-  dotcritrate: 'DoT Crit Rates', ignoredotcritrate: 'Ignore DoT Crit',
+  dotcritrate: 'DoT Crit Rates', ignoredotcritrate: 'Ignore DoT Crit', block: 'Block',
   // Collectibles use a different (but conceptually identical) key-naming
   // convention than relics/mounts/artifacts — without these, their
   // contributions were silently computed but never shown, since the
@@ -3262,42 +3251,39 @@ function buildFullCalcTable() {
 // data source, since the same real-world stat often ended up with
 // different key names in relics vs. mounts/artifacts vs. collectibles.
 const CALC_STAT_DEFS = [
-  { label: 'Tenacity', keys: ['tenacity'], notPct: true },
-  { label: 'Ignore Tenacity', keys: ['tenacity_res'], notPct: true },
-  { label: 'Armor Break', keys: ['armor_break'], notPct: true },
-  { label: 'Ignore Armor Break', keys: ['armor_break_res'], notPct: true },
-  { label: 'DMG Red', keys: ['basic_atk_dmg_reduction', 'skill_dmg_reduction', 'dmg_reduction_pct'] },
-  { label: 'FDR', keys: ['final_basic_atk_dmg_reduction', 'final_skill_dmg_reduction'], highlight: true },
-  { label: 'Additional Damage Boost', keys: ['basic_atk_dmg', 'skill_dmg', 'pet_dmg_pct'], caption: 'Affected by enemy tenacity' },
-  { label: 'Final Damage Boost', keys: ['final_basic_atk_dmg', 'final_skill_dmg'], highlight: true },
-  { label: 'Final Basic Damage Boost', keys: ['final_basic_atk_dmg'] },
-  { label: 'Final Basic Attack Damage Reduction', keys: ['final_basic_atk_dmg_reduction'] },
-  { label: 'Final Skill Damage Boost', keys: ['final_skill_dmg'] },
-  { label: 'Final Skill Damage Reduction', keys: ['final_skill_dmg_reduction'] },
-  { label: 'Crit Rate', keys: ['basic_atk_crit_rate', 'skill_crit_rate', 'dotcritrate', 'crit_rate_pct'] },
-  { label: 'Ignore Crit Rate', keys: ['ignore_basic_atk_crit_rate', 'ignore_skill_crit', 'ignoredotcritrate', 'ignore_crit_pct'] },
-  { label: 'Crit Damage', keys: ['crit_dmg', 'dagger_crit_dmg'] },
-  { label: 'Ignore Crit Damage', keys: ['crit_dmg_reduction'] },
-  { label: 'Combo Rate', keys: ['combo', 'combo_rate_pct'] },
-  { label: 'Ignore Combo Rate', keys: ['ignore_combo', 'ignore_combo_pct'] },
-  { label: 'Counter Rate', keys: ['counter', 'counter_rate_pct'] },
-  { label: 'Ignore Counter Rate', keys: ['ignore_counter', 'ignore_counter_pct'] },
-  { label: 'Block', keys: ['block'], notPct: true },
+  { label: 'Tenacity', keys: ['Tenacity'], notPct: true },
+  { label: 'Ignore Tenacity', keys: ['Tenacity Resistance'], notPct: true },
+  { label: 'Armor Break', keys: ['Armor Break'], notPct: true },
+  { label: 'Ignore Armor Break', keys: ['Armor Break Resistance'], notPct: true },
+  { label: 'Damage Reduction', keys: ['Basic ATK DMG Reduction', 'Skill DMG Reduction', 'Generic DMG Reduction'] },
+  { label: 'Final Damage Reduction', keys: ['Basic Attack Final Damage Reduction', 'Skill Damage Final Damage Reduction'], highlight: true },
+  { label: 'Damage Boost', keys: ['Basic ATK DMG', 'Skill DMG', 'Pet DMG'], caption: 'Affected by enemy tenacity' },
+  { label: 'Final Damage Boost', keys: ['Final Normal ATK DMG', 'Final Skill Damage'], highlight: true },
+  { label: 'Final Basic Attack Damage', keys: ['Final Normal ATK DMG'] },
+  { label: 'Final Basic Attack Damage Reduction', keys: ['Basic Attack Final Damage Reduction'] },
+  { label: 'Final Skill Damage', keys: ['Final Skill Damage'] },
+  { label: 'Final Skill Damage Reduction', keys: ['Skill Damage Final Damage Reduction'] },
+  { label: 'Crit Rate', keys: ['Basic ATK Crit Rate', 'Skill Crit Rate', 'DoT Crit Rates', 'Crit Rate (Generic)'] },
+  { label: 'Ignore Crit Rate', keys: ['Ignore Normal ATK Crit', 'Ignore Skill Crit', 'Ignore DoT Crit', 'Ignore Crit'] },
+  { label: 'Crit Damage', keys: ['Crit DMG (Default to 200% as base)'] },
+  { label: 'Ignore Crit Damage', keys: ['Crit DMG Reduction'] },
+  { label: 'Combo Rate', keys: ['Combo Rate'] },
+  { label: 'Ignore Combo Rate', keys: ['Ignore Combo'] },
+  { label: 'Counter Rate', keys: ['Counter Rate'] },
+  { label: 'Ignore Counter Rate', keys: ['Ignore Counter'] },
+  { label: 'Block', keys: ['Block'], notPct: true },
+  { label: 'Speed', keys: ['Speed'], notPct: true },
 ];
 
-// Rough display order for Quick Stats, grouped to follow the same flow as
-// the detailed breakdown table (FDR → DMG Reduction → Final Damage →
-// Tenacity/Armor → Ignore Rates → Proc Rates → Crit Rates → Bonus Damage
-// → base stats), rather than the order they happen to be defined in.
+// Exact order requested: 4 per row, 7 rows.
 const QUICK_STATS_ORDER = [
-  'FDR', 'DMG Red',
-  'Final Damage Boost', 'Final Basic Damage Boost', 'Final Basic Attack Damage Reduction', 'Final Skill Damage Boost', 'Final Skill Damage Reduction',
-  'Tenacity', 'Ignore Tenacity', 'Armor Break', 'Ignore Armor Break', 'Tenacity Eff', 'Armor Break Eff',
+  'Final Damage Reduction', 'Damage Reduction', 'Final Basic Attack Damage Reduction', 'Final Skill Damage Reduction',
+  'Final Damage Boost', 'Damage Boost', 'Final Basic Attack Damage', 'Final Skill Damage',
+  'Tenacity', 'Ignore Tenacity', 'Armor Break', 'Ignore Armor Break',
   'Ignore Combo Rate', 'Ignore Counter Rate', 'Ignore Crit Rate', 'Ignore Crit Damage',
-  'Combo Rate', 'Counter Rate',
-  'Crit Rate', 'Crit Damage',
-  'Additional Damage Boost',
-  'Final ATK', 'Final HP', 'Global DEF%', 'Effective HP', 'Block',
+  'Combo Rate', 'Counter Rate', 'Crit Rate', 'Crit Damage',
+  'Final ATK', 'Final HP', 'Global DEF%', 'Effective HP',
+  'Tenacity Eff', 'Armor Break Eff', 'Block', 'Speed',
 ];
 
 function pctEffectiveness(delta) {
@@ -3317,22 +3303,22 @@ function renderCalculator() {
   // Effective HP is built from. No absolute Final DEF is shown since
   // nothing tracked so far grants a flat DEF value — only Global DEF% —
   // so that's shown as its own % card instead of a fabricated total.
-  const flatATK = totals.atk || 0;
-  const atkPctBonus = (totals.atk_pct || 0) + (totals.global_atk || 0) + (totals.global_attack_pct || 0);
+  const flatATK = totals['ATK'] || 0;
+  const atkPctBonus = (totals['ATK%'] || 0) + (totals['Global ATK'] || 0);
   const finalATK = flatATK * (1 + atkPctBonus / 100);
 
-  const flatHP = totals.hp || 0;
-  const hpPctBonus = (totals.hp_pct || 0) + (totals.global_hp || 0) + (totals.global_hp_pct || 0);
+  const flatHP = totals['HP'] || 0;
+  const hpPctBonus = (totals['HP%'] || 0) + (totals['Global HP'] || 0) + (totals['Global HP%'] || 0);
   const finalHP = flatHP * (1 + hpPctBonus / 100);
 
-  const dmgRed = ['basic_atk_dmg_reduction', 'skill_dmg_reduction', 'dmg_reduction_pct'].reduce((a, k) => a + (totals[k] || 0), 0);
-  const fdr = ['final_basic_atk_dmg_reduction', 'final_skill_dmg_reduction'].reduce((a, k) => a + (totals[k] || 0), 0);
+  const dmgRed = totals['Damage Reduction'] || 0;
+  const fdr = totals['Final Damage Reduction'] || 0;
   const ehp = finalHP > 0 ? finalHP / ((1 - Math.min(dmgRed, 99) / 100) * (1 - Math.min(fdr, 99) / 100)) : 0;
 
   const cardsByLabel = {};
   cardsByLabel['Final ATK'] = renderStatCard('Final ATK', formatBigNumber(finalATK));
   cardsByLabel['Final HP'] = renderStatCard('Final HP', formatBigNumber(finalHP));
-  cardsByLabel['Global DEF%'] = renderStatCard('Global DEF%', `${(totals.global_def_pct || 0).toFixed(1)}%`);
+  cardsByLabel['Global DEF%'] = renderStatCard('Global DEF%', `${(totals['Global DEF%'] || 0).toFixed(1)}%`);
   cardsByLabel['Effective HP'] = renderStatCard('Effective HP', formatBigNumber(ehp), null, true);
 
   CALC_STAT_DEFS.forEach(def => {
@@ -3341,8 +3327,8 @@ function renderCalculator() {
     cardsByLabel[def.label] = renderStatCard(def.label, value, def.caption, def.highlight);
   });
 
-  const tenacity = totals.tenacity || 0;
-  const armorBreak = totals.armor_break || 0;
+  const tenacity = totals['Tenacity'] || 0;
+  const armorBreak = totals['Armor Break'] || 0;
   cardsByLabel['Tenacity Eff'] = renderStatCard('Tenacity Eff', `${pctEffectiveness(tenacity).toFixed(1)}%`, null, false, pctEffectiveness(tenacity));
   cardsByLabel['Armor Break Eff'] = renderStatCard('Armor Break Eff', `${pctEffectiveness(armorBreak).toFixed(1)}%`, null, false, pctEffectiveness(armorBreak));
 
