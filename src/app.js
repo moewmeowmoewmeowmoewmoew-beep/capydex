@@ -1292,23 +1292,37 @@ function renderDeployCard(kind, mode, slotIndex) {
 // selected one into one condensed line. Lines that don't end in a clean
 // "+N%" (procs, stack counts, mid-sentence percentages) can't be summed
 // meaningfully, so those pass through verbatim instead of being dropped.
-function collateArcanaEffects(descs, upToIndex) {
-  const totals = {};
+// Arcana descriptions are cumulative — selecting arcana level N means all
+// of 0..N are active, not just N alone. Splits into two totals: `all`
+// (everything, used for the collated display text) and `trackable`
+// (excludes entries explicitly marked "(not tracked)" in the source data
+// — usually weapon-specific ATK bonuses or flavor mechanics the data
+// itself flags as not meant for tracking/calculation).
+function computeArcanaTotals(descs, upToIndex) {
+  const all = {};
+  const trackable = {};
   const order = [];
   const raw = [];
   for (let i = 0; i <= upToIndex && i < descs.length; i++) {
     const desc = descs[i];
-    const m = desc.match(/^(.*?)\s*\+(\d+(?:\.\d+)?)%\s*(?:\(not tracked\))?$/);
+    const m = desc.match(/^(.*?)\s*\+(\d+(?:\.\d+)?)%\s*(\(not tracked\))?$/);
     if (m) {
       const name = m[1].trim();
       const val = parseFloat(m[2]);
-      if (!(name in totals)) { totals[name] = 0; order.push(name); }
-      totals[name] += val;
+      const isNotTracked = !!m[3];
+      if (!(name in all)) { all[name] = 0; order.push(name); }
+      all[name] += val;
+      if (!isNotTracked) trackable[name] = (trackable[name] || 0) + val;
     } else {
       raw.push(desc);
     }
   }
-  const parts = order.map(name => `${name} +${Math.round(totals[name] * 100) / 100}%`);
+  return { all, trackable, order, raw };
+}
+
+function collateArcanaEffects(descs, upToIndex) {
+  const { all, order, raw } = computeArcanaTotals(descs, upToIndex);
+  const parts = order.map(name => `${name} +${Math.round(all[name] * 100) / 100}%`);
   return [...parts, ...raw].join(', ');
 }
 
@@ -1497,7 +1511,10 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
   // to X% and lets the helper text underneath be the one real source of
   // the actual selected-tier value. Confirmed no two gems in any slot
   // collide once masked, so matching on the masked label is still safe.
-  const maskGemName = (name) => name.replace(/\d+(\.\d+)?%/g, 'X%');
+  // Speed gems are a flat number, not a percentage — "Speed +X" reads
+  // oddly next to everything else's "+X%", so those collapse to just
+  // "Speed" instead of masking the number.
+  const maskGemName = (name) => (/^Speed\s*\+\d/.test(name) ? 'Speed' : name.replace(/\d+(\.\d+)?%/g, 'X%'));
 
   const combo = renderSearchCombo({
     value: slotState.gemId ? maskGemName((options.find(o => o.id === slotState.gemId) || {}).n || '') : '',
@@ -2809,6 +2826,19 @@ const SET_STAT_TO_LABEL = {
   'Ignore Skill Crit Rate': 'Ignore Skill Crit', 'Ignore Normal Attack Crit Rate': 'Ignore Normal ATK Crit',
 };
 
+// Arcana bonus names mostly match a Calculator category exactly, or need
+// the "Global " prefix stripped to match. Character/weapon-specific
+// unique mechanics (Angel Bow X, Bishop Staff X, Star Staff X, etc.) have
+// no general PvP category and are deliberately left unmapped — the
+// fallback to the raw name means they just won't display, same as
+// unmapped gems and collectibles.
+const ARCANA_NAME_TO_LABEL = {
+  'Global Basic ATK DMG': 'Basic ATK DMG', 'Global Basic ATK DMG Reduction': 'Basic ATK DMG Reduction',
+  'Global Combo DMG': 'Combo DMG', 'Global Counter DMG': 'Counter DMG', 'Global Dagger DMG': 'Dagger DMG',
+  'Global Lightning DMG': 'Lightning DMG', 'Global Sword Qi DMG': 'Sword Qi DMG', 'Global Skill DMG': 'Skill DMG',
+  'Global HP': 'Global HP', 'Damage Reduction': 'Generic DMG Reduction', 'Ignore Crit Rate': 'Ignore Crit',
+};
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -2852,6 +2882,22 @@ function aggregateFullStatsWithSources() {
         const label = RELIC_KEY_TO_LABEL[key];
         if (label && val) add(label, val, `${item.n} (${s.stars}★/A${s.awaken})`);
       });
+    });
+  });
+
+  // Equipment Arcana — cumulative (selecting A4 activates A0-A4 together),
+  // using only the "trackable" totals (excludes entries the source data
+  // itself marks "(not tracked)", usually weapon-specific ATK bonuses).
+  EQUIPMENT_SLOTS.forEach(slotDef => {
+    const s = state.equipment[slotDef.id];
+    if (!s || s.arcana == null || s.arcana < 0) return;
+    const item = (DB[slotDef.dataKey] || []).find(it => it.n === s.itemName);
+    const descs = item && item.arcana_descs;
+    if (!descs || !descs.length) return;
+    const { trackable } = computeArcanaTotals(descs, s.arcana);
+    Object.entries(trackable).forEach(([name, val]) => {
+      const label = ARCANA_NAME_TO_LABEL[name] || name;
+      add(label, val, `${slotDef.label} arcana`);
     });
   });
 
@@ -3127,6 +3173,21 @@ const CALC_STAT_DEFS = [
   { label: 'Block', keys: ['block'], notPct: true },
 ];
 
+// Rough display order for Quick Stats, grouped to follow the same flow as
+// the detailed breakdown table (FDR → DMG Reduction → Final Damage →
+// Tenacity/Armor → Ignore Rates → Proc Rates → Crit Rates → Bonus Damage
+// → base stats), rather than the order they happen to be defined in.
+const QUICK_STATS_ORDER = [
+  'FDR', 'DMG Red',
+  'Final Damage Boost', 'Final Basic Damage Boost', 'Final Basic Attack Damage Reduction', 'Final Skill Damage Boost', 'Final Skill Damage Reduction',
+  'Tenacity', 'Ignore Tenacity', 'Armor Break', 'Ignore Armor Break', 'Tenacity Eff', 'Armor Break Eff',
+  'Ignore Combo Rate', 'Ignore Counter Rate', 'Ignore Crit Rate', 'Ignore Crit Damage',
+  'Combo Rate', 'Counter Rate',
+  'Crit Rate', 'Crit Damage',
+  'Additional Damage Boost',
+  'Final ATK', 'Final HP', 'Global DEF%', 'Effective HP', 'Block',
+];
+
 function pctEffectiveness(delta) {
   const A = 7000, cap = 0.85;
   return Math.min(Math.max(0, delta) / (A + Math.max(0, delta)), cap) * 100;
@@ -3139,8 +3200,6 @@ function renderCalculator() {
   wrap.appendChild(el('p', { class: 'section-desc' }, 'Values will auto populate as changes are made to the sheet'));
 
   const totals = aggregatePvpStats();
-
-  wrap.appendChild(renderAccordion('Full Stat Breakdown', buildFullCalcTable(), true, true));
 
   // Final ATK / Final HP — base stat × (1 + %-bonuses), same pattern
   // Effective HP is built from. No absolute Final DEF is shown since
@@ -3158,24 +3217,31 @@ function renderCalculator() {
   const fdr = ['final_basic_atk_dmg_reduction', 'final_skill_dmg_reduction'].reduce((a, k) => a + (totals[k] || 0), 0);
   const ehp = finalHP > 0 ? finalHP / ((1 - Math.min(dmgRed, 99) / 100) * (1 - Math.min(fdr, 99) / 100)) : 0;
 
-  const cards = [];
-  cards.push(renderStatCard('Final ATK', formatBigNumber(finalATK)));
-  cards.push(renderStatCard('Final HP', formatBigNumber(finalHP)));
-  cards.push(renderStatCard('Global DEF%', `${(totals.global_def_pct || 0).toFixed(1)}%`));
-  cards.push(renderStatCard('Effective HP', formatBigNumber(ehp), null, true));
+  const cardsByLabel = {};
+  cardsByLabel['Final ATK'] = renderStatCard('Final ATK', formatBigNumber(finalATK));
+  cardsByLabel['Final HP'] = renderStatCard('Final HP', formatBigNumber(finalHP));
+  cardsByLabel['Global DEF%'] = renderStatCard('Global DEF%', `${(totals.global_def_pct || 0).toFixed(1)}%`);
+  cardsByLabel['Effective HP'] = renderStatCard('Effective HP', formatBigNumber(ehp), null, true);
 
   CALC_STAT_DEFS.forEach(def => {
     const sum = def.keys.reduce((a, k) => a + (totals[k] || 0), 0);
     const value = def.notPct ? sum.toLocaleString() : `${sum.toFixed(1)}%`;
-    cards.push(renderStatCard(def.label, value, def.caption, def.highlight));
+    cardsByLabel[def.label] = renderStatCard(def.label, value, def.caption, def.highlight);
   });
 
   const tenacity = totals.tenacity || 0;
   const armorBreak = totals.armor_break || 0;
-  cards.push(renderStatCard('Tenacity Eff', `${pctEffectiveness(tenacity).toFixed(1)}%`, null, false, pctEffectiveness(tenacity)));
-  cards.push(renderStatCard('Armor Break Eff', `${pctEffectiveness(armorBreak).toFixed(1)}%`, null, false, pctEffectiveness(armorBreak)));
+  cardsByLabel['Tenacity Eff'] = renderStatCard('Tenacity Eff', `${pctEffectiveness(tenacity).toFixed(1)}%`, null, false, pctEffectiveness(tenacity));
+  cardsByLabel['Armor Break Eff'] = renderStatCard('Armor Break Eff', `${pctEffectiveness(armorBreak).toFixed(1)}%`, null, false, pctEffectiveness(armorBreak));
 
-  wrap.appendChild(renderAccordion('Quick Stats', el('div', { class: 'calc-stat-grid' }, cards), true, true));
+  const orderedCards = QUICK_STATS_ORDER.filter(l => cardsByLabel[l]).map(l => cardsByLabel[l]);
+  // Safety net — anything not in the explicit order list still shows up,
+  // just appended at the end, rather than silently disappearing.
+  const remaining = Object.keys(cardsByLabel).filter(l => !QUICK_STATS_ORDER.includes(l)).map(l => cardsByLabel[l]);
+
+  wrap.appendChild(renderAccordion('Quick Stats', el('div', { class: 'calc-stat-grid' }, [...orderedCards, ...remaining]), true, true));
+
+  wrap.appendChild(renderAccordion('Full Stat Breakdown', buildFullCalcTable(), true, true));
 
   return wrap;
 }

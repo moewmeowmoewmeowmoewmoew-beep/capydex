@@ -1036,7 +1036,13 @@ body {
   border: 1px solid var(--hairline);
 }
 .calc-jump-link:hover { color: var(--ink); border-color: var(--accent-dim); }
-.equip-section-title.calc-category-title { margin-top: 36px; }
+.equip-section-title.calc-category-title {
+  margin-top: 36px;
+  /* Without this, scrollIntoView lands the title right under the sticky
+     topbar — technically "at the top" but visually hidden, which reads
+     as overshooting past it. */
+  scroll-margin-top: calc(var(--topbar-h, 60px) + 16px);
+}
 .equip-section-title.calc-category-title:first-of-type { margin-top: 8px; }
 .calc-full-table {
   width: 100%;
@@ -1075,16 +1081,19 @@ body {
 
 .calc-stat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 20px;
+}
+@media (max-width: 700px) {
+  .calc-stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .calc-stat-card {
   background: var(--bg-panel);
   border: 1px solid var(--hairline);
   border-radius: 8px;
   padding: 16px;
-  text-align: center;
+  text-align: left;
 }
 .calc-stat-card-label {
   font-size: 12px;
@@ -1095,10 +1104,11 @@ body {
 }
 .calc-stat-card-value {
   font-family: var(--font-mono);
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--accent);
-  line-height: 1.1;
+  line-height: 1.15;
+  overflow-wrap: break-word;
 }
 .calc-stat-card-caption {
   font-size: 11px;
