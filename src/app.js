@@ -33,6 +33,10 @@ function defaultState() {
       viewingTree: 'sk',      // which tree's tab is currently open for viewing/editing (independent of activeTree)
       progress: { sk: {}, kn: {}, rn: {}, gh: {}, dr: {} }, // treeKey -> nodeId -> invested points
     },
+    specialization: {
+      viewingTab: 'general', // 'general' or 'adventure'
+      progress: { General: {}, Adventure: {} }, // tab -> "group||track" -> invested level
+    },
   };
 }
 
@@ -547,6 +551,148 @@ function renderInheritanceShell() {
     }
   }
   wrap.appendChild(grid);
+
+  return wrap;
+}
+
+/* ============================================================
+   Specialization Tree
+   ============================================================ */
+// General tree's 4 directions, renamed by theme per the dominant pattern
+// observed in each direction's actual nodes (confirmed against the real
+// extracted data — North is mostly PVP DMG Reduction tracks, etc.).
+const SPEC_DIRECTION_LABELS = {
+  N: 'PVP DMG Reduction', E: 'Mounted DMG Reduction', S: 'Pet Damage Boost', W: 'Artifact DMG Boost',
+};
+
+function specTrackKey(group, trackName) {
+  return `${group}||${trackName}`;
+}
+
+function getSpecTrackLevel(tab, group, trackName) {
+  return state.specialization.progress[tab][specTrackKey(group, trackName)] || 0;
+}
+
+function setSpecTrackLevel(tab, group, trackName, level) {
+  state.specialization.progress[tab][specTrackKey(group, trackName)] = level;
+}
+
+function specGroupInvested(tab, group) {
+  return group.tracks.reduce((sum, t) => sum + getSpecTrackLevel(tab, group.group, t.name), 0);
+}
+
+function renderSpecTierRow(tab, group) {
+  const invested = specGroupInvested(tab, group);
+  const hasInvestment = invested > 0;
+  const names = group.tracks.map(t => t.name).join(', ');
+
+  const row = el('div', {
+    class: 'spec-tier-row' + (hasInvestment ? '' : ' empty'),
+    onclick: () => openSpecDrawer(tab, group),
+  }, [
+    el('div', {}, [
+      el('div', { class: 'spec-tier-group-label' }, group.group),
+      el('div', { class: 'spec-tier-track-names' }, names),
+    ]),
+    el('span', { class: 'spec-tier-points' }, `${invested} pts`),
+  ]);
+  return row;
+}
+
+function openSpecDrawer(tab, group) {
+  const backdrop = el('div', { class: 'spec-drawer-backdrop' });
+  const drawer = el('div', { class: 'spec-drawer' });
+
+  const close = () => {
+    drawer.classList.remove('open');
+    backdrop.remove();
+    setTimeout(() => drawer.remove(), 250);
+  };
+  backdrop.addEventListener('click', close);
+
+  drawer.appendChild(el('div', { class: 'spec-drawer-handle' }));
+  drawer.appendChild(el('div', { class: 'spec-drawer-header' }, [
+    el('span', { class: 'spec-drawer-title' }, group.group),
+    el('button', { class: 'spec-drawer-close', onclick: close }, '\u2715'),
+  ]));
+
+  group.tracks.forEach(track => {
+    const max = track.levels.length;
+    const currentLevel = getSpecTrackLevel(tab, group.group, track.name);
+
+    const imgSlot = el('div', { class: 'spec-track-img' });
+    if (track.image) imgSlot.appendChild(el('img', { src: track.image, alt: track.name }));
+
+    const input = el('input', {
+      type: 'number', class: 'spec-track-input', min: '0', max: String(max), value: String(currentLevel),
+      oninput: (e) => {
+        const n = parseInt(e.target.value, 10);
+        const clamped = Number.isNaN(n) ? 0 : Math.max(0, Math.min(max, n));
+        setSpecTrackLevel(tab, group.group, track.name, clamped);
+        saveState();
+        effectDiv.textContent = clamped > 0 ? track.levels[clamped - 1] : 'Not yet invested';
+      },
+      onblur: () => render(),
+    });
+
+    drawer.appendChild(el('div', { class: 'spec-track-row' }, [
+      el('div', { class: 'spec-track-left' }, [imgSlot, el('span', { class: 'spec-track-name' }, track.name)]),
+      el('div', { class: 'spec-track-input-wrap' }, [input, el('span', { class: 'spec-track-max' }, `/${max}`)]),
+    ]));
+
+    const effectDiv = el('div', { class: 'spec-track-effect' },
+      currentLevel > 0 ? track.levels[currentLevel - 1] : 'Not yet invested');
+    drawer.appendChild(effectDiv);
+  });
+
+  document.body.appendChild(backdrop);
+  document.body.appendChild(drawer);
+  requestAnimationFrame(() => drawer.classList.add('open'));
+}
+
+function renderSpecGeneralTab() {
+  const wrap = el('div', {});
+  const groups = DB.General || [];
+  const byDirection = { N: [], E: [], S: [], W: [] };
+  groups.forEach(g => {
+    const dir = g.group.trim()[0];
+    if (byDirection[dir]) byDirection[dir].push(g);
+  });
+
+  ['N', 'E', 'S', 'W'].forEach(dir => {
+    const dirGroups = byDirection[dir];
+    if (!dirGroups.length) return;
+    const totalInvested = dirGroups.reduce((sum, g) => sum + specGroupInvested('General', g), 0);
+    const content = el('div', {}, dirGroups.map(g => renderSpecTierRow('General', g)));
+    wrap.appendChild(renderAccordion(`${SPEC_DIRECTION_LABELS[dir]} (${dirGroups.length} tiers, ${totalInvested} pts)`, content, false, true));
+  });
+
+  return wrap;
+}
+
+function renderSpecAdventureTab() {
+  const wrap = el('div', {});
+  const groups = DB.Adventure || [];
+  groups.forEach(g => wrap.appendChild(renderSpecTierRow('Adventure', g)));
+  return wrap;
+}
+
+function renderSpecializationShell() {
+  const wrap = el('div', {});
+  wrap.appendChild(el('div', { class: 'section-title' }, 'Specialization'));
+  wrap.appendChild(el('p', { class: 'section-desc' },
+    'Effect values shown are read directly from your own extracted data — no guessing on which numbers are real.'));
+
+  const tabRow = el('div', { class: 'spec-tab-row' });
+  [['general', 'General'], ['adventure', 'Adventurer']].forEach(([key, label]) => {
+    tabRow.appendChild(el('button', {
+      class: 'spec-tab-btn' + (state.specialization.viewingTab === key ? ' active' : ''),
+      onclick: () => { state.specialization.viewingTab = key; render(); },
+    }, label));
+  });
+  wrap.appendChild(tabRow);
+
+  wrap.appendChild(state.specialization.viewingTab === 'general' ? renderSpecGeneralTab() : renderSpecAdventureTab());
 
   return wrap;
 }
@@ -1596,6 +1742,8 @@ function render() {
     root.appendChild(renderEquipmentShell());
   } else if (activeMainTab === 'inheritance') {
     root.appendChild(renderInheritanceShell());
+  } else if (activeMainTab === 'specialization') {
+    root.appendChild(renderSpecializationShell());
   } else {
     const labels = { inheritance: 'Inheritance Tree' };
     root.appendChild(renderPlaceholder(labels[activeMainTab] || activeMainTab));
@@ -2880,6 +3028,50 @@ const EQUIP_CONTRIB_TO_LABEL = {
   'skillcrit::': 'Skill Crit Rate', 'skilldmg::': 'Skill DMG', 'weapcrit::': 'Weapon Crit Rate',
 };
 
+// Specialization (General tab) track names → Calculator labels, for the
+// clean/unconditional tracks only. PVP ATK%/DEF%/HP%/Damage Reduction are
+// a genuinely new stat family not in the original ~80-label list — added
+// as their own category since they're conceptually distinct from general
+// combat stats, not folded into an existing one.
+const SPEC_TRACK_TO_LABEL = {
+  'ATK%': 'ATK%', 'HP%': 'HP%', 'DEF%': 'Global DEF%',
+  'PVP Damage Reduction': 'PVP Damage Reduction', 'PVP Attack%': 'PVP ATK%',
+  'PVP Defence%': 'PVP DEF%', 'PVP HP%': 'PVP HP%',
+  'Final Adventurer Damage Reduction': 'Adventurer Final Damage Reduction',
+  'Final Artifact Damage Reduction': 'Artifact Final Damage Reduction',
+  'Crit DMG Reduction': 'Crit DMG Reduction',
+};
+
+// A handful of mount names in the spreadsheet don't exactly match the
+// mount's real name in the app's own mount data — reconciled here rather
+// than silently failing to match.
+const SPEC_MOUNT_NAME_FIX = { 'Calamity': 'Catastrophe', 'Don Quixote': "Don Quixote Sugar" };
+
+// Mounted DMG Reduction (East) track name → which mount it's conditional
+// on. Only Main Mount counts as "ridden" — deployed support mounts don't
+// grant these bonuses, since only one mount can actually be ridden.
+const SPEC_MOUNT_TRACK_TO_MOUNT = {
+  "Luminous Dragon's Blessing": 'Luminous Dragon', "Toffee's Blessing": 'Toffee',
+  "Catastrophe's Blessing": 'Catastrophe', "Sphinx's Blessing": 'Sphinx', "Diego's Blessing": 'Diego',
+  'Blessing of the Sea Hero': 'Sea Hero', 'Blessing of Capytti Veyron': 'Capytti Veyron',
+  'Blessing of Overlord Deer': 'Overlord Deer', 'Blessing of Don Quixote': "Don Quixote Sugar",
+  "Dragon Armor Beast's Blessing": 'Imperial Dragon-Armor Beast', 'Blessing of Flyer No. 1': 'Flyer No. 1',
+  'Blessing of the Ash Progenitor Dragon': 'Ash Progenitor Dragon', "dapper Goose's Protection": 'Dapper Goose',
+  "Rosy Cloud's Grace": 'Marshmallow Cloud', "Dreamy Bathtub's Protection": 'Dreamy Bathtub',
+  'Frost Dragon Grace': 'Frost Dragon',
+};
+// Quality-tier conditional (not a specific mount name) — checked against
+// the ridden mount's own tier instead of its name.
+const SPEC_MOUNT_TRACK_TO_TIER = {
+  'Beast Blessing': ['Rare', 'Epic'], // "Epic or Lower"
+  "Beast King's Blessing": ['Legendary'],
+};
+
+function parseSpecEffectValue(text) {
+  const m = text && text.match(/\+(\d+(?:\.\d+)?)%/);
+  return m ? parseFloat(m[1]) : null;
+}
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -3083,6 +3275,42 @@ function aggregateFullStatsWithSources() {
     });
   }
 
+  // Specialization (General tab) — clean, unconditional tracks map
+  // directly via SPEC_TRACK_TO_LABEL. Mounted DMG Reduction (East) tracks
+  // are conditional on which mount is actually ridden — only Main Mount
+  // counts, and only ONE mount's bonus applies even if multiple
+  // mount-specific tracks are maxed, since only one mount can be ridden
+  // at a time. Quality-tier tracks (Epic/Legendary) check the ridden
+  // mount's own tier instead of its name. Anything else (pet-specific,
+  // weapon-specific conditional bonuses in South/West) isn't wired up
+  // yet — those follow the same pattern but weren't part of this pass.
+  const riddenMountIdx = state.mountMainSlot && state.mountMainSlot.itemIdx;
+  const riddenMount = riddenMountIdx != null ? (DB.mounts || []).find(m => m.idx === riddenMountIdx) : null;
+
+  (DB.General || []).forEach(group => {
+    group.tracks.forEach(track => {
+      const level = getSpecTrackLevel('General', group.group, track.name);
+      if (!level) return;
+      const text = track.levels[level - 1];
+      const val = parseSpecEffectValue(text);
+      if (val == null) return;
+      const sourceName = `${group.group}: ${track.name} (Lv${level})`;
+
+      if (SPEC_TRACK_TO_LABEL[text.replace(/\s*\+\d+(\.\d+)?%$/, '')]) {
+        add(SPEC_TRACK_TO_LABEL[text.replace(/\s*\+\d+(\.\d+)?%$/, '')], val, sourceName);
+      } else if (track.name === "Knight's Wall") {
+        if (riddenMount) add('Mounted DMG Reduction', val, sourceName); // generic "while Mounted" still only fires with a mount actually ridden
+      } else if (SPEC_MOUNT_TRACK_TO_MOUNT[track.name]) {
+        const targetName = SPEC_MOUNT_TRACK_TO_MOUNT[track.name];
+        if (riddenMount && riddenMount.n === targetName) add('Mounted DMG Reduction', val, sourceName);
+      } else if (SPEC_MOUNT_TRACK_TO_TIER[track.name]) {
+        if (riddenMount && SPEC_MOUNT_TRACK_TO_TIER[track.name].includes(riddenMount.tier)) {
+          add('Mounted DMG Reduction', val, sourceName);
+        }
+      }
+    });
+  });
+
   // Relic Sets & Collectible Sets — same "lowest star among owned members"
   // rule the set panel UI already uses, just reused here instead of
   // reimplemented, so this can never drift out of sync with what the
@@ -3126,6 +3354,12 @@ const CALC_TABLE_CATEGORIES = [
   { title: 'Speed', labels: ['Speed'] },
   { title: 'Crit Rates', labels: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
   { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG (Default to 200% as base)', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG'] },
+  // New as of the Specialization tree wiring — PVP is a genuinely
+  // separate stat family (not in the original ~80-label list), and
+  // Mounted DMG Reduction is conditional on which mount is actually
+  // ridden, so it's kept distinct from PVP Damage Reduction rather than
+  // merged in, even though both surfaced from the same Specialization page.
+  { title: 'PVP & Mounted', labels: ['PVP Damage Reduction', 'PVP ATK%', 'PVP DEF%', 'PVP HP%', 'Mounted DMG Reduction'] },
 ];
 
 // Simple collapsible accordion — pure DOM toggle, no state persistence

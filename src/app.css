@@ -884,6 +884,94 @@ body {
   .brand-name { font-size: 16px; }
 }
 
+/* ---- Specialization Tree ---- */
+.spec-tab-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.spec-tab-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--font-body);
+  font-size: 12px;
+  cursor: pointer;
+}
+.spec-tab-btn.active { border-color: var(--accent); color: var(--ink); }
+.spec-tier-row {
+  background: var(--bg-card);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.spec-tier-row.empty { opacity: 0.55; }
+.spec-tier-row:hover { border-color: var(--accent-dim); }
+.spec-tier-group-label { color: var(--ink-faint); font-size: 9.5px; font-family: var(--font-mono); margin-bottom: 2px; }
+.spec-tier-track-names { color: var(--ink); font-size: 12.5px; }
+.spec-tier-row.empty .spec-tier-track-names { color: var(--ink-dim); }
+.spec-tier-points { color: var(--accent); font-size: 11px; font-family: var(--font-mono); flex-shrink: 0; margin-left: 12px; }
+.spec-tier-row.empty .spec-tier-points { color: var(--ink-faint); }
+
+/* Drawer: bottom sheet on mobile, side panel sliding in from the right on
+   desktop — same component, different edge, per the earlier discussion
+   about not building two separate patterns. */
+.spec-drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+}
+.spec-drawer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: var(--bg-panel);
+  border-radius: 16px 16px 0 0;
+  padding: 16px;
+  max-height: 75vh;
+  overflow-y: auto;
+  z-index: 201;
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+}
+.spec-drawer.open { transform: translateY(0); }
+.spec-drawer-handle { width: 36px; height: 4px; background: var(--hairline); border-radius: 2px; margin: 0 auto 14px; }
+@media (min-width: 900px) {
+  .spec-drawer {
+    left: auto; right: 0; top: 0; bottom: 0;
+    width: 360px;
+    max-height: none;
+    border-radius: 0;
+    border-left: 1px solid var(--hairline);
+    transform: translateX(100%);
+  }
+  .spec-drawer.open { transform: translateX(0); }
+  .spec-drawer-handle { display: none; }
+}
+.spec-drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.spec-drawer-title { font-family: var(--font-display); font-size: 17px; color: var(--ink); }
+.spec-drawer-close { color: var(--ink-faint); font-size: 16px; cursor: pointer; background: none; border: none; }
+.spec-track-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px; }
+.spec-track-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.spec-track-img {
+  width: 24px; height: 24px; flex-shrink: 0;
+  background: var(--bg-panel-2);
+  border: 1px dashed var(--hairline);
+  border-radius: 4px;
+}
+.spec-track-img img { width: 100%; height: 100%; object-fit: contain; border-radius: 4px; }
+.spec-track-name { color: var(--ink); font-size: 13px; }
+.spec-track-input-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.spec-track-input {
+  width: 42px; padding: 5px; text-align: center;
+  background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 4px;
+  color: var(--ink); font-size: 12px; font-family: var(--font-mono);
+}
+.spec-track-max { color: var(--ink-faint); font-size: 10px; }
+.spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px 32px; }
+
 /* ---- Inheritance Tree ---- */
 .inherit-active-row {
   display: flex;
