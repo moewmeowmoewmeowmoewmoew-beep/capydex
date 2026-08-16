@@ -61,6 +61,130 @@ function saveState() {
   }
 }
 
+function exportSaveData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = el('a', { href: url, download: `capydex-export-${new Date().toISOString().slice(0, 10)}.json` });
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// Wipes everything and replaces it cleanly with the imported file — merged
+// against defaultState() so an export from an older app version (missing
+// a field added since) still fills in sensible defaults instead of
+// crashing on a missing key.
+function importSaveData(jsonText, onError) {
+  let parsed;
+  try {
+    parsed = JSON.parse(jsonText);
+  } catch (e) {
+    if (onError) onError('That file isn\u2019t valid JSON.');
+    return;
+  }
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    if (onError) onError('That doesn\u2019t look like a CapyDex export file.');
+    return;
+  }
+  state = Object.assign(defaultState(), parsed);
+  saveState();
+  render();
+}
+
+function openImportModal() {
+  const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
+  const fileInput = el('input', { type: 'file', accept: 'application/json,.json', class: 'import-file-input' });
+  const errorMsg = el('div', { class: 'import-error hidden' });
+  function closeModal() { overlay.remove(); }
+
+  const box = el('div', { class: 'modal-box' }, [
+    el('div', { class: 'modal-title' }, 'Import data'),
+    el('p', { class: 'section-desc', style: 'margin-bottom:14px;' },
+      'This replaces everything currently saved — Collection, Equipment, Inheritance, Specialization, all of it — with what\u2019s in the file. There\u2019s no undo, so make sure this is the file you want.'),
+    fileInput,
+    errorMsg,
+    el('div', { class: 'modal-actions' }, [
+      el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
+      el('button', {
+        class: 'bulk-action-btn primary',
+        onclick: () => {
+          const file = fileInput.files[0];
+          if (!file) { errorMsg.textContent = 'Choose a file first.'; errorMsg.classList.remove('hidden'); return; }
+          const reader = new FileReader();
+          reader.onload = () => {
+            let hadError = false;
+            importSaveData(reader.result, (msg) => {
+              hadError = true;
+              errorMsg.textContent = msg;
+              errorMsg.classList.remove('hidden');
+            });
+            if (!hadError) closeModal();
+          };
+          reader.readAsText(file);
+        },
+      }, 'Import'),
+    ]),
+  ]);
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function isMobileViewport() {
+  if (typeof window.matchMedia === 'function') return window.matchMedia('(max-width: 843px)').matches;
+  return window.innerWidth <= 843;
+}
+
+function renderCalcDataControls() {
+  const isMobile = isMobileViewport();
+
+  // Shared hidden input used by the mobile direct-trigger path — desktop
+  // uses its own input inside the modal instead.
+  const mobileFileInput = el('input', {
+    type: 'file', accept: 'application/json,.json', style: 'display:none;',
+    onchange: (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => importSaveData(reader.result, (msg) => alert(msg));
+      reader.readAsText(file);
+    },
+  });
+
+  const handleImportClick = () => {
+    if (isMobileViewport()) {
+      mobileFileInput.click();
+    } else {
+      openImportModal();
+    }
+  };
+
+  if (!isMobile) {
+    return el('div', { class: 'calc-data-controls' }, [
+      mobileFileInput,
+      el('button', { class: 'bulk-action-btn secondary', onclick: handleImportClick }, 'Import Data'),
+      el('button', { class: 'bulk-action-btn secondary', onclick: exportSaveData }, 'Export Data'),
+    ]);
+  }
+
+  // Mobile: single icon button revealing both options in a small dropdown.
+  const menu = el('div', { class: 'calc-data-menu hidden' }, [
+    el('button', { class: 'calc-data-menu-item', onclick: () => { menu.classList.add('hidden'); handleImportClick(); } }, 'Import Data'),
+    el('button', { class: 'calc-data-menu-item', onclick: () => { menu.classList.add('hidden'); exportSaveData(); } }, 'Export Data'),
+  ]);
+  const wrap = el('div', { class: 'calc-data-controls-mobile' }, [
+    mobileFileInput,
+    el('button', {
+      class: 'calc-data-icon-btn', 'aria-label': 'Import or export data',
+      onclick: (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); },
+    }, '\u22ee'),
+    menu,
+  ]);
+  document.addEventListener('click', () => menu.classList.add('hidden'), { once: true });
+  return wrap;
+}
+
 function getMountOrArtifactState(bucket, idx) {
   if (!state[bucket][idx]) {
     state[bucket][idx] = { owned: false, stars: 0, awaken: 0 };
@@ -3528,7 +3652,10 @@ function pctEffectiveness(delta) {
 /* ---------- Calculator UI ---------- */
 function renderCalculator() {
   const wrap = el('div', {});
-  wrap.appendChild(el('div', { class: 'section-title' }, 'Calculator'));
+  wrap.appendChild(el('div', { class: 'section-title-row' }, [
+    el('div', { class: 'section-title' }, 'Calculator'),
+    renderCalcDataControls(),
+  ]));
   wrap.appendChild(el('p', { class: 'section-desc' }, 'Values will auto populate as changes are made to the sheet'));
 
   const totals = aggregatePvpStats();
