@@ -2731,6 +2731,57 @@ const RELIC_KEY_TO_LABEL = {
   ignore_skill_crit_rate: 'Ignore Skill Crit', ignore_normal_attack_crit_rate: 'Ignore Normal ATK Crit',
 };
 
+// Gem names carry their number baked in (e.g. "Combo Damage Boost +45%"),
+// so they never matched any Calculator category label directly — this was
+// true even for the 47 gems with a tracked numeric value, not just the
+// text-only ones. Strip the number to get a stable base phrase, then map
+// that to the matching category label. Only unambiguous, general-purpose
+// gems are mapped; character-specific synergy gems (e.g. "Clown damage
+// +X", "Electro Dragon's paralysis chance +X") have no general PvP
+// category to belong to and are deliberately left out.
+function gemNameBase(name) {
+  return name.replace(/\+?\d+(\.\d+)?%?/g, '+X').trim();
+}
+const GEM_NAME_TO_LABEL = {
+  'Basic Attack Damage Boost +X': 'Basic ATK DMG', 'Basic Attack Damage Reduction +X': 'Basic ATK DMG Reduction',
+  'Combo Damage Boost +X': 'Combo DMG', 'Combo Damage Reduction +X': 'Combo DMG Reduction',
+  'Counterattack Damage Boost +X': 'Counter DMG', 'Counterattack Damage Reduction +X': 'Counter DMG Reduction',
+  'Explosion Damage Boost +X': 'Explosion DMG',
+  'Final Damage Boost +X': 'General Final Damage', 'Final Damage Reduction +X': 'General Final Damage Reduction',
+  'Fire Damage Boost +X': 'Fire DMG', 'Fire Damage Reduction +X': 'Fire DMG Reduction',
+  'Lightning Damage Boost +X': 'Lightning DMG', 'Lightning Damage Reduction +X': 'Lightning DMG Reduction',
+  'Physical Damage Boost +X': 'Physical DMG',
+  'Combo Rate +X': 'Combo Rate', 'Counter Rate +X': 'Counter Rate',
+  'Dagger Crit Rate +X': 'Dagger Crit Rate', 'DoT Crit Rate +X': 'DoT Crit Rates',
+  'Lightning Crit Rate +X': 'Lightning Crit Rate', 'Sword Qi Crit Rate +X': 'Sword Qi Crit Rate',
+  'Weapon Crit Rate +X': 'Weapon Crit Rate',
+  'Ignore Combo Rate +X': 'Ignore Combo', 'Ignore Counter Rate +X': 'Ignore Counter', 'Ignore Critical Rate +X': 'Ignore Crit',
+  'Global Attack +X': 'Global ATK', 'Speed +X': 'Speed',
+  'Combo Damage Coefficient +X': 'Combo DMG Coef', 'Counterattack Damage Coefficient +X': 'Counter DMG Coef',
+  'Dagger Damage Coefficient +X': 'Dagger DMG Coef', 'Lightning Damage Coefficient +X': 'Lightning DMG Coef',
+};
+
+// Pulls the tier-scaling numeric value out of a gem, whether it has a
+// tracked numeric array or only ever had descriptive text. For text-only
+// gems: if the description has exactly one percentage, that's the value.
+// If it has more than one (e.g. "+30% damage to targets with HP above
+// 70%" — a scaling bonus alongside a static threshold), compare against
+// the lowest tier's text to find which number actually changes between
+// tiers — that's the real one, not just whichever appears first.
+function extractGemScalingValue(meta, tier) {
+  if (meta.t && meta.t[tier - 1] != null) return meta.t[tier - 1];
+  const td = meta.tier_desc;
+  if (!td || !td[tier]) return null;
+  const currentPcts = [...td[tier].matchAll(/\d+(?:\.\d+)?%/g)].map(m => m[0]);
+  if (currentPcts.length === 0) return null;
+  if (currentPcts.length === 1) return parseFloat(currentPcts[0]);
+  const basePcts = td[1] ? [...td[1].matchAll(/\d+(?:\.\d+)?%/g)].map(m => m[0]) : [];
+  for (let i = 0; i < currentPcts.length; i++) {
+    if (currentPcts[i] !== basePcts[i]) return parseFloat(currentPcts[i]);
+  }
+  return null; // couldn't isolate which number scales — don't guess
+}
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -2789,7 +2840,12 @@ function aggregateFullStatsWithSources() {
     });
   });
 
-  // Equipment Gems with a real numeric value
+  // Equipment Gems — numeric value from meta.t where tracked, otherwise
+  // extracted directly from the tier_desc text (covers the majority of
+  // gems, which only ever had a text description, not a numeric array —
+  // those were previously silently skipped entirely here). Label comes
+  // from GEM_NAME_TO_LABEL, not the raw gem name, since gem names carry
+  // their own baked-in number and never matched a category directly.
   EQUIPMENT_SLOTS.forEach(slotDef => {
     const s = state.equipment[slotDef.id];
     if (!s || !s.gems) return;
@@ -2797,8 +2853,11 @@ function aggregateFullStatsWithSources() {
     s.gems.forEach(slot => {
       if (!slot.gemId) return;
       const meta = gemOptions.find(o => o.id === slot.gemId);
-      const val = meta && meta.t ? meta.t[slot.tier - 1] : null;
-      if (meta && val != null) add(meta.n, val, `${slotDef.label} gem`);
+      if (!meta) return;
+      const label = GEM_NAME_TO_LABEL[gemNameBase(meta.n)];
+      if (!label) return;
+      const val = extractGemScalingValue(meta, slot.tier);
+      if (val != null) add(label, val, `${slotDef.label} gem`);
     });
   });
 
@@ -2854,15 +2913,15 @@ function aggregateFullStatsWithSources() {
 
 const CALC_TABLE_CATEGORIES = [
   { title: 'Final Damage Reduction', labels: ['General Final Damage Reduction', 'Skill Damage Final Damage Reduction', 'Basic Attack Final Damage Reduction', 'Conditional Final Damage Reduction', 'Adventurer Final Damage Reduction', 'Artifact Final Damage Reduction', 'Mount Final Damage Reduction', 'Pet Final Damage Reduction'] },
-  { title: 'Final Damage', labels: ['General Final Damage', 'Final Skill Damage', 'Final Lightning DMG', 'Final Sword Qi DMG', 'Final Dagger DMG', 'Final Combo DMG', 'Final Counter DMG', 'Final Normal ATK DMG'] },
-  { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate'] },
-  { title: 'Crit Rates', labels: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
   { title: 'DMG Reduction', labels: ['Generic DMG Reduction', 'Skill DMG Reduction', 'Basic ATK DMG Reduction', 'Combo DMG Reduction', 'Counter DMG Reduction', 'Lightning DMG Reduction', 'Dagger DMG Reduction', 'Sword Qi DMG Reduction', 'Light Spear DMG Red', 'Fire DMG Reduction', 'DoT DMG Reduction', 'Crit DMG Reduction', 'Skill Crit DMG Red', 'Basic ATK Crit DMG Red', 'DoT Crit DMG Red'] },
-  { title: 'Speed', labels: ['Speed'] },
-  { title: 'Tenacity & Armor', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
-  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG (Default to 200% as base)', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG'] },
+  { title: 'Final Damage', labels: ['General Final Damage', 'Final Skill Damage', 'Final Lightning DMG', 'Final Sword Qi DMG', 'Final Dagger DMG', 'Final Combo DMG', 'Final Counter DMG', 'Final Normal ATK DMG'] },
   { title: 'Damage Coefficients', labels: ['General DMG Coef', 'Skill DMG Coef', 'Normal ATK DMG Coef', 'Combo DMG Coef', 'Counter DMG Coef', 'Lightning DMG Coef', 'Dagger DMG Coef', 'Sword Qi DMG Coef', 'Fire DMG Coef'] },
-  { title: 'Ignore Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Counter'] },
+  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
+  { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Counter'] },
+  { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate'] },
+  { title: 'Speed', labels: ['Speed'] },
+  { title: 'Crit Rates', labels: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
+  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG (Default to 200% as base)', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG'] },
 ];
 
 // Simple collapsible accordion — pure DOM toggle, no state persistence
@@ -2920,8 +2979,23 @@ function buildFullCalcTable() {
   controls.appendChild(hideEmptyBtn);
   wrap.appendChild(controls);
 
-  CALC_TABLE_CATEGORIES.forEach(cat => {
-    wrap.appendChild(el('div', { class: 'equip-section-title calc-category-title' }, cat.title));
+  // Quick-jump nav — clicking scrolls straight to that category's title,
+  // skipping the scroll-and-hunt through every section above it.
+  const jumpNav = el('div', { class: 'calc-jump-nav' });
+  CALC_TABLE_CATEGORIES.forEach((cat, i) => {
+    const anchorId = `calc-cat-${i}`;
+    jumpNav.appendChild(el('a', {
+      href: `#${anchorId}`, class: 'calc-jump-link',
+      onclick: (e) => {
+        e.preventDefault();
+        document.getElementById(anchorId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+    }, cat.title));
+  });
+  wrap.appendChild(jumpNav);
+
+  CALC_TABLE_CATEGORIES.forEach((cat, catIdx) => {
+    wrap.appendChild(el('div', { class: 'equip-section-title calc-category-title', id: `calc-cat-${catIdx}` }, cat.title));
     const table = el('table', { class: 'calc-full-table' });
     const tbody = el('tbody', {});
     cat.labels.forEach(label => {
