@@ -639,14 +639,11 @@ function renderInheritanceShell() {
       render();
     },
   }, 'Fill to Max'));
-  toolRow.appendChild(el('button', {
-    class: 'bulk-action-btn secondary',
-    onclick: () => {
-      state.inheritance.progress[treeKey] = {};
-      saveState();
-      render();
-    },
-  }, 'Clear Tree'));
+  toolRow.appendChild(renderClearAllButton('this Inheritance tree', () => {
+    state.inheritance.progress[treeKey] = {};
+    saveState();
+    render();
+  }));
   wrap.appendChild(toolRow);
 
   const grid = el('div', { class: 'inherit-chain' });
@@ -820,7 +817,15 @@ function renderSpecializationShell() {
   });
   wrap.appendChild(tabRow);
 
-  wrap.appendChild(state.specialization.viewingTab === 'general' ? renderSpecGeneralTab() : renderSpecAdventureTab());
+  const isGeneral = state.specialization.viewingTab === 'general';
+  const dbTab = isGeneral ? 'General' : 'Adventure';
+  wrap.appendChild(renderClearAllButton(`this ${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
+    state.specialization.progress[dbTab] = {};
+    saveState();
+    render();
+  }));
+
+  wrap.appendChild(isGeneral ? renderSpecGeneralTab() : renderSpecAdventureTab());
 
   return wrap;
 }
@@ -3161,6 +3166,19 @@ const EQUIP_CONTRIB_TO_LABEL = {
 // a genuinely new stat family not in the original ~80-label list — added
 // as their own category since they're conceptually distinct from general
 // combat stats, not folded into an existing one.
+// Pet Skill attribute names mostly match a Calculator label directly, but
+// a few don't: "Crit DMG" (offensive boost) is missing the "(Default to
+// 200% as base)" suffix the category actually uses, "Global ATK%" needs
+// the % dropped, and the fixed-tier skills' parenthetical names (e.g.
+// "Fierce (Combo Rate)") need mapping to their underlying stat.
+const PET_ATTR_TO_LABEL = {
+  'Global ATK%': 'Global ATK', 'Crit DMG': 'Crit DMG (Default to 200% as base)',
+  'Increased Damage Over Time': 'DoT DMG', 'Damage Over Time Reduction': 'DoT DMG Reduction',
+  'Fierce (Combo Rate)': 'Combo Rate', 'Sturdy (Counter Rate)': 'Counter Rate',
+  'Brutal (Crit Rate)': 'Crit Rate (Generic)', 'Agile (Ignore Combo Rate)': 'Ignore Combo',
+  'Majestic (Ignore Counter Rate)': 'Ignore Counter', 'Resilience (Ignore Crit Rate)': 'Ignore Crit',
+};
+
 const SPEC_TRACK_TO_LABEL = {
   'ATK%': 'ATK%', 'HP%': 'HP%', 'DEF%': 'Global DEF%',
   'PVP Damage Reduction': 'PVP Damage Reduction', 'PVP Attack%': 'PVP ATK%',
@@ -3318,12 +3336,12 @@ function aggregateFullStatsWithSources() {
     });
   });
 
-  // Pet Skills — stat name already matches this table's labels directly
+  // Pet Skills — mostly matches labels directly; PET_ATTR_TO_LABEL covers the ones that don't.
   state.petSlots.forEach((p, pi) => {
     if (!p.itemName) return;
     p.skills.forEach(sl => {
       if (!sl.stat || !sl.val) return;
-      add(sl.stat, sl.val, `Pet ${pi + 1}: ${p.itemName}`);
+      add(PET_ATTR_TO_LABEL[sl.stat] || sl.stat, sl.val, `Pet ${pi + 1}: ${p.itemName}`);
     });
   });
 
@@ -3436,6 +3454,23 @@ function aggregateFullStatsWithSources() {
           add('Mounted DMG Reduction', val, sourceName);
         }
       }
+    });
+  });
+
+  // Specialization (Adventure tab) — Speed Enhancement specifically. Its
+  // level text is a flat number ("Speed 5"), not a "+N%" percentage like
+  // everything else on this page, confirmed by the user: level N = +N
+  // Speed exactly. Everything else in the Adventure tab still isn't
+  // wired up, since those level texts remain unresolved placeholders.
+  (DB.Adventure || []).forEach(group => {
+    group.tracks.forEach(track => {
+      if (track.name !== 'Speed Enhancement') return;
+      const level = getSpecTrackLevel('Adventure', group.group, track.name);
+      if (!level) return;
+      const text = track.levels[level - 1];
+      const m = text && text.match(/(\d+)\s*$/);
+      if (!m) return;
+      add('Speed', parseFloat(m[1]), `${group.group}: Speed Enhancement (Lv${level})`);
     });
   });
 
