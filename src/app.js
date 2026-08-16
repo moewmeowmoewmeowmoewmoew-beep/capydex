@@ -2800,6 +2800,15 @@ const PSIONIC_NAME_TO_LABEL = {
   'Ignore Crit Rate': 'Ignore Crit',
 };
 
+// Set bonus stat labels mostly match a Calculator category directly, but
+// a few use "X Rate" where the category drops "Rate", or "Boost"/"Final"
+// wording that doesn't line up character-for-character.
+const SET_STAT_TO_LABEL = {
+  'Final DMG Boost': 'General Final Damage', 'Final DMG Reduction': 'General Final Damage Reduction',
+  'Ignore Combo Rate': 'Ignore Combo', 'Ignore Counter Rate': 'Ignore Counter',
+  'Ignore Skill Crit Rate': 'Ignore Skill Crit', 'Ignore Normal Attack Crit Rate': 'Ignore Normal ATK Crit',
+};
+
 function aggregateFullStatsWithSources() {
   const stats = {}; // label -> { total, sources: [{name, val}] }
   const add = (label, val, sourceName) => {
@@ -2925,6 +2934,35 @@ function aggregateFullStatsWithSources() {
     const pct = Math.round(val * 10000) / 100;
     const label = RELIC_KEY_TO_LABEL[b.calc] || (b.label === 'Final DMG Boost' ? 'General Final Damage' : b.label === 'Final DMG Red' ? 'General Final Damage Reduction' : b.label);
     add(label, pct, `${b.name} (Lv.${lv})`);
+  });
+
+  // Relic Sets & Collectible Sets — same "lowest star among owned members"
+  // rule the set panel UI already uses, just reused here instead of
+  // reimplemented, so this can never drift out of sync with what the
+  // panel actually displays.
+  Object.values(DB.relic_sets).flat().forEach(set => {
+    const members = set.items.map(name => DB.relics.find(r => r.n === name)).filter(Boolean);
+    if (!members.length || !members.every(r => state.relicOwned[r.n])) return;
+    const minStar = Math.min(...members.map(r => state.relicStars[r.n] || 0));
+    let tierIdx = 0;
+    for (let i = RELIC_TIER_STARS.length - 1; i >= 0; i--) {
+      if (minStar >= RELIC_TIER_STARS[i]) { tierIdx = i; break; }
+    }
+    const val = set.vals[tierIdx];
+    const label = SET_STAT_TO_LABEL[set.stat] || set.stat;
+    if (val != null) add(label, val, `${set.set} (Set Bonus)`);
+  });
+  Object.values(DB.collectible_sets).flat().forEach(set => {
+    const members = set.items.map(name => DB.collectibles.find(c => c.n === name)).filter(Boolean);
+    if (!members.length || !members.every(c => state.collectibleOwned[c.n])) return;
+    const minStar = Math.min(...members.map(c => state.collectibleStars[c.n] || 0));
+    let tierIdx = 0;
+    for (let i = COLLECTIBLE_TIER_STARS.length - 1; i >= 0; i--) {
+      if (minStar >= COLLECTIBLE_TIER_STARS[i]) { tierIdx = i; break; }
+    }
+    const val = set.vals[tierIdx];
+    const label = SET_STAT_TO_LABEL[set.stat] || set.stat;
+    if (val != null) add(label, val, `${set.set} (Set Bonus)`);
   });
 
   return stats;
