@@ -730,6 +730,37 @@ body {
   max-width: 360px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.6);
 }
+/* Mobile: every modal becomes a bottom sheet instead of a centered box —
+   same overlay/box elements, no JS changes needed to any of the modal
+   call sites, just a different layout + a slide-up entrance animation
+   triggered automatically on mount. */
+@media (max-width: 843px) {
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-box {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: modal-sheet-up 0.25s ease;
+  }
+  /* Clear All confirmations stay a centered modal even on mobile — a
+     destructive action deserves something that reads as a hard stop,
+     not a drawer, which invites swipe-to-dismiss-style expectations. */
+  .modal-overlay:has(.modal-box-confirm) { align-items: center; padding: 20px; }
+  .modal-box-confirm {
+    max-width: 360px;
+    border-radius: 10px;
+    padding: 24px;
+    max-height: none;
+    overflow-y: visible;
+    animation: none;
+  }
+}
+@keyframes modal-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
 .modal-title { font-family: var(--font-display); font-size: 16px; color: var(--ink); margin-bottom: 18px; }
 .modal-star-picker {
   display: flex;
@@ -850,7 +881,7 @@ body {
     color: var(--ink);
     border: none;
     border-bottom: 1px solid var(--hairline);
-    padding: 14px 20px;
+    padding: 14px 16px;
     font-size: 15px;
     font-family: var(--font-body);
     cursor: pointer;
@@ -1014,6 +1045,13 @@ body {
 }
 .spec-track-max { color: var(--ink-faint); font-size: 10px; }
 .spec-track-effect { color: var(--ink-faint); font-size: 10.5px; font-style: italic; margin: 0 0 12px; text-align: right; }
+@media (min-width: 900px) {
+  .spec-track-input {
+    width: 56px;
+    padding: 8px;
+    font-size: 15px;
+  }
+}
 
 /* ---- Inheritance Tree ---- */
 .inherit-active-row {
@@ -1051,7 +1089,7 @@ body {
   background: var(--accent);
   display: inline-block;
 }
-.inherit-tool-row { display: flex; gap: 8px; margin-bottom: 20px; }
+.inherit-tool-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 20px; }
 /* Vertical chain layout — mirrors the in-game tree: a centered column of
    boxed nodes (Hero, then named skill-rank nodes) with Left/Right stat
    triplets flanking each Mid box on either side. */

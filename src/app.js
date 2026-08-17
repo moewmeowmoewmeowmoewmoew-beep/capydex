@@ -369,6 +369,10 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     activeMainTab = btn.dataset.tab;
     mainTabsNav.classList.remove('open');
     render();
+    // Explicit 'instant' needed to override the global scroll-behavior:
+    // smooth — a tab switch should feel immediate, not like the page is
+    // scrolling itself back up while the content underneath also changes.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   });
 });
 
@@ -598,7 +602,7 @@ function renderInheritanceShell() {
   const wrap = el('div', {});
   wrap.appendChild(el('div', { class: 'section-title-row' }, [
     el('div', { class: 'section-title' }, 'Inheritance Tree'),
-    renderClearAllButton('all 5 Inheritance trees', () => {
+    renderClearAllButton('5 Inheritance trees', () => {
       state.inheritance.progress = { sk: {}, kn: {}, rn: {}, gh: {}, dr: {} };
       saveState();
       render();
@@ -646,6 +650,11 @@ function renderInheritanceShell() {
       render();
     },
   }, 'Fill to Max'));
+  toolRow.appendChild(renderClearAllButton(`${INHERIT_TREE_NAMES[treeKey]} tree`, () => {
+    state.inheritance.progress[treeKey] = {};
+    saveState();
+    render();
+  }));
   wrap.appendChild(toolRow);
 
   const grid = el('div', { class: 'inherit-chain' });
@@ -808,7 +817,7 @@ function renderSpecializationShell() {
   const wrap = el('div', {});
   wrap.appendChild(el('div', { class: 'section-title-row' }, [
     el('div', { class: 'section-title' }, 'Specialization'),
-    renderClearAllButton('all of Specialization (both General and Adventurer)', () => {
+    renderClearAllButton('Specialization tab', () => {
       state.specialization.progress = { General: {}, Adventure: {} };
       saveState();
       render();
@@ -829,7 +838,7 @@ function renderSpecializationShell() {
 
   const isGeneral = state.specialization.viewingTab === 'general';
   const dbTab = isGeneral ? 'General' : 'Adventure';
-  tabRow.appendChild(renderClearAllButton(`this ${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
+  tabRow.appendChild(renderClearAllButton(`${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
     state.specialization.progress[dbTab] = {};
     saveState();
     render();
@@ -1268,10 +1277,10 @@ function renderClearAllButton(label, onConfirm) {
 
 function openClearAllModal(label, onConfirm) {
   const overlay = el('div', { class: 'modal-overlay', onclick: (e) => { if (e.target === overlay) closeModal(); } });
-  const box = el('div', { class: 'modal-box' }, [
+  const box = el('div', { class: 'modal-box modal-box-confirm' }, [
     el('div', { class: 'modal-title' }, `Clear ${label}?`),
     el('p', { class: 'modal-confirm-text' },
-      `All the data you've entered in "${label}" will be cleared. Are you sure you want to continue?`),
+      `All data within the ${label} will be cleared.`),
     el('div', { class: 'modal-actions' }, [
       el('button', { class: 'bulk-action-btn secondary', onclick: closeModal }, 'Cancel'),
       el('button', {
@@ -1923,7 +1932,7 @@ function renderSectionShell(sections, pageLabel, pageClearAllFn) {
   if (pageLabel) {
     outer.appendChild(el('div', { class: 'section-title-row' }, [
       el('div', { class: 'section-title' }, pageLabel),
-      pageClearAllFn ? renderClearAllButton(`all of ${pageLabel}`, pageClearAllFn) : null,
+      pageClearAllFn ? renderClearAllButton(pageLabel, pageClearAllFn) : null,
     ]));
   }
 
@@ -2038,6 +2047,7 @@ function setupScrollSpy(navEl) {
 /* ---------- Relics ---------- */
 let relicSearch = '';
 let relicRarityFilter = 'All';
+let relicOwnedFilter = 'All';
 
 function renderSetMemberIcon(kind, name) {
   const img = el('img', {
@@ -2361,29 +2371,48 @@ function renderRelics() {
   wrap.appendChild(el('p', { class: 'section-desc' },
     'You may filter relics by tier, multi-select them and either mark them as owned or assign stars to the selection. Relics marked as owned here will be selectable in the equipments page.'));
 
-  const toolbar = el('div', { class: 'toolbar' });
+  const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
   const search = el('input', {
     class: 'search-input', type: 'text', placeholder: 'Search relics…', value: relicSearch,
     oninput: (e) => { relicSearch = e.target.value; renderRelicGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
+
+  const tierRow = el('div', { class: 'toolbar-row' });
+  tierRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Tier'));
   ['All', 'Rare', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
     const chip = el('button', {
       class: 'filter-chip' + (relicRarityFilter === r ? ' active' : ''),
       onclick: () => {
         relicRarityFilter = r;
-        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        tierRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         renderRelicGroups(groupsWrap);
       },
     }, r);
-    chip.dataset.tier = 'true';
-    toolbar.appendChild(chip);
+    tierRow.appendChild(chip);
   });
-  toolbar.appendChild(el('button', {
+  toolbar.appendChild(tierRow);
+
+  const ownedRow = el('div', { class: 'toolbar-row' });
+  ownedRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Owned'));
+  ['All', 'Owned', 'Not Owned'].forEach(o => {
+    const chip = el('button', {
+      class: 'filter-chip' + (relicOwnedFilter === o ? ' active' : ''),
+      onclick: () => {
+        relicOwnedFilter = o;
+        ownedRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderRelicGroups(groupsWrap);
+      },
+    }, o);
+    ownedRow.appendChild(chip);
+  });
+  ownedRow.appendChild(el('button', {
     class: 'filter-chip' + (selectMode.relics ? ' active' : ''),
     onclick: () => toggleSelectMode('relics'),
   }, selectMode.relics ? 'Cancel selecting' : 'Select multiple…'));
+  toolbar.appendChild(ownedRow);
   wrap.appendChild(toolbar);
 
   const groupsWrap = el('div', {});
@@ -2405,6 +2434,9 @@ function renderRelicGroups(container) {
   const items = DB.relics.filter(r => {
     if (relicRarityFilter !== 'All' && r.rarity !== relicRarityFilter) return false;
     if (relicSearch && !r.n.toLowerCase().includes(relicSearch.toLowerCase())) return false;
+    const owned = !!state.relicOwned[r.n];
+    if (relicOwnedFilter === 'Owned' && !owned) return false;
+    if (relicOwnedFilter === 'Not Owned' && owned) return false;
     return true;
   });
   const groups = buildTierGroups(items, 'rarity');
@@ -2525,6 +2557,7 @@ function renderRelicSetPanel(set) {
 /* ---------- Collectibles ---------- */
 let collectibleSearch = '';
 let collectibleRarityFilter = 'All';
+let collectibleOwnedFilter = 'All';
 
 function clearAllCollectibles() {
   state.collectibleOwned = {};
@@ -2538,29 +2571,48 @@ function renderCollectibles() {
   wrap.appendChild(el('p', { class: 'section-desc' },
     'You may filter collectibles by tier, multi-select them and either mark them as owned or assign stars to the selection.'));
 
-  const toolbar = el('div', { class: 'toolbar' });
+  const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
   const search = el('input', {
     class: 'search-input', type: 'text', placeholder: 'Search collectibles…', value: collectibleSearch,
     oninput: (e) => { collectibleSearch = e.target.value; renderCollectibleGroups(groupsWrap); },
   });
   toolbar.appendChild(search);
+
+  const tierRow = el('div', { class: 'toolbar-row' });
+  tierRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Tier'));
   ['All', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
     const chip = el('button', {
       class: 'filter-chip' + (collectibleRarityFilter === r ? ' active' : ''),
       onclick: () => {
         collectibleRarityFilter = r;
-        toolbar.querySelectorAll('.filter-chip[data-tier]').forEach(c => c.classList.remove('active'));
+        tierRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
         renderCollectibleGroups(groupsWrap);
       },
     }, r);
-    chip.dataset.tier = 'true';
-    toolbar.appendChild(chip);
+    tierRow.appendChild(chip);
   });
-  toolbar.appendChild(el('button', {
+  toolbar.appendChild(tierRow);
+
+  const ownedRow = el('div', { class: 'toolbar-row' });
+  ownedRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Owned'));
+  ['All', 'Owned', 'Not Owned'].forEach(o => {
+    const chip = el('button', {
+      class: 'filter-chip' + (collectibleOwnedFilter === o ? ' active' : ''),
+      onclick: () => {
+        collectibleOwnedFilter = o;
+        ownedRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderCollectibleGroups(groupsWrap);
+      },
+    }, o);
+    ownedRow.appendChild(chip);
+  });
+  ownedRow.appendChild(el('button', {
     class: 'filter-chip' + (selectMode.collectibles ? ' active' : ''),
     onclick: () => toggleSelectMode('collectibles'),
   }, selectMode.collectibles ? 'Cancel selecting' : 'Select multiple…'));
+  toolbar.appendChild(ownedRow);
   wrap.appendChild(toolbar);
 
   const groupsWrap = el('div', {});
@@ -2581,6 +2633,9 @@ function renderCollectibleGroups(container) {
   const items = DB.collectibles.filter(c => {
     if (collectibleRarityFilter !== 'All' && c.rarity !== collectibleRarityFilter) return false;
     if (collectibleSearch && !c.n.toLowerCase().includes(collectibleSearch.toLowerCase())) return false;
+    const owned = !!state.collectibleOwned[c.n];
+    if (collectibleOwnedFilter === 'Owned' && !owned) return false;
+    if (collectibleOwnedFilter === 'Not Owned' && owned) return false;
     return true;
   });
   const groups = buildTierGroups(items, 'rarity');
