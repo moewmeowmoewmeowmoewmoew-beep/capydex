@@ -880,8 +880,6 @@ function renderSpecializationShell() {
       render();
     }),
   ]));
-  wrap.appendChild(el('p', { class: 'section-desc' },
-    'Effect values shown are read directly from your own extracted data — no guessing on which numbers are real.'));
 
   const tabRow = el('div', { class: 'spec-tab-row' });
   const tabBtnGroup = el('div', { class: 'spec-tab-btn-group' });
