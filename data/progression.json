@@ -1,0 +1,2031 @@
+{
+  "story_skills": [
+    {
+      "n": "Combo",
+      "max": 500
+    },
+    {
+      "n": "Combo Mastery",
+      "max": 400
+    },
+    {
+      "n": "Combo Spirit",
+      "max": 300
+    },
+    {
+      "n": "Trinity Force",
+      "max": 250
+    },
+    {
+      "n": "Wizard!",
+      "max": 200
+    },
+    {
+      "n": "Orc!",
+      "max": 200
+    },
+    {
+      "n": "Heavy Attack",
+      "max": 300
+    },
+    {
+      "n": "Crit Mastery",
+      "max": 350
+    },
+    {
+      "n": "Zhanxian Flying Knife",
+      "max": 200
+    },
+    {
+      "n": "Counter Rate",
+      "max": 300
+    },
+    {
+      "n": "Counter Shield",
+      "max": 250
+    },
+    {
+      "n": "Counter Mastery",
+      "max": 300
+    },
+    {
+      "n": "Counter Soul",
+      "max": 200
+    }
+  ],
+  "inherit_def": {
+    "sk": {
+      "segments": 6,
+      "hasHeroes": true,
+      "left": [
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ]
+      ],
+      "right": [
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Combo",
+          "Enhanced Basic Attack",
+          "Enhanced CRIT"
+        ],
+        [
+          "Counter RES",
+          "Basic ATK RES",
+          "Skill RES"
+        ],
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Combo",
+          "Enhanced Basic Attack",
+          "Enhanced CRIT"
+        ],
+        [
+          "Counter RES",
+          "Basic ATK RES",
+          "Skill RES"
+        ]
+      ],
+      "mid": [
+        "Skeleton Wave",
+        "Undead Force I",
+        "Undead Force II",
+        "Skeleton Combo",
+        "Undead Force III",
+        "Skeleton Guard"
+      ],
+      "skill": [
+        "Skeleton Recruit",
+        "Skeleton Warrior",
+        "Skeleton Lord",
+        "Avenger",
+        "Bone King"
+      ],
+      "hero": [
+        "Bonelet",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "kn": {
+      "segments": 6,
+      "hasHeroes": false,
+      "left": [
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ]
+      ],
+      "right": [
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Combo ATK RES",
+          "Pet RES",
+          "Skill RES"
+        ],
+        [
+          "Enhanced Counterattack",
+          "Enhanced Basic Attack",
+          "Enhanced CRIT"
+        ],
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Combo ATK RES",
+          "Pet RES",
+          "Skill RES"
+        ],
+        [
+          "Enhanced Counterattack",
+          "Enhanced Basic Attack",
+          "Enhanced CRIT"
+        ]
+      ],
+      "mid": [
+        "Spear Verdict",
+        "Knights Heart I",
+        "Knights Heart II",
+        "Knight Oath",
+        "Knight's Heart III",
+        "Aegis Guard"
+      ],
+      "skill": [
+        "Knight",
+        "Knight Captain",
+        "Royal Knight",
+        "Templar Knight",
+        "Legendary Knight"
+      ],
+      "hero": [
+        "Little Knight"
+      ]
+    },
+    "rn": {
+      "segments": 6,
+      "hasHeroes": false,
+      "left": [
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ]
+      ],
+      "right": [
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Basic ATK",
+          "Enhanced Rage",
+          "Enhanced CRIT"
+        ],
+        [
+          "Counter RES",
+          "Basic ATK RES",
+          "Skill RES"
+        ],
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Basic ATK",
+          "Enhanced Rage",
+          "Enhanced CRIT"
+        ],
+        [
+          "Counter RES",
+          "Basic ATK RES",
+          "Skill DMG Reduction"
+        ]
+      ],
+      "mid": [
+        "Precision Shot",
+        "Ranger Shadow I",
+        "Ranger Shadow II",
+        "Weakness Strike",
+        "Ranger Shadow III",
+        "Ranger Guard"
+      ],
+      "skill": [
+        "Forest Ranger",
+        "Tracker",
+        "Windstrider",
+        "Forest Guardian",
+        "Legendary Ranger"
+      ],
+      "hero": [
+        "Scout"
+      ]
+    },
+    "gh": {
+      "segments": 6,
+      "hasHeroes": false,
+      "left": [
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ]
+      ],
+      "right": [
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Skill",
+          "Enhanced Fire",
+          "Enhanced Lightning"
+        ],
+        [
+          "Combo ATK RES",
+          "Counter RES",
+          "Basic ATK RES"
+        ],
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Enhanced Skill",
+          "Enhanced Fire",
+          "Enhanced Lightning"
+        ],
+        [
+          "Combo ATK RES",
+          "Counter RES",
+          "Basic ATK RES"
+        ]
+      ],
+      "mid": [
+        "Element Mastery",
+        "Ghost Soul I",
+        "Ghost Soul II",
+        "Savage Ghost",
+        "Ghost Soul III",
+        "Ghost Trick"
+      ],
+      "skill": [
+        "Coward",
+        "Mischief",
+        "Crybaby",
+        "Yawner",
+        "Ghost Princess"
+      ],
+      "hero": [
+        "Ghost Doll"
+      ]
+    },
+    "dr": {
+      "segments": 6,
+      "hasHeroes": true,
+      "left": [
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ],
+        [
+          "HP",
+          "ATK",
+          "DEF"
+        ]
+      ],
+      "right": [
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Combo ATK RES",
+          "Counter RES",
+          "Basic ATK RES"
+        ],
+        [
+          "Enhanced Pets",
+          "Enhanced Basic Attack",
+          "Enhanced Skill"
+        ],
+        [
+          "Enhanced HP",
+          "Enhanced ATK",
+          "Enhanced DEF"
+        ],
+        [
+          "Combo ATK RES",
+          "Counter RES",
+          "Basic ATK RES"
+        ],
+        [
+          "Enhanced Pets",
+          "Enhanced Basic Attack",
+          "Enhanced Skill"
+        ]
+      ],
+      "mid": [
+        "Dragon Scale",
+        "Dragon Vein I",
+        "Dragon Vein II",
+        "Dragon Armor",
+        "Dragon Legacy",
+        "Legacy of Divine Dragon"
+      ],
+      "skill": [
+        "Dragon Soul",
+        "Demon Dragon Antibody",
+        "Power of Mighty Dragon",
+        "Mighty Dragon Antibody",
+        "Descendent of Divine Dragon"
+      ],
+      "hero": [
+        "Breath of Wyrmling",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "inherit_max": {
+    "sk": {
+      "h1": 1,
+      "h2": 1,
+      "h3": 1,
+      "h4": 1,
+      "h5": 1,
+      "h6": 1,
+      "l1a": 10,
+      "l1b": 10,
+      "l1c": 10,
+      "r1a": 5,
+      "r1b": 5,
+      "r1c": 5,
+      "l2a": 10,
+      "l2b": 10,
+      "l2c": 10,
+      "r2a": 5,
+      "r2b": 5,
+      "r2c": 5,
+      "l3a": 10,
+      "l3b": 10,
+      "l3c": 10,
+      "r3a": 5,
+      "r3b": 5,
+      "r3c": 5,
+      "l4a": 10,
+      "l4b": 10,
+      "l4c": 10,
+      "r4a": 5,
+      "r4b": 5,
+      "r4c": 5,
+      "l5a": 10,
+      "l5b": 10,
+      "l5c": 10,
+      "r5a": 5,
+      "r5b": 5,
+      "r5c": 5,
+      "l6a": 10,
+      "l6b": 10,
+      "l6c": 10,
+      "r6a": 5,
+      "r6b": 5,
+      "r6c": 5,
+      "m1": 3,
+      "m2": 3,
+      "m3": 3,
+      "m4": 3,
+      "m5": 3,
+      "m6": 3,
+      "s1": 3,
+      "s2": 3,
+      "s3": 1,
+      "s4": 3,
+      "s5": 1,
+      "s6": 0
+    },
+    "kn": {
+      "h1": 1,
+      "l1a": 10,
+      "l1b": 10,
+      "l1c": 10,
+      "r1a": 5,
+      "r1b": 5,
+      "r1c": 5,
+      "l2a": 10,
+      "l2b": 10,
+      "l2c": 10,
+      "r2a": 5,
+      "r2b": 5,
+      "r2c": 5,
+      "l3a": 10,
+      "l3b": 10,
+      "l3c": 10,
+      "r3a": 5,
+      "r3b": 5,
+      "r3c": 5,
+      "l4a": 10,
+      "l4b": 10,
+      "l4c": 10,
+      "r4a": 5,
+      "r4b": 5,
+      "r4c": 5,
+      "l5a": 10,
+      "l5b": 10,
+      "l5c": 10,
+      "r5a": 5,
+      "r5b": 5,
+      "r5c": 5,
+      "l6a": 10,
+      "l6b": 10,
+      "l6c": 10,
+      "r6a": 5,
+      "r6b": 5,
+      "r6c": 5,
+      "m1": 3,
+      "m2": 3,
+      "m3": 3,
+      "m4": 3,
+      "m5": 3,
+      "m6": 3,
+      "s1": 3,
+      "s2": 3,
+      "s3": 1,
+      "s4": 3,
+      "s5": 1,
+      "s6": 0
+    },
+    "rn": {
+      "h1": 1,
+      "l1a": 10,
+      "l1b": 10,
+      "l1c": 10,
+      "r1a": 5,
+      "r1b": 5,
+      "r1c": 5,
+      "l2a": 10,
+      "l2b": 10,
+      "l2c": 10,
+      "r2a": 5,
+      "r2b": 5,
+      "r2c": 5,
+      "l3a": 10,
+      "l3b": 10,
+      "l3c": 10,
+      "r3a": 5,
+      "r3b": 5,
+      "r3c": 5,
+      "l4a": 10,
+      "l4b": 10,
+      "l4c": 10,
+      "r4a": 5,
+      "r4b": 5,
+      "r4c": 5,
+      "l5a": 10,
+      "l5b": 10,
+      "l5c": 10,
+      "r5a": 5,
+      "r5b": 5,
+      "r5c": 5,
+      "l6a": 10,
+      "l6b": 10,
+      "l6c": 10,
+      "r6a": 5,
+      "r6b": 5,
+      "r6c": 5,
+      "m1": 3,
+      "m2": 3,
+      "m3": 3,
+      "m4": 3,
+      "m5": 3,
+      "m6": 3,
+      "s1": 3,
+      "s2": 3,
+      "s3": 1,
+      "s4": 3,
+      "s5": 1,
+      "s6": 0
+    },
+    "gh": {
+      "h1": 1,
+      "l1a": 10,
+      "l1b": 10,
+      "l1c": 10,
+      "r1a": 5,
+      "r1b": 5,
+      "r1c": 5,
+      "l2a": 10,
+      "l2b": 10,
+      "l2c": 10,
+      "r2a": 5,
+      "r2b": 5,
+      "r2c": 5,
+      "l3a": 10,
+      "l3b": 10,
+      "l3c": 10,
+      "r3a": 5,
+      "r3b": 5,
+      "r3c": 5,
+      "l4a": 10,
+      "l4b": 10,
+      "l4c": 10,
+      "r4a": 5,
+      "r4b": 5,
+      "r4c": 5,
+      "l5a": 10,
+      "l5b": 10,
+      "l5c": 10,
+      "r5a": 5,
+      "r5b": 5,
+      "r5c": 5,
+      "l6a": 10,
+      "l6b": 10,
+      "l6c": 10,
+      "r6a": 5,
+      "r6b": 5,
+      "r6c": 5,
+      "m1": 3,
+      "m2": 3,
+      "m3": 3,
+      "m4": 3,
+      "m5": 3,
+      "m6": 3,
+      "s1": 3,
+      "s2": 3,
+      "s3": 1,
+      "s4": 3,
+      "s5": 1,
+      "s6": 0
+    },
+    "dr": {
+      "h1": 1,
+      "h2": 1,
+      "h3": 1,
+      "h4": 1,
+      "h5": 1,
+      "h6": 1,
+      "l1a": 10,
+      "l1b": 10,
+      "l1c": 10,
+      "r1a": 5,
+      "r1b": 5,
+      "r1c": 5,
+      "l2a": 10,
+      "l2b": 10,
+      "l2c": 10,
+      "r2a": 5,
+      "r2b": 5,
+      "r2c": 5,
+      "l3a": 10,
+      "l3b": 10,
+      "l3c": 10,
+      "r3a": 5,
+      "r3b": 5,
+      "r3c": 5,
+      "l4a": 10,
+      "l4b": 10,
+      "l4c": 10,
+      "r4a": 5,
+      "r4b": 5,
+      "r4c": 5,
+      "l5a": 10,
+      "l5b": 10,
+      "l5c": 10,
+      "r5a": 5,
+      "r5b": 5,
+      "r5c": 5,
+      "l6a": 10,
+      "l6b": 10,
+      "l6c": 10,
+      "r6a": 5,
+      "r6b": 5,
+      "r6c": 5,
+      "m1": 3,
+      "m2": 3,
+      "m3": 3,
+      "m4": 3,
+      "m5": 3,
+      "m6": 3,
+      "s1": 3,
+      "s2": 3,
+      "s3": 1,
+      "s4": 3,
+      "s5": 1,
+      "s6": 0
+    }
+  },
+  "treasures": [
+    {
+      "n": "Totem of Destruction"
+    },
+    {
+      "n": "Totem of Vitality"
+    },
+    {
+      "n": "Core of Infinity"
+    },
+    {
+      "n": "Guardian of the Abyss"
+    }
+  ],
+  "armaments": [
+    {
+      "n": "Exclusive · Dynamic Speaker"
+    },
+    {
+      "n": "Exclusive · Spirit Snake Jade Pendant"
+    },
+    {
+      "n": "Exclusive · Spirit Cat Earrings"
+    },
+    {
+      "n": "Exclusive · Ruyi of Wealth"
+    },
+    {
+      "n": "Exclusive · Frost Crown"
+    },
+    {
+      "n": "Exclusive · Rainbow Horn"
+    },
+    {
+      "n": "Exclusive · Heart of the Magic Fox"
+    },
+    {
+      "n": "Exclusive · Thunder Pocket Watch"
+    },
+    {
+      "n": "Exclusive · Slime Crown"
+    },
+    {
+      "n": "Exclusive · Eye of the Progenitor Dragon"
+    },
+    {
+      "n": "Monarch Beast Sigil"
+    },
+    {
+      "n": "Divine Realm Pendant"
+    },
+    {
+      "n": "Primal Beast Core"
+    },
+    {
+      "n": "Heart of Awakening"
+    },
+    {
+      "n": "Resonance Monarch Ring"
+    },
+    {
+      "n": "Eternal Sigil"
+    },
+    {
+      "n": "Heritage Insignia"
+    },
+    {
+      "n": "Super Energy Crystal"
+    },
+    {
+      "n": "Elemental Holy Crystal"
+    },
+    {
+      "n": "Ring of Authority"
+    },
+    {
+      "n": "Chain of Fate"
+    },
+    {
+      "n": "Evolution Runestone"
+    },
+    {
+      "n": "Holy Beast Sigil"
+    },
+    {
+      "n": "Ancient Core"
+    },
+    {
+      "n": "Mysterious Artifact"
+    },
+    {
+      "n": "Astral Pendant"
+    },
+    {
+      "n": "Arcane Sigil"
+    },
+    {
+      "n": "Arcane Armlet"
+    },
+    {
+      "n": "Spirit Bird Feather"
+    },
+    {
+      "n": "Starry Collar"
+    },
+    {
+      "n": "Arcane Amber"
+    },
+    {
+      "n": "Giant Rhino Horn"
+    },
+    {
+      "n": "Victory Talisman"
+    },
+    {
+      "n": "Epic Crystal Core"
+    },
+    {
+      "n": "Bewitchment Badge"
+    },
+    {
+      "n": "Mystic Talisman"
+    },
+    {
+      "n": "Mammoth Tusk"
+    },
+    {
+      "n": "Arcane Pendant"
+    },
+    {
+      "n": "Beast Talisman"
+    },
+    {
+      "n": "Beast Badge"
+    },
+    {
+      "n": "Beast Coin"
+    },
+    {
+      "n": "Energy Ring"
+    },
+    {
+      "n": "Guardian Stone"
+    },
+    {
+      "n": "Spirit Breath Pendant"
+    },
+    {
+      "n": "Wind Bow Tie"
+    },
+    {
+      "n": "Elf Bell"
+    },
+    {
+      "n": "Breeze Bell"
+    },
+    {
+      "n": "Crystal Necklace"
+    },
+    {
+      "n": "Footprint Fossil"
+    },
+    {
+      "n": "Glimmer Earrings"
+    }
+  ],
+  "inherit_node_calc": {
+    "gh_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      }
+    ],
+    "gh_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "fire",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "lightning",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "gh_s1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.4,
+          0.6,
+          0.8
+        ]
+      }
+    ],
+    "gh_s2": [
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "lightspear",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "icombo",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_r2a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r2b": [
+      {
+        "calc": "dmgred",
+        "ty": "pet",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r2c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r3c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5b": [
+      {
+        "calc": "dmgred",
+        "ty": "pet",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r5c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_r6c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "kn_s1": [
+      {
+        "calc": "rate",
+        "ty": "counter",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "kn_s2": [
+      {
+        "calc": "rate",
+        "ty": "basiccrit",
+        "vals": [
+          0.09,
+          0.12,
+          0.15
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.09,
+          0.12
+        ]
+      }
+    ],
+    "rn_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "dagger",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      }
+    ],
+    "rn_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_r6c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "rn_s1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.4,
+          0.6,
+          0.8
+        ]
+      }
+    ],
+    "rn_s2": [
+      {
+        "calc": "rate",
+        "ty": "weapcrit",
+        "vals": [
+          0.06,
+          0.08,
+          0.1
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_m1": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "dmgbonus",
+        "ty": "swordqi",
+        "vals": [
+          0.3,
+          0.4,
+          0.5
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "icounter",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "sk_r2a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r2b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r2c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r3c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5a": [
+      {
+        "calc": "dmgbonus",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r5c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "critdmg",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6a": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6b": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_r6c": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "sk_s1": [
+      {
+        "calc": "rate",
+        "ty": "combo",
+        "vals": [
+          0.1,
+          0.15,
+          0.2
+        ]
+      }
+    ],
+    "sk_s2": [
+      {
+        "calc": "rate",
+        "ty": "basiccrit",
+        "vals": [
+          0.09,
+          0.12,
+          0.15
+        ]
+      },
+      {
+        "calc": "rate",
+        "ty": "skillcrit",
+        "vals": [
+          0.06,
+          0.09,
+          0.12
+        ]
+      }
+    ],
+    "dr_m1": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_pet",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_adv",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m4": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_art",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_mnt",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m6": [
+      {
+        "calc": "dmgred",
+        "ty": "fdr_pet",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_adv",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_art",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      },
+      {
+        "calc": "dmgred",
+        "ty": "fdr_mnt",
+        "vals": [
+          0.03,
+          0.06,
+          0.1
+        ]
+      }
+    ],
+    "dr_m2": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_m3": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_m5": [
+      {
+        "calc": "dmgbonus",
+        "ty": "global_atk",
+        "vals": [
+          0.02,
+          0.04,
+          0.08
+        ]
+      }
+    ],
+    "dr_r2a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r2b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r2c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r3b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r3c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5a": [
+      {
+        "calc": "dmgred",
+        "ty": "combo",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5b": [
+      {
+        "calc": "dmgred",
+        "ty": "counter",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r5c": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r6b": [
+      {
+        "calc": "dmgbonus",
+        "ty": "normal",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_r6c": [
+      {
+        "calc": "dmgbonus",
+        "ty": "skill",
+        "vals": [
+          0.02,
+          0.04,
+          0.06,
+          0.08,
+          0.1
+        ]
+      }
+    ],
+    "dr_s1": [
+      {
+        "calc": "dmgred",
+        "ty": "skill",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s2": [
+      {
+        "calc": "dmgred",
+        "ty": "normal",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s4": [
+      {
+        "calc": "dmgred",
+        "ty": "crit",
+        "vals": [
+          0.1,
+          0.2,
+          0.3
+        ]
+      }
+    ],
+    "dr_s5": [
+      {
+        "calc": "fdr",
+        "ty": "general",
+        "vals": [
+          0.05
+        ]
+      }
+    ]
+  }
+}

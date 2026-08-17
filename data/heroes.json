@@ -1,0 +1,645 @@
+{
+  "heroes": [
+    {
+      "n": "None",
+      "q": [
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ]
+    },
+    {
+      "n": "April O'Neil",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "After 2 turns from battle start, begin casting and summon April O'Neil to use Camera Smash, dealing skill damage equal to 300% of the hero's ATK, reducing enemy skill damage reduction by -50% for 2 turns, with a 50% chance to stun for 1 turn; cooldown 2 turns.",
+        "Legendary": "When casting Camera Smash, hero gains control-ignore rate +30% for 3 turns; if the enemy is already controlled, deal extra skill damage equal to 10% of max HP (capped at 30× hero ATK).",
+        "Mythic": "Camera Smash reduces enemy final damage bonus by 15% for 2 turns. If Camera Smash is not on cooldown and the hero is stunned on their action turn, Camera Smash is forcibly cast."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
+    },
+    {
+      "n": "Bone King",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Summon Bone King and deal 300% of hero's ATK as Combo DMG, reduce Combo DMG Reduction of the target by 50% for 3 rounds. DMG +50% to shielded targets. Hero's Ignore Counter +30% for 2 rounds.",
+        "Epic": "Global ATK +10%",
+        "Legendary": "Global HP +10%",
+        "Mythic": "Global DEF +10%"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Crimson Witch",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global ATK +10%",
+        "Epic": "After 6 turns, summon Crimson Witch to deal 70% x3 skill DMG and burn enemies for 3 turns.",
+        "Legendary": "DMG Coefficient +15%",
+        "Mythic": "After skill activation, Main Character gains +50% rage"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Dark Knight",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "After 4 turns of battle, summon the Dark Knight to release [ Nether Slash ], dealing 280% physical damage based on the protagonist's ATK. Cooldown: 4 turns",
+        "Legendary": "Each time the enemy takes damage from daggers, sword aura, or light spears, increase [ Underworld Slash ] damage by 1%, up to a maximum of 100%. Resets after [ Underworld Slash ] is triggered",
+        "Mythic": "[ Nether Slash ] damage increase won't reset, increases by 1.5% each time, up to 300%."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
+    },
+    {
+      "n": "Flame Heart Succubus",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "After 4 turns of battle, summon the Flameheart Succubus to release Enchanting Kiss, dealing 280% skill damage based on the protagonist's ATK and inflicting the target with 2 stacks of Burn and Poison. Cooldown: 4 turns.",
+        "Legendary": "Targets gain [ Rune Mark ], increasing damage taken from Burn and Poison by +40%, lasting 2 turns.",
+        "Mythic": "When Lightning, Fire Wave or Ice Spike deals damage to [ Rune Mark ] targets, 40% chance to recover 20% of the damage as HP"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
+    },
+    {
+      "n": "Ghost Princess",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Summon Ghost Princess and deal 300% of hero's ATK as Skill DMG, reduce target's Skill DMG reduction by 50% for 3 rounds, and has a 50% chance to stun the enemy for 1 round. Hero's Ignore Control Immunity Rate +30% for 3 rounds",
+        "Epic": "Global ATK +10%",
+        "Legendary": "Global HP +10%",
+        "Mythic": "Global DEF +10%"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Holy Statue",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global ATK +10%",
+        "Epic": "After 6 turns, summon Holy Statue to deal 260% counterattack DMG",
+        "Legendary": "DMG Coefficient +50%",
+        "Mythic": "After skill activation, grants Main Character a shield of 20% Max HP"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Judgement Reaper",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "After the main character performs a total of 12 normal attacks, combos, or counterattacks, summon the Judgement Reaper to unleash [ Death Lotus ], dealing normal attack damage equal to 50% of the main character's attack power to all enemies 8 times. Cooldown: 3 turns",
+        "Legendary": "After each Basic Attack, Combo or Counterattack, summon [ Death Sythe ] to deal 60% Basic Attack DMG, up to 3 times per turn",
+        "Mythic": "After [ Death Sythe ] activation, add 1 to [ Death Lotus ] trigger count"
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
+    },
+    {
+      "n": "Knight of the End",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "When the character's HP is below 50%, summon the Knight of the End to release [ Judgement Shield ], dealing 400% of the protagonist's ATK as counter and combo damage to enemies, granting a shield equal to 50% of max HP for 3 rounds; cooldown 7 rounds.",
+        "Legendary": "[ Judgement Shield ] shield value +50%.",
+        "Mythic": "During battle, 6% of the Main Character's shield value is converted into Attack Power, up to 20% of own Attack."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage Reduction +0.5%",
+        "P2": "Final Damage Reduction +1.0%",
+        "P3": "Final Damage Reduction +1.5%",
+        "P4": "Final Damage Reduction +2.0%",
+        "P5": "Final Damage Reduction +2.5%",
+        "P6": "Final Damage Reduction +3.0%",
+        "P7": "Final Damage Reduction +3.5%",
+        "P8": "Final Damage Reduction +4.0%",
+        "P9": "Final Damage Reduction +4.5%",
+        "P10": "Final Damage Reduction +5.0%"
+      }
+    },
+    {
+      "n": "Legendary Knight",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Summon Legendary Knight and deal 300% of hero's ATK as Counter DMG, reduce Counter DMG Reduction of the target by 50% for 3 rounds, and hero's DEF +50% for 5 rounds. DMG +10% for every 5% of hero's HP lost.",
+        "Epic": "Global ATK +10%",
+        "Legendary": "Global HP +10%",
+        "Mythic": "Global DEF +10%"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Legendary Ranger",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Summon Legendary Ranger and deal 300% of hero's ATK as Basic ATK DMG, reduce Critical DMG Reduction of the target by 50% for 3 rounds. DMG +10% for every 5% of target's HP lost. Hero's Ignore Dodge +30% for 3 rounds.",
+        "Epic": "Global ATK +10%",
+        "Legendary": "Global HP +10%",
+        "Mythic": "Global DEF +10%"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Splinter",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "Every 5 combined normal attacks, combos, or counters by the hero, Splinter is summoned to cast Frenzy Claw, dealing 8 hits of 75% ATK each to all enemies; cooldown 2 turns.",
+        "Legendary": "When casting Frenzy Claw, enemy control-resist -30% for 3 turns; each hit has a 60% chance to inflict Poison or Bleed.",
+        "Mythic": "If after Frenzy Claw enemies have 3 Poison stacks, 50% chance to stun for 1 turn; if they have 7 Bleed stacks, enemy final damage bonus -15% for 2 turns."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
+    },
+    {
+      "n": "Spring Orchid",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": "Global ATK +5%",
+        "Rare": "Global ATK +10%",
+        "Epic": "After the protagonist releases Lightning, Flame Wave, and Ice Spike a total of 15 times, summon Chunlan to unleash [ Elemental Bloom ], dealing 150% fire damage, 150% electric damage, and 150% ice damage to enemies; cooldown 4 turns.",
+        "Legendary": "After [ Elemental Bloom ] is cast, the target gains [ Serpent Seed ] for 3 turns. During [ Serpent Seed ], record the electric, fire and ice damage received by the target. When [ Serpent Seed ] ends, it deals 15% of the recorded damage to the target.",
+        "Mythic": "At the end of [ Serpent Seed ], for each negative buff on the target, [ Serpent Seed ] damage increases by 10%, up to a maximum of 100%."
+      },
+      "polarization_effects": {
+        "P1": "Final Damage +0.8%",
+        "P2": "Final Damage +1.6%",
+        "P3": "Final Damage +2.4%",
+        "P4": "Final Damage +3.2%",
+        "P5": "Final Damage +4.0%",
+        "P6": "Final Damage +4.8%",
+        "P7": "Final Damage +5.6%",
+        "P8": "Final Damage +6.4%",
+        "P9": "Final Damage +7.2%",
+        "P10": "Final Damage +8.0%"
+      }
+    },
+    {
+      "n": "Tribal Orc",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global ATK +10%",
+        "Epic": "After 6 turns, summon Holy Statue to deal 260% ATK",
+        "Legendary": "DMG Coefficient +50%",
+        "Mythic": "When HP is below 30%, character CRIT rate +10%"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    },
+    {
+      "n": "Undead Pirate",
+      "q": [
+        "Common",
+        "Rare",
+        "Epic",
+        "Legendary",
+        "Mythic"
+      ],
+      "quality_effects": {
+        "Common": null,
+        "Rare": "Global ATK +10%",
+        "Epic": "After 6 turns, summon Holy Statue to deal 260% Combo DMG",
+        "Legendary": "DMG Coefficient +50%",
+        "Mythic": "After skill cast, Combo Count +1 for 3 turns"
+      },
+      "polarization_effects": {
+        "P1": null,
+        "P2": null,
+        "P3": null,
+        "P4": null,
+        "P5": null,
+        "P6": null,
+        "P7": null,
+        "P8": null,
+        "P9": null,
+        "P10": null
+      }
+    }
+  ],
+  "adventurers": [
+    {
+      "n": "None"
+    },
+    {
+      "n": "Daji",
+      "tier_effects": [
+        "Daji switches between Demon Queen Form and Celestial Fox Form. While in Demon Queen Form, she gains 3 stacks of Demonic Aura) at the end of each turn; at 9 stacks, she immediately switches to Celestial Fox Form for 1 turn. When controlled, she will switch to Celestial Fox Form on her next action. When Celestial Fox Form ends, Demonic Aura resets. In Demon Queen Form, the first skill cast each turn grants the hero a shield equal to 20% Max HP. In Celestial Fox Form, the first skill additionally deals Demonic Aura damage equal to 200% + 100%* [Demonic Aura) of the hero's ATK",
+        "Adventurer's ATK +25%",
+        "In Demon Queen Form, each Lightning or Flame Wave increases Daji's Demonic Aura damage by +10%, stacking up to 10 times and lasting until the end of battle",
+        "Adventurer's HP +25%",
+        "When Daji enters Celestial Fox Form, she unleashes Foxflame Catastrophe, dealing Demonic Aura damage equal to 300% + 100%* [Demonic Aura) of Daji's ATK to enemies, and increases her Lightning coefficient by +60% and Flame Wave coefficient by +60% until Celestial Fox Form ends. When Demonic Aura reaches 9 stacks, Foxflame Catastrophe additionally deals Demonic Aura damage equal to 10% of the target's Max HP (up to 50x the hero's ATK)",
+        "At the start of the first turn, gain 9 stacks of Demonic Aura. Upon entering Celestial Fox Form, gain 1 control immunity, damage reduction +100%, and Daji's Electric and Fire damage is increased by the Demonic Aura bonus",
+        "Adventurer's ATK +25%",
+        "Foxflame Catastrophe hit count +2. In Celestial Fox Form, Lightning and Flame Wave deal additional Demonic Aura damage equal to 2% of the target's Max HP (up to 20x the hero's ATK), triggering up to 10 times per turn",
+        "When casting a Rage Skill in Celestial Fox Form, deals additional Demonic Aura damage equal to 900% of the hero's ATK. When casting a Rage Skill in Demon Queen Form, gains a shield equal to 20% Max HP, up to 1 time per turn",
+        "Adventurer's HP +25%",
+        "Each time Demonic Aura damage is dealt, Daji's shield bonus increases by +4%, global Demonic Aura damage +6%, and final damage reduction +1%, stacking up to 10 times"
+      ]
+    },
+    {
+      "n": "Donatello",
+      "tier_effects": [
+        "Donatello's basic attack is replaced with [ Assault Thrust ], increasing base damage coefficient to 200%. After the hero's basic attack, there is a 50% chance to trigger 1 extra [ Assault Thrust ]. Extra [ Assault Thrust ] does not trigger during combos or counterattacks.",
+        "Adventurer's ATK +25%",
+        "[ Assault Thrust ] 100% chance to trigger 2 times, after [ Assault Thrust ] gain 1 stack of [ Analysis ]. For every 2 stacks of [ Analysis ], Donatello gains a shield equal to 5% of Max HP, shield can trigger up to 4 times per turn",
+        "Adventurer's HP +25%",
+        "Starting from turn 2, every 3 turns casts [ Gale Staff Shadow ] once, dealing 5 hits of skill damage equal to 180% of hero's attack. Each hit has a 60% chance to grant 1 stack of [ Analysis ]. After casting [ Gale Staff Shadow ], the hero gains 1 control immunity. Control immunity does not stack; repeated gains take the maximum value.",
+        "After [ Assault Thrust ], gain 1 stack of [ Analysis ]. For every 2 stacks of [ Analysis ], deal skill damage equal to 200% of hero's ATK to the enemy, damage can trigger up to 4 times per turn",
+        "Adventurer's ATK +25%",
+        "[ Gale Staff Shadow ] cooldown -1, damage coefficient increases to 360%. After casting, every 2 stacks of [ Analysis ] deal 1 additional skill damage equal to 2% of enemy's max HP. Each additional damage cannot exceed 20 times hero's attack, and extra damage can take effect up to 5 times.",
+        "Donatello's Rage Skill is replaced with [ Whirlwind Strike ]. When casting the Rage Skill, additionally deals 3 hits of skill damage equal to 300% of hero's attack. After casting, each stack of [ Analysis ] grants hero damage reduction +10%, up to a maximum of 100%, lasting 3 turns.",
+        "Adventurer's HP +25%",
+        "[ Whirlwind Strike ] gains 1 stack of [ Analysis ] with each damage. At 5 stacks of [ Analysis ], Donatello's global skill damage +60%. At 10 stacks of [ Analysis ], Donatello's shield bonus +35%. At 15 stacks of [ Analysis ], Donatello's final damage reduction +10%"
+      ]
+    },
+    {
+      "n": "Dragon Girl",
+      "tier_effects": [
+        "Basic Attack and Rage Skill trigger Dragon Breath, dealing 90% of Main Character's ATK as Dragon Flame DMG, and gaining 1 stack of (Dragon Soul), up to 20 stacks.",
+        "Adventurer's ATK +25%",
+        "The damage of Dragon Breath is increased to 180% of the protagonist's ATK, and each round starts with 1 stack of [ Dragon Soul ].",
+        "Adventurer's HP +25%",
+        "After stacking 5 layers of [ Dragon Soul ], releases 1 [ Catastrophic Dragon Breath ] every 2 turns, dealing 600% of the protagonist's ATK as Dragon Flame DMG to enemies and increasing the protagonist's 30% Dragon Flame DMG for 2 turns",
+        "Weapon transforms into Dragon Weapon, Basic Attack and Rage Skill gain additional Dragon Flame DMG bonus. Each stack of [ Dragon Soul ] increases Dragon Flame DMG by +5%.",
+        "Adventurer's ATK +25%",
+        "The damage of Catastrophic Dragon Breath] increases to 1200% of the protagonist's ATK, and the protagonist's Dragon Flame DMG bonus increases to 60%",
+        "After 10 stacks of [Dragon Soul), upon casting [Calamity Dragon Breath), deals 10% of the protagonist's max HP as Dragonflame damage and 10% of the target's current HP as true damage. Increases the protagonist's overall damage by 30%, lasting 2 turns.",
+        "Adventurer's HP +25%",
+        "Upon reaching 10 stacks of [ Dragon Soul ] for the first time, restore 100% of the Main Character's HP. After each [ Cataclysmic Dragon Breath ] release, restore 20% of the Main Character's HP."
+      ]
+    },
+    {
+      "n": "Gagarin",
+      "tier_effects": [
+        "Gagarin enters the [Spacewalk) state every 5 turns for 2 turns. During this state, all daggers have a 50% chance to become missiles, dagger damage coefficient +35%, and Angel Dagger damage coefficient +100%. Every 2 basic attacks or 1 Rage Skill used by Gagarin reduces [Spacewalk) cooldown by 1 turn.",
+        "Adventurer's ATK +25%",
+        "In the [Spacewalk) state, Gagarin's basic and Rage Skills are treated as daggers and count toward dagger-related effects. Dagger damage coefficient increases to +55%, and Angel Dagger damage coefficient increases to +150% (Treated as daggers: benefits from extra dagger damage bonuses).",
+        "Adventurer's HP +25%",
+        "When Gagarin enters [ Spacewalk ], he marks the enemy and throws 1 [ Ultimate Bomb ] after 2 turns, dealing dagger damage equal to 400% of the protagonist's attack. During this time, each 1 dagger increases the [ Ultimate Bomb ] damage coefficient by +50%, and each 1 Angel Dagger increases it by +100%. Max bonus is +500%",
+        "While in [ Spacewalk ] state, Gagarin gains +15% dodge rate, missile conversion chance for daggers increases to 65%, and gains 1 control immunity each time. Control immunity does not stack; only the highest value applies.",
+        "Adventurer's ATK +25%",
+        "[ Ultimate Bomb ] base damage coefficient +400%, max damage coefficient +500%, deals dagger damage equal to 10% of the target's max HP, not exceeding 100 times the attack",
+        "Gagarin restores 15% HP per turn and converts 25% of overhealing into a shield",
+        "Adventurer's HP +25%",
+        "During [ Spacewalk ], global dagger damage +30%, global skill damage +30%, ignore counter rate +30%, ignore combo rate +30%."
+      ]
+    },
+    {
+      "n": "Jianghu Meow",
+      "tier_effects": [
+        "Jianghu Meow's Basic Attack, Combo, and Counterattack are replaced by [ Triple Fish Shadow ], dealing 3 instances of Basic Attack DMG. The damage multiplier for each Basic Attack and Combo is 80%/120%/160% of the Protagonist's ATK respectively; the damage multiplier for each Counterattack is 60%/100%/150% of the Protagonist's ATK respectively. [ Triple Fish Combo ] cannot benefit from Skill DMG Boost.",
+        "Adventurer's ATK +25%",
+        "Each time Jianghu Meow uses a Basic Attack, there is a 50% chance to gain 1 stack of [ Fish Shadow ], increasing the Protagonist's Global Combo DMG by +5%. Stacks up to 10 times and lasts until the end of the battle.",
+        "Adventurer's HP +25%",
+        "Starting from round 2, casts [ Phantom Wave Cleave ] 1 time every 3 rounds, dealing Basic Attack and Combo DMG equal to 200% of the Protagonist's ATK to the enemy. This skill can trigger Combos, CRITs, and Super CRITs. (Will not trigger additional effects after a Combo or CRIT)",
+        "Jianghu Meow gains an additional 1 stack of [ Fish Shadow ] upon each Combo. At 3 stacks of [ Fish Shadow ], Jianghu Meow's Super CRIT Rate increases by +20%. At 5 stacks of [ Fish Shadow ], Jianghu Meow's Basic Attack CRIT DMG increases by +100% and Lifesteal increases by +30%.",
+        "Adventurer's ATK +25%",
+        "[ Phantom Wave Cleave ] cooldown -1, [ Phantom Wave Cleave ] damage multiplier is increased to 400%. When casting [ Phantom Wave Cleave ], for every 5 stacks of [ Fish Shadow ], deals additional Basic Attack DMG equal to 5% of Max HP to the enemy, not exceeding 50 times the Protagonist's ATK.",
+        "When Jianghu Meow casts a Rage Skill, it additionally deals 3 instances of Basic Attack and Combo DMG equal to 300% of the Protagonist's ATK. Direct Skill DMG (excluding continuous DMG) taken by the Protagonist that exceeds 20% of Max HP is reduced to 20% of the original DMG, lasting for 3 rounds. The mitigated DMG cannot exceed 120% of Max HP. Also grants 1 CC Immunity attempt, which does not stack.",
+        "Adventurer's HP +25%",
+        "When casting [ Twin Fish Ebb ], each stack of [ Fish Shadow ] increases the Protagonist's Global Combo DMG by +10% for 2 rounds. At 10 stacks of [ Fish Shadow ], additionally increases the Protagonist's Combo Rate by +10% for 2 rounds."
+      ]
+    },
+    {
+      "n": "Leonardo",
+      "tier_effects": [
+        "Leonardo's basic attack, combo, and counterattack are replaced with [ Air Blade Combo ], dealing 3 hits of damage. The damage coefficients are 30%, 70%, and 100%, respectively. After [ Air Blade Combo ], deals ninja damage equal to 100% of the protagonist's attack.",
+        "Adventurer's ATK +25%",
+        "Each normal attack has a 70% chance to deal additional ninjutsu damage equal to 100% of this damage.",
+        "Adventurer's HP +25%",
+        "Starting from the 2rd round, releases [Whirlwind Sword Dance) once every 3 rounds, dealing 5 instances of ninjutsu damage equal to 200% of the protagonist's attack. (Whirlwind Sword Dance] deals +30% damage to enemies with shields.",
+        "Ninjutsu damage +100%, Leonardo's physical damage, electric and fire attributes additionally gain ninjutsu damage bonus.",
+        "Adventurer's ATK +25%",
+        "[ Whirlwind Sword Dance ] cooldown-1, [ Whirlwind Sword Dance ] damage coefficient increased to 400%, after each damage deals ninjutsu damage equal to 2% of target's max HP, each damage cannot exceed 20 times the protagonist's attack.",
+        "Leonardo's rage skill is replaced with [Spiral Turtle Slash), when releasing rage skill additionally deals 3 instances of ninjutsu damage equal to 300% of protagonist's attack, each damage applies 1 stack of bleeding and burning.",
+        "Adventurer's HP +25%",
+        "Turtle Spin Slash's damage coefficient is increased to 500% of the hero's ATK. Each hit increases the hero's global Ninjutsu damage by +20%, stacking up to 3 times and lasting until the end of battle."
+      ]
+    },
+    {
+      "n": "Little Bear Prince",
+      "tier_effects": [
+        "After a Basic Attack, inflict [ Bleeding) on the enemy for 3 turns, stacking up to 10 layers.[ Bleeding ]: Deals physical damage equal to 50% of the protagonist's ATK each turn.",
+        "Adventurer's ATK +20%",
+        "Protagonist's damage to bleeding targets +50%",
+        "Adventurer's HP +20%",
+        "Each stack of bleeding increases the Main Character's Basic Attack DMG by 8%.",
+        "Main Character's DMG to bleeding targets increased to 100%.",
+        "Adventurer's ATK +20%",
+        "Each stack of bleeding increases Basic Attack DMG to 18%.",
+        "After 4 turns of battle, the skill activates, granting the protagonist +100% combo rate, +1 combo count, and +100% combo damage, lasting for 1 turn, with a cooldown of 4 turns.",
+        "Adventurer's HP +20%",
+        "Initial trigger turn -1, cooldown -1, increases Combo DMG to 300%."
+      ]
+    },
+    {
+      "n": "Michelangelo",
+      "tier_effects": [
+        "Michelangelo's basic attack is replaced with [Flexible Strike), base damage coefficient increased to 200%. Gains 1 stack of [ Agility ] each turn, increasing Flexible Strike's damage coefficient by +20%, stackable up to 5 times",
+        "Adventurer's ATK +25%",
+        "After gaining [ Agility ], when cumulative damage received exceeds 40% of hero's Max HP, hero's final damage reduction +15% for 1 turn, cooldown 1 turn after each activation",
+        "Adventurer's HP +25%",
+        "Starting from turn 2, every 3 turns casts [ Rhythm Frenzy ] once, dealing 5 hits of skill damage equal to 200% of hero's attack. Each stack of [ Dexterity ] increases [ Rhythm Frenzy ]'s damage coefficient by +10%.",
+        "[ Flexible Strike ] upgraded to Level 3",
+        "Adventurer's ATK +25%",
+        "[ Rhythm Frenzy ] cooldown -1, damage coefficient increases to 400%. After each hit, deals additional skill damage equal to 2% of target's max HP. Each hit's damage cannot exceed 20 times hero's attack.",
+        "Michelangelo's Rage Skill is replaced with [ Meteor Barrage ]. When casting, additionally deals 3 hits of skill damage equal to 300% of hero's attack. Each stack of [ Dexterity ] increases [ Meteor Barrage ]'s damage coefficient by +10%.",
+        "Adventurer's HP +25%",
+        "[ Meteor Barrage ] each damage coefficient increased to 500% of hero's ATK. After casting [ Meteor Barrage ], hero's global skill damage +60% until the end of battle"
+      ]
+    },
+    {
+      "n": "Panda Hero",
+      "tier_effects": [
+        "After a Basic Attack, 60% chance to increase the Main Character's Combo DMG, CRIT DMG, and Counterattack DMG by 3%, stackable up to 5 times, lasting until the end of the battle.",
+        "Adventurer's ATK +15%",
+        "Trigger chance increased to 100%",
+        "Adventurer's HP +15%",
+        "Increases the Main Character's Weapon CRIT Rate by 5%, Combo Rate by 5%, and Counter Rate by 5%.",
+        "Increased Combo DMG, CRIT DMG, and Counterattack DMG to 5%, stackable up to 10 layers.",
+        "Adventurer's ATK +15%",
+        "Increases Weapon CRIT Rate to 11%, Combo Rate to 11%, and Counter Rate to 11%.",
+        "After a weapon crit, combo, or counter, there is an 80% chance to increase hero's physical damage bonus by 4%. Can stack up to 10 times, lasting until the end of the battle.",
+        "Adventurer's HP +15%",
+        "Trigger chance increased to 100%, and Physical DMG Amplification increased to 8%."
+      ]
+    },
+    {
+      "n": "Piggy Warrior",
+      "tier_effects": [
+        "After Basic Attack, deal extra 10% Basic Attack DMG",
+        "Adventurer's ATK +10%",
+        "Damage increased to 20% of the protagonist's ATK",
+        "Adventurer's HP +10%",
+        "Experience gain rate increases to 6%.",
+        "Damage increased to 30% of the protagonist's ATK",
+        "Adventurer's ATK +10%",
+        "Experience gain rate increases to 15%.",
+        "Restores 6% HP after each battle.",
+        "Adventurer's HP +10%",
+        "Recovery increased to 15% HP"
+      ]
+    },
+    {
+      "n": "Raphael",
+      "tier_effects": [
+        "Raphael's basic attack, combo, and counter are replaced with [ Fury Combo ] dealing 3 times damage. For basic attack and combo, each damage's base coefficient is 80%, 120%, 160% respectively. For counter, each damage's base coefficient is 60%, 100%, 150% respectively",
+        "Adventurer ATK +25%",
+        "Raphael gains 1 stack of [ Fury ] for every 5 basic attacks, increasing protagonist's global combo damage by +10%, up to 5 stacks, lasting until the end of battle",
+        "Adventurer HP +25%",
+        "Starting from turn 2, [Fury Tornado) is released every 3 turns, dealing 1 hit of normal and combo damage equal to 200% of the protagonist's attack. This skill can trigger combo, critical hit, and super critical hit (but does not trigger post-combo or post-critical extra effects).",
+        "Gain 2 stacks of Fury at battle start. Basic attack critical hits have 10% chance to become super critical, each [ Fury ] stack increases this chance by 2%. Each [ Fury ] stack increases protagonist's basic attack critical damage by +20% and lifesteal by +5%",
+        "Adventurer ATK +25%",
+        "[ Rage Tornado ] cooldown-1, [ Rage Tornado ] damage coefficient increased to 400%, each stack of [ Rage ] deals 1 instance of normal attack damage equal to 1% of target's max HP, not exceeding 10 times the protagonist's attack",
+        "When Raphael casts rage skill, deals additional 3 times of protagonist's 200% attack as basic attack and combo damage, grants protagonist a skill shield equal to 60% max health, and gains 1 control immunity count. Control immunity effects don't stack, repeated gains take maximum value.",
+        "Adventurer HP +25%",
+        "When Steel Impact is cast, each stack of [ Fury ] increases protagonist's global combo damage by +20% and lifesteal effect by +5%, lasting 2 turns."
+      ]
+    },
+    {
+      "n": "Wukong",
+      "tier_effects": [
+        "Wukong's counterattack changes to Thrust Staff, and the base damage coefficient of Thrust Staff is increased to 200%. Thrust Staff has a 50% chance to trigger 2 times.",
+        "Adventurer's ATK +25%",
+        "Thrust Staff has a 100% chance to trigger 2 times.",
+        "Adventurer's HP +25%",
+        "When Wukong uses basic attack, ultimate, Thrust Staff, or is hit by a weapon, he gains 1 stack of [ Staff Momentum ], up to 20 stacks. Starting from turn 3, every 3 turns he casts Ruyi Jingu Bang, dealing Light Spear damage equal to 200% + [ Staff Momentum ] stacks * 20% and counterattack damage equal to 200% + [ Staff Momentum ] stacks * 20%, and additionally deals Light Spear damage equal to Target Max HP * ([ Staff Momentum ] stacks * 0.5%), up to a max of 30 times the hero's ATK. After using Ruyi Jingu Bang, [ Staff Momentum ] resets.",
+        "Thrust Staff has a 45% chance to perform a Perfect Counter. Its base damage coefficient increases to 400%, and the hero gains a 20% shield.",
+        "Adventurer's ATK +25%",
+        "Ruyi Jingu Bang cooldown -1, [ Staff Momentum ] gain speed +100%, max extra damage of Ruyi Jingu Bang increased to 60 times the hero's ATK. After casting Ruyi Jingu Bang, Wukong gains +15% global skill damage reduction for 1 turn.",
+        "All light spears gain additional counterattack damage bonus. Sword Qi / dagger / fire / electric damage -30%, counterattack damage +100%.",
+        "Adventurer's HP +25%",
+        "Wukong's shield gain is increased by 30%, and he gains attack power equal to 30% of his shield amount, up to 35% of the hero's attack."
+      ]
+    }
+  ]
+}

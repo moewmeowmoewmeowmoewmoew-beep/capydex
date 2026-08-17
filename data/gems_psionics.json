@@ -1,0 +1,3115 @@
+{
+  "gems": {
+    "weapon": [
+      {
+        "id": "g_81101",
+        "n": "Global Attack +22%",
+        "t": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          15.0,
+          18.0,
+          22.0
+        ],
+        "tier_desc": [
+          "",
+          "Global ATK +2%",
+          "Global Attack +4%",
+          "Global Attack +6%",
+          "Global ATK +8%",
+          "Global Attack +10%",
+          "Global ATK +12%",
+          "Global ATK +15%",
+          "Global Attack +18%",
+          "Global Attack +22%"
+        ]
+      },
+      {
+        "id": "g_81102",
+        "n": "Basic Attack Damage Boost +35%",
+        "t": [
+          3.0,
+          6.0,
+          9.0,
+          12.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0
+        ],
+        "tier_desc": [
+          "",
+          "Basic ATK DMG Bonus +3%",
+          "Normal Attack DMG Boost +6%",
+          "Normal Attack DMG Boost +9%",
+          "Normal Attack DMG Boost +12%",
+          "Normal Attack DMG Boost +15%",
+          "Normal Attack DMG Boost +20%",
+          "Normal Attack DMG Boost +25%",
+          "Basic Attack Damage Boost +30%",
+          "Basic Attack Damage Boost +35%"
+        ]
+      },
+      {
+        "id": "g_81103",
+        "n": "Combo Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Combo DMG Bonus +5%",
+          "Combo DMG Boost +10%",
+          "Combo DMG Boost +15%",
+          "Combo DMG Boost +20%",
+          "Combo DMG Boost +25%",
+          "Combo DMG Boost +30%",
+          "Combo DMG Boost +35%",
+          "Combo Damage Boost +40%",
+          "Combo Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81104",
+        "n": "Counterattack Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Counter DMG Bonus +5%",
+          "Counterattack DMG Boost +10%",
+          "Counterattack DMG Boost +15%",
+          "Counterattack DMG Boost +20%",
+          "Counterattack DMG Boost +25%",
+          "Counterattack DMG Boost +30%",
+          "Counterattack DMG Boost +35%",
+          "Counterattack Damage Boost +40%",
+          "Counterattack Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81105",
+        "n": "Physical Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Physical DMG Bonus +5%",
+          "Physical DMG Boost +10%",
+          "Physical DMG Boost +15%",
+          "Physical DMG Boost +20%",
+          "Physical DMG Boost +25%",
+          "Physical DMG Boost +30%",
+          "Physical DMG Boost +35%",
+          "Physical Damage Boost +40%",
+          "Physical Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81106",
+        "n": "Lightning Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Lightning DMG Bonus +5%",
+          "Lightning DMG Boost +10%",
+          "Lightning DMG Boost +15%",
+          "Lightning DMG Boost +20%",
+          "Lightning DMG Boost +25%",
+          "Lightning DMG Boost +30%",
+          "Lightning DMG Boost +35%",
+          "Lightning Damage Boost +40%",
+          "Lightning Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81107",
+        "n": "Fire Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Fire DMG Bonus +5%",
+          "Fire DMG Boost +10%",
+          "Fire DMG Boost +15%",
+          "Fire DMG Boost +20%",
+          "Fire DMG Boost +25%",
+          "Fire DMG Boost +30%",
+          "Fire DMG Boost +35%",
+          "Fire Damage Boost +40%",
+          "Fire Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81108",
+        "n": "Explosion Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Explosion DMG Bonus +5%",
+          "Explosion DMG Boost +10%",
+          "Explosion DMG Boost +15%",
+          "Explosion DMG Boost +20%",
+          "Explosion DMG Boost +25%",
+          "Explosion DMG Boost +30%",
+          "Explosion DMG Boost +35%",
+          "Explosion Damage Boost +40%",
+          "Explosion Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81109",
+        "n": "Final Damage Boost +15%",
+        "t": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          7.5,
+          10.0,
+          12.5,
+          15.0
+        ],
+        "tier_desc": [
+          "",
+          "Final DMG Bonus +1%",
+          "Final DMG Boost +2%",
+          "Final DMG Boost +3%",
+          "Final DMG Boost +4%",
+          "Final DMG Boost +5%",
+          "Final DMG Boost +7.5%",
+          "Final DMG Boost +10%",
+          "Final Damage Boost +12.5%",
+          "Final Damage Boost +15%"
+        ]
+      },
+      {
+        "id": "g_81110",
+        "n": "Damage over Time Duration +1, Damage over Time +50%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "DoT duration +1, DoT damage -30%",
+          "DoT Duration +1, DoT DMG -15%",
+          "DoT duration +1",
+          "DoT Duration +1, DoT DMG +15%",
+          "DoT Duration +1, DoT DMG +30%",
+          "Damage over Time Duration +1, Damage over Time +40%",
+          "Damage over Time Duration +1, Damage over Time +50%"
+        ]
+      },
+      {
+        "id": "g_81111",
+        "n": "Increased Damage to Bosses +35%",
+        "tier_desc": [
+          "",
+          "Bonus damage to bosses +3%",
+          "DMG vs Boss +6%",
+          "DMG vs Boss +9%",
+          "Bonus DMG to bosses +12%",
+          "DMG vs Boss +15%",
+          "Bonus DMG to boss +20%",
+          "Bonus DMG to bosses +25%",
+          "Increased Damage to Bosses +30%",
+          "Increased Damage to Bosses +35%"
+        ]
+      },
+      {
+        "id": "g_81112",
+        "n": "When casting a skill, has a 45% chance to ignore 50% of the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Casting a skill has a 5% chance to ignore 50% of the enemy's damage reduction",
+          "Casting a skill has a 10% chance to ignore 50% of the enemy's damage reduction",
+          "Casting a skill has a 15% chance to ignore 50% of the enemy's damage reduction",
+          "Casting a skill has a 22.5% chance to ignore 50% of the enemy's damage reduction",
+          "Casting a skill has a 30% chance to ignore 50% of the enemy's damage reduction",
+          "When casting a skill, has a 37.5% chance to ignore 50% of the enemy’s damage reduction effect",
+          "When casting a skill, has a 45% chance to ignore 50% of the enemy’s damage reduction effect"
+        ]
+      },
+      {
+        "id": "g_81113",
+        "n": "Output damage fluctuates randomly between -20% and 80%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Output DMG fluctuates between -20% and 30%",
+          "Output DMG varies randomly between -20% to 35%",
+          "Output DMG fluctuates between -20% and 40%",
+          "Output DMG fluctuates between -20% and 50%",
+          "Output DMG varies randomly between -20% to 60%",
+          "Output damage fluctuates randomly between -20% and 70%",
+          "Output damage fluctuates randomly between -20% and 80%"
+        ]
+      },
+      {
+        "id": "g_81114",
+        "n": "Basic Attacks have a 40% chance to deal 2× damage",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Normal attacks have a 10% chance to deal 2× damage",
+          "Normal attacks have a 15% chance to deal 2× damage",
+          "Normal ATK has 22.5% chance to deal 2× DMG",
+          "Normal ATK has 30% chance to deal 2× DMG",
+          "Basic Attacks have a 35% chance to deal 2× damage",
+          "Basic Attacks have a 40% chance to deal 2× damage"
+        ]
+      },
+      {
+        "id": "g_81115",
+        "n": "Sword Qi True Damage attack cap multiplier +14",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Sword Qi true DMG ATK cap multiplier +2",
+          "Sword Qi true DMG ATK cap multiplier +4",
+          "Sword Qi true DMG ATK cap multiplier +6",
+          "Sword Qi true DMG ATK cap multiplier +8",
+          "Sword Qi true DMG ATK cap multiplier +10",
+          "Sword Qi True Damage attack cap multiplier +12",
+          "Sword Qi True Damage attack cap multiplier +14"
+        ]
+      },
+      {
+        "id": "g_81116",
+        "n": "Deals +35% damage to targets with HP above 70%",
+        "tier_desc": [
+          "",
+          "Deals +3% damage to targets with >70% HP",
+          "Deals +6% damage to targets with >70% HP",
+          "Deals +9% damage to targets with >70% HP",
+          "Bonus DMG to targets with HP >70% +12%",
+          "For targets with HP > 70%, damage +15%",
+          "Bonus DMG to targets with HP >70% +20%",
+          "Bonus DMG to targets with HP >70% +25%",
+          "Deals +30% damage to targets with HP above 70%",
+          "Deals +35% damage to targets with HP above 70%"
+        ]
+      },
+      {
+        "id": "g_81117",
+        "n": "Each Combo additionally deals damage equal to 2.5% of the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Each combo hit deals extra combo damage equal to 0.2% of the target's max HP, up to 3 times per turn, capped at 2 × ATK",
+          "Each combo adds 0.4% of target max HP as combo DMG, max 3 times/turn, up to 4× ATK",
+          "Each combo hit deals an extra 0.7% of the target's max HP as combo damage, up to 3 times per turn, not exceeding 7 times attack",
+          "Each combo additionally deals 1% of target max HP as combo DMG, up to 3 times per turn, max 10× ATK",
+          "Each combo adds extra combo DMG equal to 1.5% of target's max HP, up to 3 times per turn, max 15× ATK",
+          "Each Combo additionally deals damage equal to 2% of the target’s Max HP, up to 3 times per turn, not exceeding 20× Attack",
+          "Each Combo additionally deals damage equal to 2.5% of the target’s Max HP, up to 3 times per turn, not exceeding 25× Attack"
+        ]
+      },
+      {
+        "id": "g_81118",
+        "n": "On Counterattack, additionally deals damage equal to 3% of…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "On counterattack, deals extra damage equal to 0.3% of the target’s max HP, up to 2 times per turn, capped at 3 × ATK",
+          "On counter, add 0.6% of target max HP as extra DMG, max 2 times/turn, up to 6× ATK",
+          "When counterattacking, deal an additional 1% of the target’s max HP as damage, up to 2 times per turn, not exceeding 10 times attack",
+          "On counter, deal additional 1.5% of target max HP as DMG, max 2 times/turn, up to 15× ATK",
+          "Counterattack adds extra 2% of target's max HP as DMG, max 2 times/turn, up to 20× ATK",
+          "On Counterattack, additionally deals damage equal to 2.5% of the target’s Max HP, up to 2 times per turn, not exceeding 25× Attack",
+          "On Counterattack, additionally deals damage equal to 3% of the target’s Max HP, up to 2 times per turn, not exceeding 30× Attack"
+        ]
+      },
+      {
+        "id": "g_81119",
+        "n": "On Critical Hit, deals additional damage equal to 4% of the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "On Critical Hit, deals extra damage equal to 0.5% of target’s max HP, once per turn, up to 5 × ATK",
+          "On Critical Hit, deals extra damage equal to 1% of target’s max HP, once per turn, up to 10 × ATK",
+          "On Critical Hit, deals additional damage equal to 1.5% of the target's max HP, once per turn, up to 15 times the attack",
+          "On Critical Hit, deals additional damage equal to 2.2% of the target's max HP, once per turn, up to 22 times the attack",
+          "On Critical Hit, deals additional damage equal to 3% of the target's max HP, once per turn, up to 30 times the attack",
+          "On Critical Hit, deals additional damage equal to 3.5% of the target’s Max HP, up to 1 time per turn, not exceeding 35 times the Attack Power",
+          "On Critical Hit, deals additional damage equal to 4% of the target’s Max HP, up to 1 time per turn, not exceeding 40 times the Attack Power"
+        ]
+      },
+      {
+        "id": "g_81120",
+        "n": "Every 3 daggers additionally trigger 1 Rage Dagger…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Every 3 daggers, additionally triggers 1 Rage Dagger, restoring 15 Rage, up to 1 time per turn",
+          "Every 3 daggers, additionally triggers 1 Rage Dagger, restoring 15 Rage, up to 2 times per turn",
+          "Every 3 daggers additionally trigger 1 Rage Dagger, restoring 15 Rage, up to 2 times per turn, and increases the hero’s dagger damage by +10%",
+          "Every 3 daggers additionally trigger 1 Rage Dagger, restoring 15 Rage, up to 2 times per turn, and increases the hero’s dagger damage by +20%"
+        ]
+      },
+      {
+        "id": "g_81121",
+        "n": "Lightning hitting a burning target has a 20% chance to…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Lightning hitting a burning target has a 3% chance to paralyze (disable counterattack)",
+          "Lightning hitting burning target has 6% chance to paralyze (no counter)",
+          "Lightning hitting burning targets has 9% chance to paralyze (cannot counterattack)",
+          "Lightning hitting burning target has 12% chance to paralyze (disables counter)",
+          "Lightning hitting burning targets has 15% chance to paralyze (cannot counterattack)",
+          "Lightning hitting a burning target has a 17% chance to paralyze the target (unable to counterattack)",
+          "Lightning hitting a burning target has a 20% chance to paralyze the target (unable to counterattack)"
+        ]
+      },
+      {
+        "id": "g_81122",
+        "n": "Every 2 light spears additionally release 1 Shield Light…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Every 2 Light Spear shots cast 1 shield shot, grants 4% shield, max 1/turn",
+          "Every 2 Light Spear shots cast 1 Shield Shot, adds 4% shield, max 2/turn",
+          "Every 2 Light Spear shots cast 1 Shield Shot, adds 6% shield, max 2/turn",
+          "Every 2 Light Spears trigger 1 Shield Spear, increases shield by 8%, max 2 times/turn",
+          "Every 2 light spears additionally release 1 Shield Light Spear, increasing shield by 10%, up to 2 times per turn",
+          "Every 2 light spears additionally release 1 Shield Light Spear, increasing shield by 12%, up to 2 times per turn"
+        ]
+      },
+      {
+        "id": "g_81123",
+        "n": "Phoenix Fireball has a 40% chance to release 1 additional…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Phoenix Fireball has a 10% chance to release 1 additional fireball upon hitting a target",
+          "Phoenix Fireball has a 15% chance to release 1 additional fireball upon hitting a target",
+          "Phoenix Fireball has a 20% chance to release 1 additional fireball upon hitting a target",
+          "Phoenix Fireball has a 30% chance to release 1 additional fireball upon hitting a target",
+          "Phoenix Fireball has a 40% chance to release 1 additional fireball upon hitting a target",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81124",
+        "n": "Pharaoh causes target to take +40% more damage for 2 turns",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Pharaoh causes target to take +10% more damage for 2 turns",
+          "Pharaoh causes target to take +20% more damage for 2 turns",
+          "Pharaoh causes target to take +30% more damage for 2 turns",
+          "Pharaoh causes target to take +40% more damage for 2 turns",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81125",
+        "n": "Fallen Queen’s Flame Path reduces target’s damage reduction…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Fallen Queen’s Flame Path reduces target’s damage reduction by 10% for 2 turns",
+          "Fallen Queen’s Flame Path reduces target’s damage reduction by 15% for 2 turns",
+          "Fallen Queen’s Flame Path reduces target’s damage reduction by 20% for 2 turns",
+          "Fallen Queen’s Flame Path reduces target’s damage reduction by 30% for 2 turns",
+          "Fallen Queen’s Flame Path reduces target’s damage reduction by 40% for 2 turns",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81126",
+        "n": "Within 1 turn, each Bite by White Tiger increases normal…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Within 1 turn, each Bite by White Tiger increases normal attack crit rate by +5%. Resets each turn",
+          "Within 1 turn, each Bite by White Tiger increases normal attack crit rate by +10%. Resets each turn",
+          "Within 1 turn, each Bite by White Tiger increases normal attack crit rate by +15%. Resets each turn",
+          "Within 1 turn, each Bite by White Tiger increases normal attack crit rate by +20%. Resets each turn",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81127",
+        "n": "Ootengu’s Wind Blade deals 12% max HP extra damage to…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Ootengu’s Wind Blade deals 2% max HP extra damage to bleeding targets, up to 30 × ATK",
+          "Ootengu’s Wind Blade deals 4.5% max HP extra damage to bleeding targets, up to 45 × ATK",
+          "Ootengu’s Wind Blade deals 6% max HP extra damage to bleeding targets, up to 60 × ATK",
+          "Ootengu’s Wind Blade deals 9% max HP extra damage to bleeding targets, up to 90 × ATK",
+          "Ootengu’s Wind Blade deals 12% max HP extra damage to bleeding targets, up to 120 × ATK",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81128",
+        "n": "Immediately select 1 skill when entering the stage…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Immediately choose 1 skill when entering a stage (applies to Main Story and Abyssal Realm)",
+          "Immediately select 1 skill when entering the stage (effective in Main Story and Abyssal Secret Realm), Damage Bonus +15%",
+          "Immediately select 1 skill when entering the stage (effective in Main Story and Abyssal Secret Realm), Damage Bonus +30%"
+        ]
+      },
+      {
+        "id": "g_81129",
+        "n": "After counterattacking, increases the hero’s attack by +25%…",
+        "tier_desc": [
+          "",
+          "After counterattacking, increases the hero’s attack by +2% for 2 turns",
+          "After counterattacking, increases the hero’s attack by +4% for 2 turns",
+          "After counterattacking, increases the hero’s attack by +6% for 2 turns",
+          "After counterattacking, increases the hero’s attack by +8% for 2 turns",
+          "After counterattacking, increases the hero’s attack by +10% for 2 turns",
+          "After Counterattack, Hero’s Attack +12%, lasts 2 turns",
+          "After Counterattack, Hero’s Attack +15%, lasts 2 turns",
+          "After counterattacking, increases the hero’s attack by +20% for 2 turns",
+          "After counterattacking, increases the hero’s attack by +25% for 2 turns"
+        ]
+      },
+      {
+        "id": "g_81130",
+        "n": "At the start of battle, steals 15% of the enemy’s attack…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "At the start of battle, steals 2% of the enemy’s attack power, not exceeding 4% of the hero’s own attack power, lasting 5 turns",
+          "At the start of battle, steals 4% of the enemy’s attack power, not exceeding 8% of the hero’s own attack power, lasting 5 turns",
+          "At the start of battle, steals 6% of the enemy’s attack power, not exceeding 12% of the hero’s own attack power, lasting 5 turns",
+          "At Battle Start, steal 8% of Enemy’s Attack, up to 16% of Hero’s own Attack, lasts 5 turns",
+          "At Battle Start, steal 10% of Enemy’s Attack, up to 20% of Hero’s own Attack, lasts 5 turns",
+          "At the start of battle, steals 12% of the enemy’s attack power, not exceeding 25% of the hero’s own attack power, lasting 5 turns",
+          "At the start of battle, steals 15% of the enemy’s attack power, not exceeding 30% of the hero’s own attack power, lasting 5 turns"
+        ]
+      },
+      {
+        "id": "g_81131",
+        "n": "Helos Warblade Basic Attack Coefficient +20%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Helos Warblade Basic Attack Coefficient +6%",
+          "Helos Warblade Basic Attack Coefficient +9%",
+          "Helos Warblade Basic Attack Coefficient +12%",
+          "Helos Warblade Basic Attack Coefficient +16%",
+          "Helos Warblade Basic Attack Coefficient +20%"
+        ]
+      },
+      {
+        "id": "g_81132",
+        "n": "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +15%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +5%",
+          "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +7.5%",
+          "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +10%",
+          "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +12.5%",
+          "Blood Shadow·Ailoren Sword Sword Qi Damage Coefficient +15%"
+        ]
+      },
+      {
+        "id": "g_81133",
+        "n": "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +2%",
+          "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +3%",
+          "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +4%",
+          "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +5%",
+          "Thorn·Seles' Suffering Thorn Shield Damage Coefficient +6%"
+        ]
+      },
+      {
+        "id": "g_81134",
+        "n": "Divine Thunder·Nashir's Scepter Electric Shield +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Divine Thunder·Nashir's Scepter Electric Shield +2%",
+          "Divine Thunder·Nashir's Scepter Electric Shield +3%",
+          "Divine Thunder·Nashir's Scepter Electric Shield +4%",
+          "Divine Thunder·Nashir's Scepter Electric Shield +5%",
+          "Divine Thunder·Nashir's Scepter Electric Shield +6%"
+        ]
+      },
+      {
+        "id": "g_81135",
+        "n": "Holy Angel Dagger Damage Coefficient +20%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Holy Angel Dagger Damage Coefficient +6%",
+          "Holy Angel Dagger Damage Coefficient +9%",
+          "Holy Angel Dagger Damage Coefficient +12%",
+          "Holy Angel Dagger Damage Coefficient +16%",
+          "Holy Angel Dagger Damage Coefficient +20%"
+        ]
+      }
+    ],
+    "armor": [
+      {
+        "id": "g_81201",
+        "n": "Global HP +22%",
+        "tier_desc": [
+          "",
+          "Global HP +2%",
+          "Global HP +4%",
+          "Global HP +6%",
+          "Global HP +8%",
+          "Global HP +10%",
+          "Global HP +12%",
+          "Global HP +15%",
+          "Global HP +18%",
+          "Global HP +22%"
+        ]
+      },
+      {
+        "id": "g_81202",
+        "n": "Global Defense +22%",
+        "tier_desc": [
+          "",
+          "Global DEF +2%",
+          "Global DEF +4%",
+          "Global DEF +6%",
+          "Global DEF +8%",
+          "Global DEF +10%",
+          "Global DEF +12%",
+          "Global DEF +15%",
+          "Global Defense +18%",
+          "Global Defense +22%"
+        ]
+      },
+      {
+        "id": "g_81203",
+        "n": "Speed +30",
+        "t": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0
+        ],
+        "tier_desc": [
+          "",
+          "Speed +2",
+          "Speed +4",
+          "Speed +6",
+          "Speed +8",
+          "Speed +10",
+          "Speed +15",
+          "Speed +20",
+          "Speed +25",
+          "Speed +30"
+        ]
+      },
+      {
+        "id": "g_81204",
+        "n": "Final Damage Reduction +15%",
+        "t": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          7.5,
+          10.0,
+          12.5,
+          15.0
+        ],
+        "tier_desc": [
+          "",
+          "Final Damage Reduction +1%",
+          "Final Damage Reduction +2%",
+          "Final Damage Reduction +3%",
+          "Final Damage Reduction +4%",
+          "Final Damage Reduction +5%",
+          "Final Damage Reduction +7.5%",
+          "Final Damage Reduction +10%",
+          "Final Damage Reduction +12.5%",
+          "Final Damage Reduction +15%"
+        ]
+      },
+      {
+        "id": "g_81205",
+        "n": "Basic Attack Damage Reduction +35%",
+        "t": [
+          3.0,
+          6.0,
+          9.0,
+          12.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0
+        ],
+        "tier_desc": [
+          "",
+          "Basic Attack Damage Reduction +3%",
+          "Basic Attack Damage Reduction +6%",
+          "Basic Attack Damage Reduction +9%",
+          "Basic Attack Damage Reduction +12%",
+          "Basic Attack Damage Reduction +15%",
+          "Basic Attack Damage Reduction +20%",
+          "Basic Attack Damage Reduction +25%",
+          "Basic Attack Damage Reduction +30%",
+          "Basic Attack Damage Reduction +35%"
+        ]
+      },
+      {
+        "id": "g_81206",
+        "n": "Combo Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Combo Damage Reduction +5%",
+          "Combo Damage Reduction +10%",
+          "Combo Damage Reduction +15%",
+          "Combo Damage Reduction +20%",
+          "Combo Damage Reduction +25%",
+          "Combo Damage Reduction +30%",
+          "Combo Damage Reduction +35%",
+          "Combo Damage Reduction +40%",
+          "Combo Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81207",
+        "n": "Counterattack Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Counter Damage Reduction +5%",
+          "Counter Damage Reduction +10%",
+          "Counter Damage Reduction +15%",
+          "Counter Damage Reduction +20%",
+          "Counter Damage Reduction +25%",
+          "Counter Damage Reduction +30%",
+          "Counter Damage Reduction +35%",
+          "Counterattack Damage Reduction +40%",
+          "Counterattack Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81208",
+        "n": "Physical Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Physical Damage Reduction +5%",
+          "Physical Damage Reduction +10%",
+          "Physical Damage Reduction +15%",
+          "Physical Damage Reduction +20%",
+          "Physical Damage Reduction +25%",
+          "Physical Damage Reduction +30%",
+          "Physical Damage Reduction +35%",
+          "Physical Damage Reduction +40%",
+          "Physical Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81209",
+        "n": "Lightning Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Lightning Damage Reduction +5%",
+          "Lightning Damage Reduction +10%",
+          "Lightning Damage Reduction +15%",
+          "Lightning Damage Reduction +20%",
+          "Lightning Damage Reduction +25%",
+          "Lightning Damage Reduction +30%",
+          "Lightning Damage Reduction +35%",
+          "Lightning Damage Reduction +40%",
+          "Lightning Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81210",
+        "n": "Fire Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Fire Damage Reduction +5%",
+          "Fire Damage Reduction +10%",
+          "Fire Damage Reduction +15%",
+          "Fire Damage Reduction +20%",
+          "Fire Damage Reduction +25%",
+          "Fire Damage Reduction +30%",
+          "Fire Damage Reduction +35%",
+          "Fire Damage Reduction +40%",
+          "Fire Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81211",
+        "n": "Ignore Counter Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Counter Rate +1%",
+          "Ignore Counter Rate +1.5%",
+          "Ignore Counter Rate +2%",
+          "Ignore Counter Rate +3%",
+          "Ignore Counter Rate +4%",
+          "Ignore Counter Rate +6%",
+          "Ignore Counter Rate +8%",
+          "Ignore Counter Rate +10%",
+          "Ignore Counter Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81212",
+        "n": "Ignore Combo Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Combo Rate +1%",
+          "Ignore Combo Rate +1.5%",
+          "Ignore Combo Rate +2%",
+          "Ignore Combo Rate +3%",
+          "Ignore Combo Rate +4%",
+          "Ignore Combo Rate +6%",
+          "Ignore Combo Rate +8%",
+          "Ignore Combo Rate +10%",
+          "Ignore Combo Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81213",
+        "n": "Ignore Critical Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Crit Rate +1%",
+          "Ignore Crit Rate +1.5%",
+          "Ignore Crit Rate +2%",
+          "Ignore Crit Rate +3%",
+          "Ignore Crit Rate +4%",
+          "Ignore Crit Rate +6%",
+          "Ignore Crit Rate +8%",
+          "Ignore Critical Rate +10%",
+          "Ignore Critical Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81214",
+        "n": "Control Immunity Rate +12%",
+        "tier_desc": [
+          "",
+          "Control Immunity Rate +1%",
+          "Control Immunity Rate +1.5%",
+          "Control Immunity Rate +2%",
+          "Control Immunity Rate +3%",
+          "Control Immunity Rate +4%",
+          "Control Immunity Rate +6%",
+          "Control Immunity Rate +8%",
+          "Control Immunity Rate +10%",
+          "Control Immunity Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81215",
+        "n": "Ignore Control Immunity Rate +10%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Ignore Control Immunity +2%",
+          "Ignore Control Immunity Rate +4%",
+          "Ignore Control Immunity Rate +6%",
+          "Ignore Control Immunity Rate +8%",
+          "Ignore Control Immunity Rate +10%"
+        ]
+      },
+      {
+        "id": "g_81216",
+        "n": "Combo Count +1, Combo Damage +20%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Combo count +1, combo damage -60%",
+          "Combo count +1, combo damage -20%",
+          "Combo Count +1",
+          "Combo Count +1, Combo Damage +20%"
+        ]
+      },
+      {
+        "id": "g_81217",
+        "n": "Dagger Damage Coefficient +9%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Flying Dagger DMG Coefficient +3%",
+          "Dagger DMG coefficient +4.5%",
+          "Dagger DMG coefficient +6%",
+          "Dagger Damage Coefficient +7.5%",
+          "Dagger Damage Coefficient +9%"
+        ]
+      },
+      {
+        "id": "g_81218",
+        "n": "Lightning Damage Coefficient +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Lightning DMG Coefficient +2%",
+          "Lightning DMG coefficient +3%",
+          "Lightning DMG coefficient +4%",
+          "Lightning Damage Coefficient +5%",
+          "Lightning Damage Coefficient +6%"
+        ]
+      },
+      {
+        "id": "g_81219",
+        "n": "Burn Damage Coefficient +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Burn DMG Coefficient +2%",
+          "Burn DMG coefficient +3%",
+          "Burn DMG coefficient +4%",
+          "Burn Damage Coefficient +5%",
+          "Burn Damage Coefficient +6%"
+        ]
+      },
+      {
+        "id": "g_81220",
+        "n": "Light Spear Damage Coefficient +9%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Light Spear DMG Coefficient +3%",
+          "Light Spear DMG coefficient +4.5%",
+          "Light Spear DMG coefficient +6%",
+          "Light Spear Damage Coefficient +7.5%",
+          "Light Spear Damage Coefficient +9%"
+        ]
+      },
+      {
+        "id": "g_81221",
+        "n": "Combo Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Combo DMG Coefficient +6%",
+          "Combo DMG coefficient +9%",
+          "Combo DMG coefficient +12%",
+          "Combo Damage Coefficient +15%",
+          "Combo Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81222",
+        "n": "Counterattack Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Counterattack DMG Coefficient +6%",
+          "Counter DMG coefficient +9%",
+          "Counter DMG coefficient +12%",
+          "Counterattack Damage Coefficient +15%",
+          "Counterattack Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81223",
+        "n": "Rage Skill Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Rage Skill DMG Coefficient +6%",
+          "Rage skill DMG coefficient +9%",
+          "Rage skill DMG coefficient +12%",
+          "Rage Skill Damage Coefficient +15%",
+          "Rage Skill Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81224",
+        "n": "Immune to first 2 instances of damage, increases hero’s…",
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          3.0,
+          6.0
+        ],
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Immune to the 1st instance of damage",
+          "Immune to the first 2 instances of damage",
+          "Immune to first 2 instances of damage, increases hero’s final damage reduction by +3%",
+          "Immune to first 2 instances of damage, increases hero’s final damage reduction by +6%"
+        ]
+      },
+      {
+        "id": "g_81225",
+        "n": "Immune to first 2 control effects, increases hero’s control…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Immune to first control 1 time",
+          "Immune to first 2 controls",
+          "Immune to first 2 control effects, increases hero’s control immunity rate by +3%",
+          "Immune to first 2 control effects, increases hero’s control immunity rate by +6%"
+        ]
+      },
+      {
+        "id": "g_81226",
+        "n": "Deals +35% damage to targets with HP above 70%",
+        "tier_desc": [
+          "",
+          "Deals +3% damage to targets with >70% HP",
+          "Deals +6% damage to targets with >70% HP",
+          "Deals +9% damage to targets with >70% HP",
+          "Bonus DMG to targets with HP >70% +12%",
+          "For targets with HP > 70%, damage +15%",
+          "Bonus DMG to targets with HP >70% +20%",
+          "Bonus DMG to targets with HP >70% +25%",
+          "Deals +30% damage to targets with HP above 70%",
+          "Deals +35% damage to targets with HP above 70%"
+        ]
+      },
+      {
+        "id": "g_81227",
+        "n": "For each skill learned (1), increases global damage dealt…",
+        "tier_desc": [
+          "",
+          "For every 1 skill learned, global DMG +1%, up to 2%",
+          "For every 1 skill learned, global DMG +1%, up to 4%",
+          "For every 1 skill learned, global DMG +1%, up to 6%",
+          "For every 1 skill learned, global DMG +1%, up to 8%",
+          "For every 1 skill learned, global DMG +1%, up to 10%",
+          "For every 1 skill learned, global DMG +1%, up to 15%",
+          "For every 1 skill learned, global DMG +1%, up to 20%",
+          "For each skill learned (1), increases global damage dealt by +1%, up to 25%",
+          "For each skill learned (1), increases global damage dealt by +1%, up to 30%"
+        ]
+      },
+      {
+        "id": "g_81228",
+        "n": "Basic Attacks have a 8% chance to stun",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Normal attacks have 2% chance to stun",
+          "Normal ATK has 3.5% chance to stun",
+          "Normal ATK has 5% chance to stun",
+          "Basic Attacks have a 6.5% chance to stun",
+          "Basic Attacks have a 8% chance to stun"
+        ]
+      },
+      {
+        "id": "g_81229",
+        "n": "Heals 20% HP each turn",
+        "tier_desc": [
+          "",
+          "",
+          "Heal 2% HP per turn",
+          "Heal 4% HP per turn",
+          "Heal 6% HP each turn",
+          "Heal 9% HP each turn",
+          "Heal 12% HP per turn",
+          "Heal 15% HP per turn",
+          "Heals 17.5% HP each turn",
+          "Heals 20% HP each turn"
+        ]
+      },
+      {
+        "id": "g_81230",
+        "n": "At the start of battle, gain a shield equal to 90% of max HP",
+        "tier_desc": [
+          "",
+          "Gain shield equal to 10% of max HP at battle start",
+          "Gain shield equal to 15% of max HP at battle start",
+          "Gain shield equal to 20% of max HP at battle start",
+          "Gain shield equal to 25% of max HP at start of battle",
+          "Gain shield equal to 30% of max HP at start of battle",
+          "Gain shield equal to 45% of max HP at battle start",
+          "Gain shield equal to 60% of max HP at battle start",
+          "At the start of battle, gain a shield equal to 75% of max HP",
+          "At the start of battle, gain a shield equal to 90% of max HP"
+        ]
+      },
+      {
+        "id": "g_81231",
+        "n": "Each time Clown attacks, reduces target’s healing by 16%…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "Each time Clown attacks, reduces target’s healing by 3%, stacks up to 5 times, lasts 2 turns",
+          "Each time Clown attacks, reduces target’s healing by 5%, stacks up to 5 times, lasts 2 turns",
+          "Each time Clown attacks, reduces target’s healing by 8%, stacks up to 5 times, lasts 2 turns",
+          "Each time Clown attacks, reduces target’s healing by 12%, stacks up to 5 times, lasts 2 turns",
+          "Each time Clown attacks, reduces target’s healing by 16%, stacks up to 5 times, lasts 2 turns",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81232",
+        "n": "White Robe Mage deals 100% more damage to frozen targets",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "White Robe Mage deals 20% more damage to frozen targets",
+          "White Robe Mage deals 35% more damage to frozen targets",
+          "White Robe Mage deals 50% more damage to frozen targets",
+          "White Robe Mage deals 75% more damage to frozen targets",
+          "White Robe Mage deals 100% more damage to frozen targets",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81233",
+        "n": "Electro Dragon’s electromagnetic paralysis chance +25%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Electro Dragon’s electromagnetic paralysis chance +8%",
+          "Electro Dragon’s electromagnetic paralysis chance +12%",
+          "Electro Dragon’s electromagnetic paralysis chance +18%",
+          "Electro Dragon’s electromagnetic paralysis chance +25%",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81234",
+        "n": "Evil Eye’s laser hit count +2",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Evil Eye’s laser hit count +1",
+          "Evil Eye’s laser hit count +2",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81235",
+        "n": "Panda’s frost has 50% chance to ignore 80% of target’s…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "Panda’s frost has 50% chance to ignore 20% of target’s control immunity",
+          "Panda’s frost has 50% chance to ignore 40% of target’s control immunity",
+          "Panda’s frost has 50% chance to ignore 60% of target’s control immunity",
+          "Panda’s frost has 50% chance to ignore 80% of target’s control immunity",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81236",
+        "n": "On the first turn, increases the hero’s final damage…",
+        "t": [
+          0.0,
+          0.0,
+          6.0,
+          12.0,
+          18.0,
+          24.0,
+          30.0,
+          40.0,
+          50.0
+        ],
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "On the first turn, increases the hero’s final damage reduction by +6%",
+          "On the first turn, increases the hero’s final damage reduction by +12%",
+          "On the first turn, increases the hero’s final damage reduction by +18%",
+          "On the first turn, increases the hero’s final damage reduction by +24%",
+          "On the first turn, increases the hero’s final damage reduction by +30%",
+          "On the first turn, increases the hero’s final damage reduction by +40%",
+          "On the first turn, increases the hero’s final damage reduction by +50%"
+        ]
+      },
+      {
+        "id": "g_81237",
+        "n": "When the hero takes direct damage, reflects 10% of the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "When the hero takes direct damage from enemies, reflects 2% of the damage back",
+          "When the hero takes direct damage from enemies, reflects 3% of the damage back",
+          "When the hero takes direct damage from enemies, reflects 4% of the damage back",
+          "When the hero takes direct damage from enemies, reflects 5% of the damage back",
+          "When the hero takes direct damage from enemies, reflects 6% of the damage back",
+          "When the hero takes direct damage, reflects 8% of the damage back",
+          "When the hero takes direct damage, reflects 10% of the damage back"
+        ]
+      }
+    ],
+    "ring": [
+      {
+        "id": "g_81301",
+        "n": "Global Attack +22%",
+        "t": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          15.0,
+          18.0,
+          22.0
+        ],
+        "tier_desc": [
+          "",
+          "Global ATK +2%",
+          "Global Attack +4%",
+          "Global Attack +6%",
+          "Global ATK +8%",
+          "Global Attack +10%",
+          "Global ATK +12%",
+          "Global Attack +15%",
+          "Global Attack +18%",
+          "Global Attack +22%"
+        ]
+      },
+      {
+        "id": "g_81302",
+        "n": "Basic Attack Damage Boost +35%",
+        "t": [
+          3.0,
+          6.0,
+          9.0,
+          12.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0
+        ],
+        "tier_desc": [
+          "",
+          "Basic ATK DMG Bonus +3%",
+          "Normal Attack DMG Boost +6%",
+          "Normal Attack DMG Boost +9%",
+          "Normal Attack DMG Boost +12%",
+          "Normal Attack DMG Boost +15%",
+          "Normal Attack DMG Boost +20%",
+          "Normal Attack Damage +25%",
+          "Basic Attack Damage Boost +30%",
+          "Basic Attack Damage Boost +35%"
+        ]
+      },
+      {
+        "id": "g_81303",
+        "n": "Combo Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Combo DMG Bonus +5%",
+          "Combo DMG Boost +10%",
+          "Combo DMG Boost +15%",
+          "Combo DMG Boost +20%",
+          "Combo DMG Boost +25%",
+          "Combo DMG Boost +30%",
+          "Combo Damage +35%",
+          "Combo Damage Boost +40%",
+          "Combo Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81304",
+        "n": "Counterattack Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Counter DMG Bonus +5%",
+          "Counterattack DMG Boost +10%",
+          "Counterattack DMG Boost +15%",
+          "Counterattack DMG Boost +20%",
+          "Counterattack DMG Boost +25%",
+          "Counterattack DMG Boost +30%",
+          "Counterattack Damage +35%",
+          "Counterattack Damage Boost +40%",
+          "Counterattack Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81305",
+        "n": "Physical Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Physical DMG Bonus +5%",
+          "Physical DMG Boost +10%",
+          "Physical DMG Boost +15%",
+          "Physical DMG Boost +20%",
+          "Physical DMG Boost +25%",
+          "Physical DMG Boost +30%",
+          "Physical Damage +35%",
+          "Physical Damage Boost +40%",
+          "Physical Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81306",
+        "n": "Lightning Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Lightning DMG Bonus +5%",
+          "Lightning DMG Boost +10%",
+          "Lightning DMG Boost +15%",
+          "Lightning DMG Boost +20%",
+          "Lightning DMG Boost +25%",
+          "Lightning DMG Boost +30%",
+          "Lightning Damage +35%",
+          "Lightning Damage Boost +40%",
+          "Lightning Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81307",
+        "n": "Fire Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Fire DMG Bonus +5%",
+          "Fire DMG Boost +10%",
+          "Fire DMG Boost +15%",
+          "Fire DMG Boost +20%",
+          "Fire DMG Boost +25%",
+          "Fire DMG Boost +30%",
+          "Fire Damage +35%",
+          "Fire Damage Boost +40%",
+          "Fire Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81308",
+        "n": "Explosion Damage Boost +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Explosion DMG Bonus +5%",
+          "Explosion DMG Boost +10%",
+          "Explosion DMG Boost +15%",
+          "Explosion DMG Boost +20%",
+          "Explosion DMG Boost +25%",
+          "Explosion DMG Boost +30%",
+          "Explosion Damage +35%",
+          "Explosion Damage Boost +40%",
+          "Explosion Damage Boost +45%"
+        ]
+      },
+      {
+        "id": "g_81309",
+        "n": "Weapon Crit Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Weapon crit rate +1%",
+          "Weapon crit rate +1.5%",
+          "Weapon crit rate +2%",
+          "Weapon Crit Rate +3%",
+          "Weapon Crit Rate +4%",
+          "Weapon crit rate +6%",
+          "Weapon Crit Rate +8%",
+          "Weapon Critical Rate +10%",
+          "Weapon Crit Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81310",
+        "n": "DoT Crit Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "DoT crit rate +1%",
+          "DoT crit rate +1.5%",
+          "DoT crit rate +2%",
+          "DoT Crit Rate +3%",
+          "DoT Crit Rate +4%",
+          "DoT crit rate +6%",
+          "DoT Crit Rate +8%",
+          "DoT Critical Rate +10%",
+          "DoT Crit Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81311",
+        "n": "Dagger Crit Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Dagger crit rate +1%",
+          "Dagger crit rate +1.5%",
+          "Dagger crit rate +2%",
+          "Flying Dagger Crit Rate +3%",
+          "Flying Dagger Crit Rate +4%",
+          "Dagger crit rate +6%",
+          "Dagger Crit Rate +8%",
+          "Dagger Critical Rate +10%",
+          "Dagger Crit Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81312",
+        "n": "Sword Qi Crit Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Sword Qi crit rate +1%",
+          "Sword Qi crit rate +1.5%",
+          "Sword Qi crit rate +2%",
+          "Sword Qi Crit Rate +3%",
+          "Sword Qi Crit Rate +4%",
+          "Sword Qi crit rate +6%",
+          "Sword Qi Crit Rate +8%",
+          "Sword Qi Critical Rate +10%",
+          "Sword Qi Crit Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81313",
+        "n": "Lightning Crit Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Lightning crit rate +1%",
+          "Lightning crit rate +1.5%",
+          "Lightning crit rate +2%",
+          "Lightning Crit Rate +3%",
+          "Lightning Crit Rate +4%",
+          "Lightning crit rate +6%",
+          "Lightning Crit Rate +8%",
+          "Lightning Critical Rate +10%",
+          "Lightning Crit Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81314",
+        "n": "Counter Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Counter rate +1%",
+          "Counter rate +1.5%",
+          "Counter rate +2%",
+          "Counter Rate +3%",
+          "Counter Rate +4%",
+          "Counter rate +6%",
+          "Counter Rate +8%",
+          "Counterattack Rate +10%",
+          "Counter Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81315",
+        "n": "Combo Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Combo rate +1%",
+          "Combo rate +1.5%",
+          "Combo rate +2%",
+          "Combo Rate +3%",
+          "Combo Rate +4%",
+          "Combo rate +6%",
+          "Combo Rate +8%",
+          "Combo Rate +10%",
+          "Combo Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81316",
+        "n": "Increased Damage to Shielded Targets +45%",
+        "tier_desc": [
+          "",
+          "Deal +5% damage to shielded targets",
+          "Deal +10% damage to shielded targets",
+          "Deal +15% damage to shielded targets",
+          "Deal +20% damage to shielded targets",
+          "Deal +25% damage to shielded targets",
+          "Deal +30% damage to shielded targets",
+          "Deal +35% damage to shielded targets",
+          "Increased Damage to Shielded Targets +40%",
+          "Increased Damage to Shielded Targets +45%"
+        ]
+      },
+      {
+        "id": "g_81317",
+        "n": "Phoenix damage +60% (enhances Fireball and Flame Tornado)",
+        "tier_desc": [
+          "",
+          "",
+          "Phoenix damage +10% (enhances Fireball and Flame Tornado)",
+          "Phoenix damage +15% (enhances Fireball and Flame Tornado)",
+          "Phoenix damage +20% (enhances Fireball and Flame Tornado)",
+          "Phoenix damage +30% (enhances Fireball and Flame Tornado)",
+          "Phoenix damage +45% (enhances Fireball and Flame Tornado)",
+          "Phoenix damage +60% (enhances Fireball and Flame Tornado)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81318",
+        "n": "Pharaoh damage +60% (enhances Shadow Projectile and Shadow…",
+        "tier_desc": [
+          "",
+          "",
+          "Pharaoh damage +10% (enhances Shadow Projectile and Shadow Hellfire)",
+          "Pharaoh damage +15% (enhances Shadow Projectile and Shadow Hellfire)",
+          "Pharaoh damage +20% (enhances Shadow Projectile and Shadow Hellfire)",
+          "Pharaoh damage +30% (enhances Shadow Projectile and Shadow Hellfire)",
+          "Pharaoh damage +45% (enhances Shadow Projectile and Shadow Hellfire)",
+          "Pharaoh damage +60% (enhances Shadow Projectile and Shadow Hellfire)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81319",
+        "n": "Fallen Queen damage +60% (enhances Flame Path)",
+        "tier_desc": [
+          "",
+          "",
+          "Fallen Queen damage +10% (enhances Flame Path)",
+          "Fallen Queen damage +15% (enhances Flame Path)",
+          "Fallen Queen damage +20% (enhances Flame Path)",
+          "Fallen Queen damage +30% (enhances Flame Path)",
+          "Fallen Queen damage +45% (enhances Flame Path)",
+          "Fallen Queen damage +60% (enhances Flame Path)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81320",
+        "n": "White Tiger damage +60% (enhances Bite and Frenzied Bite)",
+        "tier_desc": [
+          "",
+          "",
+          "White Tiger damage +10% (enhances Bite and Frenzied Bite)",
+          "White Tiger damage +15% (enhances Bite and Frenzied Bite)",
+          "White Tiger damage +20% (enhances Bite and Frenzied Bite)",
+          "White Tiger damage +30% (enhances Bite and Frenzied Bite)",
+          "White Tiger damage +45% (enhances Bite and Frenzied Bite)",
+          "White Tiger damage +60% (enhances Bite and Frenzied Bite)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81321",
+        "n": "Great Tengu damage +60% (enhances Wind Blade and Super Wind…",
+        "tier_desc": [
+          "",
+          "",
+          "Great Tengu damage +10% (enhances Wind Blade and Super Wind Blade)",
+          "Great Tengu damage +15% (enhances Wind Blade and Super Wind Blade)",
+          "Great Tengu damage +20% (enhances Wind Blade and Super Wind Blade)",
+          "Great Tengu damage +30% (enhances Wind Blade and Super Wind Blade)",
+          "Great Tengu damage +45% (enhances Wind Blade and Super Wind Blade)",
+          "Great Tengu damage +60% (enhances Wind Blade and Super Wind Blade)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81322",
+        "n": "Deals +35% damage to targets with HP above 70%",
+        "tier_desc": [
+          "",
+          "Deal +3% damage to targets with HP >70%",
+          "Deal +6% damage to targets with HP >70%",
+          "Deal +9% damage to targets with HP >70%",
+          "Deal +12% damage to targets with HP >70%",
+          "Deal +15% damage to targets with HP >70%",
+          "Deal +20% damage to targets with HP >70%",
+          "Deal +25% damage to targets with HP >70%",
+          "Deals +30% damage to targets with HP above 70%",
+          "Deals +35% damage to targets with HP above 70%"
+        ]
+      },
+      {
+        "id": "g_81323",
+        "n": "When Burn ≥5 stacks, deals 4.5% Max HP damage per turn…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "When Burn ≥5 stacks, deal 0.5% of max HP as damage each turn (up to 5 times)",
+          "When Burn ≥5 stacks, deal 1% of max HP as damage each turn (up to 10 times)",
+          "When Burn ≥5 stacks, deal 1.5% of max HP as damage each turn (up to 15 times)",
+          "When Burn ≥5 stacks, deal 2.2% of max HP as damage each turn (up to 22 times)",
+          "When Burn ≥5 stacks, deal 3% of max HP as damage each turn (up to 30 times)",
+          "When Burn ≥5 stacks, deals 3.7% max HP as damage per turn (up to 37 times)",
+          "When Burn ≥5 stacks, deals 4.5% Max HP damage per turn (capped at 45×)"
+        ]
+      },
+      {
+        "id": "g_81324",
+        "n": "[ Unique ] When Dagger hits, Attack +1% (max 60%)",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "[ Unique ] When a dagger hits, Attack +1%, up to 10%",
+          "[ Unique ] When a dagger hits, Attack +1%, up to 15%",
+          "[ Unique ] When a dagger hits, Attack +1%, up to 20%",
+          "[ Unique ] When a dagger hits, Attack +1%, up to 30%",
+          "[ Unique ] When a dagger hits, Attack +1%, up to 40%",
+          "[ Unique ] When Dagger hits, Attack +1%, up to 50%",
+          "[ Unique ] When Dagger hits, Attack +1% (max 60%)"
+        ]
+      },
+      {
+        "id": "g_81325",
+        "n": "[ Unique ] Every 3 Combos, gain Skill Shield equal to 20% Max…",
+        "tier_desc": [
+          "",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 2% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 4% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 6% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 8% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 10% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 12% of max HP",
+          "[ Unique ] Every 3 combo hits grant a skill shield equal to 15% of max HP",
+          "[ Unique ] Every 3 Combos, gain Skill Shield equal to 17.5% Max HP",
+          "[ Unique ] Every 3 Combos, gain Skill Shield equal to 20% Max HP"
+        ]
+      },
+      {
+        "id": "g_81326",
+        "n": "[ Unique ] Lightning has 30% chance to reduce target’s Shield…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "[ Unique ] Lightning has a 10% chance to reduce target's shield gain by 5%, up to 5 stacks, lasting 2 turns",
+          "[ Unique ] Lightning has a 20% chance to reduce target's shield gain by 5%, up to 5 stacks, lasting 2 turns",
+          "[ Unique ] Lightning has a 30% chance to reduce target's shield gain by 5%, up to 5 stacks, lasting 2 turns",
+          "[ Unique ] Lightning has a 30% chance to reduce target's shield gain by 7.5%, up to 5 stacks, lasting 2 turns",
+          "[ Unique ] Lightning has a 30% chance to reduce target's shield gain by 10%, up to 5 stacks, lasting 2 turns",
+          "[ Unique ] Lightning has 30% chance to reduce target’s Shield Gain by -12.5%, up to 5 stacks, lasts 2 turns",
+          "[ Unique ] Lightning has 30% chance to reduce target’s Shield Gain by -15%, up to 5 stacks, lasts 2 turns"
+        ]
+      },
+      {
+        "id": "g_81327",
+        "n": "[ Unique ] When Sword Qi hits, 50% chance to release 1 Blade…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "[ Unique ] When sword aura hits, 20% chance to release a blade whirlwind dealing 50% damage",
+          "[ Unique ] When sword aura hits, 35% chance to release a blade whirlwind dealing 50% damage",
+          "[ Unique ] When sword aura hits, 50% chance to release a blade whirlwind dealing 50% damage",
+          "[ Unique ] When sword aura hits, 50% chance to release a blade whirlwind dealing 75% damage",
+          "[ Unique ] When sword aura hits, 50% chance to release a blade whirlwind dealing 100% damage",
+          "[ Unique ] When Sword Qi hits, 50% chance to release 1 Blade Cyclone dealing 125% damage",
+          "[ Unique ] When Sword Qi hits, 50% chance to release 1 Blade Cyclone dealing 150% damage"
+        ]
+      },
+      {
+        "id": "g_81328",
+        "n": "[ Unique ] When Light Spear hits a burning target, deals…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "[ Unique ] When light spear hits a burning target, it deals extra counterattack damage equal to 0.3% of the target's Max HP, up to 3 × ATK (max 5 times per turn)",
+          "[ Unique ] When light spear hits a burning target, it deals extra counterattack damage equal to 0.6% of the target's Max HP, up to 6 × ATK (max 5 times per turn)",
+          "[ Unique ] When light spear hits a burning target, it deals extra counterattack damage equal to 0.9% of the target's Max HP, up to 9 × ATK (max 5 times per turn)",
+          "[ Unique ] When light spear hits a burning target, it deals extra counterattack damage equal to 1.2% of the target's Max HP, up to 12 × ATK (max 5 times per turn)",
+          "[ Unique ] When Light Spear hits a burning target, deals additional Counter Damage equal to 1.5% of target’s Max HP (capped at 15× Attack, max 5 times per turn)",
+          "[ Unique ] When Light Spear hits a burning target, deals additional Counter Damage equal to 1.8% of target’s Max HP (capped at 18× Attack, max 5 times per turn)"
+        ]
+      },
+      {
+        "id": "g_81329",
+        "n": "[ Unique ] When hero HP is lower than enemy, hero’s Lifesteal…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "[ Unique ] When the hero’s HP is lower than the enemy’s, increases hero’s Lifesteal Rate by +2%",
+          "[ Unique ] When the hero’s HP is lower than the enemy’s, increases hero’s Lifesteal Rate by +3%",
+          "[ Unique ] When the hero’s HP is lower than the enemy’s, increases hero’s Lifesteal Rate by +4%",
+          "[ Unique ] When the hero’s HP is lower than the enemy’s, increases hero’s Lifesteal Rate by +6%",
+          "[ Unique ] When the hero’s HP is lower than the enemy’s, increases hero’s Lifesteal Rate by +8%",
+          "[ Unique ] When hero HP is lower than enemy, hero’s Lifesteal +10%",
+          "[ Unique ] When hero HP is lower than enemy, hero’s Lifesteal +12%"
+        ]
+      },
+      {
+        "id": "g_81330",
+        "n": "[ Unique ] Rage Skill Damage +30%, and Rage Skill has 50%…",
+        "tier_desc": [
+          "",
+          "[ Unique ] Rage skill damage +3%, and Rage skill has a 10% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +6%, and Rage skill has a 15% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +9%, and Rage skill has a 20% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +12%, and Rage skill has a 25% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +15%, and Rage skill has a 30% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +18%, and Rage skill has a 35% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage skill damage +22%, and Rage skill has a 40% chance to silence the target for 1 turn, up to 2 times per battle",
+          "[ Unique ] Rage Skill Damage +26%, and Rage Skill has 45% chance to Silence target for 1 turn (max 2 times per battle)",
+          "[ Unique ] Rage Skill Damage +30%, and Rage Skill has 50% chance to Silence target for 1 turn (max 2 times per battle)"
+        ]
+      },
+      {
+        "id": "g_81331",
+        "n": "[ Unique ] When attacking enemies with Burn/Poison, ignore…",
+        "tier_desc": [
+          "",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 1.5% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 3% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 4.5% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 6% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 8% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 11% of their final damage reduction",
+          "[ Unique ] When attacking enemies under Burn or Poison, ignores 14% of their final damage reduction",
+          "[ Unique ] When attacking enemies with Burn/Poison, ignore their Final Damage Reduction by 17%",
+          "[ Unique ] When attacking enemies with Burn/Poison, ignore their Final Damage Reduction by 20%"
+        ]
+      }
+    ],
+    "accessory": [
+      {
+        "id": "g_81401",
+        "n": "Global HP +22%",
+        "tier_desc": [
+          "",
+          "Global HP +2%",
+          "Global HP +4%",
+          "Global HP +6%",
+          "Global HP +8%",
+          "Global HP +10%",
+          "Global HP +12%",
+          "Global HP +15%",
+          "Global HP +18%",
+          "Global HP +22%"
+        ]
+      },
+      {
+        "id": "g_81402",
+        "n": "Global Defense +22%",
+        "tier_desc": [
+          "",
+          "Global Defense +2%",
+          "Global Defense +4%",
+          "Global Defense +6%",
+          "Global Defense +8%",
+          "Global Defense +10%",
+          "Global DEF +12%",
+          "Global DEF +15%",
+          "Global Defense +18%",
+          "Global Defense +22%"
+        ]
+      },
+      {
+        "id": "g_81403",
+        "n": "Speed +30",
+        "t": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0
+        ],
+        "tier_desc": [
+          "",
+          "Speed +2",
+          "Speed +4",
+          "Speed +6",
+          "Speed +8",
+          "Speed +10",
+          "Speed +15",
+          "Speed +20",
+          "Speed +25",
+          "Speed +30"
+        ]
+      },
+      {
+        "id": "g_81404",
+        "n": "Basic Attack Damage Reduction +35%",
+        "t": [
+          3.0,
+          6.0,
+          9.0,
+          12.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0
+        ],
+        "tier_desc": [
+          "",
+          "Basic Attack Damage Reduction +3%",
+          "Basic Attack Damage Reduction +6%",
+          "Basic Attack Damage Reduction +9%",
+          "Basic Attack Damage Reduction +12%",
+          "Basic Attack Damage Reduction +15%",
+          "Basic Attack Damage Reduction +20%",
+          "Basic Attack Damage Reduction +25%",
+          "Basic Attack Damage Reduction +30%",
+          "Basic Attack Damage Reduction +35%"
+        ]
+      },
+      {
+        "id": "g_81405",
+        "n": "Combo Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Combo Damage Reduction +5%",
+          "Combo Damage Reduction +10%",
+          "Combo Damage Reduction +15%",
+          "Combo Damage Reduction +20%",
+          "Combo Damage Reduction +25%",
+          "Combo Damage Reduction +30%",
+          "Combo Damage Reduction +35%",
+          "Combo Damage Reduction +40%",
+          "Combo Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81406",
+        "n": "Counterattack Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Counter Damage Reduction +5%",
+          "Counter Damage Reduction +10%",
+          "Counter Damage Reduction +15%",
+          "Counter Damage Reduction +20%",
+          "Counter Damage Reduction +25%",
+          "Counter Damage Reduction +30%",
+          "Counter Damage Reduction +35%",
+          "Counterattack Damage Reduction +40%",
+          "Counterattack Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81407",
+        "n": "Physical Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Physical Damage Reduction +5%",
+          "Physical Damage Reduction +10%",
+          "Physical Damage Reduction +15%",
+          "Physical Damage Reduction +20%",
+          "Physical Damage Reduction +25%",
+          "Physical Damage Reduction +30%",
+          "Physical Damage Reduction +35%",
+          "Physical Damage Reduction +40%",
+          "Physical Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81408",
+        "n": "Lightning Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Lightning Damage Reduction +5%",
+          "Lightning Damage Reduction +10%",
+          "Lightning Damage Reduction +15%",
+          "Lightning Damage Reduction +20%",
+          "Lightning Damage Reduction +25%",
+          "Lightning Damage Reduction +30%",
+          "Lightning Damage Reduction +35%",
+          "Lightning Damage Reduction +40%",
+          "Lightning Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81409",
+        "n": "Fire Damage Reduction +45%",
+        "t": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0
+        ],
+        "tier_desc": [
+          "",
+          "Fire Damage Reduction +5%",
+          "Fire Damage Reduction +10%",
+          "Fire Damage Reduction +15%",
+          "Fire Damage Reduction +20%",
+          "Fire Damage Reduction +25%",
+          "Fire Damage Reduction +30%",
+          "Fire Damage Reduction +35%",
+          "Fire Damage Reduction +40%",
+          "Fire Damage Reduction +45%"
+        ]
+      },
+      {
+        "id": "g_81410",
+        "n": "Ignore Counter Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Counter Rate +1%",
+          "Ignore Counter Rate +1.5%",
+          "Ignore Counter Rate +2%",
+          "Ignore Counter Rate +3%",
+          "Ignore Counter Rate +4%",
+          "Ignore Counter Rate +6%",
+          "Ignore Counter Rate +8%",
+          "Ignore Counter Rate +10%",
+          "Ignore Counter Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81411",
+        "n": "Ignore Combo Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Combo Rate +1%",
+          "Ignore Combo Rate +1.5%",
+          "Ignore Combo Rate +2%",
+          "Ignore Combo Rate +3%",
+          "Ignore Combo Rate +4%",
+          "Ignore Combo Rate +6%",
+          "Ignore Combo Rate +8%",
+          "Ignore Combo Rate +10%",
+          "Ignore Combo Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81412",
+        "n": "Ignore Critical Rate +12%",
+        "t": [
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ],
+        "tier_desc": [
+          "",
+          "Ignore Crit Rate +1%",
+          "Ignore Crit Rate +1.5%",
+          "Ignore Crit Rate +2%",
+          "Ignore Crit Rate +3%",
+          "Ignore Crit Rate +4%",
+          "Ignore Crit Rate +6%",
+          "Ignore Crit Rate +8%",
+          "Ignore Critical Rate +10%",
+          "Ignore Critical Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81413",
+        "n": "Control Immunity Rate +12%",
+        "tier_desc": [
+          "",
+          "Control Immunity Rate +1%",
+          "Control Immunity Rate +1.5%",
+          "Control Immunity Rate +2%",
+          "Control Immunity Rate +3%",
+          "Control Immunity Rate +4%",
+          "Control Immunity Rate +6%",
+          "Control Immunity Rate +8%",
+          "Control Immunity Rate +10%",
+          "Control Immunity Rate +12%"
+        ]
+      },
+      {
+        "id": "g_81414",
+        "n": "Ignore Control Immunity Rate +10%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Ignore Control Immunity Rate +2%",
+          "Ignore Control Immunity Rate +4%",
+          "Ignore Control Immunity Rate +6%",
+          "Ignore Control Immunity Rate +8%",
+          "Ignore Control Immunity Rate +10%"
+        ]
+      },
+      {
+        "id": "g_81415",
+        "n": "Increased Damage to Shielded Targets +45%",
+        "tier_desc": [
+          "",
+          "Deal +5% damage to shielded targets",
+          "Deal +10% damage to shielded targets",
+          "Deal +15% damage to shielded targets",
+          "Deal +20% damage to shielded targets",
+          "Deal +25% damage to shielded targets",
+          "Deal +30% damage to shielded targets",
+          "Deal +35% damage to shielded targets",
+          "Increased Damage to Shielded Targets +40%",
+          "Increased Damage to Shielded Targets +45%"
+        ]
+      },
+      {
+        "id": "g_81416",
+        "n": "Dagger Damage Coefficient +9%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Dagger damage coefficient +3%",
+          "Dagger DMG coefficient +4.5%",
+          "Dagger DMG coefficient +6%",
+          "Dagger Damage Coefficient +7.5%",
+          "Dagger Damage Coefficient +9%"
+        ]
+      },
+      {
+        "id": "g_81417",
+        "n": "Lightning Damage Coefficient +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Lightning damage coefficient +2%",
+          "Lightning DMG coefficient +3%",
+          "Lightning DMG coefficient +4%",
+          "Lightning Damage Coefficient +5%",
+          "Lightning Damage Coefficient +6%"
+        ]
+      },
+      {
+        "id": "g_81418",
+        "n": "Burn Damage Coefficient +6%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Burn damage coefficient +2%",
+          "Burn DMG coefficient +3%",
+          "Burn DMG coefficient +4%",
+          "Burn Damage Coefficient +5%",
+          "Burn Damage Coefficient +6%"
+        ]
+      },
+      {
+        "id": "g_81419",
+        "n": "Light Spear Damage Coefficient +9%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Light Spear damage coefficient +3%",
+          "Light Spear DMG coefficient +4.5%",
+          "Light Spear DMG coefficient +6%",
+          "Light Spear Damage Coefficient +7.5%",
+          "Light Spear Damage Coefficient +9%"
+        ]
+      },
+      {
+        "id": "g_81420",
+        "n": "Combo Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Combo damage coefficient +6%",
+          "Combo damage coefficient +9%",
+          "Combo damage coefficient +12%",
+          "Combo Damage Coefficient +15%",
+          "Combo Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81421",
+        "n": "Counterattack Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Counterattack damage coefficient +6%",
+          "Counterattack damage coefficient +9%",
+          "Counterattack damage coefficient +12%",
+          "Counterattack Damage Coefficient +15%",
+          "Counterattack Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81422",
+        "n": "Rage Skill Damage Coefficient +18%",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "Rage Skill DMG Coefficient +6%",
+          "Rage skill damage coefficient +9%",
+          "Rage skill damage coefficient +12%",
+          "Rage Skill Damage Coefficient +15%",
+          "Rage Skill Damage Coefficient +18%"
+        ]
+      },
+      {
+        "id": "g_81423",
+        "n": "Clown damage +60% (enhances Joker Cards)",
+        "tier_desc": [
+          "",
+          "",
+          "Clown damage +10% (enhances Joker Cards)",
+          "Clown damage +15% (enhances Joker Cards)",
+          "Clown damage +20% (enhances Joker Cards)",
+          "Clown damage +30% (enhances Joker Cards)",
+          "Clown damage +45% (enhances Joker Cards)",
+          "Clown damage +60% (enhances Joker Cards)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81424",
+        "n": "White-Robed Mage damage +60% (enhances Death Beam)",
+        "tier_desc": [
+          "",
+          "",
+          "White-Robed Mage damage +10% (enhances Death Beam)",
+          "White-Robed Mage damage +15% (enhances Death Beam)",
+          "White-Robed Mage damage +20% (enhances Death Beam)",
+          "White-Robed Mage damage +30% (enhances Death Beam)",
+          "White-Robed Mage damage +45% (enhances Death Beam)",
+          "White-Robed Mage damage +60% (enhances Death Beam)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81425",
+        "n": "Electro Dragon damage +60% (enhances Electro Missile and…",
+        "tier_desc": [
+          "",
+          "",
+          "Electro Dragon damage +10% (enhances Electro Missile and Nuclear Electro Blast)",
+          "Electro Dragon damage +15% (enhances Electro Missile and Nuclear Electro Blast)",
+          "Electro Dragon damage +20% (enhances Electro Missile and Nuclear Electro Blast)",
+          "Electro Dragon damage +30% (enhances Electro Missile and Nuclear Electro Blast)",
+          "Electro Dragon damage +45% (enhances Electro Missile and Nuclear Electro Blast)",
+          "Electro Dragon damage +60% (enhances Electro Missile and Nuclear Electro Blast)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81426",
+        "n": "Evil Eye damage +60% (enhances Laser)",
+        "tier_desc": [
+          "",
+          "",
+          "Evil Eye damage +10% (enhances Laser)",
+          "Evil Eye damage +15% (enhances Laser)",
+          "Evil Eye damage +20% (enhances Laser)",
+          "Evil Eye damage +30% (enhances Laser)",
+          "Evil Eye damage +45% (enhances Laser)",
+          "Evil Eye damage +60% (enhances Laser)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81427",
+        "n": "Pandaman damage +60% (enhances Frost)",
+        "tier_desc": [
+          "",
+          "",
+          "Pandaman damage +10% (enhances Frost)",
+          "Pandaman damage +15% (enhances Frost)",
+          "Pandaman damage +20% (enhances Frost)",
+          "Pandaman damage +30% (enhances Frost)",
+          "Pandaman damage +45% (enhances Frost)",
+          "Pandaman damage +60% (enhances Frost)",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "g_81428",
+        "n": "Deals +35% damage to targets with HP above 70%",
+        "tier_desc": [
+          "",
+          "Deal +3% damage to targets with HP >70%",
+          "Deal +6% damage to targets with HP >70%",
+          "Deal +9% damage to targets with HP >70%",
+          "Deal +12% damage to targets with HP >70%",
+          "Deal +15% damage to targets with HP >70%",
+          "Deal +20% damage to targets with HP >70%",
+          "Deal +25% damage to targets with HP >70%",
+          "Deals +30% damage to targets with HP above 70%",
+          "Deals +35% damage to targets with HP above 70%"
+        ]
+      },
+      {
+        "id": "g_81429",
+        "n": "On Critical Hit, deals additional damage equal to 4% of the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "On Critical Hit, deals extra damage equal to 0.5% of target’s max HP, once per turn, up to 5 × ATK",
+          "On Critical Hit, deals extra damage equal to 1% of target’s max HP, once per turn, up to 10 × ATK",
+          "On Critical Hit, deals additional damage equal to 1.5% of the target's max HP, once per turn, up to 15 times the attack",
+          "On Critical Hit, deals additional damage equal to 2.2% of the target's max HP, once per turn, up to 22 times the attack",
+          "On Critical Hit, deals additional damage equal to 3% of the target's max HP, once per turn, up to 30 times the attack",
+          "On Critical Hit, deals additional damage equal to 3.5% of the target’s Max HP, up to 1 time per turn, not exceeding 35 times the Attack Power",
+          "On Critical Hit, deals additional damage equal to 4% of the target’s Max HP, up to 1 time per turn, not exceeding 40 times the Attack Power"
+        ]
+      },
+      {
+        "id": "g_81430",
+        "n": "[ Unique ] Each time the hero is attacked, increases the…",
+        "tier_desc": [
+          "",
+          "",
+          "",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +1%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +1.5%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +2%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +2.5%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +3%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +4.5%, stacking up to 5 layers, lasting until the end of battle",
+          "[ Unique ] Each time the hero is attacked, increases the hero’s attack power by +6%, stacking up to 5 layers, lasting until the end of battle"
+        ]
+      },
+      {
+        "id": "g_81431",
+        "n": "[ Unique ] Increases the healing effect of carried pets by…",
+        "tier_desc": [
+          "",
+          "[ Unique ] Increases the healing effect of carried pets by +5%",
+          "[ Unique ] Increases the healing effect of carried pets by +10%",
+          "[ Unique ] Increases the healing effect of carried pets by +15%",
+          "[ Unique ] Increases the healing effect of carried pets by +20%",
+          "[ Unique ] Increases the healing effect of carried pets by +25%",
+          "[ Unique ] Increases the healing effect of carried pets by +30%",
+          "[ Unique ] Increases the healing effect of carried pets by +40%",
+          "[ Unique ] Increases the healing effect of carried pets by +50%",
+          "[ Unique ] Increases the healing effect of carried pets by +60%"
+        ]
+      },
+      {
+        "id": "g_81432",
+        "n": "[ Unique ] After the pet casts a skill, reduces the enemy’s…",
+        "tier_desc": [
+          "",
+          "",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -1.5% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -3% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -4.5% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -6% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -8% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -10% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -13% for 2 turns",
+          "[ Unique ] After the pet casts a skill, reduces the enemy’s critical rate by -16% for 2 turns"
+        ]
+      },
+      {
+        "id": "g_81433",
+        "n": "[ Unique ] After the hero deals direct damage to an enemy…",
+        "tier_desc": [
+          "",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -2% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -4% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -6% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -8% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -10% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -12% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -15% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -20% for 2 turns",
+          "[ Unique ] After the hero deals direct damage to an enemy, reduces the enemy’s attack by -25% for 2 turns"
+        ]
+      }
+    ]
+  },
+  "psionics": {
+    "weapon": [
+      {
+        "c": "p_w_dmg_all",
+        "n": "DMG Increase (all)",
+        "k": "n"
+      },
+      {
+        "c": "p_w_skill_dmg",
+        "n": "Skill DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_basic_dmg",
+        "n": "Basic ATK DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_lightning",
+        "n": "Lightning DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_dagger",
+        "n": "Dagger DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_swordqi",
+        "n": "Sword Qi DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_lightspear",
+        "n": "Light Spear DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_fire",
+        "n": "Fire DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_dot",
+        "n": "DoT DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_combo_dmg",
+        "n": "Combo DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_counter_dmg",
+        "n": "Counter DMG",
+        "k": "n"
+      },
+      {
+        "c": "p_w_comborate",
+        "n": "Combo Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_counterrate",
+        "n": "Counter Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_weapcrit",
+        "n": "Weapon Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_dotcrit",
+        "n": "DoT Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_daggercrit",
+        "n": "Dagger Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_lightcrit",
+        "n": "Lightning Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_swordqicrit",
+        "n": "Sword Qi Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_lightsprcrit",
+        "n": "Light Spear Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_w_speed",
+        "n": "Speed",
+        "k": "s"
+      }
+    ],
+    "armor": [
+      {
+        "c": "p_a_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_lightningred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_lightspeared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_a_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_a_fdr",
+        "n": "Final DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_a_advfdr",
+        "n": "Final Adventurer DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_artfdr",
+        "n": "Final Artifact DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_mntfdr",
+        "n": "Final Mount DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_petfdr",
+        "n": "Final Pet DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_critred",
+        "n": "Crit DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_a_basiccritred",
+        "n": "Basic ATK Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_skillcritred",
+        "n": "Skill Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_a_dotcritred",
+        "n": "DoT Crit DMG Red",
+        "k": "s"
+      }
+    ],
+    "ring": [
+      {
+        "c": "p_ra_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightspared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_r_comborate",
+        "n": "Combo Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_counterrate",
+        "n": "Counter Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igncrit",
+        "n": "Ignore Crit Rate",
+        "k": "s"
+      },
+      {
+        "c": "p_r_ignwcrit",
+        "n": "Ignore Weapon Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igndotcrit",
+        "n": "Ignore DoT Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igndaggercrit",
+        "n": "Ignore Dagger Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_iglightcrit",
+        "n": "Ignore Lightning Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_igswordqi",
+        "n": "Ignore Sword Qi Crit",
+        "k": "s"
+      },
+      {
+        "c": "p_r_iglightspear",
+        "n": "Ignore Light Spear Crit",
+        "k": "s"
+      }
+    ],
+    "accessory": [
+      {
+        "c": "p_ra_dmgred",
+        "n": "DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_skillred",
+        "n": "Skill DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_basicred",
+        "n": "Basic ATK DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightred",
+        "n": "Lightning DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_daggerred",
+        "n": "Dagger DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_swordqired",
+        "n": "Sword Qi DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_lightspared",
+        "n": "Light Spear DMG Red",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_firered",
+        "n": "Fire DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_dotred",
+        "n": "DoT DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_combored",
+        "n": "Combo DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ra_counterred",
+        "n": "Counter DMG Reduction",
+        "k": "n"
+      },
+      {
+        "c": "p_ac_fdr",
+        "n": "Final DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_adv",
+        "n": "Adventurer FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_art",
+        "n": "Artifact FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_mnt",
+        "n": "Mount FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_fdr_pet",
+        "n": "Pet FDR",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_critred",
+        "n": "Crit DMG Reduction",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_skillcritred",
+        "n": "Skill Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_basiccritred",
+        "n": "Basic ATK Crit DMG Red",
+        "k": "s"
+      },
+      {
+        "c": "p_ac_dotcritred",
+        "n": "DoT Crit DMG Red",
+        "k": "s"
+      }
+    ]
+  }
+}

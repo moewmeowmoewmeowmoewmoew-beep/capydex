@@ -1,0 +1,2377 @@
+{
+  "mounts": [
+    {
+      "idx": 0,
+      "n": "None",
+      "tier": "",
+      "base_effect": null
+    },
+    {
+      "idx": 1,
+      "n": "Crocodile Overlord",
+      "tier": "Uncommon",
+      "base_effect": "Main character damage boost +1%, damage reduction +1%",
+      "awaken_base_effect": "After the protagonist's normal attack, Crocodile Overlord has a 60% chance to release [ Bite ], dealing 80% of the protagonist's attack power as normal attack damage to the enemy, with a cooldown of 1 turn.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 1.0,
+          "speed": 2
+        },
+        "deltas": {
+          "A1": {
+            "speed": 1
+          },
+          "A2": {
+            "speed": 2
+          },
+          "A3": {
+            "speed": 3
+          },
+          "A4": {
+            "speed": 4
+          },
+          "A5": {
+            "speed": 5
+          },
+          "A6": {
+            "speed": 6
+          },
+          "A7": {
+            "speed": 7
+          },
+          "A8": {
+            "speed": 8
+          },
+          "A9": {
+            "speed": 9
+          },
+          "A10": {
+            "speed": 10
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +1%, damage reduction +1%",
+        "1": "Main character damage boost +1%, damage reduction +1%",
+        "2": "Main character damage boost +1%, damage reduction +1%",
+        "3": "Main character damage boost +1%, damage reduction +1%",
+        "4": "Main character damage boost +1%, damage reduction +1%",
+        "5": "Main character damage boost +1%, damage reduction +1%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Bite ] deals 100% of the protagonist's attack power as normal attack damage to the enemy.",
+        "A3": "No additional effect",
+        "A4": "The probability of Crocodile Overlord releasing [ Bite ] is increased to 80%.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Bite ] deals 150% of the protagonist's attack power as normal attack damage to the enemy.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "The probability of Crocodile Overlord releasing [ Bite ] is increased to 100%."
+      }
+    },
+    {
+      "idx": 2,
+      "n": "Snail Immortal",
+      "tier": "Uncommon",
+      "base_effect": "Main character damage boost +2%, damage reduction +2%",
+      "awaken_base_effect": "The Snail Sage casts [ Snail's Watch ] every 3 turns, granting the protagonist a shield equal to 5% of their max HP.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 1.0,
+          "speed": 2
+        },
+        "deltas": {
+          "A1": {
+            "speed": 1
+          },
+          "A2": {
+            "speed": 2
+          },
+          "A3": {
+            "speed": 3
+          },
+          "A4": {
+            "speed": 4
+          },
+          "A5": {
+            "speed": 5
+          },
+          "A6": {
+            "speed": 6
+          },
+          "A7": {
+            "speed": 7
+          },
+          "A8": {
+            "speed": 8
+          },
+          "A9": {
+            "speed": 9
+          },
+          "A10": {
+            "speed": 10
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +2%, damage reduction +2%",
+        "1": "Main character damage boost +2%, damage reduction +2%",
+        "2": "Main character damage boost +2%, damage reduction +2%",
+        "3": "Main character damage boost +2%, damage reduction +2%",
+        "4": "Main character damage boost +2%, damage reduction +2%",
+        "5": "Main character damage boost +2%, damage reduction +2%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Snail's Watch ] increases the protagonist's shield to 10% of their max HP.",
+        "A3": "No additional effect",
+        "A4": "The Snail Sage's interval for casting [ Snail's Watch ] is reduced to 2 turns.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Snail's Watch ] increases the protagonist's shield to 12% of their max HP.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Snail's Watch ] increases the protagonist's shield to 15% of their max HP."
+      }
+    },
+    {
+      "idx": 3,
+      "n": "Bubble Newt",
+      "tier": "Rare",
+      "base_effect": "Main character damage boost +3%, damage reduction +3%",
+      "awaken_base_effect": "Bubble Newt releases [ Bubble Crash ] once every 3 turns, dealing 100% of the protagonist's attack as skill damage to enemies, and reducing the enemy's damage by 3% for 2 turns.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 2.0,
+          "speed": 4
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 3
+          },
+          "A3": {
+            "speed": 5
+          },
+          "A4": {
+            "speed": 6
+          },
+          "A5": {
+            "speed": 9
+          },
+          "A6": {
+            "speed": 9
+          },
+          "A7": {
+            "speed": 11
+          },
+          "A8": {
+            "speed": 12
+          },
+          "A9": {
+            "speed": 14
+          },
+          "A10": {
+            "speed": 15
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +3%, damage reduction +3%",
+        "1": "Main character damage boost +3%, damage reduction +3%",
+        "2": "Main character damage boost +3%, damage reduction +3%",
+        "3": "Main character damage boost +3%, damage reduction +3%",
+        "4": "Main character damage boost +3%, damage reduction +3%",
+        "5": "Main character damage boost +3%, damage reduction +3%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Bubble Crash ] deals 150% of the protagonist's attack as skill damage to enemies, and increases the enemy's damage reduction to 6%.",
+        "A3": "No additional effect",
+        "A4": "[ Bubble Crash ] deals 200% of the protagonist's attack as skill damage to enemies, and increases the enemy's damage reduction to 9%.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Bubble Crash ] deals 250% of the protagonist's attack as skill damage to enemies, and increases the enemy's damage reduction to 12%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Bubble Crash ] deals 300% of the protagonist's attack as skill damage to enemies, and increases the enemy's damage reduction to 15%."
+      }
+    },
+    {
+      "idx": 4,
+      "n": "Brave Turtle",
+      "tier": "Rare",
+      "base_effect": "Main character damage boost +4%, damage reduction +4%",
+      "awaken_base_effect": "When taking damage, Brave Turtle has a 60% chance to release [ Turtle Shield ], granting the main character a shield equal to 10% of max HP, with a cooldown of 2 turns.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_def_pct": 2.0,
+          "speed": 4
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 3
+          },
+          "A3": {
+            "speed": 5
+          },
+          "A4": {
+            "speed": 6
+          },
+          "A5": {
+            "speed": 9
+          },
+          "A6": {
+            "speed": 9
+          },
+          "A7": {
+            "speed": 11
+          },
+          "A8": {
+            "speed": 12
+          },
+          "A9": {
+            "speed": 14
+          },
+          "A10": {
+            "speed": 15
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +4%, damage reduction +4%",
+        "1": "Main character damage boost +4%, damage reduction +4%",
+        "2": "Main character damage boost +4%, damage reduction +4%",
+        "3": "Main character damage boost +4%, damage reduction +4%",
+        "4": "Main character damage boost +4%, damage reduction +4%",
+        "5": "Main character damage boost +4%, damage reduction +4%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "The probability of Brave Turtle using [ Turtle Shield ] increases to 80%",
+        "A3": "No additional effect",
+        "A4": "The probability of Brave Turtle using [ Turtle Shield ] increases to 100%",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Turtle Shield ] Increases the shield gained by the protagonist to 15% of maximum health",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Turtle Shield ] Increases the shield gained by the protagonist to 20% of maximum health"
+      }
+    },
+    {
+      "idx": 5,
+      "n": "GG Bond",
+      "tier": "Rare",
+      "base_effect": "Main character damage boost +5%, damage reduction +5%",
+      "awaken_base_effect": "GG Bond releases [ Charge ] once every 3 turns, dealing 150% of the protagonist's attack power as skill damage to the enemy, with a 20% chance to stun the enemy for 1 turn.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 2.0,
+          "speed": 4
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 3
+          },
+          "A3": {
+            "speed": 5
+          },
+          "A4": {
+            "speed": 6
+          },
+          "A5": {
+            "speed": 9
+          },
+          "A6": {
+            "speed": 9
+          },
+          "A7": {
+            "speed": 11
+          },
+          "A8": {
+            "speed": 12
+          },
+          "A9": {
+            "speed": 14
+          },
+          "A10": {
+            "speed": 15
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +5%, damage reduction +5%",
+        "1": "Main character damage boost +5%, damage reduction +5%",
+        "2": "Main character damage boost +5%, damage reduction +5%",
+        "3": "Main character damage boost +5%, damage reduction +5%",
+        "4": "Main character damage boost +5%, damage reduction +5%",
+        "5": "Main character damage boost +5%, damage reduction +5%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Charge ] deals skill damage equal to 180% of the protagonist's attack power to the enemy and increases the chance of stunning the enemy to 25%.",
+        "A3": "No additional effect",
+        "A4": "The interval for Boar Hero to release [ Charge ] is reduced to 2 turns, dealing skill damage equal to 200% of the protagonist's attack power to the enemy.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Charge ] deals skill damage equal to 250% of the protagonist's attack power to the enemy and increases the chance of stunning the enemy to 30%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Charge ] deals skill damage equal to 300% of the protagonist's attack power to the enemy and increases the chance of stunning the enemy to 35%."
+      }
+    },
+    {
+      "idx": 6,
+      "n": "Fangless",
+      "tier": "Epic",
+      "base_effect": "Main character damage boost +6%, damage reduction +6%",
+      "awaken_base_effect": "After the protagonist's ultimate move, Toothless releases [ Toothless Bite ], dealing skill damage equal to 200% of the protagonist's attack power to the enemy, with a cooldown of 3 turns.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_def_pct": 3.0,
+          "speed": 5
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 4
+          },
+          "A3": {
+            "speed": 6
+          },
+          "A4": {
+            "speed": 8
+          },
+          "A5": {
+            "speed": 10
+          },
+          "A6": {
+            "speed": 12
+          },
+          "A7": {
+            "speed": 14
+          },
+          "A8": {
+            "speed": 16
+          },
+          "A9": {
+            "speed": 18
+          },
+          "A10": {
+            "speed": 20
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +6%, damage reduction +6%",
+        "1": "Main character damage boost +6%, damage reduction +6%",
+        "2": "Main character damage boost +6%, damage reduction +6%",
+        "3": "Main character damage boost +6%, damage reduction +6%",
+        "4": "Main character damage boost +6%, damage reduction +6%",
+        "5": "Main character damage boost +6%, damage reduction +6%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Toothless Bite ] deals 280% of the protagonist's attack as skill damage to enemies.",
+        "A3": "No additional effect",
+        "A4": "Fangless releases [ Toothless Bite ] with a reduced cooldown of 2 turns, dealing 300% of the protagonist's attack as skill damage to enemies.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Toothless Bite ] deals 400% of the protagonist's attack as skill damage to enemies.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Toothless Bite ] deals 500% of the protagonist's attack as skill damage to enemies."
+      }
+    },
+    {
+      "idx": 7,
+      "n": "Wisps",
+      "tier": "Epic",
+      "base_effect": "Main character damage boost +7%, damage reduction +7%",
+      "awaken_base_effect": "When taking damage, Wisps release [ Rebirth ] once, restoring 60% of the protagonist's attack as health, with a cooldown of 3 turns.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 3.0,
+          "speed": 5
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 4
+          },
+          "A3": {
+            "speed": 6
+          },
+          "A4": {
+            "speed": 8
+          },
+          "A5": {
+            "speed": 10
+          },
+          "A6": {
+            "speed": 12
+          },
+          "A7": {
+            "speed": 14
+          },
+          "A8": {
+            "speed": 16
+          },
+          "A9": {
+            "speed": 18
+          },
+          "A10": {
+            "speed": 20
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage boost +7%, damage reduction +7%",
+        "1": "Main character damage boost +7%, damage reduction +7%",
+        "2": "Main character damage boost +7%, damage reduction +7%",
+        "3": "Main character damage boost +7%, damage reduction +7%",
+        "4": "Main character damage boost +7%, damage reduction +7%",
+        "5": "Main character damage boost +7%, damage reduction +7%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Rebirth ] Restore 80% of the main character's attack as health",
+        "A3": "No additional effect",
+        "A4": "The cooldown time of [ Rebirth ] is reduced to 2 turns",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Rebirth ] Restore 100% of the main character's attack as health",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Rebirth ] Restore 120% of the main character's attack as health"
+      }
+    },
+    {
+      "idx": 8,
+      "n": "Big Horn",
+      "tier": "Epic",
+      "base_effect": "Main character damage increase +8%, damage reduction +8%",
+      "awaken_base_effect": "After the protagonist's normal attack, Big Horn releases [ Devour ], dealing normal damage equal to 100% of the protagonist's attack to enemies and increasing the protagonist's damage by +3%, stackable up to 3 times, lasting until Big Horn dies. [ Devour ] has a cooldown of 1 turn.",
+      "star_up": {
+        "base_stats": {},
+        "deltas": {
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {}
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_def_pct": 3.0,
+          "speed": 5
+        },
+        "deltas": {
+          "A1": {
+            "speed": 2
+          },
+          "A2": {
+            "speed": 4
+          },
+          "A3": {
+            "speed": 6
+          },
+          "A4": {
+            "speed": 8
+          },
+          "A5": {
+            "speed": 10
+          },
+          "A6": {
+            "speed": 12
+          },
+          "A7": {
+            "speed": 14
+          },
+          "A8": {
+            "speed": 16
+          },
+          "A9": {
+            "speed": 18
+          },
+          "A10": {
+            "speed": 20
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Main character damage increase +8%, damage reduction +8%",
+        "1": "Main character damage increase +8%, damage reduction +8%",
+        "2": "Main character damage increase +8%, damage reduction +8%",
+        "3": "Main character damage increase +8%, damage reduction +8%",
+        "4": "Main character damage increase +8%, damage reduction +8%",
+        "5": "Main character damage increase +8%, damage reduction +8%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Devour ] Deals normal attack damage equal to 120% of the main character's attack to the enemy, and the damage increase effect can stack up to 5 times",
+        "A3": "No additional effect",
+        "A4": "[ Devour ] Deals normal attack damage equal to 140% of the main character's attack to the enemy, and increases the main character's damage to +4%",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Devour ] Deals normal attack damage equal to 160% of the main character's attack to the enemy, and increases the main character's damage to +5%",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Devour ] deals normal attack damage to enemies equal to 180% of the main character's attack and increases the main character's damage by +6%."
+      }
+    },
+    {
+      "idx": 9,
+      "n": "Roach (Carrot)",
+      "tier": "Legendary",
+      "base_effect": "Pet DMG per round +10%.",
+      "awaken_base_effect": "Every time the pet skill is released 6 times, at the start of the turn, Carrot releases [ Angry Carrot ], causing 200% of the main character's attack as skill damage to the enemy.",
+      "star_up": {
+        "base_stats": {
+          "pet_dmg_pct": 15.0,
+          "speed": 6
+        },
+        "deltas": {
+          "1": {
+            "pet_dmg_pct": 3,
+            "speed": 6
+          },
+          "2": {
+            "pet_dmg_pct": 6,
+            "speed": 12
+          },
+          "3": {
+            "pet_dmg_pct": 9,
+            "speed": 18
+          },
+          "4": {
+            "pet_dmg_pct": 12,
+            "speed": 24
+          },
+          "5": {
+            "pet_dmg_pct": 15,
+            "speed": 30
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "pet_dmg_pct": 15.0,
+          "speed": 6
+        },
+        "deltas": {
+          "A1": {
+            "speed": 3
+          },
+          "A2": {
+            "speed": 6
+          },
+          "A3": {
+            "speed": 9
+          },
+          "A4": {
+            "speed": 12
+          },
+          "A5": {
+            "speed": 15
+          },
+          "A6": {
+            "speed": 18
+          },
+          "A7": {
+            "speed": 21
+          },
+          "A8": {
+            "speed": 24
+          },
+          "A9": {
+            "speed": 27
+          },
+          "A10": {
+            "speed": 30
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Pet DMG per round +10%.",
+        "1": "Pet DMG per round +10%.",
+        "2": "Pet DMG per round +10%.",
+        "3": "Pet DMG per round +10%.",
+        "4": "Pet DMG per round +10%.",
+        "5": "Pet DMG per round +15%."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Angry Carrot ] Deals skill damage equal to 350% of the protagonist's attack to the enemy.",
+        "A3": "No additional effect",
+        "A4": "[ Angry Carrot ] Deals skill damage equal to 500% of the protagonist's attack to the enemy.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Angry Carrot ] Deals skill damage equal to 500% of the protagonist's attack to the enemy.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "When Radish dies, it increases the protagonist's pet critical rate by +50% and pet damage by +50%, lasting for 3 turns."
+      }
+    },
+    {
+      "idx": 10,
+      "n": "Laputa",
+      "tier": "Legendary",
+      "base_effect": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+      "awaken_base_effect": "Laputa releases [ Magic Carpet Strike ] every 2 turns, dealing 200% of the main character's attack as skill damage to enemies and increasing the main character's skill damage by +10%. This effect can stack up to 3 times and lasts until Laputa's death.",
+      "star_up": {
+        "base_stats": {
+          "combo_rate_pct": 10.0,
+          "speed": 6
+        },
+        "deltas": {
+          "1": {
+            "combo_rate_pct": 2,
+            "speed": 6
+          },
+          "2": {
+            "combo_rate_pct": 4,
+            "speed": 6
+          },
+          "3": {
+            "combo_rate_pct": 6,
+            "speed": 6
+          },
+          "4": {
+            "combo_rate_pct": 8,
+            "speed": 6
+          },
+          "5": {
+            "combo_rate_pct": 10,
+            "speed": 6
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "combo_rate_pct": 10.0,
+          "speed": 6
+        },
+        "deltas": {
+          "A1": {
+            "speed": 3
+          },
+          "A2": {
+            "speed": 6
+          },
+          "A3": {
+            "speed": 9
+          },
+          "A4": {
+            "speed": 12
+          },
+          "A5": {
+            "speed": 15
+          },
+          "A6": {
+            "speed": 18
+          },
+          "A7": {
+            "speed": 21
+          },
+          "A8": {
+            "speed": 24
+          },
+          "A9": {
+            "speed": 27
+          },
+          "A10": {
+            "speed": 30
+          }
+        }
+      },
+      "star_effects": {
+        "0": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+        "1": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+        "2": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+        "3": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+        "4": "When battle starts, deal 200% DMG to all enemies with 30% chance to Stun for 1 round.",
+        "5": "When battle starts, deal 300% DMG to all enemies with 45% chance to Stun for 1 round."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Magic Carpet Strike ] Deals skill damage equal to 350% of the protagonist's attack to the enemy.",
+        "A3": "No additional effect",
+        "A4": "[ Magic Carpet Strike ] Increases the target's skill damage taken by +30% for 1 turn",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Magic Carpet Strike ] Deals skill damage equal to 500% of the protagonist's attack to the enemy.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "When Laputa dies, increases the main character's skill damage by +30% for 2 turns"
+      }
+    },
+    {
+      "idx": 11,
+      "n": "King Kong",
+      "tier": "Legendary",
+      "base_effect": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+      "awaken_base_effect": "After the protagonist's counterattack, King Kong unleashes [ King Kong Counter ] dealing counter damage equal to 100% of the protagonist's attack power to the enemy, and increases the protagonist's light spear damage by +10%, which can stack up to 5 times, lasting until the end of the battle.",
+      "star_up": {
+        "base_stats": {
+          "counter_rate_pct": 10.0,
+          "speed": 6
+        },
+        "deltas": {
+          "1": {
+            "counter_rate_pct": 2,
+            "speed": 6
+          },
+          "2": {
+            "counter_rate_pct": 4,
+            "speed": 6
+          },
+          "3": {
+            "counter_rate_pct": 6,
+            "speed": 6
+          },
+          "4": {
+            "counter_rate_pct": 8,
+            "speed": 6
+          },
+          "5": {
+            "counter_rate_pct": 10,
+            "speed": 6
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "counter_rate_pct": 10.0,
+          "speed": 6
+        },
+        "deltas": {
+          "A1": {
+            "speed": 3
+          },
+          "A2": {
+            "speed": 6
+          },
+          "A3": {
+            "speed": 9
+          },
+          "A4": {
+            "speed": 12
+          },
+          "A5": {
+            "speed": 15
+          },
+          "A6": {
+            "speed": 18
+          },
+          "A7": {
+            "speed": 21
+          },
+          "A8": {
+            "speed": 24
+          },
+          "A9": {
+            "speed": 27
+          },
+          "A10": {
+            "speed": 30
+          }
+        }
+      },
+      "star_effects": {
+        "0": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+        "1": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+        "2": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+        "3": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+        "4": "When counterattacking, release 1 light spear, and counterattack damage is increased by +10%, lasting for 1 turn, stackable up to 10 times.",
+        "5": "When counterattacking, release 1 light spear, and counterattack damage is increased by +15%, lasting for 2 turns, stackable up to 10 times"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ King Kong Counter ] deals counter damage to enemies equal to 200% of protagonist's attack power",
+        "A3": "No additional effect",
+        "A4": "After [ King Kong Counter ] is used, it triggers 1 Light Spear",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ King Kong Counter ] deals counter damage to enemies equal to 300% of protagonist's attack power",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ King Kong Counter ] additionally deals counter damage equal to 5% of the target's max HP, with extra damage not exceeding 2000% of protagonist's attack"
+      }
+    },
+    {
+      "idx": 12,
+      "n": "Catastrophe",
+      "tier": "Mythic",
+      "base_effect": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+      "awaken_base_effect": "Catastrophe releases [ Heavenly Disaster ] once every 3 turns, dealing 300% of the protagonist's attack as skill damage to enemies, and reducing the target's damage by 20% for 1 turn.",
+      "star_up": {
+        "base_stats": {
+          "global_def_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "global_def_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "global_def_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "global_def_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "global_def_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "global_def_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_def_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+        "1": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+        "2": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+        "3": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+        "4": "Global DMG Reduction+10%, 20% chance to be immune to control effects.",
+        "5": "Global DMG Reduction+15%, 35% chance to be immune to control effects."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Heavenly Disaster ] deals 600% of the protagonist's attack as skill damage to enemies.",
+        "A3": "No additional effect",
+        "A4": "After Catastrophe appears, the protagonist's global skill damage reduction is increased by +50%, lasting for 1 turn.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Heavenly Disaster ] deals 900% of the protagonist's attack as skill damage to enemies.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After Catastrophe appears, the protagonist's global skill damage reduction is increased by +90%, and the protagonist's control immunity rate is increased by +50%, lasting for 2 turns."
+      }
+    },
+    {
+      "idx": 13,
+      "n": "Sphinx",
+      "tier": "Mythic",
+      "base_effect": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+      "awaken_base_effect": "When Sphinx enters, release [ Life Gaze ] to deal 1 time of the protagonist's attack 100% skill damage to the enemy, and resurrect 1 dead mount, restoring 50% of its health. If there are no dead mounts, grant a shield equal to 20% of the protagonist's max health.",
+      "star_up": {
+        "base_stats": {
+          "crit_rate_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "crit_rate_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "crit_rate_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "crit_rate_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "crit_rate_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "crit_rate_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "crit_rate_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+        "1": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+        "2": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+        "3": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+        "4": "Skill Crit Rate +10%. Attack +30% for 2 rounds after triggering a Skill Crit",
+        "5": "Skill Crit Rate +15%. Attack +45% for 2 rounds after triggering a Skill Crit"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Life Gaze ] damage coefficient increased to 200%",
+        "A3": "No additional effect",
+        "A4": "When Sphinx dies, mount damage reduction +30%, mount damage +50%, lasts for 2 turns",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Life Gaze ] damage coefficient increased to 300%",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "When any mount's ultimate ability deals damage, gain 1 stack of [ Cat Soul ]. When Sphinx dies, consume all [ Cat Soul ] to revive, each stack of [ Cat Soul ] restores 25% of the mount's HP. After revival, immediately release [ Life Gaze ] (permanently triggers 1 time)"
+      }
+    },
+    {
+      "idx": 14,
+      "n": "Diego",
+      "tier": "Mythic",
+      "base_effect": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+      "awaken_base_effect": "After the protagonist's basic attack, Diego has a 60% chance to release [ Tiger Strike ], dealing 100% of the protagonist's attack as basic attack damage to the enemy, and causing the enemy to [ Bleed ]. This can trigger a maximum of 2 times per turn.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+        "1": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+        "2": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+        "3": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+        "4": "Maximum combo count +1, +5% combo rate per turn (up to 20%).",
+        "5": "Maximum combo count +1, +8% combo rate per turn (up to 40%)"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Tiger Strike ] damage coefficient increased to 150%",
+        "A3": "No additional effect",
+        "A4": "[ Tiger Strike ] trigger probability increased to 100%",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Tiger Strike ] damage coefficient increased to 200%",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Tiger Strike ] hits targets in a bleeding state, increasing the protagonist's bleeding damage by +20%, stacking up to 5 layers, lasting until Diego leaves the field"
+      }
+    },
+    {
+      "idx": 15,
+      "n": "Sea Hero",
+      "tier": "Mythic",
+      "base_effect": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+      "awaken_base_effect": "After the protagonist counterattacks, Hero of the Sea Rreleases [ Tidal Wave ], dealing counter damage equal to 150% of the protagonist's attack to enemies, and increases the protagonist's counter damage by +6% and Light Spear damage by +6%, stackable up to 5 times, lasts until Hero of the Sea exits",
+      "star_up": {
+        "base_stats": {
+          "dmg_reduction_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "dmg_reduction_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "dmg_reduction_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "dmg_reduction_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "dmg_reduction_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "dmg_reduction_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "dmg_reduction_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+        "1": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+        "2": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+        "3": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+        "4": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +4%, shield bonus by +2%. stackable up to 10 times, lasts until the end of battle",
+        "5": "When triggered counterattack, randomly releases 1-2 Light Spear shots, and increases protagonist's counter damage by +6%, shield bonus by +3% stackable up to 10 times, lasts until the end of battle"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "Counter damage increased to 250%, protagonist's counter damage bonus increased to +12%",
+        "A3": "No additional effect",
+        "A4": "After [ Tidal Wave ] is released, triggers 1 Light Spear shot, grants the protagonist a shield equal to 5% of maximum health",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "Counter damage increased to 350%, Light Spear damage bonus increased to +12%",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After [ Tidal Wave ] is released, additionally deals counter damage equal to 8% of enemy's maximum health, not exceeding 30 times the protagonist's attack"
+      }
+    },
+    {
+      "idx": 16,
+      "n": "Don Quixote Sugar",
+      "tier": "Mythic",
+      "base_effect": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+      "awaken_base_effect": "Don Quixote releases [ Dazzling Barrage ] every 3 turns, dealing 5 hits of Skill Damage equal to 40% of hero's Attack; after release, enemy Crit Rate -10% for 2 turns",
+      "star_up": {
+        "base_stats": {
+          "global_attack_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "global_attack_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "global_attack_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "global_attack_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "global_attack_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "global_attack_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+        "1": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+        "2": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+        "3": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+        "4": "At the start of battle, hero gains Ignore Crit Rate +20% and Crit Damage Reduction +60%; each turn these bonuses decrease bv lanore Crit Rate -4% and Crit Damage Reduction -12%, lasting 5 turns",
+        "5": "At the start of battle, hero gains Ignore Crit Rate +30% and Crit Damage Reduction +90%; each turn these bonuses decrease by Ignore Crit Rate -6% and Crit Damage Reduction -18%, lasting 5 turns"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "Each time deals 80% skill damage",
+        "A3": "No additional effect",
+        "A4": "Additionally reduces enemy Critical Damage by -60% for 2 turns",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "Each time deals 120% skill damage",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After Don Quixote dies, the hero gains Ignore Critical Rate +20% and Critical Damage Reduction +60% for 2 turns"
+      }
+    },
+    {
+      "idx": 17,
+      "n": "Dapper Goose",
+      "tier": "Mythic",
+      "base_effect": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+      "awaken_base_effect": "Dapper Goose casts [ Gentle Greeting ] every 3 turns, dealing 200% ATK Skill DMG and granting the hero 1 Control Immune (non-stackable; max value applies).",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+        "1": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+        "2": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+        "3": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+        "4": "DMG Reduc. +10%; gain a Shield equal to 5% of Max HP every 2 turns.",
+        "5": "DMG Reduc. +20%; gain a Shield equal to 10% of Max HP every 2 turns."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Gentle Greeting ] Skill DMG increased to 400% ΑΤΚ.",
+        "A3": "No additional effect",
+        "A4": "After [ Gentle Greeting ], enemy DMG Bonus -60% for 2 turns.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Gentle Greeting ] Skill DMG increased to 600% ATK.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "When Dapper Goose dies, grants a 30% Max HP Shield and Disarms the enemy for 1 turn."
+      }
+    },
+    {
+      "idx": 18,
+      "n": "Toffee",
+      "tier": "Mythic",
+      "base_effect": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+      "awaken_base_effect": "Every 3 turns, release [ Candy Charge ], dealing 200% Rof the protagonist's attack as skill damage to enemies, and the protagonist randomly gains 0-3 non-repeating [ Candies ].\nStrawberry Candy: Protagonist's attack +20% for 1 turn\nPineapple Candy: Recovers 20% HP\nBlueberry Candy: Gain a shield equal to 20% of max HP",
+      "star_up": {
+        "base_stats": {
+          "dmg_reduction_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "dmg_reduction_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "dmg_reduction_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "dmg_reduction_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "dmg_reduction_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "dmg_reduction_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "dmg_reduction_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+        "1": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+        "2": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+        "3": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+        "4": "Global Damage Reduction +10%, recover 10% HP every 2 rounds",
+        "5": "Global Damage Reduction +15%, recover 15% HP every 2 rounds"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Candy Charge ] deals skill damage equal to 400% of the protagonist's attack to enemies.",
+        "A3": "No additional effect",
+        "A4": "For every candy effect obtained, the protagonist gains +5% global damage reduction, lasting until the effect ends.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Candy Charge ] deals skill damage equal to 600% of the protagonist's attack to enemies.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "Upon Candy Death, the hero gains a 20% max HP shield and all candy effects"
+      }
+    },
+    {
+      "idx": 19,
+      "n": "Luminous Dragon",
+      "tier": "Mythic",
+      "base_effect": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+      "awaken_base_effect": "When Luminous Dragon appears, it releases [ Eternal Night Pulse ], dealing 200% of the protagonist's attack as damage to enemies. This damage is boosted by the protagonist's normal attack damage bonus and skill damage bonus, and is released once every 3 turns thereafter.",
+      "star_up": {
+        "base_stats": {
+          "global_attack_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "1": {
+            "global_attack_pct": 2,
+            "speed": 8
+          },
+          "2": {
+            "global_attack_pct": 4,
+            "speed": 16
+          },
+          "3": {
+            "global_attack_pct": 6,
+            "speed": 24
+          },
+          "4": {
+            "global_attack_pct": 8,
+            "speed": 32
+          },
+          "5": {
+            "global_attack_pct": 10,
+            "speed": 40
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 10.0,
+          "speed": 8
+        },
+        "deltas": {
+          "A1": {
+            "speed": 4
+          },
+          "A2": {
+            "speed": 8
+          },
+          "A3": {
+            "speed": 12
+          },
+          "A4": {
+            "speed": 16
+          },
+          "A5": {
+            "speed": 20
+          },
+          "A6": {
+            "speed": 24
+          },
+          "A7": {
+            "speed": 28
+          },
+          "A8": {
+            "speed": 32
+          },
+          "A9": {
+            "speed": 36
+          },
+          "A10": {
+            "speed": 40
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+        "1": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+        "2": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+        "3": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+        "4": "Cast 1 Bolt every round. Increase Crit Rate by 3% and Crit DMG by 15% each round. Max 5 stacks.",
+        "5": "Cast 1 Bolt every round. Increase Crit Rate by 4.5% and Crit DMG by 25% each round. Max 5 stacks."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Eternal Night Pulse ] deals 300% of the protagonist's attack as damage to enemies.",
+        "A3": "No additional effect",
+        "A4": "Each turn, [ Eternal Night Pulse ]'s damage increases by 50%, up to a maximum of 5 stacks (also effective while Luminous Dragon is on standby).",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Eternal Night Pulse ] deals 400% of the protagonist's attack as damage to enemies.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Eternal Night Pulse ] deals additional damage equal to 5% of the target's max health, with the additional damage not exceeding 2000% of the protagonist's attack."
+      }
+    },
+    {
+      "idx": 20,
+      "n": "Flyer No. 1",
+      "tier": "Immortal",
+      "base_effect": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+      "awaken_base_effect": "Flver No.1 casts [ Rocket Start ] every 3 turns, dealing skill damage equal to 300% of hero's attack. When cast, the hero gains a shield equal to 15% of max HP.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 10
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 20
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 30
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 40
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 50
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "A1": {
+            "speed": 5
+          },
+          "A2": {
+            "speed": 10
+          },
+          "A3": {
+            "speed": 15
+          },
+          "A4": {
+            "speed": 20
+          },
+          "A5": {
+            "speed": 25
+          },
+          "A6": {
+            "speed": 30
+          },
+          "A7": {
+            "speed": 35
+          },
+          "A8": {
+            "speed": 40
+          },
+          "A9": {
+            "speed": 45
+          },
+          "A10": {
+            "speed": 50
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+        "1": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+        "2": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+        "3": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+        "4": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +20%. After the 2nd turn, skill critical rate +15%, critical damage +30%.",
+        "5": "Before the battle starts, for 2 turns the hero's final damage taken is reduced by +35%. After the 2nd turn, skill critical rate +25%, critical damage +50%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "Upgraded to deal 450% skill damage, and the hero gains 1 control immunity (not stackable).",
+        "A3": "No additional effect",
+        "A4": "If control immunity already exists, skill damage taken by the hero is reduced by -60% for 1 turn.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "Reduces the release interval by 1 turn, upgraded to deal 600% skill damage.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "When Flyer No.1 dies, all control effects on the hero are cleared, the hero gains 1 control immunity, and enemy critical rate is reduced by -20% and critical damage by -50%, lasting 2 turns."
+      }
+    },
+    {
+      "idx": 21,
+      "n": "Capytti Veyron",
+      "tier": "Immortal",
+      "base_effect": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+      "awaken_base_effect": "Capvtti Vevron releases [ Rapid Dash ] once every 4 turns, dealing skill damage equal to 300% of the main character's attack to enemies, and increasing the main character's final skill damage reduction by +9%. This effect decreases by -3% each turn and lasts for 3 turns.",
+      "star_up": {
+        "base_stats": {
+          "global_attack_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "1": {
+            "speed": 10,
+            "global_attack_pct": 2
+          },
+          "2": {
+            "global_attack_pct": 4,
+            "speed": 20
+          },
+          "3": {
+            "global_attack_pct": 6,
+            "speed": 30
+          },
+          "4": {
+            "global_attack_pct": 8,
+            "speed": 40
+          },
+          "5": {
+            "global_attack_pct": 10,
+            "speed": 50
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "A1": {
+            "speed": 5
+          },
+          "A2": {
+            "speed": 10
+          },
+          "A3": {
+            "speed": 15
+          },
+          "A4": {
+            "speed": 20
+          },
+          "A5": {
+            "speed": 25
+          },
+          "A6": {
+            "speed": 30
+          },
+          "A7": {
+            "speed": 35
+          },
+          "A8": {
+            "speed": 40
+          },
+          "A9": {
+            "speed": 45
+          },
+          "A10": {
+            "speed": 50
+          }
+        }
+      },
+      "star_effects": {
+        "0": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+        "1": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+        "2": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+        "3": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+        "4": "For the first 3 turns before combat begins, protagonist's final damage reduction +15%, shield bonus +15%",
+        "5": "For the first 3 turns before combat begins, protagonist's final damage reduction +25%, shield bonus +25%"
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "Skill damage increased to 450%, and grants the protagonist a shield equal to 10% of maximum health",
+        "A3": "No additional effect",
+        "A4": "Increases protagonist's final skill damage reduction to +18%, this effect decreases by -6% each turn, and shield increased to 20% of maximum health",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "Reduces casting cooldown by 1 turn, increases protagonist's final skill damage reduction to +27% this effect decreases by -9% each turn",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "Additionally causes enemies to be stunned or silenced for 1 turn"
+      }
+    },
+    {
+      "idx": 22,
+      "n": "Overlord Deer",
+      "tier": "Immortal",
+      "base_effect": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+      "awaken_base_effect": "Overlord Deer releases [ Deer Stampede ] once every 2 turns, dealing burning, poison, and bleeding damage each equal to 100% of the protagonist's attack. After release, it immediately deals additional damage equal to 25% of the target's total burning, poison, and bleeding damage. Each type of damage cannot exceed 25 times the protagonist's attack.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 10
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 20
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 30
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 40
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 50
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "A1": {
+            "speed": 5
+          },
+          "A2": {
+            "speed": 10
+          },
+          "A3": {
+            "speed": 15
+          },
+          "A4": {
+            "speed": 20
+          },
+          "A5": {
+            "speed": 25
+          },
+          "A6": {
+            "speed": 30
+          },
+          "A7": {
+            "speed": 35
+          },
+          "A8": {
+            "speed": 40
+          },
+          "A9": {
+            "speed": 45
+          },
+          "A10": {
+            "speed": 50
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+        "1": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+        "2": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+        "3": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+        "4": "Each turn, continuous DMG +5%, can stack 10 layers. When the enemy takes continuous DMG, gain shield equal to 20% of the DMG, with the shield value not exceeding 15% of the protagonist's HPMax.",
+        "5": "Each turn, continuous DMG +10%, can stack 10 layers. When the enemy takes continuous DMG gain shield equal to 30% of the DMG, with the shield value not exceeding 20% of the protagonist's HPMax."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Deer Stampede ] damage coefficient increased to 150%",
+        "A3": "No additional effect",
+        "A4": "After using [ Deer Stampede ], the target's current burn, poison, and bleed total damage is increased by 40%, not exceeding 40 times the protagonist's attack.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Deer Stampede ] release interval -1",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After using [ Deer Stampede ], for each 1 stack of burn, poison, or bleed, deal continuous damage equal to 0.5% of the target's HPMax, not exceeding 60 times the protagonist's attack."
+      }
+    },
+    {
+      "idx": 23,
+      "n": "Marshmallow Cloud",
+      "tier": "Immortal",
+      "base_effect": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+      "awaken_base_effect": "Releases [ Dreamy Impact ] every 3 turns, dealing Skill DMG equal to 300% of Hero's ATK and inflicting [ Dreamy ] on enemies for 2 turns. Dreamy: Final DMG Bonus -5%, CRIT DMG-20%.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 10
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 20
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 30
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 40
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 50
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "A1": {
+            "speed": 5
+          },
+          "A2": {
+            "speed": 10
+          },
+          "A3": {
+            "speed": 15
+          },
+          "A4": {
+            "speed": 20
+          },
+          "A5": {
+            "speed": 25
+          },
+          "A6": {
+            "speed": 30
+          },
+          "A7": {
+            "speed": 35
+          },
+          "A8": {
+            "speed": 40
+          },
+          "A9": {
+            "speed": 45
+          },
+          "A10": {
+            "speed": 50
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+        "1": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+        "2": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+        "3": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+        "4": "Hero Final DMG Reduction +10%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +5% until battle ends.",
+        "5": "Hero Final DMG Reduction +20%; after taking total DMG equal to 50% of Max HP, Final DMG Bonus +10% until battle ends."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Dreamy Impact ] DMG multiplier increased to 450%; [ Dreamy ] deals Skill DMG equal to 2% of Max HP each turn (Max 20x Hero's ATK).",
+        "A3": "No additional effect",
+        "A4": "[ Dreamy ] Final DMG reduction effect increased to 10%; during [ Dreamy ], the enemy's first CRIT each turn grants the Hero a Shield equal to 10% of Max HP.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Dreamy Impact ] cooldown -1 turn; DMG multiplier increased to 600%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After [ Dreamy ] ends, reduces enemy's CRIT Rate by 30% for 1 turn."
+      }
+    },
+    {
+      "idx": 24,
+      "n": "Dreamy Bathtub",
+      "tier": "Immortal",
+      "base_effect": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+      "awaken_base_effect": "Every 3 rounds, casts [ Dreamy Cleanse ] once, dealing 3 hits of Skill DMG equal to 100% of ATK. Each hit has a 50% chance to apply 1 stack of [ Smooth ] to the enemy. Smooth: Basic Attack Crit Rate -5%, stacks up to 3 times.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 2,
+            "speed": 10
+          },
+          "2": {
+            "global_hp_pct": 4,
+            "speed": 20
+          },
+          "3": {
+            "global_hp_pct": 6,
+            "speed": 30
+          },
+          "4": {
+            "global_hp_pct": 8,
+            "speed": 40
+          },
+          "5": {
+            "global_hp_pct": 10,
+            "speed": 50
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 15.0,
+          "speed": 10
+        },
+        "deltas": {
+          "A1": {
+            "speed": 5
+          },
+          "A2": {
+            "speed": 10
+          },
+          "A3": {
+            "speed": 15
+          },
+          "A4": {
+            "speed": 20
+          },
+          "A5": {
+            "speed": 25
+          },
+          "A6": {
+            "speed": 30
+          },
+          "A7": {
+            "speed": 35
+          },
+          "A8": {
+            "speed": 40
+          },
+          "A9": {
+            "speed": 45
+          },
+          "A10": {
+            "speed": 50
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+        "1": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+        "2": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+        "3": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+        "4": "Protagonist Ignore Crit Rate +10%. After taking a Crit, Protagonist's Crit DMG Res +3%. Stacks up to 10 times.",
+        "5": "Protagonist Ignore Crit Rate +15%. After taking a Crit, Protagonist's Crit DMG Res +5%. Stacks up to 10 times."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "Skill DMG increased to 150% of ATK; each hit has a 50% chance to deal bonus Skill DMG equal to 2% of enemy Max HP.",
+        "A3": "No additional effect",
+        "A4": "Grants Protagonist 1 CC Immunity. [ Smooth ] application rate increased to 100%; at max stacks, enemy Crit DMG -50%.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "CD reduced to 2 rounds; base Skill DMG increased to 200% of ATK.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "New Defeat Mechanic: Upon death, immediately applies max [ Smooth ] (3 stacks) and -30% Crit Rate to the enemy for 2 rounds."
+      }
+    },
+    {
+      "idx": 25,
+      "n": "Imperial Dragon-Armor Beast",
+      "tier": "Transcendent",
+      "base_effect": "Imperial Dragon Armor — Hero ignores Critical Rate +10%. When taking Critical damage and surviving, gain a shield equal to 30% of damage taken. This effect can grant up to 25% of the hero's max HP as shield per round.",
+      "awaken_base_effect": "Each turn, cast 1 [ Imperial Dragon Devour ], dealing skill damage equal to 100% of the protagonist's Attack for 1 hit. On the first cast, transform into the Destruction Dragon Emperor and replace it with 1 [ Photon Annihilation ]. Thereafter, after every 2 casts of [ Imperial Dragon Devour ], replace with 1 [ Photon Annihilation ], dealing 175% of the protagonist's Attack as skill damage for 1 hit and granting final damage reduction +5% for 2 turns. When the Sacred Sword is deployed, casting [ Photon Annihilation ] transforms into the Supreme Dragon God, removes all control effects from the protagonist, and grants 1 instance of control immunity.",
+      "star_up": {
+        "base_stats": {
+          "global_hp_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "1": {
+            "global_hp_pct": 3,
+            "speed": 12
+          },
+          "2": {
+            "global_hp_pct": 6,
+            "speed": 24
+          },
+          "3": {
+            "global_hp_pct": 9,
+            "speed": 36
+          },
+          "4": {
+            "global_hp_pct": 12,
+            "speed": 48
+          },
+          "5": {
+            "global_hp_pct": 15,
+            "speed": 60
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_hp_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "A1": {
+            "speed": 6
+          },
+          "A2": {
+            "speed": 12
+          },
+          "A3": {
+            "speed": 18
+          },
+          "A4": {
+            "speed": 24
+          },
+          "A5": {
+            "speed": 30
+          },
+          "A6": {
+            "speed": 36
+          },
+          "A7": {
+            "speed": 42
+          },
+          "A8": {
+            "speed": 48
+          },
+          "A9": {
+            "speed": 54
+          },
+          "A10": {
+            "speed": 60
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Imperial Dragon Armor — Hero ignores Critical Rate +10%. When taking Critical damage and surviving, gain a shield equal to 30% of damage taken. This effect can grant up to 25% of the hero's max HP as shield per round.",
+        "1": "Imperial Dragon Armor — Hero ignores Critical Rate +12%. When taking Critical damage and surviving, gain a shield equal to 40% of damage taken. This effect can grant up to 30% of the hero's max HP as shield per round.",
+        "2": "Imperial Dragon Armor — Hero ignores Critical Rate +14%. When taking Critical damage and surviving, gain a shield equal to 50% of damage taken. This effect can grant up to 35% of the hero's max HP as shield per round.",
+        "3": "Imperial Dragon Armor — Hero ignores Critical Rate +16%. When taking Critical damage and surviving, gain a shield equal to 60% of damage taken. This effect can grant up to 40% of the hero's max HP as shield per round.",
+        "4": "Imperial Dragon Armor — Hero ignores Critical Rate +18%. When taking Critical damage and surviving, gain a shield equal to 70% of damage taken. This effect can grant up to 45% of the hero's max HP as shield per round.",
+        "5": "Imperial Dragon Armor — Hero ignores Critical Rate +20%. When taking Critical damage and surviving, gain a shield equal to 80% of damage taken. This effect can grant up to 50% of the hero's max HP as shield per round."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "The damage multiplier of [ Photon Annihilation ] is increased to 550%. When the Sacred Sword is deployed, [ Photon Annihilation ] additionally deals damage equal to 6% of the enemy's Max HP.",
+        "A3": "No additional effect",
+        "A4": "After [ Photon Annihilation ] is cast, the protagonist gains [ Dragon's Blessing ] for 2 turns. While active, each time damage is taken, final damage reduction stacks by 2%, up to 10%.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "The damage multiplier of [ Photon Annihilation ] is increased to 925% and grants a shield equal to 20% of Max HP. When the Sacred Sword is deployed, the additional damage is increased to 12% of the enemy's Max HP, with the damage cap increased to 120x Attack.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "[ Dragon's Blessing ] effect enhanced: the maximum accumulated final damage reduction is increased from 10% to 20%. When the Holy Sword is deployed, during [ Dragon's Blessing ], a single instance of critical damage received by the main character will not exceed 30% of their max HP."
+      }
+    },
+    {
+      "idx": 26,
+      "n": "Ash Progenitor Dragon",
+      "tier": "Transcendent",
+      "base_effect": "Primal Dragon Blessing — Final DMG Reduc. +20%. Gains 1 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +5% until the end of battle.",
+      "awaken_base_effect": "Ash Breath — Every 3 rounds, Ash Primal Dragon casts [ Ash Breath ] once, dealing Skill DMG equal to 125% of Protagonist's ATK 3 times. When Ash Primal Dragon enters, resurrects 1 fallen Mount and restores 50% of its HP. At the start of battle, Protagonist gains [ Ember ] for 3 rounds. (Ember: Protagonist's Final DMG Reduc. +5%.) When Protagonist is Stunned, Frozen, Silenced, or Disarmed, increases Control Immune by +50% for 2 rounds (cannot stack) and deals Skill DMG equal to 5% of enemy's Max HP (caps at 50x Protagonist's ATK). Ash Primal Dragon cannot be resurrected by other Mount skills.",
+      "star_up": {
+        "base_stats": {
+          "global_attack_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "1": {
+            "global_attack_pct": 3,
+            "speed": 12
+          },
+          "2": {
+            "global_attack_pct": 6,
+            "speed": 24
+          },
+          "3": {
+            "global_attack_pct": 9,
+            "speed": 36
+          },
+          "4": {
+            "global_attack_pct": 12,
+            "speed": 48
+          },
+          "5": {
+            "global_attack_pct": 15,
+            "speed": 60
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "A1": {
+            "speed": 6
+          },
+          "A2": {
+            "speed": 12
+          },
+          "A3": {
+            "speed": 18
+          },
+          "A4": {
+            "speed": 24
+          },
+          "A5": {
+            "speed": 30
+          },
+          "A6": {
+            "speed": 36
+          },
+          "A7": {
+            "speed": 42
+          },
+          "A8": {
+            "speed": 48
+          },
+          "A9": {
+            "speed": 54
+          },
+          "A10": {
+            "speed": 60
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Primal Dragon Blessing — Final DMG Reduc. +20%. Gains 1 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +5% until the end of battle.",
+        "1": "Primal Dragon Blessing — Final DMG Reduc. +20%. Gains 2 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +10% until the end of battle.",
+        "2": "Primal Dragon Blessing — Final DMG Reduc. +25%. Gains 2 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +10% until the end of battle.",
+        "3": "Primal Dragon Blessing — Final DMG Reduc. +30%. Gains 2 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +10% until the end of battle.",
+        "4": "Primal Dragon Blessing — Final DMG Reduc. +35%. Gains 2 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +10% until the end of battle.",
+        "5": "Primal Dragon Blessing — Final DMG Reduc. +35%. Gains 3 Control Immune at the start of battle. Control Immune does not stack; the maximum value is taken upon repeat acquisition. After being controlled for the first time, increases Protagonist's Final DMG Bonus by +15% until the end of battle."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Ash Breath ] DMG multiplier increased to 250%; [ Ember ] Protagonist Final DMG Reduc. increased to 10%.",
+        "A3": "No additional effect",
+        "A4": "When Ash Primal Dragon dies for the first time, refreshes [ Ember ] duration; if Protagonist lacks [ Ember ], grants it immediately and provides 1 Control Immune.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Ash Breath ] cooldown -1 and DMG multiplier increased to 375%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "Ash Primal Dragon resurrects after its first death and grants Protagonist 2 Control Immune. [ Ember ] clears Control states when triggered (once per battle)."
+      }
+    },
+    {
+      "idx": 27,
+      "n": "Frost Dragon",
+      "tier": "Transcendent",
+      "base_effect": "Frost Scales — Protagonist Ignore Crit Rate +10%, Final DMG Reduction +10%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 30% Max HP, and reduces enemy Final Skill DMG Boost by 10% for 2 turns. Triggers once per battle.",
+      "awaken_base_effect": "After Frost Dragon enters battle, it immediately casts [ Frost Breath ], dealing 3 hits of skill DMG equal to 125% of the Protagonist's ATK to enemies. It then casts it 1 time every 3 turns. After the first cast, the Protagonist gains [ Winter's Embrace ] for 2 turns. [ Winter's Embrace ]: Overall DMG RES +50%, Control RES +30%. Triggers 1 time per battle.",
+      "star_up": {
+        "base_stats": {
+          "global_attack_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "1": {
+            "global_attack_pct": 3,
+            "speed": 12
+          },
+          "2": {
+            "global_attack_pct": 6,
+            "speed": 24
+          },
+          "3": {
+            "global_attack_pct": 9,
+            "speed": 36
+          },
+          "4": {
+            "global_attack_pct": 12,
+            "speed": 48
+          },
+          "5": {
+            "global_attack_pct": 15,
+            "speed": 60
+          }
+        }
+      },
+      "awaken": {
+        "base_stats": {
+          "global_attack_pct": 20.0,
+          "speed": 12
+        },
+        "deltas": {
+          "A1": {
+            "speed": 6
+          },
+          "A2": {
+            "speed": 12
+          },
+          "A3": {
+            "speed": 18
+          },
+          "A4": {
+            "speed": 24
+          },
+          "A5": {
+            "speed": 30
+          },
+          "A6": {
+            "speed": 36
+          },
+          "A7": {
+            "speed": 42
+          },
+          "A8": {
+            "speed": 48
+          },
+          "A9": {
+            "speed": 54
+          },
+          "A10": {
+            "speed": 60
+          }
+        }
+      },
+      "star_effects": {
+        "0": "Frost Scales — Protagonist Ignore Crit Rate +10%, Final DMG Reduction +10%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 30% Max HP, and reduces enemy Final Skill DMG Boost by 10% for 2 turns. Triggers once per battle.",
+        "1": "Frost Scales — Protagonist Ignore Crit Rate +11%, Final DMG Reduction +15%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 30% Max HP, and reduces enemy Final Skill DMG Boost by 10% for 2 turns. Triggers once per battle.",
+        "2": "Frost Scales — Protagonist Ignore Crit Rate +12%, Final DMG Reduction +15%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 30% Max HP, and reduces enemy Final Skill DMG Boost by 15% for 2 turns. Triggers once per battle.",
+        "3": "Frost Scales — Protagonist Ignore Crit Rate +13%, Final DMG Reduction +15%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 50% Max HP, and reduces enemy Final Skill DMG Boost by 15% for 2 turns. Triggers once per battle.",
+        "4": "Frost Scales — Protagonist Ignore Crit Rate +14%, Final DMG Reduction +15%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 50% Max HP, and reduces enemy Final Skill DMG Boost by 20% for 2 turns. Triggers once per battle.",
+        "5": "Frost Scales — Protagonist Ignore Crit Rate +15%, Final DMG Reduction +20%. Upon being Stunned or Frozen for the first time, Protagonist gains a Shield equal to 50% Max HP, and reduces enemy Final Skill DMG Boost by 20% for 2 turns. Triggers once per battle."
+      },
+      "awaken_effects": {
+        "A1": "No additional effect",
+        "A2": "[ Frost Breath ]'s damage multiplier increases to 175%. After it is cast, enemies gain [ Frostbound ] for 2 turns.",
+        "A3": "No additional effect",
+        "A4": "[ Winter's Embrace ]'s Overall DMG RES increases to 80%, and Control RES increases to 50%. During Winter's Embrace, when the Protagonist is first frozen or stunned, they gain a shield equal to 50% of Max HP. Triggers 1 time per battle.",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "[ Frost Breath ]'s cast interval -1, and its damage multiplier increases to 250%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "After [ Frost Breath ] is cast, enemies qain [ Frostbound ] for 3 turns. When [ Winter's Embrace ] ends, enemies gain [ Piercing Frost ] for 2 turns, increasing the Protagonist's Crit Ignore Rate by +50% and Crit DMG Reduction by +75%. This effect takes effect only 1 time per battle. [ Frostbound ]'s Final DMG Boost reduction is increased to -10%."
+      }
+    }
+  ]
+}

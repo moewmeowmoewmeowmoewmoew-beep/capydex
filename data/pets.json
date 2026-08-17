@@ -1,0 +1,515 @@
+{
+  "pets": [
+    {
+      "idx": 1,
+      "n": "Little Parrot",
+      "tier": "Common",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill after every 3 rounds and increase hero ATK by 5%. Max 5 stacks.",
+        "Lv2 (pet lv 20+)": "Cast skill after every 3 rounds and increase hero ATK by 5.5%. Max 5 stacks.",
+        "Lv3 (pet lv 40+)": "Cast skill after every 3 rounds and increase hero ATK by 6%. Max 5 stacks.",
+        "Lv4 (pet lv 60+)": "Cast skill after every 3 rounds and increase hero ATK by 6.5%. Max 5 stacks.",
+        "Lv5 (pet lv 80+)": "Cast skill after every 3 rounds and increase hero ATK by 7%. Max 5 stacks."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 2,
+      "n": "Slime Baby",
+      "tier": "Common",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill after every 4 rounds and deal 40% of hero's ATK as Skill DMG.",
+        "Lv2 (pet lv 20+)": "Cast skill after every 4 rounds and deal 45% of hero's ATK as Skill DMG.",
+        "Lv3 (pet lv 40+)": "Cast skill after every 4 rounds and deal 50% of hero's ATK as Skill DMG.",
+        "Lv4 (pet lv 60+)": "Cast skill after every 4 rounds and deal 55% of hero's ATK as Skill DMG.",
+        "Lv5 (pet lv 80+)": "Cast skill after every 4 rounds and deal 60% of hero's ATK as Skill DMG."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 3,
+      "n": "Sprout Shroom",
+      "tier": "Common",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill after every 4 rounds and deal 40% of hero's ATK as Basic DMG.",
+        "Lv2 (pet lv 20+)": "Cast skill after every 4 rounds and deal 45% of hero's ATK as Basic DMG.",
+        "Lv3 (pet lv 40+)": "Cast skill after every 4 rounds and deal 50% of hero's ATK as Basic DMG.",
+        "Lv4 (pet lv 60+)": "Cast skill after every 4 rounds and deal 55% of hero's ATK as Basic DMG.",
+        "Lv5 (pet lv 80+)": "Cast skill after every 4 rounds and deal 60% of hero's ATK as Basic DMG."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 4,
+      "n": "Green Leaf Frog",
+      "tier": "Great",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill after every 4 rounds and deal 42% of hero's ATK as DMG, with 42% chance to Poison them.",
+        "Lv2 (pet lv 20+)": "Cast skill after every 4 rounds and deal 49% of hero's ATK as DMG, with 49% chance to Poison them.",
+        "Lv3 (pet lv 40+)": "Cast skill after every 4 rounds and deal 56% of hero's ATK as DMG, with 56% chance to Poison them.",
+        "Lv4 (pet lv 60+)": "Cast skill after every 4 rounds and deal 63% of hero's ATK as DMG, with 63% chance to Poison them.",
+        "Lv5 (pet lv 80+)": "Cast skill after every 4 rounds and deal 70% of hero's ATK as DMG, with 70% chance to Poison them."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 5,
+      "n": "Little Orange",
+      "tier": "Great",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill after every 4 rounds and deal 42% of hero's ATK as DMG, with 15% chance to Stun them for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast skill after every 4 rounds and deal 44% of hero's ATK as DMG, with 17% chance to Stun them for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast skill after every 4 rounds and deal 52% of hero's ATK as DMG, with 19% chance to Stun them for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast skill after every 4 rounds and deal 57% of hero's ATK as DMG, with 21% chance to Stun them for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast skill after every 4 rounds and deal 63% of hero's ATK as DMG, with 23% chance to Stun them for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 6,
+      "n": "Ms. Shroom",
+      "tier": "Great",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and restore 5% of lost HP.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and restore 6% of lost HP.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and restore 7% of lost HP.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and restore 8% of lost HP.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and restore 9% of lost HP."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 7,
+      "n": "Canary",
+      "tier": "Rare",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 5 rounds and deals 140% of hero's ATK as DMG.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 5 rounds and deals 160% of hero's ATK as DMG.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 5 rounds and deals 180% of hero's ATK as DMG.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 5 rounds and deals 200% of hero's ATK as DMG.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 5 rounds and deals 220% of hero's ATK as DMG."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 8,
+      "n": "Beetle",
+      "tier": "Rare",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deals 80% of hero's ATK as DMG. Increase hero DEF by 10% for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deals 90% of hero's ATK as DMG. Increase hero DEF by 11% for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deals 100% of hero's ATK as DMG. Increase hero DEF by 12% for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deals 110% of hero's ATK as DMG. Increase hero DEF by 13% for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deals 120% of hero's ATK as DMG. Increase hero DEF by 15% for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 9,
+      "n": "Minotaur",
+      "tier": "Rare",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deals 80% of hero's ATK as DMG. Increase hero ATK by 10% for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deals 90% of hero's ATK as DMG. Increase hero ATK by 11% for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deals 100% of hero's ATK as DMG. Increase hero ATK by 12% for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deals 110% of hero's ATK as DMG. Increase hero ATK by 13% for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deals 120% of hero's ATK as DMG. Increase hero ATK by 15% for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 10,
+      "n": "Pinky",
+      "tier": "Rare",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deal 80% of hero's ATK as DMG. Increase DMG taken by targets by 5% for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deal 90% of hero's ATK as DMG. Increase DMG taken by targets by 5.5% for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deal 100% of hero's ATK as DMG. Increase DMG taken by targets by 6% for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deal 110% of hero's ATK as DMG. Increase DMG taken by targets by 6.5% for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deal 120% of hero's ATK as DMG. Increase DMG taken by targets by 7% for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 11,
+      "n": "Venom Shroom",
+      "tier": "Rare",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deals 80% of hero's ATK as DMG, with 40% chance to Poison them.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deals 90% of hero's ATK as DMG, with 47% chance to Poison them.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deals 100% of hero's ATK as DMG, with 52% chance to Poison them.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deals 110% of hero's ATK as DMG, with 57% chance to Poison them.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deals 120% of hero's ATK as DMG, with 63% chance to Poison them."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 12,
+      "n": "Chomper",
+      "tier": "Epic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 120% of hero's ATK as DMG, with 50% chance to Poison them.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 135% of hero's ATK as DMG, with 56% chance to Poison them.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 150% of hero's ATK as DMG, with 62% chance to Poison them.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 165% of hero's ATK as DMG, with 68% chance to Poison them.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 180% of hero's ATK as DMG, with 75% chance to Poison them."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 13,
+      "n": "Ice Shroom",
+      "tier": "Epic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deals 160% of hero's ATK as DMG. Grants hero a Shield with 10% Max HP.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deals 180% of hero's ATK as DMG. Grants hero a Shield with 11% Max HP.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deals 200% of hero's ATK as DMG. Grants hero a Shield with 12% Max HP.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deals 220% of hero's ATK as DMG. Grants hero a Shield with 13% Max HP.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deals 240% of hero's ATK as DMG. Grants hero a Shield with 15% Max HP."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 14,
+      "n": "Snowy",
+      "tier": "Epic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 4 rounds and deals 160% of hero's ATK as Ice DMG, with 25% chance to Freeze them for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 4 rounds and deals 180% of hero's ATK as Ice DMG, with 29% chance to Freeze them for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 4 rounds and deals 200% of hero's ATK as Ice DMG, with 33% chance to Freeze them for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 4 rounds and deals 220% of hero's ATK as Ice DMG, with 37% chance to Freeze them for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 4 rounds and deals 240% of hero's ATK as Ice DMG, with 41% chance to Freeze them for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 15,
+      "n": "Falcon",
+      "tier": "Epic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast after 3 rounds into battle. Deals 300% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv2 (pet lv 20+)": "Cast after 3 rounds into battle. Deals 340% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv3 (pet lv 40+)": "Cast after 3 rounds into battle. Deals 380% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv4 (pet lv 60+)": "Cast after 3 rounds into battle. Deals 420% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv5 (pet lv 80+)": "Cast after 3 rounds into battle. Deals 450% of hero's ATK as DMG. CD: 5 rounds."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 16,
+      "n": "Flame Fox",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 180% of hero's ATK as DMG. Burn them for 2 rounds.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 200% of hero's ATK as DMG. Burn them for 2 rounds.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 220% of hero's ATK as DMG. Burn them for 2 rounds.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 240% of hero's ATK as DMG. Burn them for 2 rounds.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 260% of hero's ATK as DMG. Burn them for 2 rounds."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 17,
+      "n": "Monopoly",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 2 rounds and deals 120% of hero's ATK as DMG. Increase DMG taken by targets by 10% for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 2 rounds and deals 135% of hero's ATK as DMG. Increase DMG taken by targets by 12% for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 2 rounds and deals 150% of hero's ATK as DMG. Increase DMG taken by targets by 14% for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 2 rounds and deals 165% of hero's ATK as DMG. Increase DMG taken by targets by 10/12/1416% for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 2 rounds and deals 180% of hero's ATK as DMG. Increase DMG taken by targets by 10/12/14/16/18% for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 18,
+      "n": "Little Elle",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 120% of hero's ATK as DMG. Restore HP equal to 70% of hero's ATK.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 135% of hero's ATK as DMG. Restore HP equal to 80% of hero's ATK.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 150% of hero's ATK as DMG. Restore HP equal to 90% of hero's ATK.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 165% of hero's ATK as DMG. Restore HP equal to 100% of hero's ATK.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 180% of hero's ATK as DMG. Restore HP equal 110% of hero's ATK."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 19,
+      "n": "Ice Wind Fox",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 180% of hero's ATK as DMG, with 40% chance to Freeze them for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 200% of hero's ATK as DMG, with 45% chance to Freeze them for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 220% of hero's ATK as DMG, with 50% chance to Freeze them for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 240% of hero's ATK as DMG, with 55% chance to Freeze them for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 260% of hero's ATK as DMG, with 60% chance to Freeze them for 1 round."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 20,
+      "n": "Glazed Shroom",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 180% of hero's ATK as DMG. Increase hero Skill DMG by 15% for 2 rounds.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 200% of hero's ATK as DMG. Increase hero Skill DMG by 19% for 2 rounds.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 220% of hero's ATK as DMG. Increase hero Skill DMG by 23% for 2 rounds.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 240% of hero's ATK as DMG. Increase hero Skill DMG by 27% for 2 rounds.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 260% of hero's ATK as DMG. Increase hero Skill DMG by 31% for 2 rounds."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 21,
+      "n": "Cactus Fighter",
+      "tier": "Legendary",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast Skill after every 3 rounds and deals 400% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv2 (pet lv 20+)": "Cast Skill after every 3 rounds and deals 450% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv3 (pet lv 40+)": "Cast Skill after every 3 rounds and deals 500% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv4 (pet lv 60+)": "Cast Skill after every 3 rounds and deals 550% of hero's ATK as DMG. CD: 5 rounds.",
+        "Lv5 (pet lv 80+)": "Cast Skill after every 3 rounds and deals 600% of hero's ATK as DMG. CD: 5 rounds."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 22,
+      "n": "Flash",
+      "tier": "Mythic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 160% of hero's ATK as Bolt Lightning DMG + 6% of target's current HP.",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 180% of hero's ATK as Bolt Lightning DMG + 6.5% of target's current HP.",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as Bolt Lightning DMG + 7% of target's current HP.",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as Bolt Lightning DMG + 7.5% of target's current HP.",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as Bolt Lightning DMG + 8% of target's current HP."
+      },
+      "awaken_effects": {
+        "A0": "Flash's skill bolt DMG has a chance to trigger 2 times.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "Additional skill DMG is based on the target's max HP.",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "Flash's DMG has a chance to trigger 2–3 times.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 23,
+      "n": "Unicorn",
+      "tier": "Mythic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 160% of hero's ATK as DMG and increases Crit Rate by 8% (max 3 stacks, until battle ends).",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 180% of hero's ATK as DMG and increases Crit Rate by 8.5% (max 3 stacks, until battle ends).",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as DMG and increases Crit Rate by 9% (max 3 stacks, until battle ends).",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as DMG and increases Crit Rate by 9.5% (max 3 stacks, until battle ends).",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as DMG and increases Crit Rate by 10% (max 3 stacks, until battle ends)."
+      },
+      "awaken_effects": {
+        "A0": "Unicorn's skill deals an extra 100% of hero's Crit DMG.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "After casting skill, increases hero's Crit DMG by 25%.",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "Extra DMG changes to 150% of hero's Crit DMG.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 24,
+      "n": "Baby Dragon",
+      "tier": "Mythic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 160% of hero's ATK as Fire DMG. Burns target for 3 rounds.",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 180% of hero's ATK as Fire DMG. Burns target for 3 rounds.",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as Fire DMG. Burns target for 3 rounds.",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as Fire DMG. Burns target for 3 rounds.",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as Fire DMG. Burns target for 3 rounds."
+      },
+      "awaken_effects": {
+        "A0": "For each Burn stack on the target, Baby Dragon's skill DMG increases by 5%.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "After casting skill, increases hero's Burn DMG by 30% (max 3 stacks, until battle ends).",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "For every Burn stack on the target, Baby Dragon's skill DMG increases by 10%.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 25,
+      "n": "Slime King",
+      "tier": "Mythic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 160% of hero's ATK as DMG and increases Combo Rate & Counter Rate by 8% (max 3 stacks, until battle ends).",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 180% of hero's ATK as DMG and increases Combo Rate & Counter Rate by 8.5% (max 3 stacks, until battle ends).",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as DMG and increases Combo Rate & Counter Rate by 9% (max 3 stacks, until battle ends).",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as DMG and increases Combo Rate & Counter Rate by 9.5% (max 3 stacks, until battle ends).",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as DMG and increases Combo Rate & Counter Rate by 10% (max 3 stacks, until battle ends)."
+      },
+      "awaken_effects": {
+        "A0": "After Slime King uses a skill, Sword Chi DMG increases by 50%.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "After casting skill, increases hero's Combo DMG and Counter DMG by 30%.",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "Sword Chi DMG increase changes to 100%.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 26,
+      "n": "Purple Demon Fox",
+      "tier": "Mythic",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 160% of hero's ATK as DMG. Increases DMG taken by target by 15% for 1 round.",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 180% of hero's ATK as DMG. Increases DMG taken by target by 18.5% for 1 round.",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as DMG. Increases DMG taken by target by 22% for 1 round.",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as DMG. Increases DMG taken by target by 26% for 1 round.",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as DMG. Increases DMG taken by target by 30% for 1 round."
+      },
+      "awaken_effects": {
+        "A0": "At battle start, inflict 1 Poison stack on all enemies. Reapplied every 2 rounds.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "DMG increase duration +1 round.",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "Poison applied each time changes to 2 stacks.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 27,
+      "n": "Elsa",
+      "tier": "Immortal",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every round and deals 100% of hero's ATK as DMG, reduces target ATK by 5% and increases DMG taken by 10% (max 3 stacks, until battle ends).",
+        "Lv2 (pet lv 20+)": "Cast skill every round and deals 110% of hero's ATK as DMG, reduces target ATK by 5.5% and increases DMG taken by 12.5% (max 3 stacks, until battle ends).",
+        "Lv3 (pet lv 40+)": "Cast skill every round and deals 120% of hero's ATK as DMG, reduces target ATK by 6% and increases DMG taken by 15% (max 3 stacks, until battle ends).",
+        "Lv4 (pet lv 60+)": "Cast skill every round and deals 130% of hero's ATK as DMG, reduces target ATK by 6.5% and increases DMG taken by 17.5% (max 3 stacks, until battle ends).",
+        "Lv5 (pet lv 80+)": "Cast skill every round and deals 140% of hero's ATK as DMG, reduces target ATK by 7% and increases DMG taken by 20% (max 3 stacks, until battle ends)."
+      },
+      "awaken_effects": {
+        "A0": "Elsa's damage greatly increases, with a chance to freeze enemies for 1 turn. Debuff stack limit increases to 5 layers.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "Elsa's skill increases hero's DMG by 10% (max 3 stacks, until battle ends).",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "Elsa ignores control immunity rate +40%.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 28,
+      "n": "Freya",
+      "tier": "Immortal",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as Skill DMG. Increases hero's Skill Crit Rate by 8% and Skill DMG by 15% (max 3 stacks, until battle ends).",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as Skill DMG. Increases hero's Skill Crit Rate by 8.5% and Skill DMG by 17.5% (max 3 stacks, until battle ends).",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as Skill DMG. Increases hero's Skill Crit Rate by 9% and Skill DMG by 20% (max 3 stacks, until battle ends).",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 260% of hero's ATK as Skill DMG. Increases hero's Skill Crit Rate by 9.5% and Skill DMG by 22.5% (max 3 stacks, until battle ends).",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 280% of hero's ATK as Skill DMG. Increases hero's Skill Crit Rate by 10% and Skill DMG by 25% (max 3 stacks, until battle ends)."
+      },
+      "awaken_effects": {
+        "A0": "Each skill crit adds 1 Magic Mark (max 3/round). At 4 marks: magic explosion (100% ATK as skill DMG). At 6 marks: skill DMG coeff +200%. At 10 marks: each skill crit adds +8% skill DMG (max 10 stacks, resets on skill cast).",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "Freya's skill increases hero's Skill Crit Effect by 2% and Skill DMG by 10%.",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "After Freya's skill crits, hero's Global DMG +25% for 2 turns.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 29,
+      "n": "Piggy",
+      "tier": "Immortal",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 200% of hero's ATK as Combo DMG and grants 2 rounds of Bounty (ATK +15%, Lifesteal 15% while active).",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 220% of hero's ATK as Combo DMG and grants 2 rounds of Bounty (ATK +15%, Lifesteal 15% while active).",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 240% of hero's ATK as Combo DMG and grants 2 rounds of Bounty (ATK +15%, Lifesteal 15% while active).",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 260% of hero's ATK as Combo DMG and grants 2 rounds of Bounty (ATK +15%, Lifesteal 15% while active).",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 280% of hero's ATK as Combo DMG and grants 2 rounds of Bounty (ATK +15%, Lifesteal 15% while active)."
+      },
+      "awaken_effects": {
+        "A0": "Jufu Caishen accumulates wealth energy. Starts with 1 gold coin. Every 2 hero combo hits: +1 coin (max 4). Each coin deals 1 instance of damage and increases hero's Combo Rate by 7.5%. Up to 4 coins. When reaching the limit, Jufu Caishen's skill evolved into the ultimate mode, dealing extra Combo damage equal to 10% of the enemy's Max HP (up to 50x hero ATK). Each time Piggy casts a skill, the hero's weapon crit rate increases by 12%, stacking up to 3 times.",
+        "A1": "Pet stats increase 15%",
+        "A2": "Pet stats increase 15%",
+        "A3": "Pet stats increase 15%",
+        "A4": "The bounty additionally incrases the hero's global combo damage by +20%, lasting until the end of the battle",
+        "A5": "Pet stats increase 15%",
+        "A6": "Pet stats increase 15%",
+        "A7": "Pet stats increase 15%",
+        "A8": "Pet stats increase 15%",
+        "A9": "After the Jufu Caishen's Ultimate Mode skill is activated, the hero's global basic attack damage increases by +25% for 2 turns.",
+        "A10": "Pet stats increase 15%"
+      }
+    },
+    {
+      "idx": 30,
+      "n": "Susu",
+      "tier": "Immortal",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Cast skill every 2 rounds and deals 50% of hero's ATK as Fire DMG ×4 hits. Burns and Poisons target. Increases hero's Fire/Electric/Ice DMG by 15% (max 3 stacks, until battle ends).",
+        "Lv2 (pet lv 20+)": "Cast skill every 2 rounds and deals 55% of hero's ATK as Fire DMG ×4 hits. Burns and Poisons target. Increases hero's Fire/Electric/Ice DMG by 17.5% (max 3 stacks, until battle ends).",
+        "Lv3 (pet lv 40+)": "Cast skill every 2 rounds and deals 60% of hero's ATK as Fire DMG ×4 hits. Burns and Poisons target. Increases hero's Fire/Electric/Ice DMG by 20% (max 3 stacks, until battle ends).",
+        "Lv4 (pet lv 60+)": "Cast skill every 2 rounds and deals 65% of hero's ATK as Fire DMG ×4 hits. Burns and Poisons target. Increases hero's Fire/Electric/Ice DMG by 22.5% (max 3 stacks, until battle ends).",
+        "Lv5 (pet lv 80+)": "Cast skill every 2 rounds and deals 70% of hero's ATK as Fire DMG ×4 hits. Burns and Poisons target. Increases hero's Fire/Electric/Ice DMG by 25% (max 3 stacks, until battle ends)."
+      },
+      "awaken_effects": {}
+    },
+    {
+      "idx": 31,
+      "n": "Pingu",
+      "tier": "Transcendent",
+      "battle_skills": {
+        "Lv1 (pet lv 1+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK to the enemy. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ], lasting until the end of battle.\n\n[ Frostbite ]: Each stack grants the enemy DMG Bonus -10% and Ignore CRIT Rate -1%, and deals Ice DMG equal to 50% of the protagonist's ATK per round. Stacks up to 10 times.",
+        "Lv2 (pet lv 20+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ]. At max [ Frostbite ] stacks, Pingu's DMG has a 35% chance to the enemy for 1 round (1 trigger per 4 rounds).\n\n[ Frostbite ]: Each stack: DMG Bonus -10%, Ignore CRIT Rate -1%; deals Ice DMG equal to 75% of ATK per round. Stacks up to 10.\nFreeze: Prevents enemy action. Not affected by Freeze Immunity.",
+        "Lv3 (pet lv 40+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK), each with 60% chance to inflict [ Frostbite ]. At max stacks, 35% chance to freeze enemy for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%; Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "Lv4 (pet lv 60+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK). At max [ Frostbite ] stacks, 35% chance to freeze for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "Lv5 (pet lv 80+)": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 4 rounds), and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10."
+      },
+      "awaken_effects": {
+        "A0": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 2 rounds). After [ Frostbite ] is fully stacked, enemy Final DMG Bonus -20%, and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "A1": "Pingu's DMG coefficient increased to 100%, and the chance to inflict [ Frostbite ] is increased to 100%.",
+        "A2": "No additional effect",
+        "A3": "No additional effect",
+        "A4": "Each of Pingu's hits inflicts +1 stack of [ Frostbite ].",
+        "A5": "No additional effect",
+        "A6": "No additional effect",
+        "A7": "Pingu's DMG coefficient increased to 150%.",
+        "A8": "No additional effect",
+        "A9": "No additional effect",
+        "A10": "The enemy DMG Bonus reduction per stack of [ Frostbite ] is increased to 20%."
+      }
+    }
+  ]
+}

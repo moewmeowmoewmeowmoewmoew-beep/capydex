@@ -1,0 +1,1374 @@
+{
+  "collectibles": [
+    {
+      "n": "Alchemists Lamp",
+      "rarity": "Rare",
+      "stat_label": "HP",
+      "stat_key": "hp",
+      "is_percent": false,
+      "star_vals": [
+        120.0,
+        280.0,
+        480.0,
+        840.0,
+        1380.0,
+        2100.0,
+        3000.0,
+        4200.0,
+        5700.0,
+        7700.0,
+        12500.0
+      ],
+      "set": "Alchemical Creation"
+    },
+    {
+      "n": "Eternal Torch",
+      "rarity": "Rare",
+      "stat_label": "ATK",
+      "stat_key": "atk",
+      "is_percent": false,
+      "star_vals": [
+        30.0,
+        70.0,
+        120.0,
+        210.0,
+        345.0,
+        525.0,
+        750.0,
+        1050.0,
+        1425.0,
+        1925.0,
+        3125.0
+      ],
+      "set": "Alchemical Creation"
+    },
+    {
+      "n": "Star Shard",
+      "rarity": "Rare",
+      "stat_label": "DEF",
+      "stat_key": "def",
+      "is_percent": false,
+      "star_vals": [
+        8.0,
+        18.0,
+        30.0,
+        50.0,
+        80.0,
+        125.0,
+        185.0,
+        260.0,
+        350.0,
+        475.0,
+        775.0
+      ],
+      "set": "Exotic Treasure"
+    },
+    {
+      "n": "Arcane Cloak",
+      "rarity": "Rare",
+      "stat_label": "ATK",
+      "stat_key": "atk",
+      "is_percent": false,
+      "star_vals": [
+        30.0,
+        70.0,
+        120.0,
+        210.0,
+        345.0,
+        525.0,
+        750.0,
+        1050.0,
+        1425.0,
+        1925.0,
+        3125.0
+      ],
+      "set": "Arcane Set"
+    },
+    {
+      "n": "Holy Grail",
+      "rarity": "Rare",
+      "stat_label": "HP",
+      "stat_key": "hp",
+      "is_percent": false,
+      "star_vals": [
+        120.0,
+        280.0,
+        480.0,
+        840.0,
+        1380.0,
+        2100.0,
+        3000.0,
+        4200.0,
+        5700.0,
+        7700.0,
+        12500.0
+      ],
+      "set": "Arcane Set"
+    },
+    {
+      "n": "Golden Hourglass",
+      "rarity": "Rare",
+      "stat_label": "DEF",
+      "stat_key": "def",
+      "is_percent": false,
+      "star_vals": [
+        8.0,
+        18.0,
+        30.0,
+        50.0,
+        80.0,
+        125.0,
+        185.0,
+        260.0,
+        350.0,
+        475.0,
+        775.0
+      ],
+      "set": "Alchemical Creation"
+    },
+    {
+      "n": "Petals of Hope",
+      "rarity": "Epic",
+      "stat_label": "Lifesteal %",
+      "stat_key": "lifesteal",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Alchemical Creation"
+    },
+    {
+      "n": "Frost Giants Hand",
+      "rarity": "Epic",
+      "stat_label": "Ice DMG %",
+      "stat_key": "ice_dmg",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Exotic Treasure"
+    },
+    {
+      "n": "Keats Ghost Ship",
+      "rarity": "Epic",
+      "stat_label": "Combo DMG %",
+      "stat_key": "combo_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Pirate King's Collection"
+    },
+    {
+      "n": "Infinite Blade",
+      "rarity": "Epic",
+      "stat_label": "Crit DMG %",
+      "stat_key": "crit_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Gladiator's Will"
+    },
+    {
+      "n": "Giants Heart",
+      "rarity": "Epic",
+      "stat_label": "Counter DMG %",
+      "stat_key": "counter_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Exotic Treasure"
+    },
+    {
+      "n": "Devils Blood",
+      "rarity": "Epic",
+      "stat_label": "Fire DMG %",
+      "stat_key": "fire_dmg",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Exotic Treasure"
+    },
+    {
+      "n": "Forbidden Knowledge",
+      "rarity": "Epic",
+      "stat_label": "Skill DMG %",
+      "stat_key": "skill_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Arcane Set"
+    },
+    {
+      "n": "Titans Sword",
+      "rarity": "Epic",
+      "stat_label": "Lightning DMG %",
+      "stat_key": "lightning_dmg",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Mythic Legacy"
+    },
+    {
+      "n": "Destruction Hat",
+      "rarity": "Epic",
+      "stat_label": "Rage Skill DMG %",
+      "stat_key": "rage_skill_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Arcane Set"
+    },
+    {
+      "n": "Challengers Badge",
+      "rarity": "Legendary",
+      "stat_label": "Block",
+      "stat_key": "block",
+      "is_percent": false,
+      "star_vals": [
+        5.0,
+        20.0,
+        60.0,
+        120.0,
+        200.0,
+        250.0,
+        300.0,
+        350.0,
+        400.0,
+        450.0,
+        500.0
+      ],
+      "set": "Pirate King's Collection"
+    },
+    {
+      "n": "Iron Throne",
+      "rarity": "Legendary",
+      "stat_label": "Counter DMG Reduction %",
+      "stat_key": "counter_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Pirate King's Collection"
+    },
+    {
+      "n": "Mages Bane",
+      "rarity": "Legendary",
+      "stat_label": "Skill DMG Reduction %",
+      "stat_key": "skill_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Gladiator's Will"
+    },
+    {
+      "n": "Heroic Brooch",
+      "rarity": "Legendary",
+      "stat_label": "Combo DMG Reduction %",
+      "stat_key": "combo_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Paladin's Vigil"
+    },
+    {
+      "n": "Aegis Shield",
+      "rarity": "Legendary",
+      "stat_label": "Crit DMG Reduction %",
+      "stat_key": "crit_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Paladin's Vigil"
+    },
+    {
+      "n": "Lucky Four-leaf Clover",
+      "rarity": "Legendary",
+      "stat_label": "Event Gold Gain %",
+      "stat_key": "event_gold_gain",
+      "is_percent": true,
+      "star_vals": [
+        10.0,
+        15.0,
+        30.0,
+        40.0,
+        60.0,
+        75.0,
+        100.0,
+        120.0,
+        150.0,
+        175.0,
+        200.0
+      ],
+      "set": "Gold Tycoon"
+    },
+    {
+      "n": "Hungry Eye",
+      "rarity": "Legendary",
+      "stat_label": "Battle Gold Gain %",
+      "stat_key": "battle_gold_gain",
+      "is_percent": true,
+      "star_vals": [
+        10.0,
+        15.0,
+        30.0,
+        40.0,
+        60.0,
+        75.0,
+        100.0,
+        120.0,
+        150.0,
+        175.0,
+        200.0
+      ],
+      "set": "Gold Tycoon"
+    },
+    {
+      "n": "Blade Armor",
+      "rarity": "Legendary",
+      "stat_label": "Pet DMG Reduction %",
+      "stat_key": "pet_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Gladiator's Will"
+    },
+    {
+      "n": "Horn of Plenty",
+      "rarity": "Legendary",
+      "stat_label": "AFK Gains %",
+      "stat_key": "afk_gains",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Mythic Legacy"
+    },
+    {
+      "n": "Royal Roses",
+      "rarity": "Legendary",
+      "stat_label": "Energy Recovery Rate %",
+      "stat_key": "energy_recovery_rate",
+      "is_percent": true,
+      "star_vals": [
+        4.0,
+        8.0,
+        12.0,
+        16.0,
+        20.0,
+        25.0,
+        30.0,
+        35.0,
+        40.0,
+        45.0,
+        50.0
+      ],
+      "set": "Mythic Legacy"
+    },
+    {
+      "n": "Origin Staff",
+      "rarity": "Legendary",
+      "stat_label": "Skill Crit Rate %",
+      "stat_key": "skill_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.2,
+        2.1,
+        3.0,
+        3.9,
+        4.8,
+        6.0,
+        7.2,
+        8.4,
+        9.6,
+        10.8,
+        12.0
+      ],
+      "set": "Pirate King's Collection"
+    },
+    {
+      "n": "Eternal Lance",
+      "rarity": "Legendary",
+      "stat_label": "Basic ATK Crit Rate %",
+      "stat_key": "basic_atk_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Paladin's Vigil"
+    },
+    {
+      "n": "Gladiators Helm",
+      "rarity": "Legendary",
+      "stat_label": "Block",
+      "stat_key": "block",
+      "is_percent": false,
+      "star_vals": [
+        5.0,
+        20.0,
+        60.0,
+        120.0,
+        200.0,
+        250.0,
+        300.0,
+        350.0,
+        400.0,
+        450.0,
+        500.0
+      ],
+      "set": "Gladiator's Will"
+    },
+    {
+      "n": "Treasure Compass",
+      "rarity": "Legendary",
+      "stat_label": "Ludwig's Treasure Map Gold Gain %",
+      "stat_key": "ludwig_s_treasure_map_gold_gain",
+      "is_percent": true,
+      "star_vals": [
+        10.0,
+        15.0,
+        30.0,
+        40.0,
+        60.0,
+        75.0,
+        100.0,
+        120.0,
+        150.0,
+        175.0,
+        200.0
+      ],
+      "set": "Gold Tycoon"
+    },
+    {
+      "n": "Golden Apple",
+      "rarity": "Legendary",
+      "stat_label": "DMG Increase %",
+      "stat_key": "dmg_increase",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Mythic Legacy"
+    },
+    {
+      "n": "Pot of Treasure",
+      "rarity": "Legendary",
+      "stat_label": "Lucky Treasure Gold Gain %",
+      "stat_key": "lucky_treasure_gold_gain",
+      "is_percent": true,
+      "star_vals": [
+        10.0,
+        15.0,
+        30.0,
+        40.0,
+        60.0,
+        75.0,
+        100.0,
+        120.0,
+        150.0,
+        175.0,
+        200.0
+      ],
+      "set": "Gold Tycoon"
+    },
+    {
+      "n": "Lion Kings Shield",
+      "rarity": "Legendary",
+      "stat_label": "DEF %",
+      "stat_key": "def",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Spirit's Blessing"
+    },
+    {
+      "n": "Lucky Rabbit Foot",
+      "rarity": "Legendary",
+      "stat_label": "Increase Legendary Skill Spawn Rate %",
+      "stat_key": "increase_legendary_skill_spawn_rate",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Source of Miracles"
+    },
+    {
+      "n": "Flames Delight",
+      "rarity": "Legendary",
+      "stat_label": "Extra DMG to Burned Targets %",
+      "stat_key": "extra_dmg_to_burned_targets",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Twilight's End"
+    },
+    {
+      "n": "Oceanic Trident",
+      "rarity": "Legendary",
+      "stat_label": "Extra DMG to Frozen Targets %",
+      "stat_key": "extra_dmg_to_frozen_targets",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": "Twilight's End"
+    },
+    {
+      "n": "Darkmoon Card",
+      "rarity": "Legendary",
+      "stat_label": "Mythic Skill Spawn Rate %",
+      "stat_key": "mythic_skill_spawn_rate",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": "Source of Miracles"
+    },
+    {
+      "n": "Golden Armor",
+      "rarity": "Legendary",
+      "stat_label": "Block",
+      "stat_key": "block",
+      "is_percent": false,
+      "star_vals": [
+        10.0,
+        15.0,
+        20.0,
+        60.0,
+        80.0,
+        100.0,
+        210.0,
+        270.0,
+        480.0,
+        600.0,
+        1000.0
+      ],
+      "set": "Paladin's Vigil"
+    },
+    {
+      "n": "Sacred Anvil",
+      "rarity": "Legendary",
+      "stat_label": "Pickaxe Recovery Speed %",
+      "stat_key": "pickaxe_recovery_speed",
+      "is_percent": true,
+      "star_vals": [
+        10.0,
+        15.0,
+        20.0,
+        25.0,
+        30.0,
+        35.0,
+        40.0,
+        45.0,
+        50.0,
+        55.0,
+        60.0
+      ],
+      "set": "Source of Miracles"
+    },
+    {
+      "n": "Aladdins Lamp",
+      "rarity": "Mythic",
+      "stat_label": "Daily Gem Bonus %",
+      "stat_key": "daily_gem_bonus",
+      "is_percent": true,
+      "star_vals": [
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0
+      ],
+      "set": "Source of Miracles"
+    },
+    {
+      "n": "Windwalker Boots",
+      "rarity": "Mythic",
+      "stat_label": "Dodge Rate%",
+      "stat_key": "dodge_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0
+      ],
+      "set": "Spirit's Blessing"
+    },
+    {
+      "n": "Sword in the Stone",
+      "rarity": "Mythic",
+      "stat_label": "DMG Reduction %",
+      "stat_key": "dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0
+      ],
+      "set": "Spirit's Blessing"
+    },
+    {
+      "n": "Saints Relic",
+      "rarity": "Mythic",
+      "stat_label": "Control Immunity Rate %",
+      "stat_key": "control_immunity_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        1.5,
+        2.0,
+        2.5,
+        3.0,
+        3.5,
+        4.0,
+        4.5,
+        5.0,
+        5.5,
+        6.0
+      ],
+      "set": "Twilight's End"
+    },
+    {
+      "n": "Giant Slayer",
+      "rarity": "Mythic",
+      "stat_label": "DMG to BOSS (at cap, conditional) %",
+      "stat_key": "dmg_to_boss_at_cap_conditional",
+      "is_percent": true,
+      "star_vals": [
+        5.0,
+        7.0,
+        9.0,
+        11.0,
+        13.0,
+        15.0,
+        17.0,
+        19.0,
+        21.0,
+        23.0,
+        25.0
+      ],
+      "set": "Twilight's End"
+    },
+    {
+      "n": "Hydra Poison Arrow",
+      "rarity": "Mythic",
+      "stat_label": "DoT Crit Rate %",
+      "stat_key": "dot_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        10.0
+      ],
+      "set": null
+    },
+    {
+      "n": "King of the Salty Fish",
+      "rarity": "Mythic",
+      "stat_label": "Shield Bonus %",
+      "stat_key": "shield_bonus",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Wave-Treading Dragon Boat",
+      "rarity": "Mythic",
+      "stat_label": "Ignore Skill Crit Rate%",
+      "stat_key": "ignore_skill_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "1st Anniversary Cake",
+      "rarity": "Mythic",
+      "stat_label": "Skill Crit Rate %",
+      "stat_key": "skill_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Candy Gacha Machine",
+      "rarity": "Mythic",
+      "stat_label": "Basic ATK Crit Rate %",
+      "stat_key": "basic_atk_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Mysterious Egg",
+      "rarity": "Mythic",
+      "stat_label": "Dagger Crit DMG %",
+      "stat_key": "dagger_crit_dmg",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Summer Good Coconut",
+      "rarity": "Mythic",
+      "stat_label": "Crit DMG Reduction %",
+      "stat_key": "crit_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Sapling",
+      "rarity": "Mythic",
+      "stat_label": "Skill DMG %",
+      "stat_key": "skill_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        6.5,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        22.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Pizza",
+      "rarity": "Mythic",
+      "stat_label": "Lightning DMG Reduction %",
+      "stat_key": "lightning_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Mystic Dice",
+      "rarity": "Mythic",
+      "stat_label": "Skill DMG Reduction %",
+      "stat_key": "skill_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Egg Yolk Mooncake",
+      "rarity": "Mythic",
+      "stat_label": "Basic ATK DMG Reduction %",
+      "stat_key": "basic_atk_dmg_reduction",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Ceramics Horse",
+      "rarity": "Mythic",
+      "stat_label": "Ignore Normal Attack Crit Rate %",
+      "stat_key": "ignore_normal_attack_crit_rate",
+      "is_percent": true,
+      "star_vals": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        12.0
+      ],
+      "set": null
+    },
+    {
+      "n": "Fragrant Boat",
+      "rarity": "Mythic",
+      "stat_label": "Basic ATK DMG %",
+      "stat_key": "basic_atk_dmg",
+      "is_percent": true,
+      "star_vals": [
+        2.0,
+        3.5,
+        5.0,
+        7.0,
+        9.5,
+        12.0,
+        15.0,
+        18.0,
+        21.0,
+        24.0,
+        27.0
+      ],
+      "set": null
+    }
+  ],
+  "collectible_sets": {
+    "epic": [
+      {
+        "set": "Alchemical Creation",
+        "stat": "DEF%",
+        "vals": [
+          3.0,
+          5.0,
+          7.0,
+          10.0
+        ],
+        "items": [
+          "Alchemists Lamp",
+          "Eternal Torch",
+          "Golden Hourglass",
+          "Petals of Hope"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Exotic Treasure",
+        "stat": "ATK%",
+        "vals": [
+          3.0,
+          5.0,
+          7.0,
+          10.0
+        ],
+        "items": [
+          "Star Shard",
+          "Frost Giants Hand",
+          "Giants Heart",
+          "Devils Blood"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Arcane Set",
+        "stat": "HP%",
+        "vals": [
+          3.0,
+          5.0,
+          7.0,
+          10.0
+        ],
+        "items": [
+          "Arcane Cloak",
+          "Holy Grail",
+          "Forbidden Knowledge",
+          "Destruction Hat"
+        ],
+        "tracked": false
+      }
+    ],
+    "legendary": [
+      {
+        "set": "Pirate King's Collection",
+        "stat": "DEF%",
+        "vals": [
+          5.0,
+          10.0,
+          15.0,
+          20.0
+        ],
+        "items": [
+          "Keats Ghost Ship",
+          "Challengers Badge",
+          "Iron Throne",
+          "Origin Staff"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Gladiator's Will",
+        "stat": "ATK%",
+        "vals": [
+          5.0,
+          10.0,
+          15.0,
+          20.0
+        ],
+        "items": [
+          "Infinite Blade",
+          "Mages Bane",
+          "Blade Armor",
+          "Gladiators Helm"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Mythic Legacy",
+        "stat": "HP%",
+        "vals": [
+          5.0,
+          10.0,
+          15.0,
+          20.0
+        ],
+        "items": [
+          "Titans Sword",
+          "Horn of Plenty",
+          "Royal Roses",
+          "Golden Apple"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Paladin's Vigil",
+        "stat": "Block",
+        "vals": [
+          100,
+          200,
+          300,
+          400
+        ],
+        "items": [
+          "Heroic Brooch",
+          "Aegis Shield",
+          "Eternal Lance",
+          "Golden Armor"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Gold Tycoon",
+        "stat": "Ludwig's Treasure Map Gold Gain",
+        "vals": [
+          25.0,
+          25.0,
+          25.0,
+          25.0
+        ],
+        "items": [
+          "Lucky Four-leaf Clover",
+          "Hungry Eye",
+          "Treasure Compass",
+          "Pot of Treasure"
+        ],
+        "tracked": false
+      }
+    ],
+    "mythic": [
+      {
+        "set": "Spirit's Blessing",
+        "stat": "DEF%",
+        "vals": [
+          10.0,
+          15.0,
+          20.0,
+          25.0
+        ],
+        "items": [
+          "Lion Kings Shield",
+          "Windwalker Boots",
+          "Sword in the Stone"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Source of Miracles",
+        "stat": "HP%",
+        "vals": [
+          10.0,
+          15.0,
+          20.0,
+          25.0
+        ],
+        "items": [
+          "Lucky Rabbit Foot",
+          "Darkmoon Card",
+          "Sacred Anvil",
+          "Aladdins Lamp"
+        ],
+        "tracked": false
+      },
+      {
+        "set": "Twilight's End",
+        "stat": "ATK%",
+        "vals": [
+          10.0,
+          15.0,
+          20.0,
+          25.0
+        ],
+        "items": [
+          "Flames Delight",
+          "Oceanic Trident",
+          "Saints Relic",
+          "Giant Slayer"
+        ],
+        "tracked": false
+      }
+    ]
+  }
+}
