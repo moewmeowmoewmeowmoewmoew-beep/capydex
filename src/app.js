@@ -2957,8 +2957,19 @@ function hasStarProgression(item) {
 
 function hasAwakenProgression(item) {
   const deltas = item.awaken && item.awaken.deltas;
-  if (!deltas) return false;
-  return Object.values(deltas).some(d => d && Object.keys(d).length > 0);
+  const hasNumericDeltas = deltas && Object.values(deltas).some(d => d && Object.keys(d).length > 0);
+  if (hasNumericDeltas) return true;
+  // Artifacts' awaken levels upgrade skill text, not flat stats, so their
+  // awaken.deltas are always empty even when awakening is genuinely real —
+  // confirmed against the user's own curated database (Artifacts
+  // StarUpAwakening sheet), which has this text for all 16 artifacts,
+  // including Sword of Victory Oath. That item is the one confirmed
+  // exception for STAR progression only (its star deltas are flat/
+  // identical, matching the sheet's own "—" dashes there) — but it does
+  // have real awaken text, so it isn't excluded here.
+  const textEffects = item.awaken_effects;
+  if (!textEffects) return false;
+  return Object.values(textEffects).some(t => t && !t.startsWith('No additional effect'));
 }
 
 function renderMountArtifactCard(item, bucket, isMount) {
@@ -2989,14 +3000,14 @@ function renderMountArtifactCard(item, bucket, isMount) {
     stepperRows.push(el('div', { class: 'stepper-row' }, [
       el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Stars'),
       renderStepper(`${bucket}-${item.idx}-stars`, s.stars, 0, 5,
-        (next) => { s.stars = next; saveState(); render(); }),
+        (next) => { s.stars = next; s.owned = true; saveState(); render(); }),
     ]));
   }
   if (showAwaken) {
     stepperRows.push(el('div', { class: 'stepper-row' }, [
       el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Awaken'),
       renderStepper(`${bucket}-${item.idx}-awaken`, s.awaken, 0, 10,
-        (next) => { s.awaken = next; saveState(); render(); },
+        (next) => { s.awaken = next; s.owned = true; saveState(); render(); },
         (v) => `A${v}`),
     ]));
   }

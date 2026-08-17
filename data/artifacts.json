@@ -11,7 +11,6 @@
       "n": "Sword of Victory Oath",
       "tier": "Legendary",
       "base_effect": "Main character attack power +5%",
-      "awaken_base_effect": "The Oath Sword releases [ Oath Slash ] , dealing 150% of Artifact Attack as Physical Damage to the enemy, increasing the protagonist's damage by +10%, stackable up to 2 layers, lasting until the end of the battle.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 3.0,
@@ -51,6 +50,7 @@
         "4": "Main character attack power +5%",
         "5": "Main character attack power +5%"
       },
+      "awaken_base_effect": "The Oath Sword releases [ Oath Slash ] , dealing 150% of Artifact Attack as Physical Damage to the enemy, increasing the protagonist's damage by +10%, stackable up to 2 layers, lasting until the end of the battle.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Oath Slash ] deals 300% of Artifact Attack as Physical Damage to the enemy.",
@@ -69,7 +69,6 @@
       "n": "Demonic Eye",
       "tier": "Mythic",
       "base_effect": "During Combo or Counter, has a chance to launch Demonic Eye to deal DMG equal to 1.5% of the target's Max HP and a 50% chance to reduce the target's HP Recovery by 90% for 1 round.",
-      "awaken_base_effect": "Demon King's Eye releases [ Curse of the Demon Eye ], dealing 300% of Artifact Attack as Skill Damage to the enemy, with a 50% chance to swap the target's current mount with a random standby mount.",
       "star_up": {
         "base_stats": {
           "ignore_counter_pct": 10.0,
@@ -124,6 +123,7 @@
         "4": "During Combo or Counter, has a chance to launch Demonic Eye to deal DMG equal to 1.5% of the target's Max HP and a 50% chance to reduce the target's HP Recovery by 90% for 1 round.",
         "5": "During Combo or Counter, has a chance to launch Demonic Eye to deal DMG equal to 2.5% of the target's Max HP and a 75% chance to reduce the target's HP Recovery by 90% for 1 round."
       },
+      "awaken_base_effect": "Demon King's Eye releases [ Curse of the Demon Eye ], dealing 300% of Artifact Attack as Skill Damage to the enemy, with a 50% chance to swap the target's current mount with a random standby mount.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Curse of the Demon Eye ] deals 500% of Artifact Attack as Skill Damage to the enemy.",
@@ -142,7 +142,6 @@
       "n": "Spear of Thor",
       "tier": "Mythic",
       "base_effect": "Every 6 Bolt triggered summons Spear of Thor, dealing Bolt DMG equal to 100% ATK to all enemies and increasing the Skill DMG they take by 40% for 3 rounds.",
-      "awaken_base_effect": "The Spear of Thunder releases [ Thousand Thunder ] , dealing 300% of the artifact's attack power as lightning damage to enemies, and reducing the protagonist's damage taken by +50% for 2 turns.",
       "star_up": {
         "base_stats": {
           "ignore_combo_pct": 10.0,
@@ -197,6 +196,7 @@
         "4": "Every 6 Bolt triggered summons Spear of Thor, dealing Bolt DMG equal to 100% ATK to all enemies and increasing the Skill DMG they take by 40% for 3 rounds.",
         "5": "Every 5 Bolt triggered summons Spear of Thor, dealing Bolt DMG equal to 150% ATK to all enemies and increasing the Skill DMG they take by 60% for 3 rounds."
       },
+      "awaken_base_effect": "The Spear of Thunder releases [ Thousand Thunder ] , dealing 300% of the artifact's attack power as lightning damage to enemies, and reducing the protagonist's damage taken by +50% for 2 turns.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Thousand Thunder ] deals 500% of Artifact Attack as Lightning Damage to the enemy.",
@@ -215,7 +215,6 @@
       "n": "Demon Sword",
       "tier": "Mythic",
       "base_effect": "Every 5 Light Spears summoned, a Demon Sword is summoned, dealing 500% ATK DMG to all enemies.",
-      "awaken_base_effect": "Demon Sword releases [ Annihilation Demon Strike ] , dealing 5 instances of 50% of Artifact Attack as Light Spear Damage to the enemy, increasing the protagonist's Light Spear Damage by 10% after each hit, stackable up to 10 layers, lasting until the end of the battle.",
       "star_up": {
         "base_stats": {
           "ignore_combo_pct": 10.0,
@@ -270,6 +269,7 @@
         "4": "Every 5 Light Spears summoned, a Demon Sword is summoned, dealing 500% ATK DMG to all enemies.",
         "5": "Every 4 Light Spears summoned, a Demon Sword is summoned, dealing 750% ATK DMG to all enemies."
       },
+      "awaken_base_effect": "Demon Sword releases [ Annihilation Demon Strike ] , dealing 5 instances of 50% of Artifact Attack as Light Spear Damage to the enemy, increasing the protagonist's Light Spear Damage by 10% after each hit, stackable up to 10 layers, lasting until the end of the battle.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Annihilation Demon Strike ] deals 5 instances of 100% of Artifact Attack as Light Spear Damage to the enemy.",
@@ -288,7 +288,6 @@
       "n": "Heaven's Mark",
       "tier": "Mythic",
       "base_effect": "Every 4 Sword Chi triggered releases 1 Unrivaled Sword Chi, dealing 500% ATK DMG.",
-      "awaken_base_effect": "Deals 5 times artifact attack power 50% sword energy damage to the enemy, with a 50% chance to gain 1 layer of [ Sword Intent ]. Sword Intent: Increases sword energy damage by 10%, stackable up to 10 layers, lasts until the end of the battle.",
       "star_up": {
         "base_stats": {
           "ignore_combo_pct": 10.0,
@@ -343,6 +342,7 @@
         "4": "Every 4 Sword Chi triggered releases 1 Unrivaled Sword Chi, dealing 500% ATK DMG.",
         "5": "Every 3 Sword Chi triggered releases 1 Unrivaled Sword Chi, dealing 750% ATK DMG."
       },
+      "awaken_base_effect": "Deals 5 times artifact attack power 50% sword energy damage to the enemy, with a 50% chance to gain 1 layer of [Sword Intent]. Sword Intent: Increases sword energy damage by 10%, stackable up to 10 layers, lasts until the end of the battle.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Sky Splitter ] deals 5 instances of 80% of Artifact Attack as Sword Qi Damage to the enemy.",
@@ -361,7 +361,6 @@
       "n": "Pan Gu Axe",
       "tier": "Mythic",
       "base_effect": "Skill triggers cumulatively 10 times, unleashing divine punishment, causing skill damage of 300% of the protagonist's attack power. When the target has a shield, damage is increased by 40%, up to 4 times per turn.",
-      "awaken_base_effect": "Pan Gu Axe releases [ Thunder Call ], dealing 5 instances of 50% of artifact attack power as skill damage to enemies, with a 40% chance to [ Stun ] the target's mount for 1 turn. Stun: The target cannot trigger mount awakening skills (including effects after death).",
       "star_up": {
         "base_stats": {
           "global_hp_pct": 10.0,
@@ -416,6 +415,7 @@
         "4": "Skill triggers cumulatively 10 times, unleashing divine punishment, causing skill damage of 300% of the protagonist's attack power. When the target has a shield, damage is increased by 40%, up to 4 times per turn.",
         "5": "Skill triggers cumulatively 8 times, unleashing divine punishment, causing skill damage of 500% of the protagonist's attack power. When the target has a shield, damage is increased by 60%, up to 4 times per turn."
       },
+      "awaken_base_effect": "Pan Gu Axe releases [Thunder Call ], dealing 5 instances of 50% of artifact attack power as skill damage to enemies, with a 40% chance to [ Stun ] the target's mount for 1 turn. Stun: The target cannot trigger mount awakening skills (including effects after death).",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Thunder Call ] damage coefficient increased to 90%",
@@ -434,7 +434,6 @@
       "n": "Xing Tian Axe",
       "tier": "Mythic",
       "base_effect": "Every time Flame Wave is released 5 times, it summons [ Xingtian's Flame ], dealing fire damage equal to 500% of attack power and adds 2 turns of [ Heavenly Flame ], which burns the target for 3% of their maximum health per turn, not exceeding 20 times the protagonist's attack. It can stack up to 2 layers and trigger a maximum of 3 times per turn.",
-      "awaken_base_effect": "Xing Tian Axe releases [ Mountain Split ] to deal 300% artifact attack power fire damage to the enemy, and increases the protagonist's burn damage by 40%, stackable up to 3 times, lasting until the end of the battle.",
       "star_up": {
         "base_stats": {
           "ignore_crit_pct": 10.0,
@@ -489,6 +488,7 @@
         "4": "Every time Flame Wave is released 5 times, it summons [ Xingtian's Flame ], dealing fire damage equal to 500% of attack power and adds 2 turns of [ Heavenly Flame ], which burns the target for 3% of their maximum health per turn, not exceeding 20 times the protagonist's attack. It can stack up to 2 layers and trigger a maximum of 3 times per turn.",
         "5": "Every 4 casts of Flame Wave, [ Xingtian's Flame ] descends, dealing fire damage equal to 750% attack power, and adds a 2-turn [ Heavenly Flame ], burning for 4.5% max HP each turn, not exceeding 30 times the protagonist's attack, stackable up to 2 layers, triggering up to 3 times per turn."
       },
+      "awaken_base_effect": "Xing Tian Axe releases [ Mountain Split ] to deal 300% artifact attack power fire damage to the enemy, and increases the protagonist's burn damage by 40%, stackable up to 3 times, lasting until the end of the battle.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "The damage coefficient of [ Mountain Split ] is increased to 500%",
@@ -507,7 +507,6 @@
       "n": "Zhanxian Flying Knife",
       "tier": "Mythic",
       "base_effect": "Every time the dagger triggers 8 times, it throws 1-3 Immortal-Slaying Blades, each dealing 200% of attack power as dagger damage, and causes the target to take 1% of their max HP as dagger damage, not exceeding 10 times the protagonist's attack power. Can trigger up to 3 times per round.",
-      "awaken_base_effect": "Zhanxian Flying Knife releases [ Divine Slash ] to deal 5 times artifact attack power 50% flying knife damage to the enemy. After each damage, there is a 50% chance to release 1 flying knife.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 10.0,
@@ -562,6 +561,7 @@
         "4": "Every time the dagger triggers 8 times, it throws 1-3 Immortal-Slaying Blades, each dealing 200% of attack power as dagger damage, and causes the target to take 1% of their max HP as dagger damage, not exceeding 10 times the protagonist's attack power. Can trigger up to 3 times per round.",
         "5": "Every time the dagger triggers 6 times, it throws 1-3 Immortal-Slaying Blades, each dealing 300% of attack power as dagger damage, and causes the target to take 1.5% of their max HP as dagger damage, not exceeding 10 times the protagonist's attack power. Can trigger up to 3 times per round."
       },
+      "awaken_base_effect": "Zhanxian Flying Knife releases [ Divine Slash ] to deal 5 times artifact attack power 50% flying knife damage to the enemy. After each damage, there is a 50% chance to release 1 flying knife.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Divine Slash ] damage coefficient increased to 90%.",
@@ -580,7 +580,6 @@
       "n": "Cursed Blade of Muramasa",
       "tier": "Immortal",
       "base_effect": "Every 4 spears summoned triggers the summoning of [ Demon Blade ], dealing 600% of the main character's attack as light spear damage, and causing the enemy to take light spear damage equal to 2% of their max HP, up to 20 times the main character's attack. Can trigger up to 3 times per turn.",
-      "awaken_base_effect": "Muramasa the Demon Blade casts [ Hazy Moon Slash ], dealing 3 instances of counterattack damage equal to 120% of artifact attack to the enemy, granting the main character a shield equal to 10% of max HP, and inflicting the enemy with [ Oni Bind ]. When counterattacked by the main character, they take an additional 1 instance of counterattack damage equal to 20% of the main character's attack. [ Oni Bind ] lasts for 2 turns.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 15.0,
@@ -635,6 +634,7 @@
         "4": "Every 4 spears summoned triggers the summoning of [ Demon Blade ], dealing 600% of the main character's attack as light spear damage, and causing the enemy to take light spear damage equal to 2% of their max HP, up to 20 times the main character's attack. Can trigger up to 3 times per turn.",
         "5": "Every 3 spears summoned triggers the summoning of [ Demon Blade ], dealing 900% of the main character's attack as light spear damage, and causing the enemy to take light spear damage equal to 3% of their max HP, up to 30 times the main character's attack. Can trigger up to 3 times per turn."
       },
+      "awaken_base_effect": "Muramasa the Demon Blade casts [ Hazy Moon Slash ], dealing 3 instances of counterattack damage equal to 120% of artifact attack to the enemy, granting the main character a shield equal to 10% of max HP, and inflicting the enemy with [ Oni Bind ]. When counterattacked by the main character, they take an additional 1 instance of counterattack damage equal to 20% of the main character's attack. [ Oni Bind ] lasts for 2 turns.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Hazy Moon Slash ] damage coefficient increased to 200%, [ Oni Bind ] counterattack damage coefficient increased to 60%",
@@ -653,7 +653,6 @@
       "n": "Twin Blazing Blades",
       "tier": "Immortal",
       "base_effect": "After every 4 basic attacks, Twin Blazing Blades releases [ Fury Combo ], dealing 3 consecutive strikes of 200% protagonist attack damage to the enemy, inflicting the enemy with 2 turns of [ Wound ]. When hit by protagonist's basic attacks, each stack of [ Wound ] causes the enemy to take consecutive damage equal to 1% of maximum health, not exceeding 10 times protagonist's attack. [ Wound ] can stack up to 2 layers.",
-      "awaken_base_effect": "The Twin Swords unite to summon the Kapi Hero and cast [ Valiant Judgment ], dealing 1 instance of Combo DMG equal to 350% of Artifact ATK to the enemy and granting the Main Character [ Valiance ] for 2 turns. [ Valiance ]: Each Basic ATK increases the Main Character's Basic ATK DMG by +5% and Combo DMG by +5%. Lasts until Valiance ends.",
       "star_up": {
         "base_stats": {
           "ignore_counter_pct": 15.0,
@@ -708,6 +707,7 @@
         "4": "After every 4 basic attacks, Twin Blazing Blades releases [ Fury Combo ], dealing 3 consecutive strikes of 200% protagonist attack damage to the enemy, inflicting the enemy with 2 turns of [ Wound ]. When hit by protagonist's basic attacks, each stack of [ Wound ] causes the enemy to take consecutive damage equal to 1% of maximum health, not exceeding 10 times protagonist's attack. [ Wound ] can stack up to 2 layers.",
         "5": "After every 3 basic attacks, Twin Blazing Blades releases [ Fury Combo ], dealing 3 consecutive strikes of 300% protagonist attack damage to the enemy, inflicting the enemy with 2 turns of [ Wound ]. When hit by protagonist's basic attacks, each stack of [ Wound ] causes the enemy to take consecutive damage equal to 1.5% of maximum health, not exceeding 15 times protagonist's attack. [ Wound ] can stack up to 2 layers."
       },
+      "awaken_base_effect": "The Twin Swords unite to summon the Kapi Hero and cast [ Valiant Judgment ], dealing 1 instance of Combo DMG equal to 350% of Artifact ATK to the enemy and granting the Main Character [ Valiance ] for 2 turns. [ Valiance ]: Each Basic ATK increases the Main Character's Basic ATK DMG by +5% and Combo DMG by +5%. Lasts until Valiance ends.",
       "awaken_effects": {
         "A1": "No additional effect (Suppression only).",
         "A2": "[ Valiant Judgment ] DMG coefficient increased to 600%, [ Valiance ] Combo DMG boost increased to 10%.",
@@ -791,7 +791,7 @@
         "A7": "[ Meteorfall Forbidden Array ] damage coefficient is increased to 900%, and [ Meteorfall ] increases the maximum lightning damage enemies take to 150%.",
         "A8": "No additional effect (Suppression only).",
         "A9": "No additional effect (Suppression only).",
-        "A10": "[ Meteorfall ] reduces enemies' shield strength by -60%, and when it ends, has a 50% chance to inflict [ Silence ] for 1 turn."
+        "A10": "[Meteorfall ] reduces enemies' shield strength by -60%, and when it ends, has a 50% chance to inflict [ Silence ] for 1 turn."
       }
     },
     {
@@ -1018,7 +1018,7 @@
       "n": "Ancestor's Rage",
       "tier": "Transcendent",
       "base_effect": "Wrathful Flame — Every 6 Skill procs, Ancestor's Rage casts [ Wrathful Flame ], dealing Skill DMG equal to 750% ATK and inflicting 1-2 stacks of [ Destruction ] (Max 4 times/turn). Destruction: Reduces Final DMG Reduc. by 1% and Shield Bonus by 1%. Upon ending, each stack deals Skill DMG equal to 1% of target's Max HP (Max 10x ATK). Max 5 stacks, lasts 1 turn.",
-      "awaken_base_effect": "World-Ending Flame — Ancestor's Rage unleashes [ World-Ending Flame ], dealing 3 hits of 150% Artifact ATK Skill DMG and inflicting [ Disintegration ] for 2 turns. Disintegration: Final DMG Reduc. -5%; when the enemy gains a Shield, they take Skill DMG equal to 50% of your ATK (triggers up to 2 times/turn).",
+      "awaken_base_effect": "World-Ending Flame — Ancestor's Rage unleashes [ World-Ending Flame ], dealing 3 hits of 150% Artifact ATK Skill DMG and inflicting [Disintegration] for 2 turns. Disintegration: Final DMG Reduc. -5%; when the enemy gains a Shield, they take Skill DMG equal to 50% of your ATK (triggers up to 2 times/turn).",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20,
@@ -1080,7 +1080,7 @@
         "A4": "[ Disintegration ] lasts 4 turns; hero gains +10% CRIT Rate and Final DMG Bonus for 2 turns.",
         "A5": "No additional effect (Suppression only).",
         "A6": "No additional effect (Suppression only).",
-        "A7": "Base Skill DMG increased to 350% per hit, and [ Disintegration ] Final DMG Reduc increased to -15%.",
+        "A7": "Base Skill DMG increased to 350% per hit, and [Disintegration] Final DMG Reduc increased to -15%.",
         "A8": "No additional effect (Suppression only).",
         "A9": "No additional effect (Suppression only).",
         "A10": "[ Disintegration ] Shield DMG increased to 100% ATK. Added [ Soul Burn ]: 50% chance to [ Silence ] and damage enemies upon resurrection."
@@ -1091,7 +1091,7 @@
       "n": "Abyssal Devourer",
       "tier": "Transcendent",
       "base_effect": "Abyssal Bite — After every 4 Basic Attacks, the Abyssal Devourer casts [ Abyssal Bite ], dealing Combo DMG equal to 750% of the Protagonist's ATK to the enemy and inflicting 1 stack of [ Abyssal Rift ], lasting until the end of the battle. Abyssal Rift: Each stack of [ Abyssal Rift ] reduces the enemy's Final Basic Attack DMG Reduction by -1% and Ignore Combo Rate by -0.5%. When hit by the Protagonist's Basic Attack, each stack of [ Abyssal Rift ] causes the enemy to take Combo DMG equal to 1.5% of Max HP, not exceeding 15 times the Protagonist's ATK. [ Abyssal Rift ] stacks up to 5 times.",
-      "awaken_base_effect": "Abyssal Rift Beam — Unable to suppress the Power of the Abyss, the Abyssal Devourer unleashes the [ Abyssal Rift Beam ], dealing 3 instances of Combo DMG equal to 150% of the Artifact's ATK to the enemy, granting the Protagonist [ Power of the Abyss ] for 1 round and 1 stack of [ Breath of the Abyss ]. Power of the Abyss: Protagonist's Final Combo DMG +5%, Combo count +1. The increased Combo count cannot stack with other Artifacts or Mounts. Breath of the Abyss: Upon taking a single instance of Skill DMG greater than 10% of the Protagonist's Max HP, removes [ Breath of the Abyss ], reduces this damage by 30%, and reduces the enemy's Shield Bonus by -30% for 3 rounds.",
+      "awaken_base_effect": "Abyssal Rift Beam — Unable to suppress the Power of the Abyss, the Abyssal Devourer unleashes the [ Abyssal Rift Beam ], dealing 3 instances of Combo DMG equal to 150% of the Artifact's ATK to the enemy, granting the Protagonist [ Power of the Abyss ] for 1 round and 1 stack of [Breath of the Abyss]. Power of the Abyss: Protagonist's Final Combo DMG +5%, Combo count +1. The increased Combo count cannot stack with other Artifacts or Mounts. Breath of the Abyss: Upon taking a single instance of Skill DMG greater than 10% of the Protagonist's Max HP, removes [ Breath of the Abyss ], reduces this damage by 30%, and reduces the enemy's Shield Bonus by -30% for 3 rounds.",
       "star_up": {
         "base_stats": {
           "global_attack_pct": 20,

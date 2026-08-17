@@ -120,7 +120,6 @@ body {
   border-radius: 6px;
   font-size: 17px;
   cursor: pointer;
-  margin-left: auto;
 }
 .tab-btn.active {
   color: var(--accent);
@@ -641,7 +640,7 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 5px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--accent);
   background: var(--bg-panel-2);
   color: var(--bg-deep);
   font-size: 13px;
@@ -663,7 +662,7 @@ body {
 .bulk-action-bar {
   position: fixed;
   left: 50%;
-  bottom: 18px;
+  bottom: 32px;
   transform: translateX(-50%);
   z-index: 60;
   width: calc(100% - 32px);
