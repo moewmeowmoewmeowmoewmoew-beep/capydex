@@ -958,8 +958,9 @@ body {
 .import-error.hidden { display: none; }
 
 /* ---- Specialization Tree ---- */
-.spec-tab-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; }
+.spec-tab-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
 .spec-tab-btn-group { display: flex; gap: 8px; }
+.spec-tab-right-group { display: flex; gap: 8px; }
 .spec-tab-btn {
   padding: 6px 14px;
   border-radius: 6px;
@@ -1038,6 +1039,19 @@ body {
 .spec-track-img img { width: 100%; height: 100%; object-fit: contain; border-radius: 4px; }
 .spec-track-name { color: var(--ink); font-size: 13px; }
 .spec-track-input-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.spec-stepper-btn {
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  border: 1px solid var(--hairline);
+  background: var(--bg-panel-2);
+  color: var(--ink-dim);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.spec-stepper-btn:hover { border-color: var(--accent-dim); color: var(--ink); }
+.spec-drawer-tool-row { margin-bottom: 14px; }
 .spec-track-input {
   width: 42px; padding: 5px; text-align: right;
   background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 4px;

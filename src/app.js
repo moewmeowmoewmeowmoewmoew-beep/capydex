@@ -717,6 +717,14 @@ function specGroupInvested(tab, group) {
   return group.tracks.reduce((sum, t) => sum + getSpecTrackLevel(tab, group.group, t.name), 0);
 }
 
+// Display-only — strips the "N "/"E "/"S "/"W " prefix from General tab
+// group names ("N Tier 1" → "Tier 1"), since the direction is already
+// shown by which accordion the row sits in. The underlying group.group
+// value (used as the state key) is untouched.
+function specDisplayGroupName(group) {
+  return group.group.replace(/^[NESW]\s+/, '');
+}
+
 function renderSpecTierRow(tab, group) {
   const invested = specGroupInvested(tab, group);
   const hasInvestment = invested > 0;
@@ -727,7 +735,7 @@ function renderSpecTierRow(tab, group) {
     onclick: () => openSpecDrawer(tab, group),
   }, [
     el('div', {}, [
-      el('div', { class: 'spec-tier-group-label' }, group.group),
+      el('div', { class: 'spec-tier-group-label' }, specDisplayGroupName(group)),
       el('div', { class: 'spec-tier-track-names' }, names),
     ]),
     el('span', { class: 'spec-tier-points' }, `${invested} pts`),
@@ -748,9 +756,14 @@ function openSpecDrawer(tab, group) {
 
   drawer.appendChild(el('div', { class: 'spec-drawer-handle' }));
   drawer.appendChild(el('div', { class: 'spec-drawer-header' }, [
-    el('span', { class: 'spec-drawer-title' }, group.group),
+    el('span', { class: 'spec-drawer-title' }, specDisplayGroupName(group)),
     el('button', { class: 'spec-drawer-close', onclick: close }, '\u2715'),
   ]));
+
+  const applyLevelFns = [];
+  const fillToMaxBtn = el('button', { class: 'bulk-action-btn primary' }, 'Fill to Max');
+  fillToMaxBtn.addEventListener('click', () => applyLevelFns.forEach(fn => fn.max()));
+  drawer.appendChild(el('div', { class: 'spec-drawer-tool-row' }, [fillToMaxBtn]));
 
   group.tracks.forEach(track => {
     const max = track.levels.length;
@@ -759,21 +772,34 @@ function openSpecDrawer(tab, group) {
     const imgSlot = el('div', { class: 'spec-track-img' });
     if (track.image) imgSlot.appendChild(el('img', { src: track.image, alt: track.name }));
 
+    const applyLevel = (n) => {
+      const clamped = Math.max(0, Math.min(max, n));
+      setSpecTrackLevel(tab, group.group, track.name, clamped);
+      saveState();
+      input.value = clamped === 0 && document.activeElement === input ? '' : String(clamped);
+      effectDiv.textContent = clamped > 0 ? track.levels[clamped - 1] : 'Not yet invested';
+      return clamped;
+    };
+    applyLevelFns.push({ max: () => applyLevel(max) });
+
     const input = el('input', {
       type: 'number', class: 'spec-track-input', min: '0', max: String(max), value: String(currentLevel),
+      placeholder: '0',
       oninput: (e) => {
         const n = parseInt(e.target.value, 10);
-        const clamped = Number.isNaN(n) ? 0 : Math.max(0, Math.min(max, n));
-        setSpecTrackLevel(tab, group.group, track.name, clamped);
-        saveState();
-        effectDiv.textContent = clamped > 0 ? track.levels[clamped - 1] : 'Not yet invested';
+        applyLevel(Number.isNaN(n) ? 0 : n);
       },
-      onblur: () => render(),
+      // 0 stays a real value once you click away — the placeholder-on-focus
+      // behavior is purely a typing convenience, not a way to hide 0 itself.
+      onfocus: (e) => { if (e.target.value === '0') e.target.value = ''; },
+      onblur: (e) => { if (e.target.value === '') e.target.value = '0'; },
     });
+    const minusBtn = el('button', { class: 'spec-stepper-btn', onclick: () => applyLevel(getSpecTrackLevel(tab, group.group, track.name) - 1) }, '\u2212');
+    const plusBtn = el('button', { class: 'spec-stepper-btn', onclick: () => applyLevel(getSpecTrackLevel(tab, group.group, track.name) + 1) }, '+');
 
     drawer.appendChild(el('div', { class: 'spec-track-row' }, [
       el('div', { class: 'spec-track-left' }, [imgSlot, el('span', { class: 'spec-track-name' }, track.name)]),
-      el('div', { class: 'spec-track-input-wrap' }, [input, el('span', { class: 'spec-track-max' }, `/${max}`)]),
+      el('div', { class: 'spec-track-input-wrap' }, [minusBtn, input, plusBtn, el('span', { class: 'spec-track-max' }, `/${max}`)]),
     ]));
 
     const effectDiv = el('div', { class: 'spec-track-effect' },
@@ -838,11 +864,23 @@ function renderSpecializationShell() {
 
   const isGeneral = state.specialization.viewingTab === 'general';
   const dbTab = isGeneral ? 'General' : 'Adventure';
-  tabRow.appendChild(renderClearAllButton(`${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
+  const rightGroup = el('div', { class: 'spec-tab-right-group' });
+  rightGroup.appendChild(el('button', {
+    class: 'bulk-action-btn primary',
+    onclick: () => {
+      (DB[dbTab] || []).forEach(group => {
+        group.tracks.forEach(track => setSpecTrackLevel(dbTab, group.group, track.name, track.levels.length));
+      });
+      saveState();
+      render();
+    },
+  }, 'Fill to Max'));
+  rightGroup.appendChild(renderClearAllButton(`${isGeneral ? 'General' : 'Adventurer'} tree`, () => {
     state.specialization.progress[dbTab] = {};
     saveState();
     render();
   }));
+  tabRow.appendChild(rightGroup);
   wrap.appendChild(tabRow);
 
   wrap.appendChild(isGeneral ? renderSpecGeneralTab() : renderSpecAdventureTab());
@@ -2380,7 +2418,12 @@ function renderRelics() {
 
   const tierRow = el('div', { class: 'toolbar-row' });
   tierRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Tier'));
-  ['All', 'Rare', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
+  // Derived from the actual data, not a hand-maintained list — a hardcoded
+  // array here is exactly how a real tier (Rare) went missing from this
+  // filter before. If a new rarity is ever added to the data, it shows up
+  // here automatically instead of silently needing a matching code edit.
+  const relicTierOptions = ['All', ...buildTierGroups(DB.relics, 'rarity').map(g => g.tier)];
+  relicTierOptions.forEach(r => {
     const chip = el('button', {
       class: 'filter-chip' + (relicRarityFilter === r ? ' active' : ''),
       onclick: () => {
@@ -2580,7 +2623,11 @@ function renderCollectibles() {
 
   const tierRow = el('div', { class: 'toolbar-row' });
   tierRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Tier'));
-  ['All', 'Epic', 'Legendary', 'Mythic'].forEach(r => {
+  // Derived from the actual data, not a hand-maintained list — see the
+  // matching comment in renderRelics for why: a hardcoded list here was
+  // exactly how Rare-tier collectibles went missing from this filter.
+  const collectibleTierOptions = ['All', ...buildTierGroups(DB.collectibles, 'rarity').map(g => g.tier)];
+  collectibleTierOptions.forEach(r => {
     const chip = el('button', {
       class: 'filter-chip' + (collectibleRarityFilter === r ? ' active' : ''),
       onclick: () => {
