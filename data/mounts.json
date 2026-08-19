@@ -717,19 +717,19 @@
           },
           "2": {
             "combo_rate_pct": 4,
-            "speed": 6
+            "speed": 12
           },
           "3": {
             "combo_rate_pct": 6,
-            "speed": 6
+            "speed": 18
           },
           "4": {
             "combo_rate_pct": 8,
-            "speed": 6
+            "speed": 24
           },
           "5": {
             "combo_rate_pct": 10,
-            "speed": 6
+            "speed": 30
           }
         }
       },
@@ -810,19 +810,19 @@
           },
           "2": {
             "counter_rate_pct": 4,
-            "speed": 6
+            "speed": 12
           },
           "3": {
             "counter_rate_pct": 6,
-            "speed": 6
+            "speed": 18
           },
           "4": {
             "counter_rate_pct": 8,
-            "speed": 6
+            "speed": 24
           },
           "5": {
             "counter_rate_pct": 10,
-            "speed": 6
+            "speed": 30
           }
         }
       },

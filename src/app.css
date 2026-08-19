@@ -284,8 +284,14 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 14px;
 }
+.card-grid.cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
 .card-grid.cols-3 {
   grid-template-columns: repeat(3, 1fr);
+}
+.card-grid.cols-4 {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .item-card {
@@ -833,7 +839,7 @@ body {
    than several different ones so "mobile mode" starts consistently
    everywhere, instead of different pieces switching at different widths. ---- */
 @media (max-width: 844px) {
-  .card-grid.cols-3 { grid-template-columns: 1fr; }
+  .card-grid.cols-2, .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: 1fr; }
   .sets-grid { grid-template-columns: 1fr; }
   .owned-badge { padding: 9px 14px; min-height: 32px; }
   /* Force the search box onto its own full-width row, so filter chips +

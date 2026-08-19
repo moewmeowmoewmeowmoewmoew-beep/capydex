@@ -397,8 +397,8 @@ function buildTierGroups(items, field = 'tier') {
 }
 
 const COLLECTION_SECTIONS = [
-  { id: 'relics', label: 'Relics', build: renderRelics, sub: () => buildTierGroups(DB.relics, 'rarity'), clearAll: () => clearAllRelics() },
-  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => buildTierGroups(DB.collectibles, 'rarity'), clearAll: () => clearAllCollectibles() },
+  { id: 'collectibles', label: 'Collectibles', build: renderCollectibles, sub: () => [...buildTierGroups(DB.collectibles, 'rarity'), { tier: 'Sets', slug: 'sets' }], clearAll: () => clearAllCollectibles() },
+  { id: 'relics', label: 'Relics', build: renderRelics, sub: () => [...buildTierGroups(DB.relics, 'rarity'), { tier: 'Sets', slug: 'sets' }], clearAll: () => clearAllRelics() },
   { id: 'mounts', label: 'Mounts', build: () => renderMountsOrArtifacts('mounts'), sub: () => buildTierGroups(DB.mounts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('mounts') },
   { id: 'artifacts', label: 'Artifacts', build: () => renderMountsOrArtifacts('artifacts'), sub: () => buildTierGroups(DB.artifacts.filter(x => x.n !== 'None')), clearAll: () => clearAllMountsOrArtifacts('artifacts') },
   { id: 'fashion', label: 'Fashion Level', build: buildFashionSectionContent, clearAll: () => { state.fashionLevel = 0; saveState(); render(); } },
@@ -462,40 +462,102 @@ function buildFashionSectionContent() {
   return wrap;
 }
 
+let homesteadSearch = '';
+let homesteadOwnedFilter = 'All';
+
+function renderHomesteadCard(b) {
+  const currentLevel = state.homestead[b.id] || 0;
+  const owned = currentLevel > 0;
+  const maxLevel = b.values.length;
+  const card = el('div', { class: 'item-card' });
+  card.appendChild(el('div', { class: 'card-header-row' }, [
+    el('div', { class: 'header-left' }, [
+      el('div', { class: 'item-name', title: b.name }, b.name),
+    ]),
+  ]));
+  card.appendChild(el('div', { class: 'item-rarity' }, b.event ? `Set: ${b.event}` : b.label));
+
+  const stepper = renderStepper(
+    `homestead-${b.id}`, currentLevel, 0, maxLevel,
+    (next) => {
+      if (next <= 0) delete state.homestead[b.id];
+      else state.homestead[b.id] = next;
+      saveState();
+      render();
+    },
+    (v) => `Lv${v}`
+  );
+  card.appendChild(el('div', { class: 'card-controls-row' }, [
+    renderOwnedBadge(owned, (checked) => {
+      if (!checked) delete state.homestead[b.id];
+      else state.homestead[b.id] = 1;
+      saveState();
+      render();
+    }),
+    el('div', { class: 'steppers-col' }, [stepper]),
+  ]));
+
+  if (owned) {
+    const val = b.values[currentLevel - 1];
+    const pct = Math.round(val * 10000) / 100;
+    card.appendChild(el('div', { class: 'item-effect' }, [
+      b.label + ': ',
+      el('span', { class: 'stat-value-live' }, `+${pct}%`),
+    ]));
+  }
+  return card;
+}
+
+function renderHomesteadGroups(container) {
+  container.innerHTML = '';
+  const buildings = (DB.homestead_buildings || []).filter(b => {
+    if (homesteadSearch && !b.name.toLowerCase().includes(homesteadSearch.toLowerCase())) return false;
+    const owned = (state.homestead[b.id] || 0) > 0;
+    if (homesteadOwnedFilter === 'Owned' && !owned) return false;
+    if (homesteadOwnedFilter === 'Not Owned' && owned) return false;
+    return true;
+  });
+  const grid = el('div', { class: 'card-grid cols-4' });
+  buildings.forEach(b => grid.appendChild(renderHomesteadCard(b)));
+  container.appendChild(grid);
+}
+
 function buildHomesteadSectionContent() {
   const wrap = el('div', {});
   wrap.appendChild(el('p', { class: 'section-desc' },
-    'Buildings you own grant passive stats at whichever level you\u2019ve upgraded them to. Set each to Level 0 if you don\u2019t own it.'));
+    'Buildings you own grant passive stats at whichever level you\u2019ve upgraded them to.'));
 
-  const buildings = DB.homestead_buildings || [];
-  const card = el('div', { class: 'equip-card' });
-  buildings.forEach(b => {
-    const currentLevel = state.homestead[b.id] || 0;
-    card.appendChild(equipFieldLabel(`${b.name}${b.event ? ` (${b.event})` : ''} — ${b.label}`));
-    const select = el('select', { class: 'equip-select' }, [
-      el('option', { value: '0', selected: currentLevel === 0 ? 'true' : null }, 'Level 0 (not owned)'),
-      ...b.values.map((v, i) => {
-        const lv = i + 1;
-        return el('option', { value: String(lv), selected: lv === currentLevel ? 'true' : null }, `Level ${lv}`);
-      }),
-    ]);
-    select.addEventListener('change', (e) => {
-      const lv = parseInt(e.target.value, 10);
-      if (lv === 0) delete state.homestead[b.id];
-      else state.homestead[b.id] = lv;
-      saveState();
-      render();
-    });
-    card.appendChild(select);
-    if (currentLevel > 0) {
-      const val = b.values[currentLevel - 1];
-      const pct = Math.round(val * 10000) / 100;
-      card.appendChild(el('div', { class: 'equip-writeup' }, `${b.label} +${pct}%`));
-    }
+  const toolbar = el('div', { class: 'toolbar toolbar-stacked' });
+  const search = el('input', {
+    class: 'search-input', type: 'text', placeholder: 'Search homestead…', value: homesteadSearch,
+    oninput: (e) => { homesteadSearch = e.target.value; renderHomesteadGroups(groupsWrap); },
   });
-  wrap.appendChild(el('div', { class: 'equip-grid equip-grid-single' }, [card]));
+  toolbar.appendChild(search);
+
+  const ownedRow = el('div', { class: 'toolbar-row' });
+  ownedRow.appendChild(el('span', { class: 'toolbar-row-label' }, 'Owned'));
+  ['All', 'Owned', 'Not Owned'].forEach(o => {
+    const chip = el('button', {
+      class: 'filter-chip' + (homesteadOwnedFilter === o ? ' active' : ''),
+      onclick: () => {
+        homesteadOwnedFilter = o;
+        ownedRow.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderHomesteadGroups(groupsWrap);
+      },
+    }, o);
+    ownedRow.appendChild(chip);
+  });
+  toolbar.appendChild(ownedRow);
+  wrap.appendChild(toolbar);
+
+  const groupsWrap = el('div', {});
+  wrap.appendChild(groupsWrap);
+  renderHomesteadGroups(groupsWrap);
+
   return wrap;
 }
+
 
 function renderPlaceholder(label) {
   return el('div', {}, [
@@ -1034,10 +1096,10 @@ function renderAdventurerCard() {
 
   card.appendChild(equipFieldLabel('Stars'));
   card.appendChild(el('input', {
-    type: 'number', class: 'equip-select', min: '0', max: '10', value: String(s.stars || 0),
+    type: 'number', class: 'equip-select', min: '0', value: String(s.stars || 0),
     oninput: (e) => {
       const n = parseInt(e.target.value, 10);
-      s.stars = Number.isNaN(n) ? 0 : Math.max(0, Math.min(10, n));
+      s.stars = Number.isNaN(n) ? 0 : Math.max(0, n);
       saveState();
       render();
     },
@@ -1101,7 +1163,7 @@ function renderHeroOrBrandCard(kind, slotIndex) {
   const byGroup = {};
   options.forEach(o => { (byGroup[classify(o.n)] = byGroup[classify(o.n)] || []).push(o); });
   const sortedOptions = groupOrder.filter(g => byGroup[g]).flatMap(g => byGroup[g]);
-  const optionLabel = (o) => `${o.n} \u2014 ${classify(o.n)}`;
+  const optionLabel = (o) => o.n;
 
   card.appendChild(renderSearchCombo({
     value: entity ? optionLabel(entity) : '',
@@ -2492,7 +2554,7 @@ function renderRelics() {
   renderRelicGroups(groupsWrap);
 
   // Sets, at the bottom
-  wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Relic Sets'));
+  wrap.appendChild(el('div', { class: 'tier-group-title', id: 'relics-sets' }, 'Relic Sets'));
   const setsGrid = el('div', { class: 'sets-grid' });
   const allSets = Object.values(DB.relic_sets).flat();
   allSets.forEach(set => setsGrid.appendChild(renderRelicSetPanel(set)));
@@ -2514,7 +2576,7 @@ function renderRelicGroups(container) {
   const groups = buildTierGroups(items, 'rarity');
   groups.forEach(g => {
     container.appendChild(renderTierGroupHeader('relics', g.tier, `relics-${g.slug}`, g.items));
-    const grid = el('div', { class: 'card-grid cols-3' });
+    const grid = el('div', { class: 'card-grid cols-4' });
     g.items.forEach(r => grid.appendChild(renderRelicCard(r)));
     container.appendChild(grid);
   });
@@ -2540,7 +2602,7 @@ function renderRelicCard(relic) {
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('relics', relic),
-      el('div', { class: 'item-name' }, relic.n),
+      el('div', { class: 'item-name', title: relic.n }, relic.n),
     ]),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, relic.rarity));
@@ -2695,7 +2757,7 @@ function renderCollectibles() {
   wrap.appendChild(groupsWrap);
   renderCollectibleGroups(groupsWrap);
 
-  wrap.appendChild(el('div', { class: 'tier-group-title' }, 'Collectible Sets'));
+  wrap.appendChild(el('div', { class: 'tier-group-title', id: 'collectibles-sets' }, 'Collectible Sets'));
   const setsGrid = el('div', { class: 'sets-grid' });
   const allSets = Object.values(DB.collectible_sets).flat();
   allSets.forEach(set => setsGrid.appendChild(renderCollectibleSetPanel(set)));
@@ -2717,7 +2779,7 @@ function renderCollectibleGroups(container) {
   const groups = buildTierGroups(items, 'rarity');
   groups.forEach(g => {
     container.appendChild(renderTierGroupHeader('collectibles', g.tier, `collectibles-${g.slug}`, g.items));
-    const grid = el('div', { class: 'card-grid cols-3' });
+    const grid = el('div', { class: 'card-grid cols-4' });
     g.items.forEach(c => grid.appendChild(renderCollectibleCard(c)));
     container.appendChild(grid);
   });
@@ -2734,7 +2796,7 @@ function renderCollectibleCard(item) {
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('collectibles', item),
-      el('div', { class: 'item-name' }, item.n),
+      el('div', { class: 'item-name', title: item.n }, item.n),
     ]),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' },
@@ -2917,7 +2979,7 @@ function renderMountArtifactGroups(kind, container) {
   const groups = buildTierGroups(items);
   groups.forEach(g => {
     container.appendChild(renderTierGroupHeader(kind, g.tier, `${kind}-${g.slug}`, g.items));
-    const grid = el('div', { class: 'card-grid cols-3' });
+    const grid = el('div', { class: 'card-grid cols-2' });
     g.items.forEach(item => grid.appendChild(renderMountArtifactCard(item, bucket, isMount)));
     container.appendChild(grid);
   });
@@ -2978,7 +3040,7 @@ function renderMountArtifactCard(item, bucket, isMount) {
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb(isMount ? 'mounts' : 'artifacts', item),
-      el('div', { class: 'item-name' }, item.n),
+      el('div', { class: 'item-name', title: item.n }, item.n),
     ]),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
@@ -3084,7 +3146,7 @@ function renderPetCard(item) {
   card.appendChild(el('div', { class: 'card-header-row' }, [
     el('div', { class: 'header-left' }, [
       renderThumb('pets', item),
-      el('div', { class: 'item-name' }, item.n),
+      el('div', { class: 'item-name', title: item.n }, item.n),
     ]),
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
