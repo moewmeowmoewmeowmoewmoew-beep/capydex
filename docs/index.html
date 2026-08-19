@@ -4843,7 +4843,7 @@ const RELIC_KEY_TO_LABEL = {
   // the concept is an unambiguous match to an existing category — stats
   // with no real Calculator category (gold gain, AFK gains, lifesteal,
   // shield bonus, etc.) are deliberately left out rather than force-fit.
-  crit_dmg: 'Crit DMG (Default to 200% as base)', crit_dmg_reduction: 'Crit DMG Reduction',
+  crit_dmg: 'Crit DMG', crit_dmg_reduction: 'Crit DMG Reduction',
   combo_dmg: 'Combo DMG', combo_dmg_reduction: 'Combo DMG Reduction',
   counter_dmg: 'Counter DMG', counter_dmg_reduction: 'Counter DMG Reduction',
   lightning_dmg: 'Lightning DMG', lightning_dmg_reduction: 'Lightning DMG Reduction',
@@ -4958,6 +4958,18 @@ function parsePolarizationValue(text) {
   return { name: m[1].trim(), val: parseFloat(m[2]) };
 }
 
+// Hero/Brand quality_effects text uses slightly different naming than the
+// Calculator's own labels — mapped here rather than assuming a 1:1 match.
+const HERO_BRAND_QUALITY_STAT_TO_LABEL = {
+  'Global HP': 'Global HP%', 'Global ATK': 'Global ATK',
+  'Global Lightning DMG': 'Lightning DMG', 'Global Combo DMG': 'Combo DMG', 'Global Counter DMG': 'Counter DMG',
+  'Global Dagger DMG': 'Dagger DMG', 'Global Sword Qi DMG': 'Sword Qi DMG', 'Global Skill DMG': 'Skill DMG',
+  'Final Lightning DMG': 'Final Lightning DMG', 'Final Combo DMG': 'Final Combo DMG', 'Final Sword Qi DMG': 'Final Sword Qi DMG',
+  'Sword Qi DMG Coefficient': 'Sword Qi DMG Coef', 'Lightning DMG Coefficient': 'Lightning DMG Coef',
+  'Weapon Crit Rate': 'Weapon Crit Rate', 'Combo Rate': 'Combo Rate', 'Lightning Crit Rate': 'Lightning Crit Rate',
+  'Final Damage Reduction': 'General Final Damage Reduction',
+};
+
 // Inheritance tree nodes — calc/ty pairs confirmed against the datamine's
 // INHERIT_NODE_CALC table. Nodes not listed here are the ones the
 // datamine itself documents as untracked: flat HP/ATK/DEF stat-allocation
@@ -4965,7 +4977,7 @@ function parsePolarizationValue(text) {
 // nodes, hero-unlock/segment-unlock slots, and a couple of "Pet DMG — no
 // bucket" nodes with no matching Calculator category.
 const INHERIT_CALC_TO_LABEL = {
-  'dmgbonus:combo': 'Combo DMG', 'dmgbonus:counter': 'Counter DMG', 'dmgbonus:critdmg': 'Crit DMG (Default to 200% as base)',
+  'dmgbonus:combo': 'Combo DMG', 'dmgbonus:counter': 'Counter DMG', 'dmgbonus:critdmg': 'Crit DMG',
   'dmgbonus:dagger': 'Dagger DMG', 'dmgbonus:fire': 'Fire DMG', 'dmgbonus:global_atk': 'Global ATK',
   'dmgbonus:lightning': 'Lightning DMG', 'dmgbonus:lightspear': 'Light Spear DMG',
   'dmgbonus:normal': 'Basic ATK DMG', 'dmgbonus:skill': 'Skill DMG', 'dmgbonus:swordqi': 'Sword Qi DMG',
@@ -5006,7 +5018,7 @@ const EQUIP_CONTRIB_TO_LABEL = {
 // the % dropped, and the fixed-tier skills' parenthetical names (e.g.
 // "Fierce (Combo Rate)") need mapping to their underlying stat.
 const PET_ATTR_TO_LABEL = {
-  'Global ATK%': 'Global ATK', 'Crit DMG': 'Crit DMG (Default to 200% as base)',
+  'Global ATK%': 'Global ATK',
   'Increased Damage Over Time': 'DoT DMG', 'Damage Over Time Reduction': 'DoT DMG Reduction',
   'Fierce (Combo Rate)': 'Combo Rate', 'Sturdy (Counter Rate)': 'Counter Rate',
   'Brutal (Crit Rate)': 'Crit Rate (Generic)', 'Agile (Ignore Combo Rate)': 'Ignore Combo',
@@ -5061,7 +5073,7 @@ function aggregateFullStatsWithSources() {
     stats[label].sources.push({ name: sourceName, val });
   };
 
-  add('Crit DMG (Default to 200% as base)', 200, 'Base');
+  add('Crit DMG', 200, 'Base');
   add('Speed', 5, 'Base');
 
   // Relics
@@ -5235,11 +5247,6 @@ function aggregateFullStatsWithSources() {
 
   // Hero/Brand Polarization — only Mythic quality actually rolls
   // polarization, matching the same gate the Equipment card UI uses.
-  // Quality-tier bonuses themselves stay excluded — confirmed against the
-  // datamine that even its own community-maintained "contributions" field
-  // is empty/unmapped for those ("Stats not yet mapped"), so there's no
-  // reliable structured value to pull from, unlike polarization which the
-  // datamine documents cleanly for the heroes that have it.
   [['heroSlots', DB.heroes], ['brandSlots', DB.brands]].forEach(([slotsKey, pool]) => {
     (state[slotsKey] || []).forEach((s, i) => {
       if (!s.name || s.quality !== 'Mythic' || !s.polarization) return;
@@ -5247,6 +5254,33 @@ function aggregateFullStatsWithSources() {
       const text = entity && entity.polarization_effects && entity.polarization_effects[`P${s.polarization}`];
       const parsed = parsePolarizationValue(text);
       if (parsed) add(POLARIZATION_NAME_TO_LABEL[parsed.name] || parsed.name, parsed.val, `${s.name} (P${s.polarization})`);
+    });
+  });
+
+  // Hero/Brand quality-tier bonuses — mostly free-form prose describing
+  // conditional mechanics ("every 3 stacks...", "after each hit...") with
+  // no reliable way to parse the condition itself, so this only extracts
+  // the subset that's genuinely unconditional: a quality_effects entry is
+  // often several period-separated sentences, and only sentences that are
+  // ENTIRELY just "{Stat Name} +{Value}%" (nothing else in that sentence)
+  // get pulled — e.g. "Lightning Crit Rate +15%. After each lightning
+  // strike..." extracts the first sentence and correctly leaves the
+  // conditional second one alone. A sentence with any extra words besides
+  // the stat name and percentage is skipped entirely rather than guessed at.
+  [['heroSlots', DB.heroes], ['brandSlots', DB.brands]].forEach(([slotsKey, pool]) => {
+    (state[slotsKey] || []).forEach(s => {
+      if (!s.name || !s.quality) return;
+      const entity = (pool || []).find(e => e.n === s.name);
+      const text = entity && entity.quality_effects && entity.quality_effects[s.quality];
+      if (!text) return;
+      text.split('. ').forEach(sentence => {
+        const clean = sentence.trim().replace(/\.$/, '');
+        const m = clean.match(/^([A-Za-z][A-Za-z %]*?) \+(\d+(?:\.\d+)?)%$/);
+        if (!m) return;
+        const [, rawName, valStr] = m;
+        const label = HERO_BRAND_QUALITY_STAT_TO_LABEL[rawName] || rawName;
+        add(label, parseFloat(valStr), `${s.name} (${s.quality})`);
+      });
     });
   });
 
@@ -5357,22 +5391,19 @@ function aggregateFullStatsWithSources() {
 }
 
 const CALC_TABLE_CATEGORIES = [
-  { title: 'Final Damage Reduction', labels: ['General Final Damage Reduction', 'Skill Damage Final Damage Reduction', 'Basic Attack Final Damage Reduction', 'Conditional Final Damage Reduction', 'Adventurer Final Damage Reduction', 'Artifact Final Damage Reduction', 'Mount Final Damage Reduction', 'Pet Final Damage Reduction'] },
-  { title: 'DMG Reduction', labels: ['Generic DMG Reduction', 'Skill DMG Reduction', 'Basic ATK DMG Reduction', 'Combo DMG Reduction', 'Counter DMG Reduction', 'Lightning DMG Reduction', 'Dagger DMG Reduction', 'Sword Qi DMG Reduction', 'Light Spear DMG Red', 'Fire DMG Reduction', 'DoT DMG Reduction', 'Crit DMG Reduction', 'Skill Crit DMG Red', 'Basic ATK Crit DMG Red', 'DoT Crit DMG Red'] },
+  // PVP Damage Reduction and Mounted DMG Reduction are both defensive
+  // reduction stats, so they live in DMG Reduction rather than their own
+  // category. PVP ATK%/DEF%/HP% are general stat boosts, closest in kind
+  // to Global ATK, so they sit in Bonus Damage alongside it.
+  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG', 'PVP ATK%', 'PVP DEF%', 'PVP HP%'] },
   { title: 'Final Damage', labels: ['General Final Damage', 'Final Skill Damage', 'Final Lightning DMG', 'Final Sword Qi DMG', 'Final Dagger DMG', 'Final Combo DMG', 'Final Counter DMG', 'Final Normal ATK DMG'] },
+  { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate', 'Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
   { title: 'Damage Coefficients', labels: ['General DMG Coef', 'Skill DMG Coef', 'Normal ATK DMG Coef', 'Combo DMG Coef', 'Counter DMG Coef', 'Lightning DMG Coef', 'Dagger DMG Coef', 'Sword Qi DMG Coef', 'Fire DMG Coef'] },
-  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
-  { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Counter'] },
-  { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate'] },
   { title: 'Speed', labels: ['Speed'] },
-  { title: 'Crit Rates', labels: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
-  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG (Default to 200% as base)', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG'] },
-  // New as of the Specialization tree wiring — PVP is a genuinely
-  // separate stat family (not in the original ~80-label list), and
-  // Mounted DMG Reduction is conditional on which mount is actually
-  // ridden, so it's kept distinct from PVP Damage Reduction rather than
-  // merged in, even though both surfaced from the same Specialization page.
-  { title: 'PVP & Mounted', labels: ['PVP Damage Reduction', 'PVP ATK%', 'PVP DEF%', 'PVP HP%', 'Mounted DMG Reduction'] },
+  { title: 'DMG Reduction', labels: ['Generic DMG Reduction', 'Skill DMG Reduction', 'Basic ATK DMG Reduction', 'Combo DMG Reduction', 'Counter DMG Reduction', 'Lightning DMG Reduction', 'Dagger DMG Reduction', 'Sword Qi DMG Reduction', 'Light Spear DMG Red', 'Fire DMG Reduction', 'DoT DMG Reduction', 'Crit DMG Reduction', 'Skill Crit DMG Red', 'Basic ATK Crit DMG Red', 'DoT Crit DMG Red', 'PVP Damage Reduction', 'Mounted DMG Reduction'] },
+  { title: 'Final Damage Reduction', labels: ['General Final Damage Reduction', 'Skill Damage Final Damage Reduction', 'Basic Attack Final Damage Reduction', 'Conditional Final Damage Reduction', 'Adventurer Final Damage Reduction', 'Artifact Final Damage Reduction', 'Mount Final Damage Reduction', 'Pet Final Damage Reduction'] },
+  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
+  { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Lightning Crit', 'Ignore DoT Crit', 'Ignore Dagger Crit', 'Ignore Sword Qi Crit', 'Ignore Light Spear Crit', 'Ignore Counter'] },
 ];
 
 // Simple collapsible accordion — pure DOM toggle, no state persistence
@@ -5511,8 +5542,8 @@ const CALC_STAT_DEFS = [
   { label: 'Final Skill Damage', keys: ['Final Skill Damage'] },
   { label: 'Final Skill Damage Reduction', keys: ['Skill Damage Final Damage Reduction'] },
   { label: 'Crit Rate', keys: ['Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
-  { label: 'Ignore Crit Rate', keys: ['Ignore Normal ATK Crit', 'Ignore Skill Crit', 'Ignore DoT Crit', 'Ignore Crit', 'Ignore Weapon Crit'] },
-  { label: 'Crit Damage', keys: ['Crit DMG (Default to 200% as base)'] },
+  { label: 'Ignore Crit Rate', keys: ['Ignore Crit', 'Ignore Skill Crit', 'Ignore Weapon Crit', 'Ignore Normal ATK Crit', 'Ignore Lightning Crit', 'Ignore DoT Crit', 'Ignore Dagger Crit', 'Ignore Sword Qi Crit', 'Ignore Light Spear Crit'] },
+  { label: 'Crit Damage', keys: ['Crit DMG'] },
   { label: 'Ignore Crit Damage', keys: ['Crit DMG Reduction'] },
   { label: 'Combo Rate', keys: ['Combo Rate'] },
   { label: 'Ignore Combo Rate', keys: ['Ignore Combo'] },
