@@ -1618,12 +1618,34 @@ function renderEquipPetCard(petIndex) {
       value: slot.stat,
       options: allAttrs.map(a => a.name),
       placeholder: 'Search skill…',
-      onSelect: (name) => { slot.stat = name; slot.val = 0; saveState(); render(); },
+      onSelect: (name) => {
+        slot.stat = name;
+        // Fixed-tier skills (Fierce/Sturdy/Brutal/Agile/Majestic/Resilience)
+        // only ever offer SS(5)/SSS(10) in their dropdown — defaulting to 0
+        // here left the dropdown visually showing "SS (5%)" as the first
+        // option (since neither option has explicit `selected` at val=0)
+        // while the actual stored value silently stayed 0 until the
+        // dropdown was deliberately touched. Defaulting straight to 5
+        // keeps what's displayed and what's stored in sync from the start.
+        slot.val = fixedTierSkills.has(name) ? 5 : 0;
+        saveState();
+        render();
+      },
       onClear: () => { slot.stat = ''; slot.val = 0; saveState(); render(); },
     });
     wrap.appendChild(combo);
 
     const isFixed = slot.stat && fixedTierSkills.has(slot.stat);
+    // Repairs data from before the selection-time default existed: a
+    // fixed-tier skill sitting at val=0 (or anything besides 5/10) can
+    // only have gotten there from selecting the skill without ever
+    // touching the tier dropdown, since 0 was never a real option — not a
+    // deliberate choice to leave it unset, so it's safe to self-correct
+    // to the lower tier rather than silently continuing to contribute 0.
+    if (isFixed && slot.val !== 5 && slot.val !== 10) {
+      slot.val = 5;
+      saveState();
+    }
     if (isFixed) {
       const tierSelect = el('select', { class: 'equip-select equip-tier-select' }, [
         el('option', { value: '5', selected: slot.val === 5 ? 'true' : null }, 'SS (5%)'),
