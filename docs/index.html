@@ -4854,7 +4854,7 @@ const RELIC_KEY_TO_LABEL = {
   basic_atk_dmg: 'Basic ATK DMG', basic_atk_dmg_reduction: 'Basic ATK DMG Reduction',
   final_skill_dmg: 'Final Skill Damage', final_skill_dmg_reduction: 'Skill Damage Final Damage Reduction',
   final_basic_atk_dmg: 'Final Normal ATK DMG', final_basic_atk_dmg_reduction: 'Basic Attack Final Damage Reduction',
-  pet_dmg_pct: 'Pet DMG', speed: 'Speed', suppression: 'Ignore Suppression',
+  pet_dmg_pct: 'Pet DMG', speed: 'Speed', suppression: 'Suppression',
   control_immunity: 'Control Immunity Rate', ignore_control_immunity: 'Ignore Control Immunity Rate',
   dotcritrate: 'DoT Crit Rates', ignoredotcritrate: 'Ignore DoT Crit', block: 'Block',
   // Collectibles use a different (but conceptually identical) key-naming
@@ -5175,8 +5175,12 @@ function aggregateFullStatsWithSources() {
       const qualPart = c.qualD && qualIdx !== -1 ? (c.qualD[qualIdx] || 0) : 0;
       const surpassPart = c.qualD && qualIdx !== -1 ? (c.surpassBonus || 0) * (s.surpass || 0) : 0;
       const arcanaPart = c.arcanaD && s.arcana >= 0 ? (c.arcanaD[arcanaBandIndex(s.arcana)] || 0) : 0;
-      if (!c.qualD && !c.arcanaD) return;
-      const total = (qualPart + surpassPart + arcanaPart) * 100;
+      // A simple threshold unlock — "once arcana reaches arcanaFlatAt, add
+      // arcanaFlat" — not round-dependent like qualV5, so safe to include
+      // unconditionally once the arcana level is actually met.
+      const arcanaFlatPart = (c.arcanaFlat != null && s.arcana >= c.arcanaFlatAt) ? c.arcanaFlat : 0;
+      if (!c.qualD && !c.arcanaD && c.arcanaFlat == null) return;
+      const total = (qualPart + surpassPart + arcanaPart + arcanaFlatPart) * 100;
       const key = `${c.calc}:${c.cond || ''}:${c.ty || ''}`;
       const label = EQUIP_CONTRIB_TO_LABEL[key];
       if (label && total) {
@@ -5417,15 +5421,15 @@ const CALC_TABLE_CATEGORIES = [
   // reduction stats, so they live in DMG Reduction rather than their own
   // category. PVP ATK%/DEF%/HP% are general stat boosts, closest in kind
   // to Global ATK, so they sit in Bonus Damage alongside it.
-  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG', 'PVP ATK%', 'PVP DEF%', 'PVP HP%'] },
+  { title: 'Bonus Damage', labels: ['Global ATK', 'Crit DMG', 'Skill DMG', 'Basic ATK DMG', 'Combo DMG', 'Counter DMG', 'Lightning DMG', 'Dagger DMG', 'Sword Qi DMG', 'Light Spear DMG', 'DoT DMG', 'Fire DMG', 'Explosion DMG', 'Physical DMG', 'Pet DMG', 'PVP ATK%', 'PVP DEF%', 'PVP HP%'] },
   { title: 'Final Damage', labels: ['General Final Damage', 'Final Skill Damage', 'Final Lightning DMG', 'Final Sword Qi DMG', 'Final Dagger DMG', 'Final Combo DMG', 'Final Counter DMG', 'Final Normal ATK DMG'] },
   { title: 'Proc Rates', labels: ['Combo Rate', 'Counter Rate', 'Crit Rate (Generic)', 'Skill Crit Rate', 'Basic ATK Crit Rate', 'Weapon Crit Rate', 'Lightning Crit Rate', 'DoT Crit Rates', 'Dagger Crit Rate', 'Sword Qi Crit Rate', 'Light Spear Crit Rate'] },
   { title: 'Damage Coefficients', labels: ['General DMG Coef', 'Skill DMG Coef', 'Normal ATK DMG Coef', 'Combo DMG Coef', 'Counter DMG Coef', 'Lightning DMG Coef', 'Dagger DMG Coef', 'Sword Qi DMG Coef', 'Fire DMG Coef'] },
   { title: 'Speed', labels: ['Speed'] },
   { title: 'DMG Reduction', labels: ['Generic DMG Reduction', 'Skill DMG Reduction', 'Basic ATK DMG Reduction', 'Combo DMG Reduction', 'Counter DMG Reduction', 'Lightning DMG Reduction', 'Dagger DMG Reduction', 'Sword Qi DMG Reduction', 'Light Spear DMG Red', 'Fire DMG Reduction', 'DoT DMG Reduction', 'Crit DMG Reduction', 'Skill Crit DMG Red', 'Basic ATK Crit DMG Red', 'DoT Crit DMG Red', 'PVP Damage Reduction', 'Mounted DMG Reduction'] },
   { title: 'Final Damage Reduction', labels: ['General Final Damage Reduction', 'Skill Damage Final Damage Reduction', 'Basic Attack Final Damage Reduction', 'Conditional Final Damage Reduction', 'Adventurer Final Damage Reduction', 'Artifact Final Damage Reduction', 'Mount Final Damage Reduction', 'Pet Final Damage Reduction'] },
-  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance'] },
-  { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Lightning Crit', 'Ignore DoT Crit', 'Ignore Dagger Crit', 'Ignore Sword Qi Crit', 'Ignore Light Spear Crit', 'Ignore Counter'] },
+  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Control Immunity Rate', 'Ignore Control Immunity Rate', 'Suppression'] },
+  { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Lightning Crit', 'Ignore DoT Crit', 'Ignore Dagger Crit', 'Ignore Sword Qi Crit', 'Ignore Light Spear Crit', 'Ignore Counter', 'Ignore Suppression'] },
 ];
 
 // Simple collapsible accordion — pure DOM toggle, no state persistence
@@ -5448,7 +5452,7 @@ function renderAccordion(title, contentEl, defaultOpen, ghost) {
   return wrap;
 }
 
-const CALC_NON_PERCENT_LABELS = new Set(['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Speed']);
+const CALC_NON_PERCENT_LABELS = new Set(['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Speed', 'Suppression']);
 
 function buildFullCalcTable() {
   const wrap = el('div', {});
