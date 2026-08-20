@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Weapon Psionic Reader — Free OCR Prototype</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/tesseract.min.js"></script>
 <style>
   :root {
     --bg-deep: #1C1B1A;
@@ -204,8 +204,9 @@ async function locateHeaderAnchor(img) {
 // instead avoids the blob step entirely, since the Worker is then created
 // from a normal, same-scheme https:// script URL.
 const TESSERACT_OPTS = {
-  workerPath: 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/worker.min.js',
-  corePath: 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js-core/5.1.1/tesseract-core-simd.wasm.js',
+  workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.0.4/dist/worker.min.js',
+  corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1/tesseract-core-simd.wasm.js',
+  langPath: 'https://tessdata.projectnaptha.com/4.0.0',
 };
 
 const dropZone = document.getElementById('dropZone');
@@ -309,9 +310,15 @@ extractBtn.addEventListener('click', async () => {
 
     resultsWrap.style.display = 'block';
   } catch (err) {
+    // Tesseract.js doesn't always reject with a plain Error — sometimes
+    // it's a string, sometimes an object without a .message. Falling back
+    // through a few shapes here so the real reason always shows up instead
+    // of a bare "undefined".
+    const detail = (err && err.message) || (typeof err === 'string' ? err : null) || JSON.stringify(err) || 'Unknown error (check browser console for details)';
     resultsHeader.textContent = 'Something went wrong';
-    resultsList.innerHTML = `<div class="result-row match-bad">${err.message}</div>`;
+    resultsList.innerHTML = `<div class="result-row match-bad">${detail}</div>`;
     resultsWrap.style.display = 'block';
+    console.error('OCR extraction failed:', err);
   } finally {
     progressWrap.style.display = 'none';
     extractBtn.disabled = false;
