@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Weapon Psionic Reader — Free OCR Prototype</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
+<style>
+  :root {
+    --bg-deep: #1C1B1A;
+    --bg-panel: #222120;
+    --bg-panel-2: #2A2826;
+    --hairline: #3A3836;
+    --ink: #F3EFE8;
+    --ink-dim: #9C948A;
+    --ink-faint: #6B655F;
+    --accent: #E5B2A6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg-deep);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+  .card { width: 100%; max-width: 460px; }
+  .header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .badge {
+    font-size: 10px; letter-spacing: 1px; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 20px; padding: 2px 8px; font-weight: 700;
+  }
+  h1 { color: var(--ink); font-size: 22px; margin: 0; font-weight: 700; }
+  .subtitle { color: var(--ink-dim); font-size: 13px; line-height: 1.5; margin: 8px 0 20px; }
+  .drop-zone {
+    border: 1px dashed var(--hairline); border-radius: 12px; min-height: 140px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    background: var(--bg-panel); overflow: hidden; margin-bottom: 12px; transition: border-color 0.15s;
+  }
+  .drop-zone.drag-over { border-color: var(--accent); }
+  .drop-text { color: var(--ink-faint); font-size: 13px; text-align: center; }
+  .drop-text .icon { font-size: 28px; margin-bottom: 8px; }
+  .preview-img { max-width: 100%; max-height: 280px; display: block; }
+  .stage-label {
+    font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.5px;
+    margin: 4px 0 8px;
+  }
+  .processed-preview { display: none; margin-bottom: 16px; }
+  .processed-preview img { width: 100%; border-radius: 8px; border: 1px solid var(--hairline); }
+  button.primary {
+    width: 100%; background: var(--accent); color: var(--bg-deep); border: none;
+    border-radius: 10px; padding: 12px 0; font-weight: 700; font-size: 14px; margin-bottom: 16px;
+    cursor: pointer;
+  }
+  button.primary:disabled { opacity: 0.5; cursor: default; }
+  .progress-wrap { margin-bottom: 16px; display: none; }
+  .progress-label { color: var(--ink-dim); font-size: 12px; margin-bottom: 6px; }
+  .progress-bar-bg { background: var(--bg-panel-2); border-radius: 6px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { background: var(--accent); height: 100%; width: 0%; transition: width 0.2s; }
+  .results-wrap { background: var(--bg-panel); border: 1px solid var(--hairline); border-radius: 12px; padding: 4px; display: none; }
+  .results-header { color: var(--ink-dim); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; padding: 10px 12px 4px; }
+  .result-row { padding: 10px 12px; border-top: 1px solid #2C2A28; }
+  .result-name { color: var(--ink); font-size: 13px; font-weight: 600; }
+  .result-val { color: var(--accent); font-size: 13px; font-weight: 700; float: right; }
+  .result-match { font-size: 11px; margin-top: 2px; clear: both; }
+  .match-good { color: #8FBF8F; }
+  .match-bad { color: #C97B7B; }
+  .raw-toggle { color: var(--ink-faint); font-size: 11px; cursor: pointer; margin-top: 12px; text-align: center; }
+  .raw-text { white-space: pre-wrap; font-size: 11px; color: var(--ink-dim); background: #161514; padding: 8px; border-radius: 6px; margin-top: 8px; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header-row">
+    <span class="badge">FREE · NO API KEY · NO CROPPING</span>
+    <h1>Weapon Psionic Reader</h1>
+  </div>
+  <p class="subtitle">
+    Drop in a full screenshot of the equipment card — no need to crop first. This finds
+    the Psychic Attributes panel automatically, then reads the stat names and values.
+    Everything happens on your device, nothing is uploaded to any server.
+  </p>
+
+  <div class="drop-zone" id="dropZone">
+    <div class="drop-text" id="dropText">
+      <div class="icon">◈</div>
+      Click or drop the full screenshot here
+    </div>
+    <img class="preview-img" id="previewImg" style="display:none;" />
+  </div>
+  <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+
+  <div class="processed-preview" id="processedPreview">
+    <div class="stage-label">What Tesseract actually reads (after preprocessing)</div>
+    <img id="processedImg" />
+  </div>
+
+  <button class="primary" id="extractBtn" disabled>Extract Psionics</button>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-label" id="progressLabel">Reading…</div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="results-wrap" id="resultsWrap">
+    <div class="results-header" id="resultsHeader"></div>
+    <div id="resultsList"></div>
+    <div class="raw-toggle" id="rawToggle">show raw OCR text</div>
+    <div class="raw-text" id="rawText"></div>
+  </div>
+</div>
+
+<script>
+const WEAPON_PSIONICS = {
+  'dmg increase (all)': 'p_w_dmg_all',
+  'skill dmg': 'p_w_skill_dmg',
+  'basic atk dmg': 'p_w_basic_dmg',
+  'lightning dmg': 'p_w_lightning',
+  'dagger dmg': 'p_w_dagger',
+  'sword qi dmg': 'p_w_swordqi',
+  'light spear dmg': 'p_w_lightspear',
+  'light spear damage': 'p_w_lightspear',
+  'fire dmg': 'p_w_fire',
+  'dot dmg': 'p_w_dot',
+  'combo dmg': 'p_w_combo_dmg',
+  'counter dmg': 'p_w_counter_dmg',
+  'combo rate': 'p_w_comborate',
+  'counter rate': 'p_w_counterrate',
+  'weapon crit rate': 'p_w_weapcrit',
+  'dot crit rate': 'p_w_dotcrit',
+  'dagger crit rate': 'p_w_daggercrit',
+  'lightning crit rate': 'p_w_lightcrit',
+  'sword qi crit rate': 'p_w_swordqicrit',
+  'light spear crit rate': 'p_w_lightsprcrit',
+  'light spear critical rate': 'p_w_lightsprcrit',
+  'speed': 'p_w_speed',
+};
+
+function matchStatKey(rawName) {
+  const clean = rawName.replace(/^\[Special\]\s*/i, '').trim().toLowerCase();
+  return WEAPON_PSIONICS[clean] || null;
+}
+
+// Parses Tesseract's raw text into structured stat lines. Each real line
+// looks like "Name +12.34% (56.7%)" or "[Special] Name +12 (100%)" — the
+// parenthetical is a separate roll-quality indicator, not part of the
+// value, so it's captured but not treated as the stat's own number.
+function parseStatLines(rawText) {
+  const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+  const results = [];
+  const lineRe = /^(\[Special\]\s*)?([A-Za-z][A-Za-z ]*?)\s*\+(\d+(?:\.\d+)?)(%)?\s*\((\d+(?:\.\d+)?)%\)/;
+  for (const line of lines) {
+    const m = line.match(lineRe);
+    if (!m) continue;
+    const [, , name, value, isPct, rollPct] = m;
+    results.push({
+      name: name.trim(),
+      value: parseFloat(value),
+      isPercent: !!isPct,
+      rollQuality: parseFloat(rollPct),
+      statKey: matchStatKey(name),
+    });
+  }
+  return results;
+}
+
+// Matches the exact preprocessing validated to work well on this game's
+// UI: convert to grayscale, then boost contrast. Values chosen to match
+// PIL's ImageEnhance.Contrast(2.5) as closely as canvas filters allow.
+function preprocessImage(img, cropBox) {
+  const canvas = document.createElement('canvas');
+  const sx = cropBox ? cropBox.x : 0;
+  const sy = cropBox ? cropBox.y : 0;
+  const sw = cropBox ? cropBox.w : img.naturalWidth;
+  const sh = cropBox ? cropBox.h : img.naturalHeight;
+  canvas.width = sw;
+  canvas.height = sh;
+  const ctx = canvas.getContext('2d');
+  ctx.filter = 'grayscale(1) contrast(2.5)';
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+  return canvas;
+}
+
+// Pass 1: OCR the full, untouched screenshot just to locate the
+// "Attributes" word (from the "Psychic Attributes" header) — this doesn't
+// need preprocessing since it's plain white-on-dark UI text, easy to read
+// even at full-image scale where the smaller colored stat lines below it
+// aren't. Its position becomes the anchor for where to crop.
+async function locateHeaderAnchor(img) {
+  const canvas = document.createElement('canvas');
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  canvas.getContext('2d').drawImage(img, 0, 0);
+  const result = await Tesseract.recognize(canvas, 'eng', TESSERACT_OPTS);
+  const words = result.data.words || [];
+  const match = words.find(w => w.text.trim() === 'Attributes' && w.confidence > 50);
+  return match ? match.bbox : null;
+}
+
+// Tesseract.js's default behavior bundles its worker script into a blob:
+// URL and spins up a Worker from that — sandboxed iframes (like this
+// artifact's own preview) commonly block Worker creation from blob URLs
+// as a security policy. Pointing workerPath/corePath at direct CDN files
+// instead avoids the blob step entirely, since the Worker is then created
+// from a normal, same-scheme https:// script URL.
+const TESSERACT_OPTS = {
+  workerPath: 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/worker.min.js',
+  corePath: 'https://cdnjs.cloudflare.com/ajax/libs/tesseract.js-core/5.1.1/tesseract-core-simd.wasm.js',
+};
+
+const dropZone = document.getElementById('dropZone');
+const dropText = document.getElementById('dropText');
+const previewImg = document.getElementById('previewImg');
+const fileInput = document.getElementById('fileInput');
+const extractBtn = document.getElementById('extractBtn');
+const processedPreview = document.getElementById('processedPreview');
+const processedImg = document.getElementById('processedImg');
+const progressWrap = document.getElementById('progressWrap');
+const progressLabel = document.getElementById('progressLabel');
+const progressFill = document.getElementById('progressFill');
+const resultsWrap = document.getElementById('resultsWrap');
+const resultsHeader = document.getElementById('resultsHeader');
+const resultsList = document.getElementById('resultsList');
+const rawToggle = document.getElementById('rawToggle');
+const rawText = document.getElementById('rawText');
+
+let currentImage = null;
+
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      currentImage = img;
+      previewImg.src = e.target.result;
+      previewImg.style.display = 'block';
+      dropText.style.display = 'none';
+      extractBtn.disabled = false;
+      resultsWrap.style.display = 'none';
+      processedPreview.style.display = 'none';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+dropZone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  handleFile(e.dataTransfer.files[0]);
+});
+
+extractBtn.addEventListener('click', async () => {
+  if (!currentImage) return;
+  extractBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  resultsWrap.style.display = 'none';
+  progressFill.style.width = '0%';
+  progressLabel.textContent = 'Locating attributes panel…';
+
+  try {
+    const anchorBox = await locateHeaderAnchor(currentImage);
+    if (!anchorBox) {
+      throw new Error('Could not find the "Psychic Attributes" header in this image. Try a clearer screenshot.');
+    }
+
+    // Crop from just below the header, full width, a fixed distance down —
+    // enough to cover the 4 stat lines without pulling in unrelated content.
+    const cropBox = {
+      x: 0,
+      y: anchorBox.y1 + 10,
+      w: currentImage.naturalWidth,
+      h: Math.min(420, currentImage.naturalHeight - (anchorBox.y1 + 10)),
+    };
+
+    progressFill.style.width = '40%';
+    progressLabel.textContent = 'Reading stat lines…';
+    const canvas = preprocessImage(currentImage, cropBox);
+    processedImg.src = canvas.toDataURL();
+    processedPreview.style.display = 'block';
+
+    const result = await Tesseract.recognize(canvas, 'eng', {
+      ...TESSERACT_OPTS,
+      logger: (m) => {
+        if (m.status === 'recognizing text') {
+          progressFill.style.width = (40 + Math.round(m.progress * 60)) + '%';
+        }
+      },
+    });
+    const text = result.data.text;
+    rawText.textContent = text;
+    const parsed = parseStatLines(text);
+
+    resultsHeader.textContent = `Extracted ${parsed.length} attribute${parsed.length !== 1 ? 's' : ''} — no cropping needed`;
+    resultsList.innerHTML = parsed.map(r => `
+      <div class="result-row">
+        <span class="result-name">${r.name}</span>
+        <span class="result-val">+${r.value}${r.isPercent ? '%' : ''}</span>
+        <div class="result-match ${r.statKey ? 'match-good' : 'match-bad'}">
+          ${r.statKey ? 'matched → ' + r.statKey : 'no match — check spelling/format'}
+        </div>
+      </div>
+    `).join('') || '<div class="result-row" style="color:var(--ink-faint);">No stat lines recognized.</div>';
+
+    resultsWrap.style.display = 'block';
+  } catch (err) {
+    resultsHeader.textContent = 'Something went wrong';
+    resultsList.innerHTML = `<div class="result-row match-bad">${err.message}</div>`;
+    resultsWrap.style.display = 'block';
+  } finally {
+    progressWrap.style.display = 'none';
+    extractBtn.disabled = false;
+  }
+});
+
+rawToggle.addEventListener('click', () => {
+  rawText.style.display = rawText.style.display === 'block' ? 'none' : 'block';
+});
+</script>
+</body>
+</html>
