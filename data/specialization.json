@@ -1,65 +1,15 @@
 {
   "Adventure": [
     {
-      "group": "General",
+      "group": "Tier 1",
       "tracks": [
         {
           "name": "General Enhancement",
           "levels": [
-            "Spell Master",
-            "Alchemist",
-            "Firecracker",
-            "Glass Cannon"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Tier 1",
-      "tracks": [
-        {
-          "name": "Attack Enhancement",
-          "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
-          ]
-        },
-        {
-          "name": "Defense Enhancement",
-          "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
-          ]
-        },
-        {
-          "name": "HP Enhancement",
-          "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
+            "Upgrade Spell Master",
+            "Upgrade Alchemist",
+            "Upgrade Firecracker",
+            "Upgrade Glass Cannon"
           ]
         }
       ]
@@ -70,78 +20,46 @@
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         },
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Specials 1",
-      "tracks": [
-        {
-          "name": "Mount Enhancement",
-          "levels": [
-            "Crocodile Overlord",
-            "Bubble Newt",
-            "Brave Turtle",
-            "Fangless"
-          ]
-        },
-        {
-          "name": "Inheritance Enhancement",
-          "levels": [
-            "Werewolf!",
-            "Vampire!",
-            "Succubus!",
-            "Wizard!"
-          ]
-        },
-        {
-          "name": "Adventurer Enhancement",
-          "levels": [
-            "Pig Smash",
-            "Drunken Fist",
-            "War Maniac",
-            "Undying Dragon"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
           ]
         }
       ]
@@ -150,228 +68,305 @@
       "group": "Tier 3",
       "tracks": [
         {
-          "name": "HP Enhancement",
-          "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
-          ]
-        },
-        {
-          "name": "Speed Enhancement",
-          "levels": [
-            "Speed 1",
-            "Speed 2",
-            "Speed 3",
-            "Speed 4",
-            "Speed 5",
-            "Speed 6",
-            "Speed 7",
-            "Speed 8",
-            "Speed 9",
-            "Speed 10"
-          ]
-        },
-        {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
+          ]
+        },
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
+        {
+          "name": "Mount Enhancement",
+          "levels": [
+            "Upgrade Crocodile Overlord",
+            "Upgrade Bubble Newt",
+            "Upgrade Brave Turtle",
+            "Upgrade Fangless"
+          ]
+        },
+        {
+          "name": "Inheritance Enhancement",
+          "levels": [
+            "Upgrade Warewolf",
+            "Upgrade Vampire",
+            "Upgrade Succubus",
+            "Upgrade Wizard"
+          ]
+        },
+        {
+          "name": "Adventurer Enhancement",
+          "levels": [
+            "Upgrade Piggy Smash",
+            "Upgrade Drunken Fist",
+            "Upgrade War Maniac",
+            "Upgrade Undying Dragon"
           ]
         }
       ]
     },
     {
-      "group": "Tier 4",
+      "group": "Tier 4-1",
       "tracks": [
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
           ]
         },
         {
-          "name": "Speed Enhancement",
+          "name": "Speed",
           "levels": [
-            "Speed 1",
-            "Speed 2",
-            "Speed 3",
-            "Speed 4",
-            "Speed 5",
-            "Speed 6",
-            "Speed 7",
-            "Speed 8",
-            "Speed 9",
-            "Speed 10"
+            "Speed +1",
+            "Speed +2",
+            "Speed +3",
+            "Speed +4",
+            "Speed +5",
+            "Speed +6",
+            "Speed +7",
+            "Speed +8",
+            "Speed +9",
+            "Speed +10"
           ]
         },
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         }
       ]
     },
     {
-      "group": "Tier 5",
+      "group": "Tier 4-2",
       "tracks": [
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
-          ]
-        },
-        {
-          "name": "HP Enhancement",
-          "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         }
       ]
     },
     {
-      "group": "Tier 5B",
+      "group": "Tier 5-1",
       "tracks": [
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
+        {
+          "name": "Speed",
+          "levels": [
+            "Speed +1",
+            "Speed +2",
+            "Speed +3",
+            "Speed +4",
+            "Speed +5",
+            "Speed +6",
+            "Speed +7",
+            "Speed +8",
+            "Speed +9",
+            "Speed +10"
+          ]
+        },
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "group": "Tier 5-2",
+      "tracks": [
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
+        {
+          "name": "Attack Enhancement",
+          "levels": [
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
+          ]
+        },
+        {
+          "name": "Defense Enhancement",
+          "levels": [
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         }
       ]
@@ -380,86 +375,44 @@
       "group": "Tier 6",
       "tracks": [
         {
-          "name": "Attack Enhancement",
-          "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
-          ]
-        },
-        {
-          "name": "Defense Enhancement",
-          "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
-          ]
-        },
-        {
-          "name": "HP Enhancement",
-          "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Specials 2",
-      "tracks": [
-        {
           "name": "Relic Enhancement",
           "levels": [
-            "Demon Sword",
-            "Spear of Thor",
-            "Zhanxian Flying Knife"
+            "Upgrade Demon Sword",
+            "Upgrade Spear of Thor",
+            "Upgrade Zhanxian Flying Knife"
           ]
         },
         {
           "name": "Mount Enhancement",
           "levels": [
-            "Roach",
-            "Laputa",
-            "Toffee"
+            "Upgrade Roach",
+            "Upgrade Laputa",
+            "Upgrade Toffee"
           ]
         },
         {
           "name": "Survival Enhancement",
           "levels": [
-            "Hardened",
-            "Indestructible",
-            "Battle-Hardened",
-            "Last Stand"
+            "Upgrade Harden",
+            "Upgrade Indestructible",
+            "Upgrade Battle Harden",
+            "Upgrade Last Stand"
           ]
         },
         {
           "name": "Adventurer Enhancement",
           "levels": [
-            "Endless Battle",
-            "Resonance",
-            "Mind Focus"
+            "Upgrade Endless Battle",
+            "Upgrade Resonance",
+            "Upgrade Mind Focus"
+          ]
+        },
+        {
+          "name": "Burn Enhancement",
+          "levels": [
+            "Upgrade Ghostly Fuse ",
+            "Upgrade Burn Mastery",
+            "Unlock Ultimate: Flame Storm"
           ]
         }
       ]
@@ -470,110 +423,46 @@
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         },
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Counter 1",
-      "tracks": [
-        {
-          "name": "Counterattack Enhancement",
-          "levels": [
-            "Enhanced Counterattack",
-            "Counter Mastery",
-            "Oath"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Counter 2",
-      "tracks": [
-        {
-          "name": "Counterattack Enhancement",
-          "levels": [
-            "Stance · Vengeance",
-            "Stance · Water-Slicing Flow",
-            "Stance · Spear Soul"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Elemental",
-      "tracks": [
-        {
-          "name": "Ice Enhancement",
-          "levels": [
-            "Killing Freeze"
-          ]
-        },
-        {
-          "name": "Light Spear Enhancement",
-          "levels": [
-            "Light Spear Mastery",
-            "Light Spear Quake",
-            "Earthquake Stun",
-            "Light Spear Shield",
-            "Demonic Spear"
-          ]
-        },
-        {
-          "name": "Combo Enhancement",
-          "levels": [
-            "Enhanced Combo",
-            "Combo Bleeding",
-            "Bleeding Mastery",
-            "Stance · Blood Sword"
-          ]
-        },
-        {
-          "name": "Burn Enhancement",
-          "levels": [
-            "Pyromancer",
-            "Heat Explosion",
-            "Ultimate: Ashen Envoy"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
           ]
         }
       ]
@@ -584,110 +473,46 @@
         {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         },
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Elemental 2",
-      "tracks": [
-        {
-          "name": "Rage Enhancement",
-          "levels": [
-            "Enhanced Rage Skill",
-            "Rage Mastery",
-            "Rage Proficiency",
-            "Rage Combo"
-          ]
-        },
-        {
-          "name": "Lightning Enhancement",
-          "levels": [
-            "Bolt Mastery",
-            "Lightning Charge",
-            "Secret Art: Divine Lightning",
-            "Secret Art · Thunderclap"
-          ]
-        },
-        {
-          "name": "Combo Enhancement",
-          "levels": [
-            "Enhanced Basic Attack",
-            "Combo X2",
-            "Sword Aura Mastery",
-            "Berserker"
-          ]
-        },
-        {
-          "name": "Dagger Enhancement",
-          "levels": [
-            "Dagger Mastery",
-            "Dagger Proficiency",
-            "Secret Art · Return to Origin",
-            "Secret Art · Blade Cyclone"
-          ]
-        }
-      ]
-    },
-    {
-      "group": "Endgame",
-      "tracks": [
-        {
-          "name": "Burn Enhancement",
-          "levels": [
-            "Ghostly Fuse",
-            "Burn Mastery",
-            "Ultimate: Flame Storm"
-          ]
-        },
-        {
-          "name": "Combo Enhancement",
-          "levels": [
-            "Combo ×3",
-            "Combo Spirit",
-            "Stance · Insight",
-            "Stance · Moon Sword",
-            "Arcane Skill: Tempest"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
           ]
         }
       ]
@@ -696,48 +521,308 @@
       "group": "Tier 9",
       "tracks": [
         {
+          "name": "Ice Enhancement",
+          "levels": [
+            "Upgrade Killing Freeze"
+          ]
+        },
+        {
+          "name": "Light Spear Enhancement",
+          "levels": [
+            "Upgrade Light Spear Enhancement",
+            "Upgrade Light Spear Earthquake",
+            "Upgrade Earthquake Stun",
+            "Upgrade Light Spear Shield",
+            "Upgrade Demonic Spear"
+          ]
+        },
+        {
+          "name": "Combo Enhancement",
+          "levels": [
+            "Upgrade Combo Enhancement",
+            "Upgrade Combo Bleeding",
+            "Upgrade Bleeding Mastery",
+            "Unlock Stance | Blood Sword"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 10",
+      "tracks": [
+        {
+          "name": "Burn Enhancement",
+          "levels": [
+            "Upgrade Pyromancer",
+            "Upgrade Heat Explosion",
+            "Unlock Ultimate: Ashen Envoy"
+          ]
+        },
+        {
           "name": "Attack Enhancement",
           "levels": [
-            "ATK% 1",
-            "ATK% 2",
-            "ATK% 3",
-            "ATK% 4",
-            "ATK% 5",
-            "ATK% 6",
-            "ATK% 7",
-            "ATK% 8",
-            "ATK% 9",
-            "ATK% 10"
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
           ]
         },
         {
           "name": "Defense Enhancement",
           "levels": [
-            "DEF% 1",
-            "DEF% 2",
-            "DEF% 3",
-            "DEF% 4",
-            "DEF% 5",
-            "DEF% 6",
-            "DEF% 7",
-            "DEF% 8",
-            "DEF% 9",
-            "DEF% 10"
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
           ]
         },
         {
           "name": "HP Enhancement",
           "levels": [
-            "HP% 1",
-            "HP% 2",
-            "HP% 3",
-            "HP% 4",
-            "HP% 5",
-            "HP% 6",
-            "HP% 7",
-            "HP% 8",
-            "HP% 9",
-            "HP% 10"
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
+        {
+          "name": "Counterattack Enhancement",
+          "levels": [
+            "Upgrade Counterattack",
+            "Upgrade Counter Mastery",
+            "Upgrade Oath"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 11",
+      "tracks": [
+        {
+          "name": "Attack Enhancement",
+          "levels": [
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
+          ]
+        },
+        {
+          "name": "Defense Enhancement",
+          "levels": [
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
+          ]
+        },
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 12",
+      "tracks": [
+        {
+          "name": "Lightning Enhancement",
+          "levels": [
+            "Upgrade Bolt Mastery",
+            "Upgrade Lightning Charge",
+            "Unlock Secret Art: Divine Lightning",
+            "Unlock Secret Art: Thunderclap"
+          ]
+        },
+        {
+          "name": "Rage Enhancement",
+          "levels": [
+            "Upgrade Enhanced Rage Skill",
+            "Upgrade Rage Mastery",
+            "Upgrade Rage Proficiency",
+            "Upgrade Rage Combo"
+          ]
+        },
+        {
+          "name": "Combo Enhancement",
+          "levels": [
+            "Upgrade Enhanced Basic Attack",
+            "Upgrade Combo X2",
+            "Upgrade Sword Aura Mastery",
+            "Upgrade Berserker"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 13",
+      "tracks": [
+        {
+          "name": "Dagger Enhancement",
+          "levels": [
+            "Upgrade Dagger Mastery",
+            "Upgrade Dagger Proficiency",
+            "Unlock Secret Art: Return to Origin",
+            "Unlock Secret Art: Blade Cyclone"
+          ]
+        },
+        {
+          "name": "Attack Enhancement",
+          "levels": [
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
+          ]
+        },
+        {
+          "name": "Defense Enhancement",
+          "levels": [
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
+          ]
+        },
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        },
+        {
+          "name": "Counterattack Enhancement",
+          "levels": [
+            "Unlock Stance: Vengence ",
+            "Unlock Stance: Water-Slicing Flow ",
+            "Unlock Stance: Spear Soul"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 14",
+      "tracks": [
+        {
+          "name": "Attack Enhancement",
+          "levels": [
+            "ATK% +1%",
+            "ATK% +2%",
+            "ATK% +3%",
+            "ATK% +4%",
+            "ATK% +5%",
+            "ATK% +6%",
+            "ATK% +7%",
+            "ATK% +8%",
+            "ATK% +9%",
+            "ATK% +10%"
+          ]
+        },
+        {
+          "name": "Defense Enhancement",
+          "levels": [
+            "DEF% +1%",
+            "DEF% +2%",
+            "DEF% +3%",
+            "DEF% +4%",
+            "DEF% +5%",
+            "DEF% +6%",
+            "DEF% +7%",
+            "DEF% +8%",
+            "DEF% +9%",
+            "DEF% +10%"
+          ]
+        },
+        {
+          "name": "HP Enhancement",
+          "levels": [
+            "HP% +1%",
+            "HP% +2%",
+            "HP% +3%",
+            "HP% +4%",
+            "HP% +5%",
+            "HP% +6%",
+            "HP% +7%",
+            "HP% +8%",
+            "HP% +9%",
+            "HP% +10%"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tier 15",
+      "tracks": [
+        {
+          "name": "Combo Enhancement",
+          "levels": [
+            "Upgrade Combo X3",
+            "Upgrade Combo Spirit",
+            "Unlock Stance: Insight",
+            "Unlock Stance: Moon Sword",
+            "Upgrade Arcane Skill: Tempest"
           ]
         }
       ]

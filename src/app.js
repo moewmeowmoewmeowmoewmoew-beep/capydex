@@ -664,11 +664,11 @@ function renderInheritanceShell() {
   const wrap = el('div', {});
   wrap.appendChild(el('div', { class: 'section-title-row' }, [
     el('div', { class: 'section-title' }, 'Inheritance Tree'),
-    renderClearAllButton('5 Inheritance trees', () => {
+    renderClearAllButton('Inheritance', () => {
       state.inheritance.progress = { sk: {}, kn: {}, rn: {}, gh: {}, dr: {} };
       saveState();
       render();
-    }),
+    }, true),
   ]));
   wrap.appendChild(el('p', { class: 'section-desc' },
     'The Active Tree is the deployed tree in battle, not the current skill level for the tree.'));
@@ -860,6 +860,13 @@ function openSpecDrawer(tab, group) {
   group.tracks.forEach(track => {
     const max = track.levels.length;
     const currentLevel = getSpecTrackLevel(tab, group.group, track.name);
+    // Tracks like "General Enhancement" or "Mount Enhancement" don't grant
+    // numeric stats — each level just names a different unlock ("Upgrade
+    // Spell Master", "Upgrade Alchemist"...). For those, show every
+    // level's name up front as a reference, since there's no single
+    // number a stepper conveys on its own the way "+5% ATK" does.
+    const isNamedUpgrade = track.levels.some(l => l && l.startsWith('Upgrade '));
+    const stripLevelText = (text) => text && text.startsWith('Upgrade ') ? text.slice('Upgrade '.length) : text;
 
     const imgSlot = el('div', { class: 'spec-track-img' });
     if (track.image) imgSlot.appendChild(el('img', { src: track.image, alt: track.name }));
@@ -869,7 +876,12 @@ function openSpecDrawer(tab, group) {
       setSpecTrackLevel(tab, group.group, track.name, clamped);
       saveState();
       input.value = clamped === 0 && document.activeElement === input ? '' : String(clamped);
-      effectDiv.textContent = clamped > 0 ? track.levels[clamped - 1] : 'Not yet invested';
+      effectDiv.textContent = clamped > 0 ? stripLevelText(track.levels[clamped - 1]) : 'Not yet invested';
+      if (summaryDiv) {
+        const activeSummary = track.levels.slice(0, clamped).map((l, i) => `Level ${i + 1}: ${stripLevelText(l)}`).join(', ');
+        summaryDiv.textContent = activeSummary;
+        summaryDiv.style.display = clamped > 0 ? '' : 'none';
+      }
       return clamped;
     };
     applyLevelFns.push({ max: () => applyLevel(max) });
@@ -894,8 +906,19 @@ function openSpecDrawer(tab, group) {
       el('div', { class: 'spec-track-input-wrap' }, [minusBtn, input, plusBtn, el('span', { class: 'spec-track-max' }, `/${max}`)]),
     ]));
 
+    // Only levels actually reached so far are shown — an un-invested track
+    // shows nothing here at all, and investing partway shows just "Level
+    // 1: X, Level 2: Y" up through the current level, not the full list
+    // including levels not yet unlocked.
+    let summaryDiv = null;
+    if (isNamedUpgrade) {
+      const activeSummary = track.levels.slice(0, currentLevel).map((l, i) => `Level ${i + 1}: ${stripLevelText(l)}`).join(', ');
+      summaryDiv = el('div', { class: 'spec-track-effect', style: `color:var(--ink-faint);${currentLevel > 0 ? '' : 'display:none;'}` }, activeSummary);
+      drawer.appendChild(summaryDiv);
+    }
+
     const effectDiv = el('div', { class: 'spec-track-effect' },
-      currentLevel > 0 ? track.levels[currentLevel - 1] : 'Not yet invested');
+      currentLevel > 0 ? stripLevelText(track.levels[currentLevel - 1]) : 'Not yet invested');
     drawer.appendChild(effectDiv);
   });
 
@@ -936,16 +959,16 @@ function renderSpecializationShell() {
   const wrap = el('div', {});
   wrap.appendChild(el('div', { class: 'section-title-row' }, [
     el('div', { class: 'section-title' }, 'Specialization'),
-    renderClearAllButton('Specialization tab', () => {
+    renderClearAllButton('Specialization', () => {
       state.specialization.progress = { General: {}, Adventure: {} };
       saveState();
       render();
-    }),
+    }, true),
   ]));
 
   const tabRow = el('div', { class: 'spec-tab-row' });
   const tabBtnGroup = el('div', { class: 'spec-tab-btn-group' });
-  [['general', 'General'], ['adventure', 'Adventurer']].forEach(([key, label]) => {
+  [['adventure', 'Adventurer'], ['general', 'General']].forEach(([key, label]) => {
     tabBtnGroup.appendChild(el('button', {
       class: 'spec-tab-btn' + (state.specialization.viewingTab === key ? ' active' : ''),
       onclick: () => { state.specialization.viewingTab = key; render(); },
@@ -1397,11 +1420,11 @@ function clearAllEquipment() {
 // every Collection section and the whole Equipment tab. Destructive confirm
 // button is visually distinct from the neutral cancel button — the trigger
 // itself stays low-key until someone actually commits to the modal.
-function renderClearAllButton(label, onConfirm) {
+function renderClearAllButton(label, onConfirm, pageWide) {
   return el('button', {
     class: 'clear-all-btn',
     onclick: () => openClearAllModal(label, onConfirm),
-  }, 'Clear All');
+  }, pageWide ? `Clear All ${label}` : 'Clear All');
 }
 
 function openClearAllModal(label, onConfirm) {
@@ -2083,7 +2106,7 @@ function renderSectionShell(sections, pageLabel, pageClearAllFn) {
   if (pageLabel) {
     outer.appendChild(el('div', { class: 'section-title-row' }, [
       el('div', { class: 'section-title' }, pageLabel),
-      pageClearAllFn ? renderClearAllButton(pageLabel, pageClearAllFn) : null,
+      pageClearAllFn ? renderClearAllButton(pageLabel, pageClearAllFn, true) : null,
     ]));
   }
 
@@ -2145,7 +2168,7 @@ function renderSectionShell(sections, pageLabel, pageClearAllFn) {
     if (sec.clearAll) {
       section.appendChild(el('div', { class: 'section-title-row' }, [
         el('h2', { class: 'section-title' }, sec.label),
-        renderClearAllButton(sec.label, sec.clearAll),
+        renderClearAllButton(sec.label, sec.clearAll, true),
       ]));
     } else {
       section.appendChild(el('h2', { class: 'section-title' }, sec.label));
@@ -3765,7 +3788,13 @@ function aggregateFullStatsWithSources() {
   // mount's own tier instead of its name. Anything else (pet-specific,
   // weapon-specific conditional bonuses in South/West) isn't wired up
   // yet — those follow the same pattern but weren't part of this pass.
-  const riddenMountIdx = state.mountMainSlot && state.mountMainSlot.itemIdx;
+  //
+  // "Ridden" here specifically means deployed mount slot 1 (mountSlots[0])
+  // — confirmed this is what the mounted-DMG-reduction mechanic actually
+  // keys off, not mountMainSlot (a separate, single "active" mount concept
+  // used elsewhere for star-skill display, distinct from the 3 deployed
+  // slots).
+  const riddenMountIdx = state.mountSlots && state.mountSlots[0] && state.mountSlots[0].itemIdx;
   const riddenMount = riddenMountIdx != null ? (DB.mounts || []).find(m => m.idx === riddenMountIdx) : null;
 
   (DB.General || []).forEach(group => {
