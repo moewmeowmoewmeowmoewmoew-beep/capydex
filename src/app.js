@@ -367,6 +367,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeMainTab = btn.dataset.tab;
+    if (activeMainTab === 'specialization') state.specialization.viewingTab = 'adventure';
     mainTabsNav.classList.remove('open');
     render();
     // Explicit 'instant' needed to override the global scroll-behavior:
@@ -876,7 +877,7 @@ function openSpecDrawer(tab, group) {
       setSpecTrackLevel(tab, group.group, track.name, clamped);
       saveState();
       input.value = clamped === 0 && document.activeElement === input ? '' : String(clamped);
-      effectDiv.textContent = clamped > 0 ? stripLevelText(track.levels[clamped - 1]) : 'Not yet invested';
+      if (effectDiv) effectDiv.textContent = clamped > 0 ? stripLevelText(track.levels[clamped - 1]) : 'Not yet invested';
       if (summaryDiv) {
         const activeSummary = track.levels.slice(0, clamped).map((l, i) => `Level ${i + 1}: ${stripLevelText(l)}`).join(', ');
         summaryDiv.textContent = activeSummary;
@@ -917,9 +918,16 @@ function openSpecDrawer(tab, group) {
       drawer.appendChild(summaryDiv);
     }
 
-    const effectDiv = el('div', { class: 'spec-track-effect' },
-      currentLevel > 0 ? stripLevelText(track.levels[currentLevel - 1]) : 'Not yet invested');
-    drawer.appendChild(effectDiv);
+    // Named-upgrade tracks skip this second line entirely — the summary
+    // above already ends with the current level's name as its last entry,
+    // so repeating it here would show right underneath, reading like the
+    // name appeared twice.
+    let effectDiv = null;
+    if (!isNamedUpgrade) {
+      effectDiv = el('div', { class: 'spec-track-effect' },
+        currentLevel > 0 ? stripLevelText(track.levels[currentLevel - 1]) : 'Not yet invested');
+      drawer.appendChild(effectDiv);
+    }
   });
 
   document.body.appendChild(backdrop);
