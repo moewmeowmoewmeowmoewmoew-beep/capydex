@@ -164,54 +164,21 @@ function parseStatLines(rawText) {
   return results;
 }
 
-// Matches the preprocessing validated to work across every stat-line
-// color seen so far (dark red, light orange, pink/purple, magenta) —
-// earlier versions tried grayscale and fixed color channels, but this
-// game clearly uses many different hues for stat text, and no single
-// fixed channel handled all of them. Saturation generalizes better: every
-// one of these colors is more saturated than the pale tan background,
-// regardless of which hue it actually is. Inverting it (so high
-// saturation → dark) makes the text read as dark-on-light, which is what
-// Tesseract expects. A hard black/white threshold was tried too and
-// actually made character-level accuracy worse — letters like D and O
-// become genuinely ambiguous once anti-aliasing is thrown away — so this
-// keeps the contrast boost soft instead. 4x upscaling turned out to
-// matter as much as the color handling itself: below a certain pixel
-// density, character shapes just aren't sharp enough for Tesseract to
-// tell apart, independent of contrast.
+// Matches the exact preprocessing validated to work well on this game's
+// UI: convert to grayscale, then boost contrast. Values chosen to match
+// PIL's ImageEnhance.Contrast(2.5) as closely as canvas filters allow.
 function preprocessImage(img, cropBox) {
+  const canvas = document.createElement('canvas');
   const sx = cropBox ? cropBox.x : 0;
   const sy = cropBox ? cropBox.y : 0;
   const sw = cropBox ? cropBox.w : img.naturalWidth;
   const sh = cropBox ? cropBox.h : img.naturalHeight;
-  const scale = 4;
-
-  const rawCanvas = document.createElement('canvas');
-  rawCanvas.width = sw * scale;
-  rawCanvas.height = sh * scale;
-  const rawCtx = rawCanvas.getContext('2d');
-  rawCtx.imageSmoothingEnabled = true;
-  rawCtx.imageSmoothingQuality = 'high';
-  rawCtx.drawImage(img, sx, sy, sw, sh, 0, 0, sw * scale, sh * scale);
-
-  const imageData = rawCtx.getImageData(0, 0, sw * scale, sh * scale);
-  const data = imageData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i], g = data[i + 1], b = data[i + 2];
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    const sat = max === 0 ? 0 : (max - min) / max; // HSV saturation, 0-1
-    const inv = 255 - Math.round(sat * 255);
-    data[i] = data[i + 1] = data[i + 2] = inv;
-  }
-  rawCtx.putImageData(imageData, 0, 0);
-
-  const outCanvas = document.createElement('canvas');
-  outCanvas.width = sw * scale;
-  outCanvas.height = sh * scale;
-  const outCtx = outCanvas.getContext('2d');
-  outCtx.filter = 'contrast(3.0)';
-  outCtx.drawImage(rawCanvas, 0, 0);
-  return outCanvas;
+  canvas.width = sw;
+  canvas.height = sh;
+  const ctx = canvas.getContext('2d');
+  ctx.filter = 'grayscale(1) contrast(2.5)';
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+  return canvas;
 }
 
 // Pass 1: OCR the full, untouched screenshot just to locate the
@@ -326,12 +293,7 @@ extractBtn.addEventListener('click', async () => {
         }
       },
     });
-    // "OMG" isn't a real stat abbreviation in this game — it's a
-    // consistent, repeatable misread of "DMG" at this font size/weight,
-    // not random noise, so correcting it here is safe rather than
-    // guessy. Only whole-word matches get swapped, so it can't touch
-    // anything else.
-    const text = result.data.text.replace(/\bOMG\b/g, 'DMG');
+    const text = result.data.text;
     rawText.textContent = text;
     const parsed = parseStatLines(text);
 
