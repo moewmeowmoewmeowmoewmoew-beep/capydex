@@ -11,8 +11,8 @@
   --bg-panel-2: #2E2C2A;
   --bg-card: #242322;
   --ink: #EDE2D8;
-  --ink-dim: #A89C92;
-  --ink-faint: #7A7068;
+  --ink-dim: #D6CCC3;
+  --ink-faint: #C1B7AF;
   --accent: #E5B2A6;
   --accent-dim: #C4907F;
   --hairline: #3A3836;
@@ -36,8 +36,8 @@
   --bg-panel-2: #EFEDE9;
   --bg-card: #FFFFFF;
   --ink: #3A3836;
-  --ink-dim: #6B655F;
-  --ink-faint: #9C9690;
+  --ink-dim: #48423C;
+  --ink-faint: #534D47;
   --accent: #D9A89D;
   --accent-dim: #B8887C;
   --hairline: #DEDAD4;
@@ -444,7 +444,7 @@ body {
   margin-top: 10px;
 }
 .stepper button {
-  width: 24px; height: 24px;
+  width: 32px; height: 32px;
   border-radius: 3px;
   border: 1px solid var(--hairline);
   background: var(--bg-panel-2);
@@ -487,8 +487,8 @@ body {
   border-radius: 14px;
   cursor: pointer;
   user-select: none;
-  border: 1px solid var(--hairline);
-  background: var(--bg-panel-2);
+  border: 1px solid var(--accent);
+  background: transparent;
   transition: background 0.15s, border-color 0.15s;
   font-family: var(--font-body);
 }
@@ -501,7 +501,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--accent);
   white-space: nowrap;
 }
 .owned-badge.owned .owned-label { color: var(--bg-deep); }
@@ -509,9 +509,16 @@ body {
 /* ---- Set cards ---- */
 .sets-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   margin-bottom: 20px;
+}
+
+.set-card-total {
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-top: 2px;
 }
 
 .set-card {
@@ -842,6 +849,11 @@ body {
   .card-grid.cols-2, .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: 1fr; }
   .sets-grid { grid-template-columns: 1fr; }
   .owned-badge { padding: 9px 14px; min-height: 32px; }
+  /* Desktop steppers were sized up to 32px on user feedback that they
+     were too small to tap easily — mobile already had ample touch-target
+     spacing via its own layout, so it keeps the original, more compact
+     24px here instead of growing along with desktop. */
+  .stepper button { width: 24px; height: 24px; }
   /* Force the search box onto its own full-width row, so filter chips +
      "Select multiple…" always wrap cleanly onto a second line below it
      instead of interleaving awkwardly with whatever room is left. */
@@ -1436,6 +1448,19 @@ body {
   display: flex;
 }
 .search-combo .equip-combo-input { padding-right: 30px; }
+.search-combo.has-value-icon .equip-combo-input { padding-left: 32px; }
+.search-combo-value-icon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+}
 .search-combo-clear {
   position: absolute;
   right: 6px;
@@ -1533,15 +1558,6 @@ body {
 }
 
 .equip-tier-select { width: auto; flex-shrink: 0; min-width: 130px; }
-.equip-gem-tier-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 5px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: var(--bg-panel-2);
-}
-.equip-gem-tier-icon.placeholder { border: 1px dashed var(--hairline); }
 
 .equip-writeup {
   font-size: 12px;
@@ -1549,6 +1565,17 @@ body {
   font-style: italic;
   margin-top: 8px;
   line-height: 1.4;
+}
+/* Stars and Awaken are the two things someone checks first to confirm
+   their gear is actually filled in correctly, so they're set apart from
+   the rest of the card's descriptive text rather than blending into it
+   at the same small, muted size. */
+.equip-prominent-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 6px;
+  line-height: 1.2;
 }
 .equip-arcana-writeup {
   font-size: 11.5px;

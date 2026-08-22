@@ -1484,12 +1484,25 @@ function goToCollectionSection(sectionId) {
 // box could look empty while the old value stayed active underneath.
 // Filtering while typing updates only the dropdown's own DOM locally, not
 // a full app re-render, so the input never loses focus mid-type.
-function renderSearchCombo({ value, options, placeholder, onSelect, onClear, getImage }) {
-  const container = el('div', { class: 'search-combo' });
+function renderSearchCombo({ value, options, placeholder, onSelect, onClear, getImage, showValueIcon }) {
+  const container = el('div', { class: 'search-combo' + (showValueIcon ? ' has-value-icon' : '') });
   const input = el('input', {
     type: 'text', class: 'equip-combo-input', placeholder, value: value || '',
     autocomplete: 'off',
   });
+  // Only meaningful alongside getImage — shows the currently selected
+  // option's own thumbnail inside the input, not just in the dropdown
+  // list while it's open, so the icon stays visible as a constant
+  // reference rather than only appearing momentarily while choosing.
+  if (showValueIcon && getImage && value) {
+    const src = getImage(value);
+    if (src) {
+      container.appendChild(el('img', {
+        class: 'search-combo-value-icon', src, alt: '', loading: 'lazy',
+        onerror: (e) => { e.target.style.visibility = 'hidden'; },
+      }));
+    }
+  }
   const clearBtn = el('button', {
     type: 'button', class: 'search-combo-clear' + (value ? '' : ' hidden'),
     onclick: (e) => { e.stopPropagation(); input.value = ''; closeDropdown(); if (onClear) onClear(); },
@@ -1857,7 +1870,7 @@ function renderDeployCard(kind, mode, slotIndex) {
     const showAwaken = hasAwakenProgression(item);
     if (showAwaken) {
       card.appendChild(equipFieldLabel('Awaken'));
-      card.appendChild(el('div', { class: 'equip-writeup' }, `A${itemState.awaken}`));
+      card.appendChild(el('div', { class: 'equip-prominent-value' }, `A${itemState.awaken}`));
     }
     if (item.star_up) {
       const resolved = resolveAwakenEffect(item, showAwaken ? itemState.awaken : 0);
@@ -1868,7 +1881,7 @@ function renderDeployCard(kind, mode, slotIndex) {
     const showStars = hasStarProgression(item);
     if (showStars) {
       card.appendChild(equipFieldLabel('Stars'));
-      card.appendChild(el('div', { class: 'equip-writeup' }, `${itemState.stars}★`));
+      card.appendChild(el('div', { class: 'equip-prominent-value' }, `${itemState.stars}★`));
     }
     if (item.star_effects) {
       const starEff = showStars ? item.star_effects[String(itemState.stars)] : item.star_effects['0'];
@@ -2149,17 +2162,13 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
     options: GEM_TIER_NAMES,
     placeholder: 'Rarity…',
     getImage: (name) => `assets/images/gem_tiers/${slugify(name)}.webp`,
+    showValueIcon: true,
     onSelect: (name) => { slotState.tier = GEM_TIER_NAMES.indexOf(name) + 1; saveState(); render(); },
   });
   if (!slotState.gemId) tierSelect.querySelector('.equip-combo-input').disabled = true;
 
-  const tierIcon = slotState.gemId
-    ? el('img', { class: 'equip-gem-tier-icon', src: `assets/images/gem_tiers/${slugify(GEM_TIER_NAMES[slotState.tier - 1])}.webp`, onerror: (e) => { e.target.style.visibility = 'hidden'; } })
-    : el('div', { class: 'equip-gem-tier-icon placeholder' });
-
   wrap.appendChild(combo);
   wrap.appendChild(tierSelect);
-  wrap.appendChild(tierIcon);
 
   const container = el('div', {}, [wrap]);
   if (slotState.gemId) {
