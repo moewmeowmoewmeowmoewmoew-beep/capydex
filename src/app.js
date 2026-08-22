@@ -2446,11 +2446,22 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
   const header = el('div', { class: 'tier-group-header' });
   header.appendChild(el('div', { class: 'tier-group-title', id: groupId, style: 'margin:0;border:none;padding:0;' }, tierLabel));
 
+  const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
+  // A plain toggle into selection mode, available at every tier group —
+  // not just "Select Tier" (which pre-selects everything in the group,
+  // forcing a deselect pass if someone only wants a few items from a
+  // large tier) and not just the toolbar's own toggle up at the top of
+  // the page, which a tester flagged as real scroll friction to reach
+  // once already deep into a long list.
+  btnRow.appendChild(el('button', {
+    class: 'bulk-action-btn' + (selectMode[kind] ? ' active' : ''),
+    onclick: () => toggleSelectMode(kind),
+  }, selectMode[kind] ? 'Cancel selecting' : 'Select multiple…'));
+
   // Bulk-selecting a tier only makes sense when there's more than one item
   // in it — with just one, "Select Tier" is a pointless extra step before
   // doing exactly what tapping the item directly would do.
   if (groupItems.length > 1) {
-    const btnRow = el('div', { style: 'display:flex;gap:6px;flex-wrap:wrap;' });
     btnRow.appendChild(el('button', {
       class: 'bulk-action-btn',
       onclick: () => {
@@ -2469,6 +2480,8 @@ function renderTierGroupHeader(kind, tierLabel, groupId, groupItems) {
         render();
       },
     }, allSelected ? 'Deselect Tier' : 'Select Tier'));
+    header.appendChild(btnRow);
+  } else {
     header.appendChild(btnRow);
   }
 
