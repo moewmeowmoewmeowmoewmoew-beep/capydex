@@ -490,13 +490,6 @@
       "idx": 31,
       "n": "Pingu",
       "tier": "Transcendent",
-      "battle_skills": {
-        "Lv1 (pet lv 1+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK to the enemy. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ], lasting until the end of battle.\n\n[ Frostbite ]: Each stack grants the enemy DMG Bonus -10% and Ignore CRIT Rate -1%, and deals Ice DMG equal to 50% of the protagonist's ATK per round. Stacks up to 10 times.",
-        "Lv2 (pet lv 20+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ]. At max [ Frostbite ] stacks, Pingu's DMG has a 35% chance to the enemy for 1 round (1 trigger per 4 rounds).\n\n[ Frostbite ]: Each stack: DMG Bonus -10%, Ignore CRIT Rate -1%; deals Ice DMG equal to 75% of ATK per round. Stacks up to 10.\nFreeze: Prevents enemy action. Not affected by Freeze Immunity.",
-        "Lv3 (pet lv 40+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK), each with 60% chance to inflict [ Frostbite ]. At max stacks, 35% chance to freeze enemy for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%; Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
-        "Lv4 (pet lv 60+)": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK). At max [ Frostbite ] stacks, 35% chance to freeze for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
-        "Lv5 (pet lv 80+)": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 4 rounds), and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10."
-      },
       "awaken_effects": {
         "A0": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 2 rounds). After [ Frostbite ] is fully stacked, enemy Final DMG Bonus -20%, and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
         "A1": "Pingu's DMG coefficient increased to 100%, and the chance to inflict [ Frostbite ] is increased to 100%.",
@@ -509,7 +502,23 @@
         "A8": "No additional effect",
         "A9": "No additional effect",
         "A10": "The enemy DMG Bonus reduction per stack of [ Frostbite ] is increased to 20%."
-      }
+      },
+      "star_battle_skills": {
+        "0 stars": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK to the enemy. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ], lasting until the end of battle.\n\n[ Frostbite ]: Each stack grants the enemy DMG Bonus -10% and Ignore CRIT Rate -1%, and deals Ice DMG equal to 50% of the protagonist's ATK per round. Stacks up to 10 times.",
+        "1 star": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG equal to 80% of the protagonist's ATK. Each hit has a 60% chance to inflict 1 stack of [ Frostbite ]. At max [ Frostbite ] stacks, Pingu's DMG has a 35% chance to the enemy for 1 round (1 trigger per 4 rounds).\n\n[ Frostbite ]: Each stack: DMG Bonus -10%, Ignore CRIT Rate -1%; deals Ice DMG equal to 75% of ATK per round. Stacks up to 10.\nFreeze: Prevents enemy action. Not affected by Freeze Immunity.",
+        "3 stars": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK), each with 60% chance to inflict [ Frostbite ]. At max stacks, 35% chance to freeze enemy for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%; Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "5 stars": "Casts a skill every 2 rounds, dealing 3 instances of Ice DMG (80% ATK). At max [Frostbite] stacks, 35% chance to freeze for 1 round (1 per 4 rounds).\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "8 stars": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 4 rounds), and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10.",
+        "10 stars": "Casts a skill every 2 rounds. At max [ Frostbite ] stacks, 50% chance to freeze for 1 round (1 per 2 rounds). After [ Frostbite ] is fully stacked, enemy Final DMG Bonus -20%, and Pingu's DMG gains Ignore Control Immunity +50%.\n\n[ Frostbite ]: DMG Bonus -10%, Ignore CRIT Rate -1%, ATK -4%, Final DMG Reduction -2%; deals Ice DMG equal to 100% of ATK per round. Stacks up to 10."
+      },
+      "star_thresholds": [
+        0,
+        1,
+        3,
+        5,
+        8,
+        10
+      ]
     }
   ]
 }

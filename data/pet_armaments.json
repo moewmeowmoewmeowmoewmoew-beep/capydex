@@ -3,52 +3,62 @@
     {
       "idx": 1,
       "n": "Exclusive | Dynamic Speaker",
-      "tier": "Transcendent"
+      "tier": "Transcendent",
+      "restricted_pet": "Pingu"
     },
     {
       "idx": 2,
       "n": "Exclusive | Spirit Snake Jade Pendant",
-      "tier": "Immortal"
+      "tier": "Immortal",
+      "restricted_pet": "Susu"
     },
     {
       "idx": 3,
       "n": "Exclusive | Cat Spirit Earrings",
-      "tier": "Immortal"
+      "tier": "Immortal",
+      "restricted_pet": "Freya"
     },
     {
       "idx": 4,
       "n": "Exclusive | Ruyi of Wealth",
-      "tier": "Immortal"
+      "tier": "Immortal",
+      "restricted_pet": "Piggy"
     },
     {
       "idx": 5,
       "n": "Exclusive | Frost Crown",
-      "tier": "Immortal"
+      "tier": "Immortal",
+      "restricted_pet": "Elsa"
     },
     {
       "idx": 6,
       "n": "Exclusive | Rainbow Horn",
-      "tier": "Mythic"
+      "tier": "Mythic",
+      "restricted_pet": "Unicorn"
     },
     {
       "idx": 7,
       "n": "Exclusive | Heart of the Magic Fox",
-      "tier": "Mythic"
+      "tier": "Mythic",
+      "restricted_pet": "Purple Demon Fox"
     },
     {
       "idx": 8,
       "n": "Exclusive | Thunder Pocket Watch",
-      "tier": "Mythic"
+      "tier": "Mythic",
+      "restricted_pet": "Flash"
     },
     {
       "idx": 9,
       "n": "Exclusive | Slime Crown",
-      "tier": "Mythic"
+      "tier": "Mythic",
+      "restricted_pet": "Slime King"
     },
     {
       "idx": 10,
       "n": "Exclusive | Eye of the Progenitor Dragon",
-      "tier": "Mythic"
+      "tier": "Mythic",
+      "restricted_pet": "Baby Dragon"
     },
     {
       "idx": 11,

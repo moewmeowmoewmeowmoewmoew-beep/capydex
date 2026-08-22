@@ -14,7 +14,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Ailoren Breath DMG coefficient +30%",
         "Ailoren Sword ATK +6% (not tracked)",
@@ -45,7 +45,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Lightning DMG coefficient +6%",
         "Nashir Scepter ATK +6% (not tracked)",
@@ -86,7 +86,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Rage DMG coefficient +30%",
         "Gale Elres ATK +6% (not tracked)",
@@ -117,7 +117,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Rage DMG coefficient +30%",
         "Helos Warblade ATK +6% (not tracked)",
@@ -148,7 +148,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Rage DMG coefficient +30%",
         "ATK +6% (not tracked)",
@@ -179,7 +179,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Rage DMG coefficient +30%",
         "Thorn-Seles ATK +6% (not tracked)",
@@ -736,7 +736,7 @@
         "Mythic"
       ],
       "tier": "Basic",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "quality_contributions": [
         {
           "calc": "weapcrit",
@@ -803,7 +803,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Recover +10% health every 2 turns (not tracked)",
         "HP +6% (not tracked)",
@@ -837,7 +837,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Resurrection HP bonus +10% (not tracked)",
         "HP +6% (not tracked)",
@@ -981,7 +981,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Max stack of Final Counterattack bonus +2 after Light Spear (not tracked)",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1040,7 +1040,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Combo Rate +5%",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1097,7 +1097,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Heavenly Punishment cooldown -1 turn (not tracked)",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1168,7 +1168,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Final Dagger DMG +10%",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1205,7 +1205,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Final Sword Qi DMG +10%",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1242,7 +1242,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Final Lightning DMG +10%",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1284,7 +1284,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Frozen Shadow coefficient +50% (not tracked)",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1306,7 +1306,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Divine Might Cooldown -1 turn (not tracked)",
         "ATK +6%, DEF +6% (not tracked)",
@@ -1639,7 +1639,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "Battle Will: Wrath of Grande double damage trigger chance +5%",
         "Battle Will: Wrath of Grande HP, Defense +6%",
@@ -1661,7 +1661,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "When equipped with Demonseed: Bloodstained Grail, Critical Rate +5%",
         "Demonseed: Bloodstained Grail HP, Defense +6%",
@@ -1700,7 +1700,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "When equipped with Justice: Judgement Emblem, skills against shielded targets deal global damage +10%",
         "Justice: Judgement Emblem HP, Defense +6%",
@@ -1742,7 +1742,7 @@
         "Mythic"
       ],
       "tier": "SS",
-      "surpass_max": 5,
+      "surpass_max": 4,
       "arcana_descs": [
         "When equipped with Winter: Frostsoul Guardian, when Frozen gain a shield equal to 30% of Max HP",
         "Winter: Frostsoul Guardian HP, Defense +6%",

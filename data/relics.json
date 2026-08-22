@@ -4555,56 +4555,6 @@
       }
     },
     {
-      "id": "1375070",
-      "n": "Sutton Hoo Helmet",
-      "type": "",
-      "effect": "",
-      "pve": "",
-      "pvp": "",
-      "rarity": "Legendary",
-      "star_stats": {
-        "hp": [
-          10000,
-          12000,
-          14000,
-          16000,
-          18000,
-          20000,
-          23000,
-          26000,
-          29000,
-          32000,
-          35000
-        ],
-        "basic_atk_dmg_reduction": [
-          4,
-          4.8,
-          5.6,
-          6.4,
-          7.2,
-          8,
-          9.2,
-          10.4,
-          11.6,
-          12.8,
-          14
-        ],
-        "armor_break_res": [
-          100,
-          120,
-          140,
-          160,
-          180,
-          200,
-          230,
-          260,
-          290,
-          320,
-          350
-        ]
-      }
-    },
-    {
       "id": "1375069",
       "n": "The Seated Scribe",
       "type": "",
@@ -4651,6 +4601,56 @@
           11.6,
           12.8,
           14
+        ]
+      }
+    },
+    {
+      "id": "1375070",
+      "n": "Sutton Hoo Helmet",
+      "type": "",
+      "effect": "",
+      "pve": "",
+      "pvp": "",
+      "rarity": "Legendary",
+      "star_stats": {
+        "hp": [
+          10000,
+          12000,
+          14000,
+          16000,
+          18000,
+          20000,
+          23000,
+          26000,
+          29000,
+          32000,
+          35000
+        ],
+        "basic_atk_dmg_reduction": [
+          4,
+          4.8,
+          5.6,
+          6.4,
+          7.2,
+          8,
+          9.2,
+          10.4,
+          11.6,
+          12.8,
+          14
+        ],
+        "armor_break_res": [
+          100,
+          120,
+          140,
+          160,
+          180,
+          200,
+          230,
+          260,
+          290,
+          320,
+          350
         ]
       }
     },
@@ -7153,6 +7153,112 @@
           9
         ]
       }
+    },
+    {
+      "id": "1375142",
+      "n": "Mountain-Supressing Knuckles",
+      "type": "Offensive",
+      "effect": "Upon dealing DMG for the first time, Protagonist Final DMG Boost +4% for 1 round, and deals DMG equal to 5% of the enemy's Max HP, capped at 50x the Protagonist ATK",
+      "pve": "",
+      "pvp": "",
+      "rarity": "Mythic",
+      "star_stats": {
+        "tenacity_res": [
+          1000,
+          1200,
+          1400,
+          1600,
+          1800,
+          2000,
+          2300,
+          2600,
+          2900,
+          3200,
+          3500
+        ],
+        "atk": [
+          20000,
+          24000,
+          28000,
+          32000,
+          36000,
+          40000,
+          46000,
+          52000,
+          58000,
+          64000,
+          70000
+        ],
+        "final_basic_atk_dmg": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11.5,
+          13,
+          14.5,
+          16,
+          17.5
+        ]
+      },
+      "effect_base": "Upon dealing DMG for the first time each round, reduces the enemy's Final DMG Reduction by -4% for 1 round",
+      "effect_5star": "The reduction in the enemy's Final DMG Reduction increases to 8%",
+      "deploy_type": "core"
+    },
+    {
+      "id": "1375143",
+      "n": "Sekhmet's Aegis",
+      "type": "Defensive",
+      "effect": "Upon taking DMG for the first time each round, Protagonist Final DMG Reduction +4% for 1 round, and grants the Protagonist a Shield equal to 5% of Max HP",
+      "pve": "",
+      "pvp": "",
+      "rarity": "Mythic",
+      "star_stats": {
+        "armor_break_res": [
+          1000,
+          1200,
+          1400,
+          1600,
+          1800,
+          2000,
+          2300,
+          2600,
+          2900,
+          3200,
+          3500
+        ],
+        "hp": [
+          100000,
+          120000,
+          140000,
+          160000,
+          180000,
+          200000,
+          230000,
+          260000,
+          290000,
+          320000,
+          350000
+        ],
+        "final_basic_atk_dmg_reduction": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11.5,
+          13,
+          14.5,
+          16,
+          17.5
+        ]
+      },
+      "effect_base": "Upon taking DMG for the first time each round, reduces the enemy's Final DMG Boost by -4% for 1 round",
+      "effect_5star": "The reduction in the enemy's Final DMG Boost increases to 8%",
+      "deploy_type": "guardian"
     }
   ],
   "relic_sets": {
@@ -7682,6 +7788,23 @@
           "Cold Moon Blade"
         ],
         "tracked": true
+      },
+      {
+        "set": "Final Damage Boost",
+        "stat": "Final Damage Boost",
+        "vals": [
+          3.0,
+          3.0,
+          4.0,
+          4.0,
+          5.0,
+          5.0
+        ],
+        "items": [
+          "Mountain-Supressing Knuckles",
+          "Sekhmet's Aegis"
+        ],
+        "tracked": false
       }
     ]
   }

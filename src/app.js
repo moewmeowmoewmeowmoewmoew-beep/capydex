@@ -1119,6 +1119,10 @@ function renderAdventurerCard() {
     value: s.name,
     options: advs.map(a => a.n),
     placeholder: 'Search adventurers…',
+    getImage: (name) => {
+      const a = advs.find(x => x.n === name);
+      return a ? itemImagePath('adventurers', a) : null;
+    },
     onSelect: (name) => { s.name = name; s.stars = 0; saveState(); render(); },
     onClear: () => { s.name = ''; s.stars = 0; saveState(); render(); },
   }));
@@ -1200,6 +1204,10 @@ function renderHeroOrBrandCard(kind, slotIndex) {
     value: entity ? optionLabel(entity) : '',
     options: sortedOptions.map(optionLabel),
     placeholder: `Search ${isHero ? 'heroes' : 'brands'}…`,
+    getImage: (name) => {
+      const o = sortedOptions.find(x => optionLabel(x) === name);
+      return o ? itemImagePath(imgKind, o) : null;
+    },
     onSelect: (chosenLabel) => {
       const newEntity = sortedOptions.find(o => optionLabel(o) === chosenLabel);
       if (!newEntity) return;
@@ -1360,16 +1368,18 @@ function renderRelicDeployCard(slotDef) {
     return card;
   }
 
-  const select = el('select', { class: 'equip-select' }, [
-    el('option', { value: '' }, '— None —'),
-    ...ownedOptions.map(r => el('option', { value: r.n, selected: r.n === currentName ? 'true' : null }, r.n)),
-  ]);
-  select.addEventListener('change', (e) => {
-    state.relicSlots[slotDef.key] = e.target.value || null;
-    saveState();
-    render();
+  const combo = renderSearchCombo({
+    value: currentName || '',
+    options: ownedOptions.map(r => r.n),
+    placeholder: `Search ${slotDef.label.toLowerCase()}…`,
+    getImage: (name) => {
+      const r = ownedOptions.find(x => x.n === name);
+      return r ? itemImagePath('relics', r) : null;
+    },
+    onSelect: (name) => { state.relicSlots[slotDef.key] = name; saveState(); render(); },
+    onClear: () => { state.relicSlots[slotDef.key] = null; saveState(); render(); },
   });
-  card.appendChild(select);
+  card.appendChild(combo);
 
   if (!relic) return card;
 
@@ -1474,7 +1484,7 @@ function goToCollectionSection(sectionId) {
 // box could look empty while the old value stayed active underneath.
 // Filtering while typing updates only the dropdown's own DOM locally, not
 // a full app re-render, so the input never loses focus mid-type.
-function renderSearchCombo({ value, options, placeholder, onSelect, onClear }) {
+function renderSearchCombo({ value, options, placeholder, onSelect, onClear, getImage }) {
   const container = el('div', { class: 'search-combo' });
   const input = el('input', {
     type: 'text', class: 'equip-combo-input', placeholder, value: value || '',
@@ -1496,6 +1506,21 @@ function renderSearchCombo({ value, options, placeholder, onSelect, onClear }) {
       dropdown.appendChild(el('div', { class: 'search-combo-empty' }, 'No matches'));
     } else {
       matches.forEach(opt => {
+        const rowChildren = [];
+        // getImage is optional — callers without item art (adventurers,
+        // pet skill names, stat names) simply don't pass it, and the row
+        // renders as plain text at the same height rather than leaving an
+        // empty gap where a thumbnail would've been.
+        if (getImage) {
+          const src = getImage(opt);
+          if (src) {
+            rowChildren.push(el('img', {
+              class: 'search-combo-option-thumb', src, alt: '', loading: 'lazy',
+              onerror: (e) => { e.target.style.visibility = 'hidden'; },
+            }));
+          }
+        }
+        rowChildren.push(el('span', {}, opt));
         dropdown.appendChild(el('div', {
           class: 'search-combo-option',
           onmousedown: (e) => {
@@ -1506,13 +1531,18 @@ function renderSearchCombo({ value, options, placeholder, onSelect, onClear }) {
             closeDropdown();
             onSelect(opt);
           },
-        }, opt));
+        }, rowChildren));
       });
     }
     dropdown.classList.remove('hidden');
   }
 
-  input.addEventListener('focus', () => openDropdown(input.value));
+  // Opening a combo that already has a value shouldn't immediately filter
+  // the list down to just that one matching option — the whole point of
+  // clicking a filled field is usually to browse and pick something
+  // different, not to re-confirm what's already there. Empty string shows
+  // everything on focus; typing after that narrows it down as normal.
+  input.addEventListener('focus', () => openDropdown(''));
   input.addEventListener('input', () => {
     clearBtn.classList.toggle('hidden', !input.value);
     openDropdown(input.value);
@@ -1556,6 +1586,10 @@ function renderEquipPetCard(petIndex) {
     value: s.itemName,
     options: pets.map(p => p.n),
     placeholder: 'Search pets…',
+    getImage: (name) => {
+      const p = pets.find(x => x.n === name);
+      return p ? itemImagePath('pets', p) : null;
+    },
     onSelect: (name) => {
       s.itemName = name;
       s.arcana = -1;
@@ -1602,7 +1636,32 @@ function renderEquipPetCard(petIndex) {
   levelInput.addEventListener('blur', () => render());
   card.appendChild(levelInput);
 
-  if (s.level > 0) {
+  if (pet && pet.star_battle_skills) {
+    // Pingu (so far the only one) ties its Battle Skill tier to its own
+    // star rating instead of Pet Level, unlike every other pet — driven
+    // off star_battle_skills existing in the data rather than checking
+    // the pet's name directly, so this picks up correctly if any other
+    // pet turns out to use the same star-based mechanic later.
+    card.appendChild(equipFieldLabel('Stars'));
+    const starInput = el('input', {
+      type: 'number', class: 'equip-select', min: '0', max: '10', value: String(s.battleStars || 0),
+    });
+    starInput.addEventListener('input', (e) => {
+      s.battleStars = Math.max(0, Math.min(10, parseInt(e.target.value, 10) || 0));
+      saveState();
+    });
+    starInput.addEventListener('blur', () => render());
+    card.appendChild(starInput);
+
+    const thresholds = pet.star_thresholds || [0, 1, 3, 5, 8, 10];
+    const starKeys = Object.keys(pet.star_battle_skills);
+    let activeIdx = 0;
+    for (let i = 0; i < thresholds.length; i++) if ((s.battleStars || 0) >= thresholds[i]) activeIdx = i;
+    const activeKey = starKeys[activeIdx];
+    const activeText = pet.star_battle_skills[activeKey];
+    card.appendChild(equipFieldLabel(activeKey || 'Battle Skill'));
+    card.appendChild(el('div', { class: 'equip-writeup' }, activeText ? renderTextWithSkillTags(activeText) : '—'));
+  } else if (s.level > 0) {
     const battleSkillKeys = Object.keys(pet.battle_skills || {});
     const thresholds = [1, 20, 40, 60, 80];
     let activeIdx = -1;
@@ -1615,13 +1674,29 @@ function renderEquipPetCard(petIndex) {
 
   // ---- Pet Armament ----
   card.appendChild(el('div', { class: 'equip-section-title' }, 'Pet Armament'));
-  const armaments = DB.pet_armaments || [];
+  const allArmaments = DB.pet_armaments || [];
+  // Exclusive armaments only work on their one matching pet — everything
+  // without a restriction (the non-"Exclusive |" ones) stays available
+  // regardless of which pet is equipped.
+  const armaments = allArmaments.filter(a => !a.restricted_pet || a.restricted_pet === s.itemName);
+  // If the pet was changed after an exclusive armament was already
+  // selected, that armament may no longer be valid for the new pet — the
+  // combo's option list wouldn't include it anymore, but s.armament would
+  // still silently hold the stale name unless cleared here.
+  if (s.armament && !armaments.some(a => a.n === s.armament)) {
+    s.armament = '';
+    saveState();
+  }
   const armament = armaments.find(a => a.n === s.armament);
   card.appendChild(equipFieldLabel('Armament'));
   card.appendChild(renderSearchCombo({
     value: s.armament,
     options: armaments.map(a => a.n),
     placeholder: 'Search armaments…',
+    getImage: (name) => {
+      const a = armaments.find(x => x.n === name);
+      return a ? itemImagePath('pet_armaments', a) : null;
+    },
     onSelect: (name) => { s.armament = name; s.armamentLevel = 1; saveState(); render(); },
     onClear: () => { s.armament = ''; saveState(); render(); },
   }));
@@ -1758,14 +1833,21 @@ function renderDeployCard(kind, mode, slotIndex) {
     return card;
   }
 
-  const select = el('select', { class: 'equip-select' }, [
-    el('option', { value: '' }, '— None —'),
-    ...ownedItems.map(it => el('option', { value: String(it.idx), selected: it.idx === s.itemIdx ? 'true' : null }, it.n)),
-  ]);
-  select.addEventListener('change', (e) => {
-    s.itemIdx = e.target.value ? parseInt(e.target.value, 10) : null;
-    saveState();
-    render();
+  const select = renderSearchCombo({
+    value: item ? item.n : '',
+    options: ownedItems.map(it => it.n),
+    placeholder: `Search ${isMount ? 'mounts' : 'artifacts'}…`,
+    getImage: (name) => {
+      const it = ownedItems.find(x => x.n === name);
+      return it ? itemImagePath(isMount ? 'mounts' : 'artifacts', it) : null;
+    },
+    onSelect: (name) => {
+      const newItem = ownedItems.find(it => it.n === name);
+      s.itemIdx = newItem ? newItem.idx : null;
+      saveState();
+      render();
+    },
+    onClear: () => { s.itemIdx = null; saveState(); render(); },
   });
   card.appendChild(select);
 
@@ -1867,21 +1949,32 @@ function renderEquipCard(slotDef) {
   const itemsByTier = {};
   items.forEach(it => { (itemsByTier[it.tier] = itemsByTier[it.tier] || []).push(it); });
   const orderedTiers = [...tierOrder.filter(t => itemsByTier[t]), ...Object.keys(itemsByTier).filter(t => !tierOrder.includes(t))];
-  const equippedSelect = el('select', { class: 'equip-select' }, [
-    el('option', { value: '' }, '— None —'),
-    ...orderedTiers.map(tier => el('optgroup', { label: tier },
-      itemsByTier[tier].map(it => el('option', { value: it.n, selected: it.n === s.itemName ? 'true' : null }, it.n)))),
-  ]);
-  equippedSelect.addEventListener('change', (e) => {
-    s.itemName = e.target.value;
-    const newItem = items.find(it => it.n === s.itemName);
-    s.quality = newItem && newItem.q && newItem.q.length ? newItem.q[newItem.q.length - 1] : ''; // highest tier = last entry, usually Mythic
-    s.surpass = 0;
-    s.arcana = -1;
-    saveState();
-    render();
-  });
-  card.appendChild(equippedSelect);
+  // Grouping by tier isn't something a flat search-combo list does the way
+  // <optgroup> did — folded straight into each option's own label instead
+  // ("Helos Warblade — SS"), so the tier is still visible without needing
+  // a separate group header.
+  const equipOptionLabel = (it) => `${it.n} — ${it.tier}`;
+  const orderedItems = orderedTiers.flatMap(t => itemsByTier[t]);
+  card.appendChild(renderSearchCombo({
+    value: item ? equipOptionLabel(item) : '',
+    options: orderedItems.map(equipOptionLabel),
+    placeholder: `Search ${slotDef.label.toLowerCase()}…`,
+    getImage: (label) => {
+      const it = orderedItems.find(x => equipOptionLabel(x) === label);
+      return it ? itemImagePath(slotDef.imgKind, it) : null;
+    },
+    onSelect: (label) => {
+      const newItem = orderedItems.find(x => equipOptionLabel(x) === label);
+      if (!newItem) return;
+      s.itemName = newItem.n;
+      s.quality = newItem.q && newItem.q.length ? newItem.q[newItem.q.length - 1] : ''; // highest tier = last entry, usually Mythic
+      s.surpass = 0;
+      s.arcana = -1;
+      saveState();
+      render();
+    },
+    onClear: () => { s.itemName = ''; saveState(); render(); },
+  }));
 
   // Empty state: nothing past "Equipped" shows until an item is actually
   // selected — matches the reference card exactly.
@@ -2051,9 +2144,14 @@ function renderGemSlot(slotId, slotIdx, slotState, options, allSlots) {
     onClear: () => { slotState.gemId = ''; saveState(); render(); },
   });
 
-  const tierSelect = el('select', { class: 'equip-select equip-tier-select', disabled: slotState.gemId ? null : 'true' },
-    GEM_TIER_NAMES.map((name, i) => el('option', { value: String(i + 1), selected: (i + 1) === slotState.tier ? 'true' : null }, name)));
-  tierSelect.addEventListener('change', (e) => { slotState.tier = parseInt(e.target.value, 10); saveState(); render(); });
+  const tierSelect = renderSearchCombo({
+    value: slotState.gemId ? GEM_TIER_NAMES[slotState.tier - 1] : '',
+    options: GEM_TIER_NAMES,
+    placeholder: 'Rarity…',
+    getImage: (name) => `assets/images/gem_tiers/${slugify(name)}.webp`,
+    onSelect: (name) => { slotState.tier = GEM_TIER_NAMES.indexOf(name) + 1; saveState(); render(); },
+  });
+  if (!slotState.gemId) tierSelect.querySelector('.equip-combo-input').disabled = true;
 
   const tierIcon = slotState.gemId
     ? el('img', { class: 'equip-gem-tier-icon', src: `assets/images/gem_tiers/${slugify(GEM_TIER_NAMES[slotState.tier - 1])}.webp`, onerror: (e) => { e.target.style.visibility = 'hidden'; } })
@@ -3204,10 +3302,14 @@ function renderPetCard(item) {
   ]));
   card.appendChild(el('div', { class: 'item-rarity' }, item.tier || ''));
 
+  const hasStarSkills = !!(item.star_battle_skills);
   const battleStepper = el('div', { class: 'stepper-row' }, [
-    el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, 'Battle Lv'),
-    renderStepper(`pet-${item.idx}-battlelv`, s.battleLv, 1, 5,
-      (next) => { s.battleLv = next; saveState(); render(); }),
+    el('span', { class: 'val', style: 'min-width:56px;text-align:left;color:var(--ink-dim);font-family:var(--font-body);font-size:11px;' }, hasStarSkills ? 'Stars' : 'Battle Lv'),
+    hasStarSkills
+      ? renderStepper(`pet-${item.idx}-battlelv`, s.battleLv, 1, Object.keys(item.star_battle_skills).length,
+          (next) => { s.battleLv = next; saveState(); render(); })
+      : renderStepper(`pet-${item.idx}-battlelv`, s.battleLv, 1, 5,
+          (next) => { s.battleLv = next; saveState(); render(); }),
   ]);
 
   const steppersCol = [battleStepper];
@@ -3227,9 +3329,12 @@ function renderPetCard(item) {
 
   if (!s.owned) return card;
 
-  const skillText = item.battle_skills && item.battle_skills[BATTLE_LV_KEYS[s.battleLv - 1]];
+  const skillText = hasStarSkills
+    ? item.star_battle_skills[Object.keys(item.star_battle_skills)[s.battleLv - 1]]
+    : item.battle_skills && item.battle_skills[BATTLE_LV_KEYS[s.battleLv - 1]];
   if (skillText) {
-    card.appendChild(el('div', { class: 'item-effect' }, [`Lv${s.battleLv}: `, renderTextWithSkillTags(skillText)]));
+    const tierLabel = hasStarSkills ? Object.keys(item.star_battle_skills)[s.battleLv - 1] : `Lv${s.battleLv}`;
+    card.appendChild(el('div', { class: 'item-effect' }, [`${tierLabel}: `, renderTextWithSkillTags(skillText)]));
   } else {
     card.appendChild(el('div', { class: 'item-effect placeholder' }, 'No skill data at this level yet'));
   }
