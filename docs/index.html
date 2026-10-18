@@ -9162,16 +9162,33 @@ function pvpFmtBig(n) {
   return n < 10 ? n.toFixed(2) : Math.round(n).toLocaleString();
 }
 
+// Stats-page number → this round's in-PVP number. t = that round's totals,
+// ref = the build's out-of-battle totals. With a Stat Sources page loaded
+// (src), the page's own exact %, Global % and PVP % are the starting point
+// and only CapyDex's in-fight changes (t − ref) are added on top; without
+// it, CapyDex's own % totals are used for both.
+const PVP_STAGE_KEYS = { atk: ['ATK%', 'PVP ATK%', 'Global ATK'], def: ['DEF%', 'PVP DEF%', 'Global DEF%'], hp: ['HP%', 'PVP HP%', 'Global HP%'] };
+function pvpStageRatio(kind, t, ref, src) {
+  const s = src && src[kind];
+  if (s) {
+    const [pk, , gk] = PVP_STAGE_KEYS[kind];
+    const dP = (t[pk] || 0) - (ref[pk] || 0), dG = (t[gk] || 0) - (ref[gk] || 0);
+    return (1 + (s.pct + dP + s.pvp) / 100) * (1 + (s.glob + dG) / 100) / ((1 + s.pct / 100) * (1 + s.glob / 100));
+  }
+  const stage = { atk: pvpAtkStage, def: pvpDefStage, hp: pvpHpStage }[kind];
+  return stage(t, true) / stage(ref, false);
+}
+
 // One hit's expected damage. A/D = attacker/defender totals that round;
-// ctx = { atkIn, atkRef, defIn, defRef } (profile ATK/DEF and the stage
-// they were read at), or nulls for the relative view (no ATK typed in).
+// ctx = { atkIn, defIn, atkStage(t), defStage(t) } (profile ATK/DEF and how
+// to scale them to the round), or null for the relative view (no ATK typed in).
 function pvpHit(A, D, typeName, ctx) {
   const L = pvpLabels(typeName);
   const st = {};
   let atk, def = 0;
   if (ctx && ctx.atkIn) {
-    atk = ctx.atkIn * pvpAtkStage(A, true) / ctx.atkRef;
-    if (ctx.defIn) def = ctx.defIn * pvpDefStage(D, true) / ctx.defRef;
+    atk = ctx.atkIn * ctx.atkStage(A);
+    if (ctx.defIn) def = ctx.defIn * ctx.defStage(D);
     st.base = Math.max(1, atk - def);
   } else {
     atk = pvpAtkStage(A, true);
@@ -9245,7 +9262,11 @@ function pvpPrepareBuild(st, refStats) {
 // A attacks D for the whole fight.
 function pvpFight(A, D, sideA, sideD) {
   const atkIn = pvpParseBig(sideA.atk), defIn = pvpParseBig(sideD.def), hpIn = pvpParseBig(sideD.hp);
-  const ctx = atkIn ? { atkIn, atkRef: pvpAtkStage(A.ref, false), defIn, defRef: pvpDefStage(D.ref, false) } : null;
+  const ctx = atkIn ? {
+    atkIn, defIn,
+    atkStage: (t) => pvpStageRatio('atk', t, A.ref, sideA.src),
+    defStage: (t) => pvpStageRatio('def', t, D.ref, sideD.src),
+  } : null;
   const types = ATTACK_TYPE_DEFS.map(d => ({ name: d.name, rounds: [], total: 0, hits: 0 }));
   const byRound = [];
   for (let i = 0; i < pvp.rounds; i++) {
@@ -9263,7 +9284,7 @@ function pvpFight(A, D, sideA, sideD) {
   const total = byRound.reduce((x, y) => x + y, 0);
   // Rounds needed to bring the defender's PVP HP (×5) to 0, if HP is known.
   let killRound = null;
-  const hp = hpIn && atkIn ? hpIn * pvpHpStage(D.totals[0], true) / pvpHpStage(D.ref, false) * 5 : null;
+  const hp = hpIn && atkIn ? hpIn * pvpStageRatio('hp', D.totals[0], D.ref, sideD.src) * 5 : null;
   if (hp) {
     let cum = 0;
     for (let i = 0; i < byRound.length; i++) {
@@ -9695,6 +9716,77 @@ function pvpLoadOpponentFile(file) {
   reader.readAsText(file);
 }
 
+/* ---------- Stat Sources pages (aphrael's capybara-profiles site) ---------- */
+// A saved Stat Sources page carries its data as `const EMBED = {...};`.
+// Takes that object (or the bare JSON) and keeps what the fight needs:
+// final ATK/HP/DEF (game-exact, CP-checked) plus the %, Global % and PVP %
+// they were built from.
+function pvpJsonObjectAt(text, from) {
+  const start = text.indexOf('{', from);
+  if (start < 0) return null;
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') inStr = true;
+    else if (c === '{') depth++;
+    else if (c === '}' && --depth === 0) return text.slice(start, i + 1);
+  }
+  return null;
+}
+function parseStatSources(text) {
+  const t = String(text || '');
+  let obj = null;
+  try {
+    const at = t.search(/\bEMBED\s*=/);
+    obj = JSON.parse(at >= 0 ? (pvpJsonObjectAt(t, at) || 'null') : t);
+  } catch (e) { return null; }
+  if (!obj || typeof obj !== 'object') return null;
+  const data = obj.data && Array.isArray(obj.data.stats) ? obj.data : (Array.isArray(obj.stats) && obj.cp ? obj : null);
+  if (!data) return null;
+  const by = {};
+  data.stats.forEach(s => { by[s.key] = s; });
+  const val = (k, dflt) => {
+    const s = by[k];
+    if (!s) return dflt;
+    return Number(s.ported != null ? s.ported : s.server) || 0;
+  };
+  const fin = {};
+  ((data.cp || {}).stats || []).forEach(s => { fin[s.key] = Number(s.value) || 0; });
+  const one = (flat, pct, glob, hero, pvpKey) => {
+    const f = val(flat, 0), p = val(pct, 0), g = val(glob, 0), h = val(hero, 100);
+    return { flat: f, pct: p, glob: g, hero: h, pvp: val(pvpKey, 0), final: fin[flat] || f * (1 + p / 100) * (1 + g / 100) * h / 100 };
+  };
+  const atk = one('Attack', 'Attack%', 'GlobalAttack%', 'HeroAttack%', 'PVPAttack%');
+  if (!atk.final) return null;
+  return {
+    name: (obj.player && obj.player.name) || '', uid: obj.player ? obj.player.uid : null, exported: obj.exported || '',
+    cp: data.cp ? data.cp.cp : null,
+    atk,
+    hp: one('HPMax', 'HPMax%', 'GlobalHPMax%', 'HeroHPMax%', 'PVPHPMax%'),
+    def: one('Defence', 'Defence%', 'GlobalDefence%', 'HeroDefence%', 'PVPDefence%'),
+  };
+}
+let pvpStatError = '';
+function pvpLoadStatSources(side, file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const src = parseStatSources(reader.result);
+    if (!src) {
+      pvpStatError = 'That file isn’t a Stat Sources page. Open the player’s page on the Stat Sources site, wait for it to load, save it (Cmd/Ctrl+S), and load that file.';
+    } else {
+      pvpStatError = '';
+      pvp[side].atk = String(Math.round(src.atk.final));
+      pvp[side].def = String(Math.round(src.def.final));
+      pvp[side].hp = String(Math.round(src.hp.final));
+      pvp[side].src = src;
+      savePvp();
+    }
+    render();
+  };
+  reader.readAsText(file);
+}
+
 /* ---------- the page ---------- */
 let pvpLoadError = '';
 const pvpSections = { builds: true, types: true, settings: !pvp.you.atk };
@@ -10043,6 +10135,9 @@ function renderPvpSettings(res) {
   const box = el('div', { class: 'pvp-settings' });
   box.appendChild(el('p', { class: 'gemsim-note' },
     'ATK, DEF and HP: the numbers in game under Combat Power › Stats (8.95B, 184.24M and so on all work). PVP ATK/DEF/HP % from CapyDex are added on top, and PVP HP is ×5. Hits per round are averages; a blank skill box uses a guess from the equipped weapon.'));
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    'Or load the player’s page from the Stat Sources site (open it, let it load, save it with Cmd/Ctrl+S, then load that file). It fills ATK, DEF and HP with the game’s exact numbers and uses that page’s own %, Global % and PVP %, so only in-fight changes come from CapyDex. Typing over a number goes back to CapyDex’s %.'));
+  if (pvpStatError) box.appendChild(el('p', { class: 'import-error' }, pvpStatError));
   const table = el('table', { class: 'gemsim-table pvp-set-table' });
   const mirror = !pvp.opponent;
   table.appendChild(el('thead', {}, el('tr', {}, [el('th', {}, ''), el('th', {}, 'You'), el('th', {}, mirror ? 'Opponent (mirror)' : 'Opponent')])));
@@ -10058,12 +10153,25 @@ function renderPvpSettings(res) {
       const v = inp.value.trim();
       if (opts.skill) pvp[side].skillHits[key] = v;
       else pvp[side][key] = opts.text ? v : (v === '' ? pvpDefaultSide()[key] : Number(v));
+      if (['atk', 'def', 'hp'].includes(key)) delete pvp[side].src; // a typed number isn't the page's any more
       savePvp(); render();
     });
     return inp;
   };
   const row = (label, key, opts) => tb.appendChild(el('tr', {}, [el('td', {}, label), ...sides.map(([s, eff]) => el('td', {}, input(s, key,
     opts && opts.skill ? Object.assign({}, opts, { placeholder: String(eff.guessed[key]) }) : opts))),
+    mirror ? el('td', { class: 'gemsim-note' }, 'same as you') : null]));
+  const srcCell = (side) => {
+    const s = pvp[side].src;
+    const fi = el('input', { type: 'file', accept: '.html,.htm,.txt,.json,text/html,text/plain,application/json', style: 'display:none;' });
+    fi.addEventListener('change', () => { if (fi.files[0]) pvpLoadStatSources(side, fi.files[0]); });
+    return el('td', {}, [
+      fi,
+      el('button', { class: 'bulk-action-btn secondary', onclick: () => fi.click() }, s ? 'Replace' : 'Load page'),
+      s ? el('div', { class: 'gemsim-note' }, `${s.name || 'Player'}${s.exported ? ` · ${s.exported}` : ''}${s.cp ? ` · CP ${pvpFmtBig(s.cp)}` : ''}`) : null,
+    ]);
+  };
+  tb.appendChild(el('tr', {}, [el('td', {}, 'Stat Sources page'), ...sides.map(([s]) => srcCell(s)),
     mirror ? el('td', { class: 'gemsim-note' }, 'same as you') : null]));
   row('ATK', 'atk', { text: true, placeholder: 'e.g. 8.95B' });
   row('DEF', 'def', { text: true, placeholder: 'e.g. 184.24M' });
