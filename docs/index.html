@@ -2424,6 +2424,13 @@ textarea::placeholder {
 .pvp-opp-line { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px; }
 .pvp-opp-name { font-size: 15px; color: var(--text-primary); margin-top: 4px; }
 .pvp-opp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.pvp-side { display: flex; flex-direction: column; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--hairline); }
+.pvp-stats-row { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: flex-end; }
+.pvp-stats-row > .filter-chip { align-self: flex-end; }
+.pvp-stats-row > .pvp-or { align-self: flex-end; padding-bottom: 8px; }
+.pvp-stat-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; flex: 1 1 320px; max-width: 480px; }
+.pvp-stat-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+@media (max-width: 640px) { .pvp-stat-fields { flex-basis: 100%; max-width: none; } }
 .pvp-cards { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
 .pvp-verdict { margin: 0; font-size: 14px; color: var(--text-primary); }
 .pvp-acc > .accordion-header { gap: 10px; }
@@ -9797,7 +9804,7 @@ function pvpLoadStatSources(side, file) {
 
 /* ---------- the page ---------- */
 let pvpLoadError = '';
-const pvpSections = { builds: true, types: true, settings: !pvp.you.atk };
+const pvpSections = { builds: true, types: true, settings: false };
 function pvpAccordion(key, title, content, right) {
   const wrap = el('div', { class: 'accordion ghost pvp-acc' + (pvpSections[key] ? ' open' : '') });
   const header = el('div', { class: 'accordion-header' }, [
@@ -9827,37 +9834,75 @@ function renderPvpSimulator() {
     ? el('span', { class: 'pvp-acc-badge' }, `${pvpChangedRows(res).length} changed`) : null;
   wrap.appendChild(pvpAccordion('builds', 'Builds: you vs opponent', renderPvpBuilds(res), changeBadge));
   wrap.appendChild(pvpAccordion('types', 'Damage by attack type', renderPvpTypes(res)));
-  wrap.appendChild(pvpAccordion('settings', 'Fight settings', renderPvpSettings(res)));
+  wrap.appendChild(pvpAccordion('settings', 'Advanced: attacks per round', renderPvpSettings(res)));
   wrap.appendChild(el('p', { class: 'section-desc gemsim-note pvp-footnote' },
-    'Not modelled yet: Global DMG, Block, dodge, shields and healing, extra ×2/×3 procs, per-hit caps, enemy debuffs, character-specific gems, and Combo Count from items (set it under Fight settings). Conditional effects follow the Calculator: counted while their round window is active.'));
+    'Not modelled yet: Global DMG, Block, dodge, shields and healing, extra ×2/×3 procs, per-hit caps, enemy debuffs, character-specific gems, and Combo Count from items (set it under Advanced). Conditional effects follow the Calculator: counted while their round window is active.'));
   return wrap;
 }
 
+// One side of the setup: whose build it is, and the three numbers that
+// decide the fight (from a Stat Sources page, or typed in).
+function pvpStatInput(side, key, label, placeholder) {
+  const raw = pvp[side][key] || '';
+  const shown = pvp[side].src && pvpParseBig(raw) ? pvpFmtBig(pvpParseBig(raw)) : raw; // page numbers read as 9.43B
+  const inp = el('input', { type: 'text', inputmode: 'decimal', class: 'search-input pvp-num', value: shown, placeholder });
+  inp.addEventListener('change', () => {
+    if (inp.value.trim() === shown) return;
+    pvp[side][key] = inp.value.trim();
+    delete pvp[side].src; // a typed number isn't the page's any more
+    savePvp(); render();
+  });
+  return el('label', { class: 'pvp-stat-field' }, [el('span', { class: 'filter-dropdown-label' }, label), inp]);
+}
+function renderPvpSide(side, title, name, buttons, mirrored) {
+  const wrap = el('div', { class: 'pvp-side' });
+  wrap.appendChild(el('div', { class: 'pvp-opp-line' }, [
+    el('div', {}, [el('div', { class: 'filter-dropdown-label' }, title), el('div', { class: 'pvp-opp-name' }, name)]),
+    el('div', { class: 'pvp-opp-actions' }, buttons),
+  ]));
+  if (mirrored) {
+    wrap.appendChild(el('p', { class: 'gemsim-note' }, 'Same stats as you.'));
+    return wrap;
+  }
+  const s = pvp[side].src;
+  const fi = el('input', { type: 'file', accept: '.html,.htm,.txt,.json,text/html,text/plain,application/json', style: 'display:none;' });
+  fi.addEventListener('change', () => { if (fi.files[0]) pvpLoadStatSources(side, fi.files[0]); });
+  wrap.appendChild(el('div', { class: 'pvp-stats-row' }, [
+    fi,
+    el('button', { class: 'filter-chip' + (s ? ' active' : ''), onclick: () => fi.click() }, s ? `Stats: ${s.name || 'page'}${s.exported ? ` · ${s.exported}` : ''}` : 'Load Stat Sources page'),
+    el('span', { class: 'gemsim-note pvp-or' }, 'or type'),
+    el('div', { class: 'pvp-stat-fields' }, [
+      pvpStatInput(side, 'atk', 'ATK', '9.43B'),
+      pvpStatInput(side, 'def', 'DEF', '184M'),
+      pvpStatInput(side, 'hp', 'HP', '32.5B'),
+    ]),
+  ]));
+  return wrap;
+}
 function renderPvpSetup() {
   const box = el('div', { class: 'pvp-setup' });
-  const fileInput = el('input', { type: 'file', accept: 'application/json,.json', class: 'hidden', style: 'display:none' });
-  fileInput.addEventListener('change', () => { if (fileInput.files[0]) pvpLoadOpponentFile(fileInput.files[0]); });
+  const oppInput = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
+  oppInput.addEventListener('change', () => { if (oppInput.files[0]) pvpLoadOpponentFile(oppInput.files[0]); });
   const selfInput = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
   selfInput.addEventListener('change', () => { if (selfInput.files[0]) pvpLoadOpponentFile(selfInput.files[0], 'self'); });
-  box.appendChild(el('div', { class: 'pvp-opp-line' }, [
-    el('div', {}, [el('div', { class: 'filter-dropdown-label' }, 'You'), el('div', { class: 'pvp-opp-name' }, pvp.self ? pvp.self.name : 'Your saved build')]),
-    el('div', { class: 'pvp-opp-actions' }, [
-      el('button', { class: 'filter-chip', onclick: () => selfInput.click() }, pvp.self ? 'Load another' : 'Load a file instead'),
-      pvp.self ? el('button', { class: 'filter-chip', onclick: () => { pvp.self = null; pvp.patches = []; pvpRanking = null; savePvp(); render(); } }, 'Use my saved build') : null,
-      selfInput,
-    ]),
+
+  box.appendChild(renderPvpSide('you', 'You', pvp.self ? pvp.self.name : 'Your saved build', [
+    el('button', { class: 'filter-chip', onclick: () => selfInput.click() }, pvp.self ? 'Load another' : 'Use a file instead'),
+    pvp.self ? el('button', { class: 'filter-chip', onclick: () => { pvp.self = null; pvp.patches = []; pvpRanking = null; savePvp(); render(); } }, 'Use my saved build') : null,
+    selfInput,
   ]));
-  const oppName = pvp.opponent ? pvp.opponent.name : `Mirror: a copy of ${pvp.self ? pvp.self.name : 'your saved build'}`;
-  box.appendChild(el('div', { class: 'pvp-opp-line' }, [
-    el('div', {}, [el('div', { class: 'filter-dropdown-label' }, 'Opponent'), el('div', { class: 'pvp-opp-name' }, oppName)]),
-    el('div', { class: 'pvp-opp-actions' }, [
-      el('button', { class: 'filter-chip', onclick: () => fileInput.click() }, pvp.opponent ? 'Load another' : 'Load opponent file'),
-      pvp.opponent ? el('button', { class: 'filter-chip', onclick: () => { pvp.opponent = null; savePvp(); render(); } }, 'Use mirror') : null,
-      fileInput,
-    ]),
-  ]));
-  box.appendChild(el('p', { class: 'gemsim-note' }, 'Either side can be a player export from the game or a CapyDex backup file. Files stay on this device; loading one for You never changes your saved build.'));
+  const mirror = !pvp.opponent;
+  box.appendChild(renderPvpSide('opp', 'Opponent', mirror ? 'A copy of you' : pvp.opponent.name, [
+    el('button', { class: 'filter-chip', onclick: () => oppInput.click() }, mirror ? 'Load opponent file' : 'Load another'),
+    mirror ? null : el('button', { class: 'filter-chip', onclick: () => { pvp.opponent = null; savePvp(); render(); } }, 'Use a copy of me'),
+    oppInput,
+  ], mirror));
+
   if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
+  if (pvpStatError) box.appendChild(el('p', { class: 'import-error' }, pvpStatError));
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    'Builds: a player export or CapyDex backup. Stats: the player’s saved Stat Sources page, or Combat Power › Stats in game. Nothing here changes your saved build.'));
+
   const row = el('div', { class: 'gemsim-row' });
   row.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
     (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
@@ -9909,7 +9954,7 @@ function renderPvpResult(res) {
     box.appendChild(el('p', { class: 'pvp-verdict' }, text));
   } else {
     box.appendChild(el('p', { class: 'gemsim-note' },
-      'Type both sides’ ATK, DEF and HP (in game: Combat Power › Stats) under Fight settings to see who wins and in which round. Until then the damage is shown as multipliers, good for comparing changes.'));
+      'Add both sides’ stats at the top (Stat Sources page, or ATK / DEF / HP) to see who wins and in which round. Until then the damage is shown as multipliers.'));
   }
   return box;
 }
@@ -10013,7 +10058,7 @@ function renderPvpTypes(res) {
   const A = mine ? res.tri : res.opp, D = mine ? res.opp : res.tri;
   const list = F.types.filter(t => t.total > 0).sort((a, b) => b.total - a.total);
   if (!list.length) {
-    box.appendChild(el('p', { class: 'gemsim-note' }, 'No damage: set hits per round under Fight settings.'));
+    box.appendChild(el('p', { class: 'gemsim-note' }, 'No damage: set hits per round under Advanced.'));
     return box;
   }
   list.forEach(t => {
@@ -10114,7 +10159,7 @@ function renderPvpStartBreakdown(typeName, F, A, D) {
   const uniq = (arr) => [...new Set(arr)];
   const stages = [
     { name: 'Base damage', value: ctx ? pvpFmtBig(h.st.base) : pvpX(h.st.base), att: L.atk, def: ctx && ctx.defIn ? L.def : [],
-      note: ctx ? `ATK ${pvpFmtBig(h.atk)}${ctx.defIn ? `, lowered by the target’s DEF ${pvpFmtBig(h.def)}` : ''}` : 'ATK stage only. Type ATK and DEF under Fight settings for real numbers.' },
+      note: ctx ? `ATK ${pvpFmtBig(h.atk)}${ctx.defIn ? `, lowered by the target’s DEF ${pvpFmtBig(h.def)}` : ''}` : 'ATK stage only. Add both sides’ stats at the top for real numbers.' },
     { name: 'Skill base (coefficient)', value: `${pvpPct(L.baseCoef + pvpSum(A0, L.coef))} of ATK`, att: L.coef, def: [] },
     { name: 'Crit', value: `${pvpPct(h.chance * 100)} · ${pvpPct(h.mult * 100, 0)}`, att: [...L.critRate, ...L.critDmg], def: [...L.ignoreCrit, ...L.critDmgRed] },
     { name: 'DMG pool', value: pvpX(h.st.pool), att: [...L.bonus, 'Armor Break', 'Tenacity Resistance'], def: [...L.red, 'Tenacity', 'Armor Break Resistance'],
@@ -10154,10 +10199,7 @@ function renderPvpStartBreakdown(typeName, F, A, D) {
 function renderPvpSettings(res) {
   const box = el('div', { class: 'pvp-settings' });
   box.appendChild(el('p', { class: 'gemsim-note' },
-    'ATK, DEF and HP: the numbers in game under Combat Power › Stats (8.95B, 184.24M and so on all work). PVP ATK/DEF/HP % from CapyDex are added on top, and PVP HP is ×5. Hits per round are averages; a blank skill box uses a guess from the equipped weapon.'));
-  box.appendChild(el('p', { class: 'gemsim-note' },
-    'Or load the player’s page from the Stat Sources site (open it, let it load, save it with Cmd/Ctrl+S, then load that file). It fills ATK, DEF and HP with the game’s exact numbers and uses that page’s own %, Global % and PVP %, so only in-fight changes come from CapyDex. Typing over a number goes back to CapyDex’s %.'));
-  if (pvpStatError) box.appendChild(el('p', { class: 'import-error' }, pvpStatError));
+    'Defaults: 1 basic attack per round, no combo chain, Rage every 3 rounds, skill hits guessed from the weapon. Change them only if you know the real numbers.'));
   const table = el('table', { class: 'gemsim-table pvp-set-table' });
   const mirror = !pvp.opponent;
   table.appendChild(el('thead', {}, el('tr', {}, [el('th', {}, ''), el('th', {}, 'You'), el('th', {}, mirror ? 'Opponent (mirror)' : 'Opponent')])));
@@ -10181,21 +10223,6 @@ function renderPvpSettings(res) {
   const row = (label, key, opts) => tb.appendChild(el('tr', {}, [el('td', {}, label), ...sides.map(([s, eff]) => el('td', {}, input(s, key,
     opts && opts.skill ? Object.assign({}, opts, { placeholder: String(eff.guessed[key]) }) : opts))),
     mirror ? el('td', { class: 'gemsim-note' }, 'same as you') : null]));
-  const srcCell = (side) => {
-    const s = pvp[side].src;
-    const fi = el('input', { type: 'file', accept: '.html,.htm,.txt,.json,text/html,text/plain,application/json', style: 'display:none;' });
-    fi.addEventListener('change', () => { if (fi.files[0]) pvpLoadStatSources(side, fi.files[0]); });
-    return el('td', {}, [
-      fi,
-      el('button', { class: 'bulk-action-btn secondary', onclick: () => fi.click() }, s ? 'Replace' : 'Load page'),
-      s ? el('div', { class: 'gemsim-note' }, `${s.name || 'Player'}${s.exported ? ` · ${s.exported}` : ''}${s.cp ? ` · CP ${pvpFmtBig(s.cp)}` : ''}`) : null,
-    ]);
-  };
-  tb.appendChild(el('tr', {}, [el('td', {}, 'Stat Sources page'), ...sides.map(([s]) => srcCell(s)),
-    mirror ? el('td', { class: 'gemsim-note' }, 'same as you') : null]));
-  row('ATK', 'atk', { text: true, placeholder: 'e.g. 8.95B' });
-  row('DEF', 'def', { text: true, placeholder: 'e.g. 184.24M' });
-  row('HP', 'hp', { text: true, placeholder: 'e.g. 120B' });
   row('Basic attacks per round', 'basic');
   row('Combo chain (max combos per attack)', 'maxCombo');
   row('Rage Skill every N rounds (0 = never)', 'rageEvery');
@@ -10204,7 +10231,7 @@ function renderPvpSettings(res) {
   box.appendChild(el('div', { class: 'gemsim-table-wrap' }, table));
 
   box.appendChild(el('p', { class: 'gemsim-note' },
-    'Base coefficient of each attack (% of ATK). Coefficient bonuses add to it, so a lower base makes them worth more. Lightning bolts start at 30%; the rest default to 100%.'));
+    'Base strength of each attack, as % of ATK. Lightning starts at 30%, the rest at 100%.'));
   const coefRow = el('div', { class: 'gemsim-coef-row' });
   ATTACK_TYPE_DEFS.forEach(d => {
     const v = pvpLabels(d.name).baseCoef;
