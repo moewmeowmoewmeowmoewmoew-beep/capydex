@@ -2439,6 +2439,22 @@ textarea::placeholder {
   border-radius: 20px; padding: 2px 10px;
 }
 .pvp-footnote { margin-top: 4px; }
+/* three-step flow */
+.pvp-step-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border: 1px solid var(--hairline); border-radius: 8px; background: var(--bg-panel); }
+.pvp-step-head { display: flex; align-items: center; gap: 10px; }
+.pvp-step-num {
+  width: 24px; height: 24px; border-radius: 50%; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-text); border: 1px solid var(--accent-dim);
+}
+.pvp-step-title { font-weight: 600; font-size: 15px; color: var(--text-primary); }
+.pvp-step-head .pvp-acc-badge { margin-left: auto; }
+.pvp-step-hint { margin: 0; }
+.pvp-stats-step { display: flex; flex-direction: column; gap: 12px; }
+.pvp-stats-step .pvp-side:last-of-type { border-bottom: none; padding-bottom: 0; }
+.pvp-verdict-big { font-size: 20px; font-weight: 600; line-height: 1.3; }
+.pvp-verdict-wait { font-size: 15px; font-weight: 400; color: var(--text-tertiary); }
+.pvp-fight-opts { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: flex-end; padding-top: 10px; border-top: 1px solid var(--hairline); }
+.pvp-showall { align-self: flex-start; margin-top: 10px; }
 
 /* builds */
 .pvp-builds { display: flex; flex-direction: column; }
@@ -9064,6 +9080,7 @@ let pvp = loadPvp();
 function savePvp() {
   try { localStorage.setItem(PVP_STORE_KEY, JSON.stringify(pvp)); } catch (e) { /* ignore */ }
 }
+let pvpShowAllSlots = false;    // Builds list: every slot, or only changed ones
 const pvpOpen = new Set();          // build rows with their editor open (not saved)
 const pvpOpenTypes = new Set();     // attack type cards expanded
 let pvpRanking = null;              // { key, rows } — gem ranking for one socket
@@ -9729,6 +9746,8 @@ function pvpLoadOpponentFile(file, target = 'opponent') {
     pvpLoadError = '';
     if (target === 'self') { pvp.self = { name, state: oppState }; pvp.patches = []; pvpRanking = null; }
     else pvp.opponent = { name, state: oppState };
+    const st = pvpStatsFromBuildFile(parsed);
+    if (st) pvpApplyStats(target === 'self' ? 'you' : 'opp', st, 'build file');
     savePvp();
     render();
   };
@@ -9760,6 +9779,25 @@ function parseStatSources(text) {
     const at = t.search(/\bEMBED\s*=/);
     obj = JSON.parse(at >= 0 ? (pvpJsonObjectAt(t, at) || 'null') : t);
   } catch (e) { return null; }
+  return statSourcesFromObject(obj);
+}
+// Stats carried inside a build file. Two shapes are read:
+//  - "statSources": the Stat Sources data ({ data: { stats, cp } } or { stats, cp })
+//  - "stats": { "ATK": 9427747178, "DEF": 184239643, "HP": 32523771218 }
+//    (also accepts Attack / Defence / HPMax as the keys), the final in-game numbers.
+function pvpStatsFromBuildFile(exp) {
+  if (!exp || typeof exp !== 'object') return null;
+  const name = (exp.player && exp.player.name) || '';
+  const fromSrc = statSourcesFromObject(exp.statSources ? Object.assign({ player: exp.player, exported: exp.exported }, exp.statSources) : null);
+  if (fromSrc) return fromSrc;
+  const st = exp.stats || (exp.player && exp.player.stats);
+  if (!st || typeof st !== 'object' || Array.isArray(st)) return null;
+  const pick = (...keys) => { for (const k of keys) { const v = pvpParseBig(st[k]); if (v) return v; } return null; };
+  const atk = pick('ATK', 'Attack', 'atk'), def = pick('DEF', 'Defence', 'Defense', 'def'), hp = pick('HP', 'HPMax', 'hp');
+  if (!atk) return null;
+  return { name, exported: exp.exported || '', cp: exp.player && exp.player.cp, plain: { atk, def, hp } };
+}
+function statSourcesFromObject(obj) {
   if (!obj || typeof obj !== 'object') return null;
   const data = obj.data && Array.isArray(obj.data.stats) ? obj.data : (Array.isArray(obj.stats) && obj.cp ? obj : null);
   if (!data) return null;
@@ -9787,6 +9825,21 @@ function parseStatSources(text) {
   };
 }
 let pvpStatError = '';
+// Puts a side's stats in place. src = parsed Stat Sources (exact %), or
+// { plain: { atk, def, hp } } for final numbers only.
+function pvpApplyStats(side, src, from) {
+  if (src.plain) {
+    ['atk', 'def', 'hp'].forEach(k => { pvp[side][k] = src.plain[k] ? String(Math.round(src.plain[k])) : ''; });
+    pvp[side].src = null;
+    pvp[side].statsFrom = { name: src.name, exported: src.exported, from };
+    return;
+  }
+  pvp[side].atk = String(Math.round(src.atk.final));
+  pvp[side].def = String(Math.round(src.def.final));
+  pvp[side].hp = String(Math.round(src.hp.final));
+  pvp[side].src = src;
+  pvp[side].statsFrom = { name: src.name, exported: src.exported, from };
+}
 function pvpLoadStatSources(side, file) {
   const reader = new FileReader();
   reader.onload = () => {
@@ -9795,10 +9848,7 @@ function pvpLoadStatSources(side, file) {
       pvpStatError = 'That file isn’t a Stat Sources page. Open the player’s page on the Stat Sources site, wait for it to load, save it (Cmd/Ctrl+S), and load that file.';
     } else {
       pvpStatError = '';
-      pvp[side].atk = String(Math.round(src.atk.final));
-      pvp[side].def = String(Math.round(src.def.final));
-      pvp[side].hp = String(Math.round(src.hp.final));
-      pvp[side].src = src;
+      pvpApplyStats(side, src, 'Stat Sources page');
       savePvp();
     }
     render();
@@ -9826,34 +9876,49 @@ function pvpAccordion(key, title, content, right) {
   return wrap;
 }
 
+// One numbered step of the page: 1 · Builds, 2 · Stats, 3 · Result.
+function pvpStep(n, title, hint, content, right) {
+  return el('section', { class: 'pvp-step-card' }, [
+    el('div', { class: 'pvp-step-head' }, [
+      el('span', { class: 'pvp-step-num' }, String(n)),
+      el('span', { class: 'pvp-step-title' }, title),
+      right || null,
+    ]),
+    hint ? el('p', { class: 'gemsim-note pvp-step-hint' }, hint) : null,
+    content,
+  ]);
+}
 function renderPvpSimulator() {
   const wrap = el('div', { class: 'pvp' });
   wrap.appendChild(el('div', { class: 'section-title-row' }, el('div', { class: 'section-title' }, 'PVP Simulator')));
-  wrap.appendChild(el('p', { class: 'section-desc' },
-    'Your build against an opponent’s, fought round by round with the game’s PVP damage formula. Change anything on your side to see what it does: your saved build only changes if you press Apply to my build.'));
+  wrap.appendChild(el('p', { class: 'section-desc' }, 'Who wins a duel, and what changes if you swap something. Nothing here changes your saved build.'));
   const res = pvpRunAll();
-  wrap.appendChild(renderPvpSetup());
-  wrap.appendChild(renderPvpResult(res));
-  const changeBadge = res.hasChanges
-    ? el('span', { class: 'pvp-acc-badge' }, `${pvpChangedRows(res).length} changed`) : null;
-  wrap.appendChild(pvpAccordion('builds', 'Builds: you vs opponent', renderPvpBuilds(res), changeBadge));
+  const changeBadge = res.hasChanges ? el('span', { class: 'pvp-acc-badge' }, `${pvpChangedRows(res).length} changed`) : null;
+  wrap.appendChild(pvpStep(1, 'Builds', 'Load each player’s build file. Press Change on a slot to try a what-if on your side.', renderPvpBuilds(res), changeBadge));
+  wrap.appendChild(pvpStep(2, 'Stats', pvpBothStats() ? null : 'Needed to see who wins. Comes in with the build file if it has them; otherwise load a Stat Sources page or type the numbers from Combat Power › Stats.', renderPvpStats()));
+  wrap.appendChild(pvpStep(3, 'Result', null, renderPvpResult(res)));
   wrap.appendChild(pvpAccordion('types', 'Damage by attack type', renderPvpTypes(res)));
   wrap.appendChild(pvpAccordion('settings', 'Advanced: attacks per round', renderPvpSettings(res)));
   wrap.appendChild(el('p', { class: 'section-desc gemsim-note pvp-footnote' },
     'Not modelled yet: Global DMG, Block, dodge, shields and healing, extra ×2/×3 procs, per-hit caps, enemy debuffs, character-specific gems, and Combo Count from items (set it under Advanced). Conditional effects follow the Calculator: counted while their round window is active.'));
   return wrap;
 }
+function pvpBothStats() {
+  const has = (sd) => !!pvpParseBig(sd.atk);
+  return has(pvp.you) && (!pvp.opponent || has(pvp.opp));
+}
 
 // One side of the setup: whose build it is, and the three numbers that
 // decide the fight (from a Stat Sources page, or typed in).
 function pvpStatInput(side, key, label, placeholder) {
   const raw = pvp[side][key] || '';
-  const shown = pvp[side].src && pvpParseBig(raw) ? pvpFmtBig(pvpParseBig(raw)) : raw; // page numbers read as 9.43B
+  const shown = pvp[side].statsFrom && pvpParseBig(raw) ? pvpFmtBig(pvpParseBig(raw)) : raw; // page numbers read as 9.43B
   const inp = el('input', { type: 'text', inputmode: 'decimal', class: 'search-input pvp-num', value: shown, placeholder });
   inp.addEventListener('change', () => {
     if (inp.value.trim() === shown) return;
     pvp[side][key] = inp.value.trim();
     delete pvp[side].src; // a typed number isn't the page's any more
+    delete pvp[side].statsFrom;
     savePvp(); render();
   });
   return el('label', { class: 'pvp-stat-field' }, [el('span', { class: 'filter-dropdown-label' }, label), inp]);
@@ -9881,22 +9946,20 @@ function pvpBuildFileButtons(side) {
       side === 'you' ? 'Use my build' : 'Use a copy of me') : null,
   ];
 }
-function renderPvpSide(side, title, name, buttons, mirrored) {
+function renderPvpStatSide(side, mirrored) {
   const wrap = el('div', { class: 'pvp-side' });
-  wrap.appendChild(el('div', { class: 'pvp-opp-line' }, [
-    el('div', {}, [el('div', { class: 'filter-dropdown-label' }, title), el('div', { class: 'pvp-opp-name' }, name)]),
-    el('div', { class: 'pvp-opp-actions' }, buttons),
-  ]));
+  wrap.appendChild(el('div', { class: 'pvp-opp-name' }, pvpSideName(side)));
   if (mirrored) {
-    wrap.appendChild(el('p', { class: 'gemsim-note' }, 'Same stats as you.'));
+    wrap.appendChild(el('p', { class: 'gemsim-note' }, 'A copy of you, with the same stats. Load an opponent in step 1 to compare against someone else.'));
     return wrap;
   }
-  const s = pvp[side].src;
+  const f = pvp[side].statsFrom;
   const fi = el('input', { type: 'file', accept: '.html,.htm,.txt,.json,text/html,text/plain,application/json', style: 'display:none;' });
   fi.addEventListener('change', () => { if (fi.files[0]) pvpLoadStatSources(side, fi.files[0]); });
   wrap.appendChild(el('div', { class: 'pvp-stats-row' }, [
     fi,
-    el('button', { class: 'filter-chip' + (s ? ' active' : ''), onclick: () => fi.click() }, s ? `Stats: ${s.name || 'page'}${s.exported ? ` · ${s.exported}` : ''}` : 'Load Stat Sources page'),
+    el('button', { class: 'filter-chip' + (f ? ' active' : ''), onclick: () => fi.click() },
+      f ? `From ${f.from}${f.exported ? ` · ${f.exported}` : ''}` : 'Load Stat Sources page'),
     el('span', { class: 'gemsim-note pvp-or' }, 'or type'),
     el('div', { class: 'pvp-stat-fields' }, [
       pvpStatInput(side, 'atk', 'ATK', '9.43B'),
@@ -9906,24 +9969,11 @@ function renderPvpSide(side, title, name, buttons, mirrored) {
   ]));
   return wrap;
 }
-function renderPvpSetup() {
-  const box = el('div', { class: 'pvp-setup' });
-  box.appendChild(renderPvpSide('you', 'You', pvp.self ? pvpSideName('you') : 'Your saved build', []));
-  box.appendChild(renderPvpSide('opp', 'Opponent', pvp.opponent ? pvpSideName('opp') : 'A copy of you', [], !pvp.opponent));
-
+function renderPvpStats() {
+  const box = el('div', { class: 'pvp-stats-step' });
+  box.appendChild(renderPvpStatSide('you'));
+  box.appendChild(renderPvpStatSide('opp', !pvp.opponent));
   if (pvpStatError) box.appendChild(el('p', { class: 'import-error' }, pvpStatError));
-  box.appendChild(el('p', { class: 'gemsim-note' },
-    'Load builds with the buttons in the Builds list below (a player export or CapyDex backup). Stats: the player’s saved Stat Sources page, or Combat Power › Stats in game. Nothing here changes your saved build.'));
-
-  const row = el('div', { class: 'gemsim-row' });
-  row.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
-    (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
-  box.appendChild(row);
-  const chips = el('div', { class: 'gemsim-chips' });
-  [['shield', 'Target has a shield'], ['hp70', 'Target above 70% HP']].forEach(([k, label]) => {
-    chips.appendChild(el('button', { class: 'filter-chip' + (pvp[k] ? ' active' : ''), onclick: () => { pvp[k] = !pvp[k]; savePvp(); render(); } }, label));
-  });
-  box.appendChild(chips);
   return box;
 }
 
@@ -9933,16 +9983,31 @@ function pvpRoundStr(f) {
 }
 function renderPvpResult(res) {
   const box = el('div', { class: 'pvp-result' });
-  const cards = el('div', { class: 'calc-stat-grid pvp-cards' });
   const N = pvp.rounds;
   const abs = res.dealt.absolute && res.taken.absolute;
+  if (abs) {
+    const yk = res.dealt.killRound, ok = res.taken.killRound;
+    const ySpeed = res.tri.totals[0]['Speed'] || 0, oSpeed = res.opp.totals[0]['Speed'] || 0;
+    let text;
+    const yn = pvpSideName('you'), on = pvpSideName('opp');
+    const youWin = yn === 'You' ? 'You win' : `${yn} wins`;
+    const yr = yk == null ? null : Math.ceil(yk), orr = ok == null ? null : Math.ceil(ok);
+    if (yr == null && orr == null) text = `Nobody falls within ${N} rounds. You take ${pvpPct(res.taken.total / res.taken.hp * 100)} of your HP and deal ${pvpPct(res.dealt.total / res.dealt.hp * 100)} of theirs.`;
+    else if (yr != null && orr != null && yr === orr && ySpeed === oSpeed) text = `Both sides fall in round ${yr} with the same Speed, so it comes down to who moves first.`;
+    else if (orr == null || (yr != null && (yr < orr || (yr === orr && ySpeed > oSpeed)))) text = `${youWin} in round ${yr}${orr === yr ? ' (same round, but faster)' : ''}.`;
+    else text = `${on} wins in round ${orr}${yr === orr ? ' (same round, but faster)' : ''}.`;
+    box.appendChild(el('p', { class: 'pvp-verdict pvp-verdict-big' }, text));
+  } else {
+    box.appendChild(el('p', { class: 'pvp-verdict pvp-verdict-big pvp-verdict-wait' }, 'Add both players’ stats in step 2 to see who wins.'));
+  }
+  const cards = el('div', { class: 'calc-stat-grid pvp-cards' });
   if (res.hasChanges) {
     const d = pvpRatio(res.dealtCur.total, res.dealt.total), t = pvpRatio(res.takenCur.total, res.taken.total);
-    cards.appendChild(renderStatCard('Damage you deal', fmtSignedPct(d), `over ${N} rounds, vs your saved build`, simMoved(d) && d > 0));
-    cards.appendChild(renderStatCard('Damage you take', fmtSignedPct(t), `over ${N} rounds, vs your saved build`, simMoved(t) && t < 0));
+    cards.appendChild(renderStatCard('Damage you deal', fmtSignedPct(d), `over ${N} rounds, vs before your changes`, simMoved(d) && d > 0));
+    cards.appendChild(renderStatCard('Damage you take', fmtSignedPct(t), `over ${N} rounds, vs before your changes`, simMoved(t) && t < 0));
     if (abs) {
-      cards.appendChild(renderStatCard('You beat them', `${pvpRoundStr(res.dealtCur)} → ${pvpRoundStr(res.dealt)}`, 'saved build → with changes'));
-      cards.appendChild(renderStatCard('They beat you', `${pvpRoundStr(res.takenCur)} → ${pvpRoundStr(res.taken)}`, 'saved build → with changes'));
+      cards.appendChild(renderStatCard('You beat them', `${pvpRoundStr(res.dealtCur)} → ${pvpRoundStr(res.dealt)}`, 'before → with changes'));
+      cards.appendChild(renderStatCard('They beat you', `${pvpRoundStr(res.takenCur)} → ${pvpRoundStr(res.taken)}`, 'before → with changes'));
     }
   } else {
     cards.appendChild(renderStatCard('Damage you deal', abs || res.dealt.absolute ? pvpFmtBig(res.dealt.total) : pvpX(res.dealt.total), `over ${N} rounds`));
@@ -9953,21 +10018,15 @@ function renderPvpResult(res) {
     }
   }
   box.appendChild(cards);
-
-  if (abs) {
-    const yk = res.dealt.killRound, ok = res.taken.killRound;
-    const ySpeed = res.tri.totals[0]['Speed'] || 0, oSpeed = res.opp.totals[0]['Speed'] || 0;
-    let text;
-    const yr = yk == null ? null : Math.ceil(yk), orr = ok == null ? null : Math.ceil(ok);
-    if (yr == null && orr == null) text = `Nobody falls within ${N} rounds. You take ${pvpPct(res.taken.total / res.taken.hp * 100)} of your HP and deal ${pvpPct(res.dealt.total / res.dealt.hp * 100)} of theirs.`;
-    else if (yr != null && orr != null && yr === orr && ySpeed === oSpeed) text = `Both sides fall in round ${yr} with the same Speed, so it comes down to who moves first.`;
-    else if (orr == null || (yr != null && (yr < orr || (yr === orr && ySpeed > oSpeed)))) text = `You win in round ${yr}${orr === yr ? ' (same round: you\u2019re faster)' : ''}.`;
-    else text = `The opponent wins in round ${orr}${yr === orr ? ' (same round: they\u2019re faster)' : ''}.`;
-    box.appendChild(el('p', { class: 'pvp-verdict' }, text));
-  } else {
-    box.appendChild(el('p', { class: 'gemsim-note' },
-      'Add both sides’ stats at the top (Stat Sources page, or ATK / DEF / HP) to see who wins and in which round. Until then the damage is shown as multipliers.'));
-  }
+  const opts = el('div', { class: 'pvp-fight-opts' });
+  opts.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
+    (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
+  const chips = el('div', { class: 'gemsim-chips' });
+  [['shield', 'Target has a shield'], ['hp70', 'Target above 70% HP']].forEach(([k, label]) => {
+    chips.appendChild(el('button', { class: 'filter-chip' + (pvp[k] ? ' active' : ''), onclick: () => { pvp[k] = !pvp[k]; savePvp(); render(); } }, label));
+  });
+  opts.appendChild(chips);
+  box.appendChild(opts);
   return box;
 }
 
@@ -9997,11 +10056,13 @@ function renderPvpBuilds(res) {
   ]));
   if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
   let lastCat = null;
+  const base = pvpBase();
+  let hidden = 0;
   rows.forEach(r => {
-    if (r.cat !== lastCat) { box.appendChild(el('div', { class: 'pvp-cat' }, r.cat)); lastCat = r.cat; }
-    const base = pvpBase();
     const changed = JSON.stringify(r.pick(base)) !== JSON.stringify(r.pick(res.trial));
     const open = pvpOpen.has(r.key);
+    if (!pvpShowAllSlots && !changed && !open) { hidden++; return; }
+    if (r.cat !== lastCat) { box.appendChild(el('div', { class: 'pvp-cat' }, r.cat)); lastCat = r.cat; }
     const lines = (st, cls) => r.detail(st).map(t => el('div', { class: cls }, t));
     const you = el('div', { class: 'pvp-cell pvp-you' + (changed ? ' changed' : '') }, [
       el('div', { class: 'pvp-sum' }, r.summary(res.trial)),
@@ -10019,6 +10080,8 @@ function renderPvpBuilds(res) {
     box.appendChild(rowEl);
     if (open) box.appendChild(el('div', { class: 'pvp-editor-wrap' }, r.editor(res.trial, res)));
   });
+  box.appendChild(el('button', { class: 'filter-chip pvp-showall', onclick: () => { pvpShowAllSlots = !pvpShowAllSlots; render(); } },
+    pvpShowAllSlots ? 'Show only changed slots' : (hidden === rows.length ? `Show all ${rows.length} slots side by side` : `Show the other ${hidden} slots`)));
   return box;
 }
 
