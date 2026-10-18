@@ -2457,6 +2457,10 @@ textarea::placeholder {
   scroll-margin-top: calc(var(--topbar-h, 0px) + 12px);
 }
 .pvp-brow-head { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); font-weight: 600; padding-top: 0; }
+.pvp-brow-head { align-items: center; }
+.pvp-head-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.pvp-head-name { font-family: var(--font-body); font-size: 13px; color: var(--text-primary); overflow-wrap: anywhere; }
+.pvp-head-btn { padding: 3px 10px; font-family: var(--font-body); font-size: 12px; font-weight: 400; }
 .pvp-label-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
 .pvp-label { color: var(--text-tertiary); font-size: 12px; padding-top: 2px; }
 .pvp-sum { color: var(--text-primary); overflow-wrap: anywhere; }
@@ -9854,6 +9858,29 @@ function pvpStatInput(side, key, label, placeholder) {
   });
   return el('label', { class: 'pvp-stat-field' }, [el('span', { class: 'filter-dropdown-label' }, label), inp]);
 }
+// Column names: the player's name from a loaded file, else "You" / a copy of you.
+function pvpSideName(side) {
+  const you = pvp.self && pvp.self.name ? pvp.self.name : 'You';
+  if (side === 'you') return you;
+  return pvp.opponent && pvp.opponent.name ? pvp.opponent.name : `${you} (copy)`;
+}
+// Load / reset buttons for one side's build, shown beside its column name.
+function pvpBuildFileButtons(side) {
+  const target = side === 'you' ? 'self' : 'opponent';
+  const loaded = side === 'you' ? pvp.self : pvp.opponent;
+  const fi = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
+  fi.addEventListener('change', () => { if (fi.files[0]) pvpLoadOpponentFile(fi.files[0], target); });
+  const reset = () => {
+    if (side === 'you') { pvp.self = null; pvp.patches = []; pvpRanking = null; } else pvp.opponent = null;
+    savePvp(); render();
+  };
+  return [
+    fi,
+    el('button', { class: 'filter-chip pvp-head-btn', onclick: (e) => { e.stopPropagation(); fi.click(); } }, loaded ? 'Load another' : 'Load file'),
+    loaded ? el('button', { class: 'filter-chip pvp-head-btn', onclick: (e) => { e.stopPropagation(); reset(); } },
+      side === 'you' ? 'Use my build' : 'Use a copy of me') : null,
+  ];
+}
 function renderPvpSide(side, title, name, buttons, mirrored) {
   const wrap = el('div', { class: 'pvp-side' });
   wrap.appendChild(el('div', { class: 'pvp-opp-line' }, [
@@ -9881,27 +9908,12 @@ function renderPvpSide(side, title, name, buttons, mirrored) {
 }
 function renderPvpSetup() {
   const box = el('div', { class: 'pvp-setup' });
-  const oppInput = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
-  oppInput.addEventListener('change', () => { if (oppInput.files[0]) pvpLoadOpponentFile(oppInput.files[0]); });
-  const selfInput = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
-  selfInput.addEventListener('change', () => { if (selfInput.files[0]) pvpLoadOpponentFile(selfInput.files[0], 'self'); });
+  box.appendChild(renderPvpSide('you', 'You', pvp.self ? pvpSideName('you') : 'Your saved build', []));
+  box.appendChild(renderPvpSide('opp', 'Opponent', pvp.opponent ? pvpSideName('opp') : 'A copy of you', [], !pvp.opponent));
 
-  box.appendChild(renderPvpSide('you', 'You', pvp.self ? pvp.self.name : 'Your saved build', [
-    el('button', { class: 'filter-chip', onclick: () => selfInput.click() }, pvp.self ? 'Load another' : 'Use a file instead'),
-    pvp.self ? el('button', { class: 'filter-chip', onclick: () => { pvp.self = null; pvp.patches = []; pvpRanking = null; savePvp(); render(); } }, 'Use my saved build') : null,
-    selfInput,
-  ]));
-  const mirror = !pvp.opponent;
-  box.appendChild(renderPvpSide('opp', 'Opponent', mirror ? 'A copy of you' : pvp.opponent.name, [
-    el('button', { class: 'filter-chip', onclick: () => oppInput.click() }, mirror ? 'Load opponent file' : 'Load another'),
-    mirror ? null : el('button', { class: 'filter-chip', onclick: () => { pvp.opponent = null; savePvp(); render(); } }, 'Use a copy of me'),
-    oppInput,
-  ], mirror));
-
-  if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
   if (pvpStatError) box.appendChild(el('p', { class: 'import-error' }, pvpStatError));
   box.appendChild(el('p', { class: 'gemsim-note' },
-    'Builds: a player export or CapyDex backup. Stats: the player’s saved Stat Sources page, or Combat Power › Stats in game. Nothing here changes your saved build.'));
+    'Load builds with the buttons in the Builds list below (a player export or CapyDex backup). Stats: the player’s saved Stat Sources page, or Combat Power › Stats in game. Nothing here changes your saved build.'));
 
   const row = el('div', { class: 'gemsim-row' });
   row.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
@@ -9979,8 +9991,11 @@ function renderPvpBuilds(res) {
     ]));
   }
   box.appendChild(el('div', { class: 'pvp-brow pvp-brow-head' }, [
-    el('div', {}, ''), el('div', {}, 'You'), el('div', {}, 'Opponent'),
+    el('div', {}, ''),
+    el('div', { class: 'pvp-head-cell' }, [el('span', { class: 'pvp-head-name' }, pvpSideName('you')), ...pvpBuildFileButtons('you')]),
+    el('div', { class: 'pvp-head-cell' }, [el('span', { class: 'pvp-head-name' }, pvpSideName('opp')), ...pvpBuildFileButtons('opp')]),
   ]));
+  if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
   let lastCat = null;
   rows.forEach(r => {
     if (r.cat !== lastCat) { box.appendChild(el('div', { class: 'pvp-cat' }, r.cat)); lastCat = r.cat; }
@@ -10202,7 +10217,7 @@ function renderPvpSettings(res) {
     'Defaults: 1 basic attack per round, no combo chain, Rage every 3 rounds, skill hits guessed from the weapon. Change them only if you know the real numbers.'));
   const table = el('table', { class: 'gemsim-table pvp-set-table' });
   const mirror = !pvp.opponent;
-  table.appendChild(el('thead', {}, el('tr', {}, [el('th', {}, ''), el('th', {}, 'You'), el('th', {}, mirror ? 'Opponent (mirror)' : 'Opponent')])));
+  table.appendChild(el('thead', {}, el('tr', {}, [el('th', {}, ''), el('th', {}, pvpSideName('you')), el('th', {}, pvpSideName('opp'))])));
   const tb = el('tbody');
   const sides = mirror ? [['you', res.you]] : [['you', res.you], ['opp', res.oppSide]];
   const input = (side, key, opts = {}) => {
