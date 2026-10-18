@@ -9081,14 +9081,20 @@ function pvpDiff(a, b, path, out) {
   }
   return out;
 }
+// Your side: your saved build, or a build file loaded just for the simulator
+// (it never touches your saved build).
+function pvpBase() {
+  return pvp.self && pvp.self.state ? Object.assign(defaultState(), pvp.self.state) : state;
+}
 function pvpTrialState() {
-  const t = pvpClone(state);
+  const t = pvpClone(pvpBase());
   pvp.patches.forEach(p => pvpSetPath(t, p.path, p));
   return t;
 }
 function pvpCommitTrial(trial) {
   const patches = [];
-  PVP_EDIT_SECTIONS.forEach(sec => pvpDiff(state[sec], trial[sec], [sec], patches));
+  const base = pvpBase();
+  PVP_EDIT_SECTIONS.forEach(sec => pvpDiff(base[sec], trial[sec], [sec], patches));
   pvp.patches = patches;
   pvpRanking = null;
   savePvp();
@@ -9096,7 +9102,7 @@ function pvpCommitTrial(trial) {
 }
 function pvpOpponentState() {
   if (pvp.opponent && pvp.opponent.state) return Object.assign(defaultState(), pvpClone(pvp.opponent.state));
-  return pvpClone(state); // mirror: a copy of your saved build
+  return pvpClone(pvpBase()); // mirror: a copy of your side
 }
 
 // Runs the normal aggregation against any build by swapping it in.
@@ -9298,14 +9304,15 @@ function pvpFight(A, D, sideA, sideD) {
 
 function pvpRunAll() {
   const trial = pvpTrialState();
-  const curStats = pvpAggregate(state, null);
-  const cur = pvpPrepareBuild(state, curStats);
+  const base = pvpBase();
+  const curStats = pvpAggregate(base, null);
+  const cur = pvpPrepareBuild(base, curStats);
   const hasChanges = pvp.patches.length > 0;
   const tri = hasChanges ? pvpPrepareBuild(trial, curStats) : cur; // trial's typed-in stats were read on the saved build
   const oppState = pvpOpponentState();
   const opp = pvpPrepareBuild(oppState);
   const you = pvpEffectiveSide(pvp.you, trial);
-  const youCur = pvpEffectiveSide(pvp.you, state);
+  const youCur = pvpEffectiveSide(pvp.you, base);
   // A mirror opponent also gets your typed-in ATK/DEF/HP and hit counts.
   const oppSide = pvpEffectiveSide(pvp.opponent ? pvp.opp : pvp.you, oppState);
   return {
@@ -9657,7 +9664,7 @@ function pvpRankGems(sd, socket, trial, res) {
   const cur = trial.equipment[sd.id].gems[socket];
   const tier = cur.tier || 9;
   const opts = (DB.gems[sd.gemKey] || []).filter(o => !trial.equipment[sd.id].gems.some((x, j) => j !== socket && x.gemId === o.id));
-  const refStats = pvpAggregate(state, null);
+  const refStats = pvpAggregate(pvpBase(), null);
   const rows = [];
   opts.forEach(meta => {
     if (meta.id === cur.gemId || !simGemAvailableAt(meta, tier)) return;
@@ -9692,7 +9699,7 @@ function pvpRenderRanking(rk, slot, trial) {
 }
 
 /* ---------- opponent loading ---------- */
-function pvpLoadOpponentFile(file) {
+function pvpLoadOpponentFile(file, target = 'opponent') {
   const reader = new FileReader();
   reader.onload = () => {
     let parsed;
@@ -9709,7 +9716,8 @@ function pvpLoadOpponentFile(file) {
       name = file.name.replace(/\.json$/i, '');
     }
     pvpLoadError = '';
-    pvp.opponent = { name, state: oppState };
+    if (target === 'self') { pvp.self = { name, state: oppState }; pvp.patches = []; pvpRanking = null; }
+    else pvp.opponent = { name, state: oppState };
     savePvp();
     render();
   };
@@ -9829,7 +9837,17 @@ function renderPvpSetup() {
   const box = el('div', { class: 'pvp-setup' });
   const fileInput = el('input', { type: 'file', accept: 'application/json,.json', class: 'hidden', style: 'display:none' });
   fileInput.addEventListener('change', () => { if (fileInput.files[0]) pvpLoadOpponentFile(fileInput.files[0]); });
-  const oppName = pvp.opponent ? pvp.opponent.name : 'Mirror: a copy of your saved build';
+  const selfInput = el('input', { type: 'file', accept: 'application/json,.json', style: 'display:none' });
+  selfInput.addEventListener('change', () => { if (selfInput.files[0]) pvpLoadOpponentFile(selfInput.files[0], 'self'); });
+  box.appendChild(el('div', { class: 'pvp-opp-line' }, [
+    el('div', {}, [el('div', { class: 'filter-dropdown-label' }, 'You'), el('div', { class: 'pvp-opp-name' }, pvp.self ? pvp.self.name : 'Your saved build')]),
+    el('div', { class: 'pvp-opp-actions' }, [
+      el('button', { class: 'filter-chip', onclick: () => selfInput.click() }, pvp.self ? 'Load another' : 'Load a file instead'),
+      pvp.self ? el('button', { class: 'filter-chip', onclick: () => { pvp.self = null; pvp.patches = []; pvpRanking = null; savePvp(); render(); } }, 'Use my saved build') : null,
+      selfInput,
+    ]),
+  ]));
+  const oppName = pvp.opponent ? pvp.opponent.name : `Mirror: a copy of ${pvp.self ? pvp.self.name : 'your saved build'}`;
   box.appendChild(el('div', { class: 'pvp-opp-line' }, [
     el('div', {}, [el('div', { class: 'filter-dropdown-label' }, 'Opponent'), el('div', { class: 'pvp-opp-name' }, oppName)]),
     el('div', { class: 'pvp-opp-actions' }, [
@@ -9838,7 +9856,7 @@ function renderPvpSetup() {
       fileInput,
     ]),
   ]));
-  box.appendChild(el('p', { class: 'gemsim-note' }, 'A player export from the game or a CapyDex backup file. It stays on this device and only fills the opponent side.'));
+  box.appendChild(el('p', { class: 'gemsim-note' }, 'Either side can be a player export from the game or a CapyDex backup file. Files stay on this device; loading one for You never changes your saved build.'));
   if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
   const row = el('div', { class: 'gemsim-row' });
   row.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
@@ -9898,17 +9916,18 @@ function renderPvpResult(res) {
 
 /* ---------- builds list ---------- */
 function pvpChangedRows(res) {
-  return pvpBuildRows().filter(r => JSON.stringify(r.pick(state)) !== JSON.stringify(r.pick(res.trial)));
+  const base = pvpBase();
+  return pvpBuildRows().filter(r => JSON.stringify(r.pick(base)) !== JSON.stringify(r.pick(res.trial)));
 }
 function renderPvpBuilds(res) {
   const box = el('div', { class: 'pvp-builds' });
   const rows = pvpBuildRows();
   if (res.hasChanges) {
     box.appendChild(el('div', { class: 'pvp-change-bar' }, [
-      el('span', {}, 'Your side has changes that aren’t saved to your build.'),
+      el('span', {}, pvp.self ? 'Your side has what-if changes on top of the loaded file.' : 'Your side has changes that aren’t saved to your build.'),
       el('div', { class: 'pvp-opp-actions' }, [
         el('button', { class: 'filter-chip', onclick: () => { pvp.patches = []; pvpRanking = null; savePvp(); render(); } }, 'Reset changes'),
-        el('button', { class: 'filter-chip active', onclick: () => {
+        pvp.self ? null : el('button', { class: 'filter-chip active', onclick: () => {
           state = pvpTrialState(); saveState(); pvp.patches = []; savePvp(); render();
         } }, 'Apply to my build'),
       ]),
@@ -9920,13 +9939,14 @@ function renderPvpBuilds(res) {
   let lastCat = null;
   rows.forEach(r => {
     if (r.cat !== lastCat) { box.appendChild(el('div', { class: 'pvp-cat' }, r.cat)); lastCat = r.cat; }
-    const changed = JSON.stringify(r.pick(state)) !== JSON.stringify(r.pick(res.trial));
+    const base = pvpBase();
+    const changed = JSON.stringify(r.pick(base)) !== JSON.stringify(r.pick(res.trial));
     const open = pvpOpen.has(r.key);
     const lines = (st, cls) => r.detail(st).map(t => el('div', { class: cls }, t));
     const you = el('div', { class: 'pvp-cell pvp-you' + (changed ? ' changed' : '') }, [
       el('div', { class: 'pvp-sum' }, r.summary(res.trial)),
       ...lines(res.trial, 'pvp-detail'),
-      changed ? el('div', { class: 'pvp-was' }, `was: ${r.summary(state)}`) : null,
+      changed ? el('div', { class: 'pvp-was' }, `was: ${r.summary(base)}`) : null,
     ]);
     const opp = el('div', { class: 'pvp-cell pvp-oppcell' }, [el('div', { class: 'pvp-sum' }, r.summary(res.oppState)), ...lines(res.oppState, 'pvp-detail')]);
     const btn = el('button', { class: 'filter-chip pvp-edit-btn' + (open ? ' active' : ''), onclick: () => {
