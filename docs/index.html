@@ -2445,11 +2445,12 @@ textarea::placeholder {
   padding: 16px 0 6px; border-bottom: 1px solid var(--hairline);
 }
 .pvp-brow {
-  display: grid; grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr) auto; gap: 4px 14px;
+  display: grid; grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr); gap: 4px 14px;
   align-items: start; padding: 9px 0; border-bottom: 1px solid var(--hairline); font-size: 13px;
   scroll-margin-top: calc(var(--topbar-h, 0px) + 12px);
 }
 .pvp-brow-head { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); font-weight: 600; padding-top: 0; }
+.pvp-label-cell { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
 .pvp-label { color: var(--text-tertiary); font-size: 12px; padding-top: 2px; }
 .pvp-sum { color: var(--text-primary); overflow-wrap: anywhere; }
 .pvp-oppcell .pvp-sum { color: var(--text-secondary); }
@@ -2519,11 +2520,10 @@ textarea::placeholder {
 
 @media (max-width: 640px) {
   .pvp-brow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 10px; }
-  .pvp-brow .pvp-label { grid-column: 1 / 2; }
-  .pvp-brow .pvp-edit-btn { grid-column: 2 / 3; grid-row: 1; justify-self: end; }
+  .pvp-brow .pvp-label-cell { grid-column: 1 / -1; }
   .pvp-brow .pvp-you { grid-column: 1 / 2; }
   .pvp-brow .pvp-oppcell { grid-column: 2 / 3; }
-  .pvp-brow-head > div:first-child, .pvp-brow-head > div:last-child { display: none; }
+  .pvp-brow-head > div:first-child { display: none; }
   .pvp-brow-head > div:nth-child(2) { grid-column: 1 / 2; }
   .pvp-brow-head > div:nth-child(3) { grid-column: 2 / 3; }
   .pvp-spark-cell { width: 96px; }
@@ -9915,7 +9915,7 @@ function renderPvpBuilds(res) {
     ]));
   }
   box.appendChild(el('div', { class: 'pvp-brow pvp-brow-head' }, [
-    el('div', {}, ''), el('div', {}, 'You'), el('div', {}, 'Opponent'), el('div', {}, ''),
+    el('div', {}, ''), el('div', {}, 'You'), el('div', {}, 'Opponent'),
   ]));
   let lastCat = null;
   rows.forEach(r => {
@@ -9934,7 +9934,7 @@ function renderPvpBuilds(res) {
       render();
     } }, open ? 'Done' : 'Change');
     const rowEl = el('div', { class: 'pvp-brow' + (changed ? ' changed' : ''), id: `pvp-row-${r.key.replace(/[^a-z0-9]+/gi, '-')}` }, [
-      el('div', { class: 'pvp-label' }, r.label), you, opp, btn,
+      el('div', { class: 'pvp-label-cell' }, [el('div', { class: 'pvp-label' }, r.label), btn]), you, opp,
     ]);
     box.appendChild(rowEl);
     if (open) box.appendChild(el('div', { class: 'pvp-editor-wrap' }, r.editor(res.trial, res)));
