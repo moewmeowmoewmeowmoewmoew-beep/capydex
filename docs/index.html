@@ -2397,6 +2397,10 @@ textarea::placeholder {
 .gemsim-good { color: var(--tier-uncommon-text); }
 .gemsim-bad { color: var(--rarity-mythic-text); }
 .gemsim-flat { color: var(--text-disabled); }
+.pvp-delta { font-family: var(--font-mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pvp-delta-arrow { font-size: 0.8em; display: inline-block; transform: translateY(-1px); }
+.pvp-impact { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; margin-top: 4px; font-size: 12px; }
+.pvp-impact-sep { color: var(--text-tertiary); font-size: 11.5px; }
 .gemsim-tag { display: block; font-size: 11px; color: var(--text-tertiary); font-style: italic; }
 .gemsim-use { padding: 4px 12px; white-space: nowrap; }
 .gemsim-coef-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
@@ -9344,7 +9348,7 @@ function pvpRunAll() {
   // A mirror opponent also gets your typed-in ATK/DEF/HP and hit counts.
   const oppSide = pvpEffectiveSide(pvp.opponent ? pvp.opp : pvp.you, oppState);
   return {
-    trial, oppState, cur, tri, opp, hasChanges, you, oppSide,
+    trial, oppState, cur, tri, opp, hasChanges, you, oppSide, curStats,
     dealt: pvpFight(tri, opp, you, oppSide),
     taken: pvpFight(opp, tri, oppSide, you),
     dealtCur: hasChanges ? pvpFight(cur, opp, youCur, oppSide) : null,
@@ -9376,9 +9380,44 @@ function fmtSignedPct(r) {
   return `${r > 0 ? '+' : '−'}${v.toFixed(v < 1 ? 2 : 1)}%`;
 }
 const pvpRatio = (a, b) => (a > 0 ? b / a - 1 : (b > 0 ? Infinity : null));
+// A change shown as ▲ +x% / ▼ −x%. The triangle is the direction the number
+// moved; the colour is whether that's good for you (green) or bad (red).
+// goodWhenUp: true for damage you deal, false for damage you take.
 function pvpDeltaSpan(r, goodWhenUp) {
-  const cls = !simMoved(r) ? 'gemsim-flat' : ((r > 0) === goodWhenUp ? 'gemsim-good' : 'gemsim-bad');
-  return el('span', { class: cls }, fmtSignedPct(r));
+  if (!simMoved(r)) return el('span', { class: 'pvp-delta gemsim-flat', title: 'No change' }, '– 0%');
+  const good = (r > 0) === goodWhenUp;
+  return el('span', { class: `pvp-delta ${good ? 'gemsim-good' : 'gemsim-bad'}`, title: good ? 'Better for you' : 'Worse for you' },
+    [el('span', { class: 'pvp-delta-arrow', 'aria-hidden': 'true' }, r > 0 ? '▲' : '▼'), ` ${fmtSignedPct(r)}`]);
+}
+// Overall effect of a change on the fight: how much more you deal relative to
+// what you take ((1 + dealt) / (1 + taken) − 1). Up is good.
+function pvpNetEffect(dealt, taken) {
+  if (dealt == null || taken == null || !isFinite(dealt) || !isFinite(taken)) return null;
+  return (1 + dealt) / (1 + taken) - 1;
+}
+// Effect of each changed slot on its own: the slot's what-if changes applied
+// to the build without any other change, fought against the same opponent.
+function pvpRowImpacts(res) {
+  const out = {};
+  if (!res.hasChanges || !res.dealtCur) return out;
+  const base = pvpBase(), rows = pvpBuildRows(), groups = {};
+  pvp.patches.forEach(p => {
+    const t = pvpClone(base);
+    pvpSetPath(t, p.path, p);
+    rows.forEach(r => {
+      if (JSON.stringify(r.pick(base)) !== JSON.stringify(r.pick(t))) (groups[r.key] = groups[r.key] || []).push(p);
+    });
+  });
+  Object.entries(groups).forEach(([key, ps]) => {
+    const t = pvpClone(base);
+    ps.forEach(p => pvpSetPath(t, p.path, p));
+    const b = pvpPrepareBuild(t, res.curStats);
+    const side = pvpEffectiveSide(pvp.you, t);
+    const dealt = pvpRatio(res.dealtCur.total, pvpFight(b, res.opp, side, res.oppSide).total);
+    const taken = pvpRatio(res.takenCur.total, pvpFight(res.opp, b, res.oppSide, side).total);
+    out[key] = { dealt, taken, net: pvpNetEffect(dealt, taken) };
+  });
+  return out;
 }
 function simSelect(label, options, value, onChange) {
   const group = el('div', { class: 'filter-dropdown-group gemsim-field' });
@@ -10003,8 +10042,10 @@ function renderPvpResult(res) {
   const cards = el('div', { class: 'calc-stat-grid pvp-cards' });
   if (res.hasChanges) {
     const d = pvpRatio(res.dealtCur.total, res.dealt.total), t = pvpRatio(res.takenCur.total, res.taken.total);
-    cards.appendChild(renderStatCard('Damage you deal', fmtSignedPct(d), `over ${N} rounds, vs before your changes`, simMoved(d) && d > 0));
-    cards.appendChild(renderStatCard('Damage you take', fmtSignedPct(t), `over ${N} rounds, vs before your changes`, simMoved(t) && t < 0));
+    const net = pvpNetEffect(d, t);
+    cards.appendChild(renderStatCard('Overall', pvpDeltaSpan(net, true), 'damage you deal vs damage you take'));
+    cards.appendChild(renderStatCard('Damage you deal', pvpDeltaSpan(d, true), `over ${N} rounds, vs before your changes`));
+    cards.appendChild(renderStatCard('Damage you take', pvpDeltaSpan(t, false), `over ${N} rounds, vs before your changes`));
     if (abs) {
       cards.appendChild(renderStatCard('You beat them', `${pvpRoundStr(res.dealtCur)} → ${pvpRoundStr(res.dealt)}`, 'before → with changes'));
       cards.appendChild(renderStatCard('They beat you', `${pvpRoundStr(res.takenCur)} → ${pvpRoundStr(res.taken)}`, 'before → with changes'));
@@ -10057,6 +10098,7 @@ function renderPvpBuilds(res) {
   if (pvpLoadError) box.appendChild(el('p', { class: 'import-error' }, pvpLoadError));
   let lastCat = null;
   const base = pvpBase();
+  const impacts = pvpRowImpacts(res);
   let hidden = 0;
   rows.forEach(r => {
     const changed = JSON.stringify(r.pick(base)) !== JSON.stringify(r.pick(res.trial));
@@ -10068,6 +10110,11 @@ function renderPvpBuilds(res) {
       el('div', { class: 'pvp-sum' }, r.summary(res.trial)),
       ...lines(res.trial, 'pvp-detail'),
       changed ? el('div', { class: 'pvp-was' }, `was: ${r.summary(base)}`) : null,
+      changed && impacts[r.key] ? el('div', { class: 'pvp-impact' }, [
+        pvpDeltaSpan(impacts[r.key].net, true), el('span', { class: 'pvp-impact-sep' }, 'overall ·'),
+        pvpDeltaSpan(impacts[r.key].dealt, true), el('span', { class: 'pvp-impact-sep' }, 'dealt ·'),
+        pvpDeltaSpan(impacts[r.key].taken, false), el('span', { class: 'pvp-impact-sep' }, 'taken'),
+      ]) : null,
     ]);
     const opp = el('div', { class: 'pvp-cell pvp-oppcell' }, [el('div', { class: 'pvp-sum' }, r.summary(res.oppState)), ...lines(res.oppState, 'pvp-detail')]);
     const btn = el('button', { class: 'filter-chip pvp-edit-btn' + (open ? ' active' : ''), onclick: () => {
