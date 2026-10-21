@@ -10130,6 +10130,85 @@ function pvpRoundStr(f) {
   if (f.killRound != null) return `Round ${Math.ceil(f.killRound)}`;
   return f.hp ? `Not in ${pvp.rounds}` : '—';
 }
+/* ---------- why: who wins and what drives it ----------
+   Damage you deal per HP they have, against damage they deal per HP you have,
+   split into the stages of the damage chain. Each factor is "yours ÷ theirs", so
+   above 1 favours you. Stage values are averaged over the fight, weighted by how
+   much damage each hit does, so the factors multiply to roughly the overall edge. */
+function pvpFightProfile(f) {
+  const acc = { w: 0, hits: 0, base: 0, coef: 0, crit: 0, pool: 0, final: 0, pvp: 0, block: 0, chance: 0, mult: 0, blockRed: 0 };
+  f.types.forEach(t => t.rounds.forEach(rd => {
+    const w = rd.hits * rd.hit.total;
+    acc.hits += rd.hits; acc.w += w;
+    ['base', 'coef', 'crit', 'pool', 'final', 'pvp', 'block'].forEach(k => { acc[k] += w * rd.hit.st[k]; });
+    acc.chance += w * rd.hit.chance; acc.mult += w * rd.hit.mult; acc.blockRed += w * rd.hit.blockRed;
+  }));
+  const d = acc.w || 1, rounds = f.byRound.length || 1;
+  const out = { hitsPerRound: acc.hits / rounds };
+  ['base', 'coef', 'crit', 'pool', 'final', 'pvp', 'block', 'chance', 'mult', 'blockRed'].forEach(k => { out[k] = acc[k] / d; });
+  return out;
+}
+function pvpWhyFactors(res) {
+  const y = pvpFightProfile(res.dealt), o = pvpFightProfile(res.taken);
+  const yn = pvpSideName('you'), on = pvpSideName('opp');
+  const big = (v) => pvpFmtBig(v);
+  const f = (key, label, a, b, detail) => ({ key, label, ratio: b > 0 ? a / b : 1, detail });
+  return [
+    f('base', 'Hit strength (ATK minus their DEF)', y.base, o.base, `${big(y.base)} per hit vs ${big(o.base)}`),
+    f('hits', 'Attacks landed per round', y.hitsPerRound, o.hitsPerRound, `${y.hitsPerRound.toFixed(1)} vs ${o.hitsPerRound.toFixed(1)} hits per round`),
+    f('coef', 'Skill strength', y.coef, o.coef, `${pvpX(y.coef)} vs ${pvpX(o.coef)}`),
+    f('crit', 'Crits', y.crit, o.crit, `crits add ${pvpPct((y.crit - 1) * 100, 0)} to your hits, ${pvpPct((o.crit - 1) * 100, 0)} to theirs`),
+    f('pool', 'DMG bonus vs reduction', y.pool, o.pool, `${pvpX(y.pool)} vs ${pvpX(o.pool)}`),
+    f('final', 'Final DMG', y.final, o.final, `${pvpX(y.final)} vs ${pvpX(o.final)}`),
+    f('pvp', 'PVP damage rate', y.pvp, o.pvp, `${pvpX(y.pvp)} vs ${pvpX(o.pvp)}`),
+    f('block', 'Block', y.block, o.block, `${on} trims ${pvpPct((1 - y.block) * 100, 0)} of your damage, ${yn === 'You' ? 'you trim' : yn + ' trims'} ${pvpPct((1 - o.block) * 100, 0)} of theirs`),
+    f('hp', 'Durability (PVP HP)', res.taken.hp, res.dealt.hp, `${big(res.taken.hp)} vs ${big(res.dealt.hp)}`),
+  ];
+}
+function renderPvpWhy(res) {
+  const box = el('div', { class: 'pvp-why' });
+  const yn = pvpSideName('you'), on = pvpSideName('opp');
+  const you = yn === 'You';
+  const factors = pvpWhyFactors(res).map(x => Object.assign(x, { ln: Math.log(x.ratio) }));
+  const total = Math.exp(factors.reduce((a, x) => a + x.ln, 0));
+  factors.sort((a, b) => Math.abs(b.ln) - Math.abs(a.ln));
+  const edges = factors.filter(x => x.ratio > 1.02), gaps = factors.filter(x => x.ratio < 0.98);
+  const names = (arr) => arr.slice(0, 2).map(x => x.label.replace(/ \(.*\)/, '').toLowerCase()).join(' and ');
+  const w = res.win.win;
+  const lead = w >= 0.5 ? yn : on;
+  const leadWins = w >= 0.5 ? w : res.win.lose;
+  let text;
+  if (res.win.none > 0.5) text = `Neither side usually falls within ${pvp.rounds} rounds, so this is decided by who is closer to the kill.`;
+  else {
+    const winnersEdges = w >= 0.5 ? edges : gaps;
+    const losersEdges = w >= 0.5 ? gaps : edges;
+    const be = (n) => (n === 'You' ? 'are' : 'is');
+    const trail = w >= 0.5 ? on : yn;
+    text = `${lead} ${be(lead)} ahead (${Math.round(leadWins * 100)}%)` + (winnersEdges.length ? `, mainly on ${names(winnersEdges)}` : '') +
+      (losersEdges.length ? `. ${trail} ${be(trail)} better on ${names(losersEdges)}, but not enough to make up for it.` : '.');
+  }
+  box.appendChild(el('p', { class: 'pvp-verdict' }, text));
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    `Overall you are ${total >= 1 ? `${pvpX(total)} ahead` : `${pvpX(1 / total)} behind`} on damage dealt per HP they have, against damage taken per HP you have. Each row is your side ÷ theirs, so green favours ${you ? 'you' : yn}.`));
+  const table = el('table', { class: 'gemsim-table' });
+  table.appendChild(el('thead', {}, el('tr', {}, [el('th', {}, 'Factor'), el('th', {}, 'Edge'), el('th', {}, 'Detail')])));
+  const tb = el('tbody');
+  factors.forEach(x => {
+    const flat = Math.abs(x.ln) < 0.01;
+    const good = x.ratio > 1;
+    const val = flat ? 'even' : `${good ? '▲' : '▼'} ${pvpX(good ? x.ratio : 1 / x.ratio)} ${good ? (you ? 'you' : yn) : on}`;
+    tb.appendChild(el('tr', {}, [
+      el('td', {}, x.label),
+      el('td', { class: flat ? 'gemsim-flat' : (good ? 'gemsim-good' : 'gemsim-bad') }, val),
+      el('td', { class: 'gemsim-note' }, x.detail),
+    ]));
+  });
+  table.appendChild(tb);
+  box.appendChild(el('div', { class: 'gemsim-table-wrap' }, table));
+  const ys = res.tri.totals[0]['Speed'] || 0, os = res.opp.totals[0]['Speed'] || 0;
+  if (ys !== os) box.appendChild(el('p', { class: 'gemsim-note' }, `Speed: ${ys > os ? yn : on} ${(ys > os ? yn : on) === 'You' ? 'are' : 'is'} faster (${Math.max(ys, os)} vs ${Math.min(ys, os)}), which only matters if both fall in the same round.`));
+  return box;
+}
 function renderPvpResult(res) {
   const box = el('div', { class: 'pvp-result' });
   const N = pvp.rounds;
@@ -10182,6 +10261,7 @@ function renderPvpResult(res) {
     }
   }
   box.appendChild(cards);
+  if (abs && res.win) box.appendChild(el('details', { class: 'pvp-why-wrap', open: '' }, [el('summary', { class: 'gemsim-note' }, 'Why this result'), renderPvpWhy(res)]));
   const opts = el('div', { class: 'pvp-fight-opts' });
   opts.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
     (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
