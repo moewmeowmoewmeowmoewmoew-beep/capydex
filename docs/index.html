@@ -9068,7 +9068,7 @@ function pvpDefaultSide() {
   return { atk: '', def: '', hp: '', basic: 1, maxCombo: 1, rageEvery: 3, skillHits: {} };
 }
 function loadPvp() {
-  const base = { rounds: 15, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {}, blockChance: 100 };
+  const base = { rounds: 15, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {}, blockChance: 100, sigma: 10 };
   try {
     const raw = JSON.parse(localStorage.getItem(PVP_STORE_KEY) || 'null');
     if (raw && typeof raw === 'object') {
@@ -9245,30 +9245,36 @@ function pvpHit(A, D, typeName, ctx) {
   const blockRed = clamp(((D['Block'] || 0) - (A['Block'] || 0)) / 10000, 0, 0.9);
   st.block = 1 - clamp((Number(pvp.blockChance) || 0) / 100, 0, 1) * blockRed;
   const allMult = st.coef * st.pool * st.final * st.pvp * st.block;
-  return { st, chance, mult, T, P, atk, def, allMult, total: st.base * st.crit * allMult };
+  const unit = st.base * st.coef * st.pool * st.final * st.pvp; // one hit before crit and block
+  return { st, chance, mult, T, P, atk, def, allMult, unit, blockRed, total: st.base * st.crit * allMult };
 }
 
 // Expected hits of each attack type in one round.
-function pvpHitsPerRound(typeName, A, D, side, enemySide) {
+function pvpHitModel(typeName, A, D, side, enemySide) {
   const L = pvpLabels(typeName);
   const basic = Math.max(0, Number(side.basic) || 0);
-  if (typeName === 'Basic Attack') return basic;
+  if (typeName === 'Basic Attack') return { kind: 'fixed', n: basic };
   if (typeName === 'Combo') {
     const c = clamp(((A[L.proc[0]] || 0) - (D[L.proc[1]] || 0)) / 100, 0, 1);
-    let n = 0;
-    for (let k = 1; k <= Math.max(1, Number(side.maxCombo) || 1); k++) n += Math.pow(c, k);
-    return basic * n;
+    return { kind: 'combo', basic, c, max: Math.max(1, Number(side.maxCombo) || 1) };
   }
   if (typeName === 'Counter') {
     const c = clamp(((A[L.proc[0]] || 0) - (D[L.proc[1]] || 0)) / 100, 0, 1);
-    return c * Math.max(0, Number(enemySide.basic) || 0);
+    return { kind: 'counter', c, tries: Math.max(0, Number(enemySide.basic) || 0) };
   }
-  if (typeName === 'Rage Skill') {
-    const every = Number(side.rageEvery) || 0;
-    return every > 0 ? 1 / every : 0;
+  if (typeName === 'Rage Skill') return { kind: 'rage', every: Number(side.rageEvery) || 0 };
+  return { kind: 'fixed', n: Math.max(0, Number(side.skillHits[typeName]) || 0) };
+}
+function pvpHitsPerRound(typeName, A, D, side, enemySide) {
+  const m = pvpHitModel(typeName, A, D, side, enemySide);
+  if (m.kind === 'combo') {
+    let n = 0;
+    for (let k = 1; k <= m.max; k++) n += Math.pow(m.c, k);
+    return m.basic * n;
   }
-  const v = side.skillHits[typeName];
-  return Math.max(0, Number(v) || 0);
+  if (m.kind === 'counter') return m.c * m.tries;
+  if (m.kind === 'rage') return m.every > 0 ? 1 / m.every : 0;
+  return m.n;
 }
 
 // Guess of skill hits per round from the equipped weapon's own text, used
@@ -9317,7 +9323,7 @@ function pvpFight(A, D, sideA, sideD) {
       const hits = pvpHitsPerRound(t.name, a, d, sideA, sideD);
       const hit = pvpHit(a, d, t.name, ctx);
       const dmg = hits * hit.total;
-      t.rounds.push({ hits, hit, dmg });
+      t.rounds.push({ hits, hit, dmg, model: pvpHitModel(t.name, a, d, sideA, sideD) });
       t.total += dmg; t.hits += hits; roundDmg += dmg;
     });
     byRound.push(roundDmg);
@@ -9337,6 +9343,94 @@ function pvpFight(A, D, sideA, sideD) {
   return { types, byRound, total, hp, killRound, absolute: !!atkIn, ctx };
 }
 
+/* ---------- win chance: Monte Carlo ----------
+   Plays the duel many times with real dice (crit, block, combo chains,
+   counters). Every die is a fixed function of (fight number, side, round,
+   attack, hit, purpose), so "before" and "after" a what-if are rolled with the
+   SAME dice. That keeps the win-% change from a swap steady instead of jumping
+   around from luck. A per-fight ± factor on each side's damage stands in for
+   everything the model doesn't cover. */
+const PVP_MC_FIGHTS = 2000, PVP_MC_FIGHTS_SLOT = 1000, PVP_MC_SEED = 20261021;
+function pvpU(f, side, r, t, k, p) {
+  let h = Math.imul(f + 1, 0x9E3779B1) ^ PVP_MC_SEED;
+  h = Math.imul(h ^ (side * 7919 + r * 104729 + t * 1299709 + p * 15485863), 0x85EBCA6B);
+  h = Math.imul(h ^ (k + 1) * 0x27D4EB2F, 0xC2B2AE35);
+  h ^= h >>> 15; h = Math.imul(h, 0x2C1B3C6D); h ^= h >>> 12; h = Math.imul(h, 0x297A2D39); h ^= h >>> 15;
+  return (h >>> 0) / 4294967296;
+}
+function pvpGauss(f, side) {
+  const u1 = Math.max(1e-12, pvpU(f, side, 0, 0, 0, 90)), u2 = pvpU(f, side, 0, 0, 0, 91);
+  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+// A fight's numbers boiled down to plain arrays (also the cache key).
+function pvpMcPlan(fight) {
+  return {
+    hp: fight.hp,
+    rounds: fight.types[0].rounds.map((_, i) => fight.types.map(t => {
+      const rd = t.rounds[i], m = rd.model, h = rd.hit;
+      return [m.kind, m.n || 0, m.c || 0, m.max || 0, m.basic || 0, m.tries || 0, m.every || 0, h.unit, h.chance, h.mult, h.blockRed];
+    })),
+  };
+}
+function pvpMcRoundDamage(plan, r, f, side, blockP) {
+  let dmg = 0;
+  const types = plan.rounds[r];
+  for (let t = 0; t < types.length; t++) {
+    const [kind, n, c, max, basic, tries, every, unit, chance, mult, blockRed] = types[t];
+    let hits = 0;
+    if (kind === 'fixed') hits = Math.floor(n) + (pvpU(f, side, r, t, 0, 2) < n - Math.floor(n) ? 1 : 0);
+    else if (kind === 'rage') hits = every > 0 && (r + 1) % every === 0 ? 1 : 0;
+    else if (kind === 'counter') {
+      const m = Math.floor(tries) + (pvpU(f, side, r, t, 0, 2) < tries - Math.floor(tries) ? 1 : 0);
+      for (let j = 0; j < m; j++) if (pvpU(f, side, r, t, j + 1, 3) < c) hits++;
+    } else if (kind === 'combo') {
+      const b = Math.floor(basic) + (pvpU(f, side, r, t, 0, 2) < basic - Math.floor(basic) ? 1 : 0);
+      for (let j = 0; j < b; j++) {
+        for (let k = 1; k <= max; k++) { if (pvpU(f, side, r, t, j * 32 + k, 4) < c) hits++; else break; }
+      }
+    }
+    for (let k = 0; k < hits; k++) {
+      let d = unit;
+      if (pvpU(f, side, r, t, k, 0) < chance) d *= mult;
+      if (blockRed > 0 && pvpU(f, side, r, t, k, 1) < blockP) d *= 1 - blockRed;
+      dmg += d;
+    }
+  }
+  return dmg;
+}
+const pvpMcCache = new Map();
+// dealt: you hit them; taken: they hit you. Needs both sides' ATK/DEF/HP.
+function pvpWinChance(dealt, taken, ySpeed, oSpeed, n) {
+  if (!dealt || !taken || !dealt.hp || !taken.hp || !dealt.absolute || !taken.absolute) return null;
+  const sigma = clamp(Number(pvp.sigma) || 0, 0, 100) / 100;
+  const blockP = clamp((Number(pvp.blockChance) || 0) / 100, 0, 1);
+  const pY = pvpMcPlan(dealt), pO = pvpMcPlan(taken);
+  const key = JSON.stringify([pY, pO, ySpeed, oSpeed, n, sigma, blockP]);
+  if (pvpMcCache.has(key)) return pvpMcCache.get(key);
+  let win = 0, lose = 0, none = 0;
+  const R = pY.rounds.length;
+  for (let f = 0; f < n; f++) {
+    const fy = Math.exp(sigma * pvpGauss(f, 0) - sigma * sigma / 2), fo = Math.exp(sigma * pvpGauss(f, 1) - sigma * sigma / 2);
+    let cy = 0, co = 0, out = 0;
+    for (let r = 0; r < R; r++) {
+      cy += pvpMcRoundDamage(pY, r, f, 0, blockP) * fy;
+      co += pvpMcRoundDamage(pO, r, f, 1, blockP) * fo;
+      const yk = cy >= pY.hp, ok = co >= pO.hp;
+      if (yk && ok) out = ySpeed > oSpeed ? 1 : ySpeed < oSpeed ? -1 : (pvpU(f, 0, 0, 0, 0, 92) < 0.5 ? 1 : -1);
+      else if (yk) out = 1; else if (ok) out = -1;
+      if (out) break;
+    }
+    if (out > 0) win++; else if (out < 0) lose++; else none++;
+  }
+  const res = { win: win / n, lose: lose / n, none: none / n, n };
+  if (pvpMcCache.size > 60) pvpMcCache.clear();
+  pvpMcCache.set(key, res);
+  return res;
+}
+function pvpRunWinChance(res, dealt, taken, n) {
+  return pvpWinChance(dealt, taken, res.tri.totals[0]['Speed'] || 0, res.opp.totals[0]['Speed'] || 0, n);
+}
+
 function pvpRunAll() {
   const trial = pvpTrialState();
   const base = pvpBase();
@@ -9350,13 +9444,16 @@ function pvpRunAll() {
   const youCur = pvpEffectiveSide(pvp.you, base);
   // A mirror opponent also gets your typed-in ATK/DEF/HP and hit counts.
   const oppSide = pvpEffectiveSide(pvp.opponent ? pvp.opp : pvp.you, oppState);
-  return {
+  const out = {
     trial, oppState, cur, tri, opp, hasChanges, you, oppSide, curStats,
     dealt: pvpFight(tri, opp, you, oppSide),
     taken: pvpFight(opp, tri, oppSide, you),
     dealtCur: hasChanges ? pvpFight(cur, opp, youCur, oppSide) : null,
     takenCur: hasChanges ? pvpFight(opp, cur, oppSide, youCur) : null,
   };
+  out.win = pvpRunWinChance(out, out.dealt, out.taken, PVP_MC_FIGHTS);
+  out.winCur = hasChanges ? pvpWinChance(out.dealtCur, out.takenCur, cur.totals[0]['Speed'] || 0, opp.totals[0]['Speed'] || 0, PVP_MC_FIGHTS) : out.win;
+  return out;
 }
 
 /* ---------- small shared helpers ---------- */
@@ -9386,7 +9483,14 @@ const pvpRatio = (a, b) => (a > 0 ? b / a - 1 : (b > 0 ? Infinity : null));
 // A change shown as ▲ +x% / ▼ −x%. The triangle is the direction the number
 // moved; the colour is whether that's good for you (green) or bad (red).
 // goodWhenUp: true for damage you deal, false for damage you take.
-function pvpDeltaSpan(r, goodWhenUp) {
+function pvpDeltaSpan(r, goodWhenUp, unit) {
+  if (unit === 'pts') { // r is a win-chance difference as a fraction; show percentage points
+    const v = r * 100;
+    if (Math.abs(v) < 0.05) return el('span', { class: 'pvp-delta gemsim-flat', title: 'No change' }, '– 0 pts');
+    const good = v > 0;
+    return el('span', { class: `pvp-delta ${good ? 'gemsim-good' : 'gemsim-bad'}`, title: good ? 'Better for you' : 'Worse for you' },
+      [el('span', { class: 'pvp-delta-arrow', 'aria-hidden': 'true' }, v > 0 ? '▲' : '▼'), ` ${v > 0 ? '+' : '−'}${Math.abs(v).toFixed(1)} pts`]);
+  }
   if (!simMoved(r)) return el('span', { class: 'pvp-delta gemsim-flat', title: 'No change' }, '– 0%');
   const good = (r > 0) === goodWhenUp;
   return el('span', { class: `pvp-delta ${good ? 'gemsim-good' : 'gemsim-bad'}`, title: good ? 'Better for you' : 'Worse for you' },
@@ -9418,7 +9522,10 @@ function pvpRowImpacts(res) {
     const side = pvpEffectiveSide(pvp.you, t);
     const dealt = pvpRatio(res.dealtCur.total, pvpFight(b, res.opp, side, res.oppSide).total);
     const taken = pvpRatio(res.takenCur.total, pvpFight(res.opp, b, res.oppSide, side).total);
-    out[key] = { dealt, taken, net: pvpNetEffect(dealt, taken) };
+    const f1 = pvpFight(b, res.opp, side, res.oppSide), f2 = pvpFight(res.opp, b, res.oppSide, side);
+    const w0 = pvpWinChance(res.dealtCur, res.takenCur, res.cur.totals[0]['Speed'] || 0, res.opp.totals[0]['Speed'] || 0, PVP_MC_FIGHTS_SLOT);
+    const w1 = pvpWinChance(f1, f2, b.totals[0]['Speed'] || 0, res.opp.totals[0]['Speed'] || 0, PVP_MC_FIGHTS_SLOT);
+    out[key] = { dealt, taken, net: pvpNetEffect(dealt, taken), win: w0 && w1 ? w1.win - w0.win : null };
   });
   return out;
 }
@@ -10043,6 +10150,19 @@ function renderPvpResult(res) {
     box.appendChild(el('p', { class: 'pvp-verdict pvp-verdict-big pvp-verdict-wait' }, 'Add both players’ stats in step 2 to see who wins.'));
   }
   const cards = el('div', { class: 'calc-stat-grid pvp-cards' });
+  if (abs && res.win) {
+    const pc = (v) => `${Math.round(v * 100)}%`;
+    const se = (p) => 1.96 * Math.sqrt(p * (1 - p) / res.win.n);
+    const detail = `${pc(res.win.lose)} lose${res.win.none >= 0.005 ? ` · ${pc(res.win.none)} nobody falls in ${N} rounds` : ''} · ${res.win.n} simulated fights, ±${Math.max(1, Math.round(se(res.win.win) * 100))}%`;
+    if (res.hasChanges && res.winCur) {
+      const dp = (res.win.win - res.winCur.win) * 100;
+      const span = Math.abs(dp) < 0.05 ? el('span', { class: 'pvp-delta gemsim-flat' }, '– 0 pts')
+        : el('span', { class: `pvp-delta ${dp > 0 ? 'gemsim-good' : 'gemsim-bad'}` }, [el('span', { class: 'pvp-delta-arrow', 'aria-hidden': 'true' }, dp > 0 ? '▲' : '▼'), ` ${dp > 0 ? '+' : '−'}${Math.abs(dp).toFixed(1)} pts`]);
+      cards.appendChild(renderStatCard('Win chance', el('span', {}, [`${pc(res.winCur.win)} → ${pc(res.win.win)} `, span]), detail, true));
+    } else {
+      cards.appendChild(renderStatCard('Win chance', pc(res.win.win), detail, true));
+    }
+  }
   if (res.hasChanges) {
     const d = pvpRatio(res.dealtCur.total, res.dealt.total), t = pvpRatio(res.takenCur.total, res.taken.total);
     const net = pvpNetEffect(d, t);
@@ -10114,6 +10234,8 @@ function renderPvpBuilds(res) {
       ...lines(res.trial, 'pvp-detail'),
       changed ? el('div', { class: 'pvp-was' }, `was: ${r.summary(base)}`) : null,
       changed && impacts[r.key] ? el('div', { class: 'pvp-impact' }, [
+        impacts[r.key].win != null ? pvpDeltaSpan(impacts[r.key].win, true, 'pts') : null,
+        impacts[r.key].win != null ? el('span', { class: 'pvp-impact-sep' }, 'win ·') : null,
         pvpDeltaSpan(impacts[r.key].net, true), el('span', { class: 'pvp-impact-sep' }, 'overall ·'),
         pvpDeltaSpan(impacts[r.key].dealt, true), el('span', { class: 'pvp-impact-sep' }, 'dealt ·'),
         pvpDeltaSpan(impacts[r.key].taken, false), el('span', { class: 'pvp-impact-sep' }, 'taken'),
@@ -10369,6 +10491,15 @@ function renderPvpSettings(res) {
     savePvp(); render();
   });
   box.appendChild(el('div', { class: 'gemsim-coef-row' }, [bcInp]));
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    'Win chance uncertainty (±%). Each simulated fight scales each side’s damage by a random factor of about this size, standing in for everything the model leaves out. 0 = only crit, block, combo and counter luck.'));
+  const sgInp = el('input', { type: 'number', min: '0', max: '100', step: '1', value: String(pvp.sigma == null ? 10 : pvp.sigma), class: 'search-input pvp-num' });
+  sgInp.addEventListener('change', () => {
+    const v = sgInp.value.trim();
+    pvp.sigma = v === '' ? 10 : clamp(Number(v), 0, 100);
+    savePvp(); render();
+  });
+  box.appendChild(el('div', { class: 'gemsim-coef-row' }, [sgInp]));
 
   box.appendChild(el('p', { class: 'gemsim-note' },
     'Base strength of each attack, as % of ATK. Lightning starts at 30%, the rest at 100%.'));
