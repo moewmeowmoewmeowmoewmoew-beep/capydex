@@ -8747,7 +8747,7 @@ const CALC_TABLE_CATEGORIES = [
   // Lineup bonuses from Capytool tools: shown and totalled like every other
   // source, but not (yet) part of any attack type's damage pipeline below.
   { title: 'Lineup', labels: ['Lineup DMG Boost', 'Lineup DMG RES'] },
-  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Control Immunity Rate', 'Ignore Control Immunity Rate', 'Suppression'] },
+  { title: 'Tenacity & Armor Break', labels: ['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Block', 'Control Immunity Rate', 'Ignore Control Immunity Rate', 'Suppression'] },
   { title: 'Ignore Proc Rates', labels: ['Ignore Combo', 'Ignore Crit', 'Ignore Weapon Crit', 'Ignore Skill Crit', 'Ignore Normal ATK Crit', 'Ignore Lightning Crit', 'Ignore DoT Crit', 'Ignore Dagger Crit', 'Ignore Sword Qi Crit', 'Ignore Light Spear Crit', 'Ignore Counter', 'Ignore Suppression'] },
   // Tracked effects with no stage in damage_formula.md yet — listed so they
   // are visible and totalled, without feeding Quick Stats or the filters.
@@ -8774,7 +8774,7 @@ function renderAccordion(title, contentEl, defaultOpen, ghost) {
   return wrap;
 }
 
-const CALC_NON_PERCENT_LABELS = new Set(['Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Speed', 'Suppression']);
+const CALC_NON_PERCENT_LABELS = new Set(['Block', 'Tenacity', 'Tenacity Resistance', 'Armor Break', 'Armor Break Resistance', 'Speed', 'Suppression']);
 
 // Attack-type filter — per the game's own attribute rules (an attack can
 // carry multiple attributes at once, e.g. Lightning is both "skill" and
@@ -9068,7 +9068,7 @@ function pvpDefaultSide() {
   return { atk: '', def: '', hp: '', basic: 1, maxCombo: 1, rageEvery: 3, skillHits: {} };
 }
 function loadPvp() {
-  const base = { rounds: 15, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {} };
+  const base = { rounds: 15, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {}, blockChance: 100 };
   try {
     const raw = JSON.parse(localStorage.getItem(PVP_STORE_KEY) || 'null');
     if (raw && typeof raw === 'object') {
@@ -9241,7 +9241,10 @@ function pvpHit(A, D, typeName, ctx) {
   st.pool = clamp(1 + (pvpSum(A, L.bonus) * (1 - T) - pvpSum(D, L.red) * (1 - P)) / 100, 0.25, 10);
   st.final = clamp(1 + (pvpSum(A, L.final) - pvpSum(D, L.fdr)) / 100, 0.10, 5);
   st.pvp = clamp(1 - pvpSum(D, L.pvpRed) / 100, 0.05, 5);
-  const allMult = st.coef * st.pool * st.final * st.pvp;
+  // Block: reduction = (defender Block − attacker Block) / 10000, capped at 90%. The trigger chance isn't documented, so it's a setting (default 100%).
+  const blockRed = clamp(((D['Block'] || 0) - (A['Block'] || 0)) / 10000, 0, 0.9);
+  st.block = 1 - clamp((Number(pvp.blockChance) || 0) / 100, 0, 1) * blockRed;
+  const allMult = st.coef * st.pool * st.final * st.pvp * st.block;
   return { st, chance, mult, T, P, atk, def, allMult, total: st.base * st.crit * allMult };
 }
 
@@ -9939,7 +9942,7 @@ function renderPvpSimulator() {
   wrap.appendChild(pvpAccordion('types', 'Damage by attack type', renderPvpTypes(res)));
   wrap.appendChild(pvpAccordion('settings', 'Advanced: attacks per round', renderPvpSettings(res)));
   wrap.appendChild(el('p', { class: 'section-desc gemsim-note pvp-footnote' },
-    'Not modelled yet: Global DMG, Block, dodge, shields and healing, extra ×2/×3 procs, per-hit caps, enemy debuffs, character-specific gems, and Combo Count from items (set it under Advanced). Conditional effects follow the Calculator: counted while their round window is active.'));
+    'Not modelled yet: Global DMG, dodge, shields and healing, extra ×2/×3 procs, per-hit caps, enemy debuffs, character-specific gems, and Combo Count from items (set it under Advanced). Conditional effects follow the Calculator: counted while their round window is active.'));
   return wrap;
 }
 function pvpBothStats() {
@@ -10290,6 +10293,8 @@ function renderPvpStartBreakdown(typeName, F, A, D) {
     { name: 'DMG pool', value: pvpX(h.st.pool), att: [...L.bonus, 'Armor Break', 'Tenacity Resistance'], def: [...L.red, 'Tenacity', 'Armor Break Resistance'],
       note: `The target’s Tenacity cancels ${pvpPct(h.T * 100)} of these bonuses; Armor Break cancels ${pvpPct(h.P * 100)} of its reductions.` },
     { name: 'Final DMG', value: pvpX(h.st.final), att: L.final, def: L.fdr },
+    { name: 'Block', value: pvpX(h.st.block), att: ['Block'], def: ['Block'],
+      note: `Reduction = (target Block − your Block) ÷ 10000, max 90%, applied at ${pvpPct(Number(pvp.blockChance) || 0, 0)} chance (Advanced → Block chance).` },
     { name: 'PVP rate', value: pvpX(h.st.pvp), att: [], def: L.pvpRed },
   ];
   const srcText = (stats, label) => {
@@ -10354,6 +10359,16 @@ function renderPvpSettings(res) {
   PVP_SKILL_TYPES.forEach(t => row(`${t} hits per round`, t, { skill: true }));
   table.appendChild(tb);
   box.appendChild(el('div', { class: 'gemsim-table-wrap' }, table));
+
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    'Block chance when hit (%). The Block reduction itself is documented, but how often it triggers is not, so this is an assumption: 100 means every hit is reduced, 0 turns Block off.'));
+  const bcInp = el('input', { type: 'number', min: '0', max: '100', step: '1', value: String(pvp.blockChance == null ? 100 : pvp.blockChance), class: 'search-input pvp-num' });
+  bcInp.addEventListener('change', () => {
+    const v = bcInp.value.trim();
+    pvp.blockChance = v === '' ? 100 : clamp(Number(v), 0, 100);
+    savePvp(); render();
+  });
+  box.appendChild(el('div', { class: 'gemsim-coef-row' }, [bcInp]));
 
   box.appendChild(el('p', { class: 'gemsim-note' },
     'Base strength of each attack, as % of ATK. Lightning starts at 30%, the rest at 100%.'));
