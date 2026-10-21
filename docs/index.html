@@ -10111,9 +10111,9 @@ function renderPvpStatSide(side, mirrored) {
       f ? `From ${f.from}${f.exported ? ` · ${f.exported}` : ''}` : 'Load Stat Sources page'),
     el('span', { class: 'gemsim-note pvp-or' }, 'or type'),
     el('div', { class: 'pvp-stat-fields' }, [
+      pvpStatInput(side, 'hp', 'HP', '32.5B'),
       pvpStatInput(side, 'atk', 'ATK', '9.43B'),
       pvpStatInput(side, 'def', 'DEF', '184M'),
-      pvpStatInput(side, 'hp', 'HP', '32.5B'),
     ]),
   ]));
   return wrap;
