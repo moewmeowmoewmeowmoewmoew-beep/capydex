@@ -8467,7 +8467,20 @@ Object.entries(stackingStats || {}).forEach(([key, cfg]) => {
       // arcanaFlat" — not round-dependent like qualV5, so safe to include
       // unconditionally once the arcana level is actually met.
       const arcanaFlatPart = (c.arcanaFlat != null && effectiveArcana != null && effectiveArcana >= c.arcanaFlatAt) ? c.arcanaFlat : 0;
-      if (!c.qualD && !c.arcanaD && c.arcanaFlat == null) return;
+      // Round-by-round values: qualV5[quality][round 1…5] (round 5's value
+      // holds after that), and qualArcanaV5 keyed "quality,arcana-reached".
+      // The all-rounds view (round null) uses round 1. A plain "flat" adds
+      // the same amount whatever the quality.
+      const roundIdx = Math.min(4, Math.max(0, (round || 1) - 1));
+      const v5Part = c.qualV5 && qualIdx !== -1 && c.qualV5[qualIdx] ? (c.qualV5[qualIdx][roundIdx] || 0) : 0;
+      const v5Surpass = c.qualV5 && qualIdx !== -1 ? (c.surpassBonus || 0) * (s.surpass || 0) : 0;
+      let qaPart = 0;
+      if (c.qualArcanaV5 && qualIdx !== -1) {
+        const arr = c.qualArcanaV5[`${qualIdx},${effectiveArcana != null && effectiveArcana >= 1 ? 1 : 0}`] || c.qualArcanaV5[`${qualIdx},0`];
+        qaPart = arr ? (arr[roundIdx] || 0) : 0;
+      }
+      const flatPart = c.flat || 0;
+      if (!c.qualD && !c.arcanaD && c.arcanaFlat == null && !c.qualV5 && !c.qualArcanaV5 && !c.flat) return;
       // Round-gating only applies to a contribution that explicitly opts
       // in via active_from/active_until — otherwise every existing,
       // genuinely passive quality/surpass/arcana bonus stays exactly as
@@ -8475,7 +8488,7 @@ Object.entries(stackingStats || {}).forEach(([key, cfg]) => {
       // round-limited just because the capability exists.
       const isConditional = c.active_from != null || c.active_until != null;
       if (isConditional && !isRoundInWindow(round, c.active_from, c.active_until)) return;
-      const total = (qualPart + surpassPart + arcanaPart + arcanaFlatPart) * 100;
+      const total = (qualPart + surpassPart + arcanaPart + arcanaFlatPart + v5Part + v5Surpass + qaPart + flatPart) * 100;
       const key = `${c.calc}:${c.cond || ''}:${c.ty || ''}`;
       const label = EQUIP_CONTRIB_TO_LABEL[key];
       if (label && total) {
@@ -9545,8 +9558,19 @@ function pvpPrepareBuild(st, baseStatic, src) {
   const ownStatic = pvpStaticTotals(rounds[0] || {});
   const ref = baseStatic || ownStatic;
   const page = pvpPageTotals(src);
+  // Bonuses with a written condition ("(if: …)") are taken out of the totals
+  // and checked against the fight round by round instead of always counting.
+  const conds = rounds.map(stats => {
+    const list = [];
+    Object.entries(stats).forEach(([label, e]) => e.sources.forEach(sc => {
+      const m = /\(if: (.+)\)\s*$/.exec(sc.name);
+      if (m) list.push({ label, val: sc.val, cond: m[1], name: sc.name.replace(/\s*\(if: .+\)\s*$/, '') });
+    }));
+    return list;
+  });
   const totals = rounds.map((stats, i) => {
     const t = Object.assign({}, raw[i]);
+    conds[i].forEach(c => { t[c.label] = (t[c.label] || 0) - c.val; });
     if (page) Object.entries(page.totals).forEach(([label, v]) => {
       const e = stats[label];
       const battle = e ? e.battle : 0;
@@ -9555,7 +9579,7 @@ function pvpPrepareBuild(st, baseStatic, src) {
     });
     return t;
   });
-  return { st, rounds, raw, totals, ref, page };
+  return { st, rounds, raw, totals, ref, page, conds };
 }
 
 /* ---------- fight effects from gems ----------
@@ -9608,6 +9632,33 @@ function pvpFightEffects(st) {
   if (st) pvpFxCache.set(st, fx);
   return fx;
 }
+// Is a written condition true this round? ctx = { round, targetHp, selfHp }
+// (HP as a share of max, null when not tracked). Returns true / false, or
+// null when the condition can't be checked — those stay out of the fight.
+function pvpCondActive(cond, ctx) {
+  const c = String(cond || '');
+  let m;
+  const aboutTarget = /target|enem|opponent/i.test(c);
+  const hp = aboutTarget ? ctx.targetHp : ctx.selfHp;
+  if ((m = c.match(/(?:above|over|more than|higher than)\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:max\s+)?HP/i)) || (m = c.match(/HP\s+(?:is\s+)?(?:above|over|more than)\s+(\d+(?:\.\d+)?)%/i))) {
+    return hp == null ? (aboutTarget ? true : null) : hp > parseFloat(m[1]) / 100;
+  }
+  if ((m = c.match(/(?:below|under|less than|lower than)\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:max\s+)?HP/i)) || (m = c.match(/HP\s+(?:is\s+)?(?:below|under|less than)\s+(\d+(?:\.\d+)?)%/i))) {
+    return hp == null ? null : hp < parseFloat(m[1]) / 100;
+  }
+  // Daji: 3 Demonic Aura a turn, Celestial Fox Form at 9 for 1 turn → every 4th round.
+  if (/Celestial Fox Form/i.test(c)) return ctx.round % 4 === 0;
+  if (/Demon Queen Form/i.test(c)) return ctx.round % 4 !== 0;
+  return null;
+}
+// totals t plus the conditional bonuses that are true this round.
+function pvpWithConds(t, list, ctx) {
+  if (!list || !list.length) return t;
+  const out = Object.assign({}, t);
+  list.forEach(c => { if (pvpCondActive(c.cond, ctx) === true) out[c.label] = (out[c.label] || 0) + c.val; });
+  return out;
+}
+
 // Round r's modifiers when A (effects fa, ATK atkA) hits D (effects fd, ATK atkD).
 // Debuffs that land when the other side hits are counted from round 2.
 function pvpRoundMods(r, fa, fd, atkA, atkD) {
@@ -9642,7 +9693,9 @@ function pvpFight(A, D, sideA, sideD) {
   const types = ATTACK_TYPE_DEFS.map(d => ({ name: d.name, rounds: [], total: 0, hits: 0 }));
   const byRound = [], hpTrace = [], conds = [], shieldGain = [];
   for (let i = 0; i < pvp.rounds; i++) {
-    const a = A.totals[i], d = D.totals[i];
+    const hpShare = hp ? curHp / hp : null;
+    const a = pvpWithConds(A.totals[i], (A.conds || [])[i], { round: i + 1, targetHp: hpShare, selfHp: null });
+    const d = pvpWithConds(D.totals[i], (D.conds || [])[i], { round: i + 1, targetHp: null, selfHp: hpShare });
     const cond = hp ? { shield: shield > 0, hp70: curHp > 0.7 * hp } : { shield: false, hp70: false };
     const mods = pvpRoundMods(i + 1, fa, fd, atkIn, atkD);
     conds.push(cond);
@@ -9787,6 +9840,22 @@ function pvpRunWinChance(res, dealt, taken, n) {
   return pvpWinChance(dealt, taken, res.tri.totals[0]['Speed'] || 0, res.opp.totals[0]['Speed'] || 0, n);
 }
 
+// ATK / DEF / HP worked out from the build itself (flat × % × Global %),
+// used when nothing is typed in step 2. Both sides are worked out the same
+// way, so the fight compares like with like.
+function pvpAutoStats(b) {
+  const t = b.ref;
+  return {
+    atk: String(Math.round((t['ATK'] || 0) * pvpAtkStage(t, false))),
+    def: String(Math.round((t['DEF'] || 0) * pvpDefStage(t, false))),
+    hp: String(Math.round((t['HP'] || 0) * pvpHpStage(t, false))),
+  };
+}
+function pvpFillStats(side, b) {
+  if (pvpParseBig(side.atk)) return side;
+  const a = pvpAutoStats(b);
+  return Object.assign({}, side, { atk: a.atk, def: side.def || a.def, hp: side.hp || a.hp, auto: true });
+}
 function pvpRunAll() {
   const trial = pvpTrialState();
   const base = pvpBase();
@@ -9798,10 +9867,10 @@ function pvpRunAll() {
   const tri = hasChanges ? pvpPrepareBuild(trial, curStatic, youSrc) : cur; // trial's typed-in stats were read on the saved build
   const oppState = pvpOpponentState();
   const opp = pvpPrepareBuild(oppState, null, oppSrc);
-  const you = pvpEffectiveSide(pvp.you, trial);
-  const youCur = pvpEffectiveSide(pvp.you, base);
+  const you = pvpFillStats(pvpEffectiveSide(pvp.you, trial), tri);
+  const youCur = pvpFillStats(pvpEffectiveSide(pvp.you, base), cur);
   // A mirror opponent also gets your typed-in ATK/DEF/HP and hit counts.
-  const oppSide = pvpEffectiveSide(pvp.opponent ? pvp.opp : pvp.you, oppState);
+  const oppSide = pvpFillStats(pvpEffectiveSide(pvp.opponent ? pvp.opp : pvp.you, oppState), opp);
   const out = {
     trial, oppState, cur, tri, opp, hasChanges, you, oppSide, curStats, curStatic, youSrc,
     dealt: pvpFight(tri, opp, you, oppSide),
@@ -10408,7 +10477,7 @@ function renderPvpSimulator() {
   const res = pvpRunAll();
   const changeBadge = res.hasChanges ? el('span', { class: 'pvp-acc-badge' }, `${pvpChangedRows(res).length} changed`) : null;
   wrap.appendChild(pvpStep(1, 'Builds', 'Load each player’s build file. Press Change on a slot to try a what-if on your side.', renderPvpBuilds(res), changeBadge));
-  wrap.appendChild(pvpStep(2, 'Stats', pvpBothStats() ? null : 'Needed to see who wins. Comes in with the build file if it has them; otherwise load a Stat Sources page or type the numbers from Combat Power › Stats.', renderPvpStats()));
+  wrap.appendChild(pvpStep(2, 'Stats (optional)', 'ATK, DEF and HP are worked out from each build. Load a Stat Sources page or type numbers only to override them.', renderPvpStats()));
   wrap.appendChild(pvpStep(3, 'Result', null, renderPvpResult(res)));
   wrap.appendChild(pvpAccordion('types', 'Damage by attack type', renderPvpTypes(res)));
   wrap.appendChild(pvpAccordion('settings', 'Advanced: attacks per round', renderPvpSettings(res)));
@@ -10584,7 +10653,15 @@ function renderPvpWhy(res) {
   box.appendChild(renderPvpCombatStats(res));
   const fxList = [[yn, res.dealt.fa], [on, res.dealt.fd]].map(([n, fx]) => el('p', { class: 'gemsim-note' },
     `${n} — fight effects from gems: ${fx.notes.length ? fx.notes.join(' · ') : 'none'}`));
-  box.appendChild(el('details', { class: 'pvp-why-wrap' }, [el('summary', { class: 'gemsim-note' }, 'Fight effects counted'), ...fxList]));
+  const condList = [[yn, res.tri], [on, res.opp]].map(([n, b]) => {
+    const seen = new Map();
+    ((b.conds || [])[0] || []).forEach(c => {
+      const ok = pvpCondActive(c.cond, { round: 4, targetHp: 0.5, selfHp: 0.5 });
+      seen.set(`${c.name}: ${c.label} +${+c.val.toFixed(1)} (if ${c.cond})`, ok === null ? 'left out (can’t be tracked)' : 'checked each round');
+    });
+    return el('p', { class: 'gemsim-note' }, `${n} — conditional bonuses: ${seen.size ? [...seen].map(([k, v]) => `${k} — ${v}`).join(' · ') : 'none'}`);
+  });
+  box.appendChild(el('details', { class: 'pvp-why-wrap' }, [el('summary', { class: 'gemsim-note' }, 'Fight effects counted'), ...fxList, ...condList]));
   return box;
 }
 
@@ -10614,7 +10691,7 @@ function renderPvpCombatStats(res) {
     });
     if (cells.every(c => !c.v)) return;
     tb.appendChild(el('tr', {}, [el('td', {}, label), ...cells.map(c => el('td', { class: 'gemsim-num' }, [
-      fmt(label, c.v), el('span', { class: 'gemsim-tag' }, c.fromGame ? 'game' : 'CapyDex'),
+      fmt(label, c.v), c.fromGame ? el('span', { class: 'gemsim-tag' }, 'Stat Sources') : null,
     ]))]));
   });
   table.appendChild(tb);
@@ -10636,8 +10713,7 @@ function renderPvpResult(res) {
   const box = el('div', { class: 'pvp-result' });
   const N = pvp.rounds;
   const abs = res.dealt.absolute && res.taken.absolute;
-  const partial = pvpPartialNote(res);
-  if (partial) box.appendChild(partial);
+
   if (abs) {
     const yk = res.dealt.killRound, ok = res.taken.killRound;
     const ySpeed = res.tri.totals[0]['Speed'] || 0, oSpeed = res.opp.totals[0]['Speed'] || 0;
