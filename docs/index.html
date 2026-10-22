@@ -3272,7 +3272,11 @@ function renderEquipHeader(imgKind, item, title) {
    graceful fallback: shows a dimmed placeholder mark until (or unless) the
    real image file exists at assets/images/<kind>/<slug>.webp. Nothing breaks
    for items without art yet — just add the file later. */
-function renderThumb(kind, item) {
+// fallbackKind (optional): if there's no image in `kind`'s folder, the same
+// file name is tried in this folder before giving up. Arcana cards use it:
+// they show assets/images/arcana/<item>.webp and fall back to the item's
+// own weapon/pet image until that arcana art exists.
+function renderThumb(kind, item, fallbackKind) {
   const thumb = el('div', { class: 'item-thumb-inline' });
   const placeholder = el('span', { class: 'thumb-placeholder-inline' }, '◈');
   thumb.appendChild(placeholder);
@@ -3280,7 +3284,14 @@ function renderThumb(kind, item) {
     src: itemImagePath(kind, item),
     alt: item.n,
     loading: 'lazy',
-    onerror: (e) => { e.target.style.display = 'none'; },
+    onerror: (e) => {
+      if (fallbackKind && !e.target.dataset.fellBack) {
+        e.target.dataset.fellBack = '1';
+        e.target.src = itemImagePath(fallbackKind, item);
+        return;
+      }
+      e.target.style.display = 'none';
+    },
     // Explicitly hides the placeholder once the real image is confirmed
     // loaded, rather than just relying on the image visually covering it.
     // That assumption only holds for a fully opaque, exactly-square
@@ -3367,10 +3378,10 @@ function renderRarityTag(tier) {
 // rarity/tier to show the Tag, or omit it (Homestead has no rarity at
 // all, Mounts/Artifacts' tier can be missing on some items) to skip the
 // Tag cleanly rather than render one with an undefined label.
-function renderCardTitleRow(kind, item, rarity) {
+function renderCardTitleRow(kind, item, rarity, fallbackKind) {
   return el('div', { class: 'card-title-row' }, [
     el('div', { class: 'card-title-image-group' }, [
-      renderThumb(kind, item),
+      renderThumb(kind, item, fallbackKind),
       el('div', { class: 'item-name', title: item.n }, item.n),
     ]),
     rarity ? renderRarityTag(rarity) : null,
@@ -3698,7 +3709,9 @@ function getArcanaEffectText(entry, level) {
 function renderArcanaCard(entry) {
   const currentLevel = state.arcana[entry.name];
   const card = el('div', { class: 'item-card' });
-  card.appendChild(renderCardTitleRow(entry.kind === 'pet' ? 'pets' : entry.imgKind, entry.item, entry.tier));
+  // Arcana art lives in assets/images/arcana/, named the same as the
+  // weapon/pet it belongs to; the item's own image is used until it exists.
+  card.appendChild(renderCardTitleRow('arcana', entry.item, entry.tier, entry.kind === 'pet' ? 'pets' : entry.imgKind));
 
   const select = el('select', { class: 'equip-select' }, [
     el('option', { value: '-1', selected: currentLevel == null ? 'true' : null }, 'No Arcana'),
