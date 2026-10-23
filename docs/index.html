@@ -9721,13 +9721,14 @@ function pvpRoundMods(r, fa, fd, atkA, atkD) {
   if (fa.atkUp && r >= 2) atkMult *= 1 + fa.atkUp.per * fa.atkUp.max;
   return { atkMult, critDown: r >= 2 ? fd.critDown : 0, ignoreRed: fa.ignoreRed };
 }
-// PVP late-fight rule: from round 10 on, every round adds another +10% ATK
-// and −10% max HP (round 10: +10% / −10%, round 11: +20% / −20%, …), so by
-// round 19 max HP is gone and the fight ends. ATK is taken as a multiplier on
-// final ATK; when max HP drops, current HP drops with it (same share of max).
-const PVP_LATE_FROM = 10, PVP_LATE_STEP = 0.10;
-function pvpLateSteps(round) { return Math.max(0, round - PVP_LATE_FROM + 1); }
-function pvpLateAtk(round) { return 1 + PVP_LATE_STEP * pvpLateSteps(round); }
+// PVP late-fight rule, for both main fighters: from round 10 on, every round
+// adds another +10% damage and −10% max HP (round 10: +10% / −10%, round 11:
+// +20% / −20%, …). From round 18 it stays at +90% / −90%. Damage is a
+// multiplier on each hit's final damage; when max HP drops, current HP drops
+// with it (same share of max).
+const PVP_LATE_FROM = 10, PVP_LATE_STEP = 0.10, PVP_LATE_MAX_STEPS = 9;
+function pvpLateSteps(round) { return clamp(round - PVP_LATE_FROM + 1, 0, PVP_LATE_MAX_STEPS); }
+function pvpLateDmg(round) { return 1 + PVP_LATE_STEP * pvpLateSteps(round); }
 function pvpLateHp(round) { return Math.max(0, 1 - PVP_LATE_STEP * pvpLateSteps(round)); }
 const pvpFluctMean = (fx) => (fx.fluct ? 1 + (fx.fluct[0] + fx.fluct[1]) / 2 : 1);
 
@@ -9761,14 +9762,13 @@ function pvpFight(A, D, sideA, sideD) {
     const d = pvpWithConds(D.totals[i], (D.conds || [])[i], { round: i + 1, targetHp: null, selfHp: hpShare });
     const cond = hp ? { shield: shield > 0, hp70: hpShare > 0.7 } : { shield: false, hp70: false };
     const mods = pvpRoundMods(i + 1, fa, fd, atkIn, atkD);
-    mods.atkMult *= pvpLateAtk(i + 1);
     conds.push(cond);
     let roundDmg = 0, roundHits = 0;
     types.forEach(t => {
       const hits = pvpHitsPerRound(t.name, a, d, sideA, sideD);
       const hit = pvpHit(a, d, t.name, ctx, cond, mods);
       // Blade whirlwind and similar: a share of Sword Qi hits repeat as a full hit.
-      const extra = fluct * (t.name === 'Sword Qi' ? 1 + (fa.swordProc || 0) : 1);
+      const extra = fluct * (t.name === 'Sword Qi' ? 1 + (fa.swordProc || 0) : 1) * pvpLateDmg(i + 1);
       hit.total *= extra; hit.unit *= extra; hit.allMult *= extra;
       const dmg = hits * hit.total;
       t.rounds.push({ hits, hit, dmg, model: pvpHitModel(t.name, a, d, sideA, sideD) });
@@ -11137,7 +11137,7 @@ function renderPvpResult(res) {
   opts.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
     (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
   opts.appendChild(el('p', { class: 'gemsim-note' },
-    '“Damage to shielded targets” and “targets above 70% HP” bonuses switch on by themselves while the target has a shield or is above 70% HP. Duels last up to 30 rounds. From round 10, each round adds +10% ATK and −10% max HP (round 10: +10% / −10%, round 11: +20% / −20%, …), so a fight still going at round 19 ends with both sides at 0 HP and Speed deciding it.'));
+    '“Damage to shielded targets” and “targets above 70% HP” bonuses switch on by themselves while the target has a shield or is above 70% HP. Duels last up to 30 rounds. From round 10, each round adds +10% damage and −10% max HP for both fighters (round 10: +10% / −10%, round 11: +20% / −20%, …), up to +90% / −90% from round 18 on.'));
   box.appendChild(opts);
   return box;
 }
