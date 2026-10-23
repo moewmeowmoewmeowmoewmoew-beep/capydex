@@ -2646,8 +2646,6 @@ function defaultState() {
     capymon: {},             // cardName -> { owned, stars(0-5), deployed }
     homestead: {},           // buildingId -> level (0 = not owned)
     equipment: {},           // slotId -> { itemName, quality, surpass, arcana, psionics[4], gems[5] }
-    petOwned: [],            // every owned pet as a pet slot (from a player export) — PVP gear suggestions
-    legacyOwned: null,       // { heroes: [slot], brands: [slot] } owned (from a player export) — PVP gear suggestions
     capytool: {},            // capytool stat key (see CAPYTOOL_GROUPS) -> summed % from the in-game Capytool tools
     arcana: {},              // itemName -> arcana level (0-10) — the Collection-tracked record, matched
                              // by name against whatever's currently equipped/petted; independent of
@@ -3042,12 +3040,14 @@ function convertPlayerExport(exp) {
   const attrByTrait = new Map();
   (DB.pet_attrs || []).forEach(a => (a.gids || []).forEach(id => attrByTrait.set(Number(id), a.name)));
   const fixedTier = new Set(DB.pet_fixed_tier_skills || []);
-  // One owned pet → a pet slot (level, active trait set, armament).
-  // quiet: no "missing"/notes lines (used for the owned-pet list below).
-  function petSlotFrom(p, quiet) {
+  next.petSlots = fresh.petSlots;
+  let nPets = 0;
+  ((exp.pets || {}).owned || []).filter(p => p.deployedSlot).forEach(p => {
+    const i = Number(p.deployedSlot) - 1;
+    if (i < 0 || i > 2) return;
     const pet = petByGid.get(Number(p.id));
-    if (!pet) { if (!quiet) miss('Pets', p.name, p.id); return null; }
-    const slot = defaultState().petSlots[0];
+    if (!pet) return miss('Pets', p.name, p.id);
+    const slot = next.petSlots[i];
     slot.itemName = pet.n;
     slot.level = clampInt(p.level, 0, 100);
     if (pet.star_battle_skills) slot.battleStars = clampInt(p.star, 0, 10);
@@ -3056,38 +3056,23 @@ function convertPlayerExport(exp) {
       const t = traits[k];
       if (!t) return { stat: '', val: 0 };
       const name = attrByTrait.get(Number(t.id));
-      if (!name) { if (!quiet) miss('Pet skills', `${t.name} (${pet.n})`, t.id); return { stat: '', val: 0 }; }
+      if (!name) { miss('Pet skills', `${t.name} (${pet.n})`, t.id); return { stat: '', val: 0 }; }
       let val = parseTraitNumber(t);
       if (fixedTier.has(name)) val = val >= 7.5 ? 10 : 5;
       return { stat: name, val };
     });
     if (p.armament) {
       const a = armByGid.get(Number(p.armament.id));
-      if (!a) { if (!quiet) miss('Pet armaments', p.armament.name, p.armament.id); }
+      if (!a) miss('Pet armaments', p.armament.name, p.armament.id);
       else {
         slot.armament = a.n;
         slot.armamentGrade = clampInt(p.armament.grade || 1, 1, armamentMaxGrade(a));
         slot.armamentLevel = clampInt(p.armament.level, 1, armamentMaxLevel(a, slot.armamentGrade));
-        if (!quiet && Number(p.armament.level) > slot.armamentLevel) notes.push(`${a.n} is Lv.${p.armament.level} in game, above the Grade ${slot.armamentGrade} cap of Lv.${slot.armamentLevel}, so it’s set to ${slot.armamentLevel}.`);
+        if (Number(p.armament.level) > slot.armamentLevel) notes.push(`${a.n} is Lv.${p.armament.level} in game, above the Grade ${slot.armamentGrade} cap of Lv.${slot.armamentLevel}, so it’s set to ${slot.armamentLevel}.`);
       }
     }
-    return slot;
-  }
-  next.petSlots = fresh.petSlots;
-  let nPets = 0;
-  ((exp.pets || {}).owned || []).filter(p => p.deployedSlot).forEach(p => {
-    const i = Number(p.deployedSlot) - 1;
-    if (i < 0 || i > 2) return;
-    const slot = petSlotFrom(p, false);
-    if (!slot) return;
-    next.petSlots[i] = slot;
     nPets++;
   });
-  // Every owned pet, kept so the PVP Simulator can suggest pets you have.
-  if (Array.isArray((exp.pets || {}).owned)) {
-    next.petOwned = exp.pets.owned.map(p => petSlotFrom(p, true)).filter(Boolean);
-    counts.push(['Owned pets', next.petOwned.length]);
-  }
   counts.push(['Deployed pets', nPets]);
 
   // ---- Adventurer, heroes, brands ----
@@ -3103,9 +3088,9 @@ function convertPlayerExport(exp) {
   const legOwned = new Map((leg.owned || []).map(o => [Number(o.id), o]));
   // Grade 10 is the top quality. Lower grades are an estimate (two grades
   // per quality step), so they're flagged for checking.
-  function legacySlot(ref, list, label, quiet) {
+  function legacySlot(ref, list, label) {
     const entry = byGid(list).get(Number(ref.id));
-    if (!entry) { if (!quiet) miss(label, ref.name, ref.id); return { name: '', quality: '', polarization: 0 }; }
+    if (!entry) { miss(label, ref.name, ref.id); return { name: '', quality: '', polarization: 0 }; }
     const o = legOwned.get(Number(ref.id)) || {};
     const grade = clampInt(o.grade, 1, 10);
     const qList = entry.q || [];
@@ -3113,19 +3098,11 @@ function convertPlayerExport(exp) {
     if (grade >= 10 || !qList.includes(quality)) {
       quality = grade >= 10 ? qList[qList.length - 1] : (qList.includes(quality) ? quality : qList[0]);
     }
-    if (grade < 10 && !quiet) notes.push(`${entry.n} is grade ${grade} in game; set to ${quality} — please check it.`);
+    if (grade < 10) notes.push(`${entry.n} is grade ${grade} in game; set to ${quality} — please check it.`);
     return { name: entry.n, quality: quality || '', polarization: clampInt(o.polarize, 0, 10) };
   }
   next.heroSlots = [0, 1].map(i => (leg.worn || [])[i] ? legacySlot(leg.worn[i], DB.heroes, 'Heroes') : { name: '', quality: '', polarization: 0 });
   next.brandSlots = [0, 1, 2, 3].map(i => (leg.passive || [])[i] ? legacySlot(leg.passive[i], DB.brands, 'Brands') : { name: '', quality: '', polarization: 0 });
-  // Every owned hero and brand, kept so the PVP Simulator can suggest them.
-  if (Array.isArray(leg.owned)) {
-    const heroG = byGid(DB.heroes), brandG = byGid(DB.brands);
-    next.legacyOwned = {
-      heroes: leg.owned.filter(o => heroG.has(Number(o.id))).map(o => legacySlot(o, DB.heroes, 'Heroes', true)).filter(x => x.name),
-      brands: leg.owned.filter(o => brandG.has(Number(o.id))).map(o => legacySlot(o, DB.brands, 'Brands', true)).filter(x => x.name),
-    };
-  }
   counts.push(['Adventurer, heroes & brands', (next.adventurerSlot.name ? 1 : 0) + next.heroSlots.filter(s => s.name).length + next.brandSlots.filter(s => s.name).length]);
 
   // ---- Inheritance trees ----
@@ -9272,7 +9249,7 @@ function pvpDefaultSide() {
   return { atk: '', def: '', hp: '', basic: 1, maxCombo: 1, rageEvery: 3, skillHits: {} };
 }
 function loadPvp() {
-  const base = { rounds: 30, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {}, blockChance: 100, sigma: 10 };
+  const base = { rounds: 30, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), shield: false, hp70: false, view: 'you', baseCoef: {}, blockChance: 100, sigma: 25 };
   try {
     const raw = JSON.parse(localStorage.getItem(PVP_STORE_KEY) || 'null');
     if (raw && typeof raw === 'object') {
@@ -9280,6 +9257,9 @@ function loadPvp() {
       base.you = Object.assign(pvpDefaultSide(), raw.you);
       base.opp = Object.assign(pvpDefaultSide(), raw.opp);
       if (!Array.isArray(base.patches)) base.patches = [];
+      // The default spread went from 10% to 25% (checked against real duel
+      // results); move saved settings along unless the person set it.
+      if (!raw.sigmaSet && (raw.sigma == null || Number(raw.sigma) === 10)) base.sigma = 25;
     }
   } catch (e) { /* storage unavailable — start fresh */ }
   return base;
@@ -9604,11 +9584,9 @@ function pvpStaticTotals(stats) {
 // out-of-fight reference its ATK/DEF/HP were read at.
 // baseStatic: out-of-fight totals of the build the page was taken from
 // (your saved build when trying what-ifs), so edits show as differences.
-// aggCap (optional): only work out rounds 1..aggCap and reuse the last one
-// after that — a quicker, rougher build used to screen many swaps.
-function pvpPrepareBuild(st, baseStatic, src, aggCap) {
+function pvpPrepareBuild(st, baseStatic, src) {
   const rounds = [];
-  for (let r = 1; r <= pvp.rounds; r++) rounds.push(aggCap && r > aggCap ? rounds[aggCap - 1] : pvpAggregate(st, r));
+  for (let r = 1; r <= pvp.rounds; r++) rounds.push(pvpAggregate(st, r));
   const raw = rounds.map(pvpTotalsOf);
   const ownStatic = pvpStaticTotals(rounds[0] || {});
   const ref = baseStatic || ownStatic;
@@ -9727,15 +9705,6 @@ function pvpRoundMods(r, fa, fd, atkA, atkD) {
   if (fa.atkUp && r >= 2) atkMult *= 1 + fa.atkUp.per * fa.atkUp.max;
   return { atkMult, critDown: r >= 2 ? fd.critDown : 0, ignoreRed: fa.ignoreRed };
 }
-// PVP late-fight rule, for both main fighters: from round 10 on, every round
-// adds another +10% damage and −10% max HP (round 10: +10% / −10%, round 11:
-// +20% / −20%, …). From round 18 it stays at +90% / −90%. Damage is a
-// multiplier on each hit's final damage; when max HP drops, current HP drops
-// with it (same share of max).
-const PVP_LATE_FROM = 10, PVP_LATE_STEP = 0.10, PVP_LATE_MAX_STEPS = 9;
-function pvpLateSteps(round) { return clamp(round - PVP_LATE_FROM + 1, 0, PVP_LATE_MAX_STEPS); }
-function pvpLateDmg(round) { return 1 + PVP_LATE_STEP * pvpLateSteps(round); }
-function pvpLateHp(round) { return Math.max(0, 1 - PVP_LATE_STEP * pvpLateSteps(round)); }
 const pvpFluctMean = (fx) => (fx.fluct ? 1 + (fx.fluct[0] + fx.fluct[1]) / 2 : 1);
 
 // A attacks D for the whole fight. With HP known, D's HP is tracked round
@@ -9753,20 +9722,14 @@ function pvpFight(A, D, sideA, sideD) {
   const fa = pvpFightEffects(A.st), fd = pvpFightEffects(D.st);
   const fluct = pvpFluctMean(fa);
   const hp = hpIn && atkIn ? hpIn * pvpStageRatio('hp', D.totals[0], D.ref, sideD.src) * 5 : null;
-  let curHp = hp, curMax = hp, shield = hp ? hp * fd.shield : 0, immune = fd.immune, killRound = null;
+  let curHp = hp, shield = hp ? hp * fd.shield : 0, immune = fd.immune, killRound = null;
   const types = ATTACK_TYPE_DEFS.map(d => ({ name: d.name, rounds: [], total: 0, hits: 0 }));
   const byRound = [], hpTrace = [], conds = [], shieldGain = [];
   for (let i = 0; i < pvp.rounds; i++) {
-    // Late-fight rule: max HP shrinks from round 10; current HP shrinks with it.
-    if (hp && killRound == null) {
-      const newMax = hp * pvpLateHp(i + 1);
-      if (newMax <= 0) killRound = i + 1e-6;
-      else { curHp *= newMax / curMax; curMax = newMax; }
-    }
-    const hpShare = hp ? (killRound == null ? curHp / curMax : 0) : null;
+    const hpShare = hp ? curHp / hp : null;
     const a = pvpWithConds(A.totals[i], (A.conds || [])[i], { round: i + 1, targetHp: hpShare, selfHp: null });
     const d = pvpWithConds(D.totals[i], (D.conds || [])[i], { round: i + 1, targetHp: null, selfHp: hpShare });
-    const cond = hp ? { shield: shield > 0, hp70: hpShare > 0.7 } : { shield: false, hp70: false };
+    const cond = hp ? { shield: shield > 0, hp70: curHp > 0.7 * hp } : { shield: false, hp70: false };
     const mods = pvpRoundMods(i + 1, fa, fd, atkIn, atkD);
     conds.push(cond);
     let roundDmg = 0, roundHits = 0;
@@ -9774,7 +9737,7 @@ function pvpFight(A, D, sideA, sideD) {
       const hits = pvpHitsPerRound(t.name, a, d, sideA, sideD);
       const hit = pvpHit(a, d, t.name, ctx, cond, mods);
       // Blade whirlwind and similar: a share of Sword Qi hits repeat as a full hit.
-      const extra = fluct * (t.name === 'Sword Qi' ? 1 + (fa.swordProc || 0) : 1) * pvpLateDmg(i + 1);
+      const extra = fluct * (t.name === 'Sword Qi' ? 1 + (fa.swordProc || 0) : 1);
       hit.total *= extra; hit.unit *= extra; hit.allMult *= extra;
       const dmg = hits * hit.total;
       t.rounds.push({ hits, hit, dmg, model: pvpHitModel(t.name, a, d, sideA, sideD) });
@@ -9788,16 +9751,16 @@ function pvpFight(A, D, sideA, sideD) {
     byRound.push(roundDmg);
     // D's own combos this round can give it a shield ("every 3 combos, shield 20% max HP").
     const gain = hp && fd.comboShield
-      ? curMax * fd.comboShield.pct * pvpHitsPerRound('Combo', d, a, sideD, sideA) / fd.comboShield.every : 0;
+      ? hp * fd.comboShield.pct * pvpHitsPerRound('Combo', d, a, sideD, sideA) / fd.comboShield.every : 0;
     shieldGain.push(gain);
     if (hp && killRound == null) {
       let left = roundDmg;
       const soak = Math.min(shield, left);
       shield -= soak; left -= soak;
       if (left >= curHp) killRound = i + (roundDmg > 0 ? (soak + curHp) / roundDmg : 1) + 1e-9;
-      else { curHp = Math.min(curMax, curHp - left + fd.heal * curMax); shield += gain; }
+      else { curHp = Math.min(hp, curHp - left + fd.heal * hp); shield += gain; }
       hpTrace.push(killRound == null ? curHp / hp : 0);
-    } else if (hp) hpTrace.push(0);
+    }
   }
   const total = byRound.reduce((x, y) => x + y, 0);
   types.forEach(t => { t.share = total > 0 ? t.total / total : 0; });
@@ -9883,25 +9846,19 @@ function pvpWinChance(dealt, taken, ySpeed, oSpeed, n) {
   for (let f = 0; f < n; f++) {
     const fy = Math.exp(sigma * pvpGauss(f, 0) - sigma * sigma / 2), fo = Math.exp(sigma * pvpGauss(f, 1) - sigma * sigma / 2);
     // them = the opponent's bar (hit by pY), me = yours (hit by pO)
-    const them = { hp: pY.hp, max: pY.hp, shield: pY.hp * pY.shield, immune: pY.immune };
-    const me = { hp: pO.hp, max: pO.hp, shield: pO.hp * pO.shield, immune: pO.immune };
-    // Late-fight rule: max HP (and current HP with it) shrinks from round 10.
-    const shrink = (bar, full, scale) => { const m = full * scale; bar.hp = m > 0 ? bar.hp * m / bar.max : 0; bar.max = m; };
+    const them = { hp: pY.hp, shield: pY.hp * pY.shield, immune: pY.immune };
+    const me = { hp: pO.hp, shield: pO.hp * pO.shield, immune: pO.immune };
     const hitBar = (bar, dmg) => { const s = Math.min(bar.shield, dmg); bar.shield -= s; bar.hp -= dmg - s; };
     let out = 0;
     for (let r = 0; r < R; r++) {
-      const scale = pvpLateHp(r + 1);
-      if (scale < 1) { shrink(them, pY.hp, scale); shrink(me, pO.hp, scale); }
-      if (scale > 0) {
-        hitBar(them, pvpMcRoundDamage(pY, r, f, 0, blockP, them) * fy);
-        hitBar(me, pvpMcRoundDamage(pO, r, f, 1, blockP, me) * fo);
-      }
+      hitBar(them, pvpMcRoundDamage(pY, r, f, 0, blockP, them) * fy);
+      hitBar(me, pvpMcRoundDamage(pO, r, f, 1, blockP, me) * fo);
       const yk = them.hp <= 0, ok = me.hp <= 0;
       if (yk && ok) out = ySpeed > oSpeed ? 1 : ySpeed < oSpeed ? -1 : (pvpU(f, 0, 0, 0, 0, 92) < 0.5 ? 1 : -1);
       else if (yk) out = 1; else if (ok) out = -1;
       if (out) break;
-      them.hp = Math.min(them.max, them.hp + pY.heal * them.max);
-      me.hp = Math.min(me.max, me.hp + pO.heal * me.max);
+      them.hp = Math.min(pY.hp, them.hp + pY.heal * pY.hp);
+      me.hp = Math.min(pO.hp, me.hp + pO.heal * pO.hp);
       them.shield += (pY.shieldGain || [])[r] || 0;
       me.shield += (pO.shieldGain || [])[r] || 0;
     }
@@ -9932,14 +9889,6 @@ function pvpFillStats(side, b) {
   const a = pvpAutoStats(b);
   return Object.assign({}, side, { atk: a.atk, def: side.def || a.def, hp: side.hp || a.hp, auto: true });
 }
-// Your side for any what-if build, fought the same way as the main result.
-// When ATK/DEF/HP aren't typed in, they're worked out from this build itself,
-// so swaps that change flat ATK/HP (mounts, artifacts, relics) count too.
-function pvpYouAuto() { return !pvpParseBig(pvp.you.atk); }
-function pvpYouBuild(st, res, aggCap) {
-  const b = pvpPrepareBuild(st, pvpYouAuto() ? null : res.curStatic, res.youSrc, aggCap);
-  return { b, side: pvpFillStats(pvpEffectiveSide(pvp.you, st), b) };
-}
 function pvpRunAll() {
   const trial = pvpTrialState();
   const base = pvpBase();
@@ -9948,7 +9897,7 @@ function pvpRunAll() {
   const youSrc = pvp.you.src, oppSrc = pvp.opponent ? pvp.opp.src : pvp.you.src;
   const cur = pvpPrepareBuild(base, curStatic, youSrc);
   const hasChanges = pvp.patches.length > 0;
-  const tri = hasChanges ? pvpPrepareBuild(trial, pvpYouAuto() ? null : curStatic, youSrc) : cur; // trial's typed-in stats were read on the saved build
+  const tri = hasChanges ? pvpPrepareBuild(trial, curStatic, youSrc) : cur; // trial's typed-in stats were read on the saved build
   const oppState = pvpOpponentState();
   const opp = pvpPrepareBuild(oppState, null, oppSrc);
   const you = pvpFillStats(pvpEffectiveSide(pvp.you, trial), tri);
@@ -10029,7 +9978,8 @@ function pvpRowImpacts(res) {
   Object.entries(groups).forEach(([key, ps]) => {
     const t = pvpClone(base);
     ps.forEach(p => pvpSetPath(t, p.path, p));
-    const { b, side } = pvpYouBuild(t, res);
+    const b = pvpPrepareBuild(t, res.curStatic, res.youSrc);
+    const side = pvpEffectiveSide(pvp.you, t);
     const dealt = pvpRatio(res.dealtCur.total, pvpFight(b, res.opp, side, res.oppSide).total);
     const taken = pvpRatio(res.takenCur.total, pvpFight(res.opp, b, res.oppSide, side).total);
     const f1 = pvpFight(b, res.opp, side, res.oppSide), f2 = pvpFight(res.opp, b, res.oppSide, side);
@@ -10356,7 +10306,8 @@ function pvpRankGems(sd, socket, trial, res) {
     if (meta.id === cur.gemId || !simGemAvailableAt(meta, tier)) return;
     const t2 = pvpClone(trial);
     t2.equipment[sd.id].gems[socket] = { gemId: meta.id, tier };
-    const { b, side: you } = pvpYouBuild(t2, res);
+    const b = pvpPrepareBuild(t2, res.curStatic, res.youSrc);
+    const you = pvpEffectiveSide(pvp.you, t2);
     const dealt = pvpFight(b, res.opp, you, res.oppSide).total;
     const taken = pvpFight(res.opp, b, res.oppSide, you).total;
     rows.push({ id: meta.id, text: simGemText(meta, tier), dealt: pvpRatio(res.dealt.total, dealt), taken: pvpRatio(res.taken.total, taken),
@@ -10380,294 +10331,6 @@ function pvpRenderRanking(rk, slot, trial) {
   ])));
   table.appendChild(tb);
   box.appendChild(el('div', { class: 'gemsim-table-wrap' }, table));
-  return box;
-}
-
-/* ---------- Gear suggestions: what you own that wins this fight ----------
-   When you lose, this tries everything you own in each slot (relics,
-   mounts, artifacts and, from a player export, pets, heroes and brands),
-   keeps the swaps that raise your win chance, then stacks the best ones
-   together. Screening uses a quicker build (rounds 1–PVP_REC_CAP worked
-   out, later rounds reuse the last one) and fewer simulated fights; the
-   final suggestion is checked with the full fight.
-   Gems, psionics and gear pieces aren't tracked as owned, so they aren't
-   suggested here (Rank gems in step 1 covers gems). */
-const PVP_REC_CAP = 10;
-const PVP_REC_FIGHTS = 400;
-let pvpRec = null; // { sig, status: 'running'|'done'|'cancelled', done, total, phase, start, best, ... }
-
-function pvpRecSig(res) {
-  const t = res.trial;
-  return JSON.stringify([
-    PVP_EDIT_SECTIONS.map(k => t[k]), t.petOwned && t.petOwned.length, t.legacyOwned,
-    pvp.opponent && pvp.opponent.name, pvp.self && pvp.self.name,
-    ['atk', 'def', 'hp'].map(k => [pvp.you[k], pvp.opp[k]]), pvp.rounds, pvp.sigma, pvp.blockChance,
-  ]);
-}
-
-// Each slot category: how to read/write a slot, and what you own for it.
-function pvpRecCats(st) {
-  const ensure = (key, n) => {
-    if (!Array.isArray(st[key])) st[key] = [];
-    for (let i = 0; i < n; i++) if (!st[key][i]) st[key][i] = { itemIdx: null };
-    return st[key];
-  };
-  const deploy = (kind, list) => {
-    const stateKey = `${kind}State`, mainKey = `${kind}MainSlot`, slotsKey = `${kind}Slots`;
-    return {
-      id: kind, swaps: true,
-      slots: ['main', 0, 1, 2],
-      rowKey: (k) => k === 'main' ? `${kind}:${mainKey}:null` : `${kind}:${slotsKey}:${k}`,
-      get: (t, k) => k === 'main' ? (t[mainKey] || {}).itemIdx ?? null : ((t[slotsKey] || [])[k] || {}).itemIdx ?? null,
-      set: (t, k, v) => {
-        if (k === 'main') t[mainKey] = { itemIdx: v };
-        else { const arr = Array.isArray(t[slotsKey]) ? t[slotsKey] : (t[slotsKey] = []); for (let i = 0; i < 3; i++) if (!arr[i]) arr[i] = { itemIdx: null }; arr[k] = { itemIdx: v }; }
-      },
-      options: () => (list || []).filter(it => it.n !== 'None' && ((st[stateKey] || {})[it.idx] || {}).owned).map(it => it.idx),
-    };
-  };
-  const named = (id, slotsKey, n, owned, rowPrefix, copy) => ({
-    id, slots: Array.from({ length: n }, (_, i) => i),
-    rowKey: (k) => `${rowPrefix}:${k}`,
-    get: (t, k) => ((t[slotsKey] || [])[k] || {})[id === 'pet' ? 'itemName' : 'name'] || null,
-    set: (t, k, v) => {
-      if (!Array.isArray(t[slotsKey])) t[slotsKey] = [];
-      const src = owned.find(o => (o.itemName || o.name) === v);
-      if (src) t[slotsKey][k] = copy(src);
-    },
-    options: () => owned.map(o => o.itemName || o.name),
-  });
-  ensure('mountSlots', 3); ensure('artifactSlots', 3);
-  const cats = [{
-    id: 'relic', slots: RELIC_DEPLOY_SLOTS.map(r => r.key),
-    rowKey: (k) => `relic:${k}`,
-    get: (t, k) => (t.relicSlots || {})[k] || null,
-    set: (t, k, v) => { t.relicSlots = Object.assign({}, t.relicSlots, { [k]: v }); },
-    options: (k) => {
-      const type = RELIC_DEPLOY_SLOTS.find(r => r.key === k).type;
-      return (DB.relics || []).filter(r => r.deploy_type === type && (st.relicOwned || {})[r.n]).map(r => r.n);
-    },
-  }, deploy('mount', DB.mounts), deploy('artifact', DB.artifacts)];
-  if (Array.isArray(st.petOwned) && st.petOwned.length) cats.push(named('pet', 'petSlots', PVP_PET_COUNT, st.petOwned, 'pet', pvpClone));
-  const lo = st.legacyOwned || {};
-  const legCopy = (o) => ({ name: o.name, quality: o.quality, polarization: o.polarization || 0 });
-  if ((lo.heroes || []).length) cats.push(named('hero', 'heroSlots', 2, lo.heroes, 'heroSlots', legCopy));
-  if ((lo.brands || []).length) cats.push(named('brand', 'brandSlots', 4, lo.brands, 'brandSlots', legCopy));
-  return cats;
-}
-
-// Every single swap from build st. A move puts item v in slot k (only if v
-// isn't already in another slot of that kind), or swaps two filled slots.
-function pvpRecMoves(st) {
-  const moves = [];
-  pvpRecCats(st).forEach(cat => {
-    cat.slots.forEach(k => {
-      const cur = cat.get(st, k);
-      const inOthers = new Set(cat.slots.filter(o => o !== k).map(o => cat.get(st, o)).filter(v => v != null));
-      [...new Set(cat.options(k))].forEach(v => {
-        if (v === cur || inOthers.has(v)) return;
-        moves.push({ cat: cat.id, k, v });
-      });
-    });
-    if (cat.swaps) cat.slots.forEach((a, i) => cat.slots.slice(i + 1).forEach(b => {
-      if (cat.get(st, a) != null && cat.get(st, b) != null) moves.push({ cat: cat.id, swap: [a, b] });
-    }));
-  });
-  return moves;
-}
-// Applies a move to a copy of st; null if it's no longer valid there.
-function pvpRecApply(st, m) {
-  const t = pvpClone(st);
-  const cat = pvpRecCats(t).find(c => c.id === m.cat);
-  if (!cat) return null;
-  if (m.swap) {
-    const [a, b] = m.swap, va = cat.get(t, a), vb = cat.get(t, b);
-    if (va == null || vb == null) return null;
-    cat.set(t, a, vb); cat.set(t, b, va);
-    return t;
-  }
-  if (cat.get(t, m.k) === m.v) return null;
-  if (cat.slots.some(o => o !== m.k && cat.get(t, o) === m.v)) return null;
-  cat.set(t, m.k, m.v);
-  return t;
-}
-
-function pvpRecKillTime(f) {
-  if (f.killRound != null) return f.killRound;
-  return pvp.rounds / Math.max(0.01, 1 - (f.endHp == null ? 1 : f.endHp));
-}
-// Win chance, plus a small tie-break for how close the fight is (so swaps
-// still count when the win chance is stuck at 0% or 100%).
-function pvpRecEval(st, res, quick) {
-  const { b, side } = pvpYouBuild(st, res, quick ? PVP_REC_CAP : null);
-  const dealt = pvpFight(b, res.opp, side, res.oppSide);
-  const taken = pvpFight(res.opp, b, res.oppSide, side);
-  const w = pvpWinChance(dealt, taken, b.totals[0]['Speed'] || 0, res.opp.totals[0]['Speed'] || 0, quick ? PVP_REC_FIGHTS : PVP_MC_FIGHTS);
-  const margin = Math.log(pvpRecKillTime(taken) / pvpRecKillTime(dealt));
-  const win = w ? w.win : 0;
-  return { win, margin, score: win + 0.01 * Math.tanh(margin), dealt, taken };
-}
-
-function pvpRecProgress() {
-  const node = document.getElementById('pvp-rec-progress');
-  if (!node || !pvpRec) return;
-  const pct = pvpRec.total ? Math.round(pvpRec.done / pvpRec.total * 100) : 0;
-  node.querySelector('.pvp-rec-bar-fill').style.width = `${pct}%`;
-  node.querySelector('.pvp-rec-count').textContent = `${pvpRec.phase} · ${pvpRec.done} of ${pvpRec.total}`;
-}
-
-async function pvpRecRun(res) {
-  const sig = pvpRecSig(res);
-  const run = { sig, status: 'running', done: 0, total: 0, phase: 'Trying each swap' };
-  pvpRec = run;
-  render();
-  const alive = () => pvpRec === run && run.status === 'running';
-  const tick = () => new Promise(r => setTimeout(r, 0));
-  let last = performance.now();
-  const maybeYield = async () => {
-    if (performance.now() - last > 30) { pvpRecProgress(); await tick(); last = performance.now(); }
-    return alive();
-  };
-
-  const start = pvpClone(res.trial);
-  let best = start, bestEval = pvpRecEval(start, res, true);
-  run.startWin = bestEval.win;
-
-  // Up to two passes: try every single swap, then stack the ones that help.
-  for (let pass = 0; pass < 2; pass++) {
-    const moves = pvpRecMoves(best);
-    run.phase = pass ? 'Second pass' : 'Trying each swap';
-    run.done = 0; run.total = moves.length;
-    const gains = [];
-    for (const m of moves) {
-      const t = pvpRecApply(best, m);
-      if (t) {
-        const e = pvpRecEval(t, res, true);
-        if (e.score > bestEval.score + 1e-9) gains.push({ m, score: e.score });
-      }
-      run.done++;
-      if (!(await maybeYield())) return;
-    }
-    if (!gains.length) break;
-    gains.sort((a, b) => b.score - a.score);
-    const top = gains.slice(0, 15);
-    run.phase = 'Combining the best swaps';
-    run.done = 0; run.total = top.length;
-    let improved = false;
-    for (const g of top) {
-      const t = pvpRecApply(best, g.m);
-      if (t) {
-        const e = pvpRecEval(t, res, true);
-        if (e.score > bestEval.score + 1e-9) { best = t; bestEval = e; improved = true; }
-      }
-      run.done++;
-      if (!(await maybeYield())) return;
-    }
-    if (!improved || bestEval.win >= 0.6) break;
-  }
-
-  // Final check with the full fight.
-  run.phase = 'Checking the result'; run.done = 0; run.total = 2;
-  pvpRecProgress(); await tick();
-  if (!alive()) return;
-  const before = pvpRecEval(start, res, false);
-  const after = best === start ? before : pvpRecEval(best, res, false);
-  run.status = 'done';
-  run.start = start;
-  run.best = after.score > before.score ? best : start;
-  run.before = before; run.after = after.score > before.score ? after : before;
-  run.changed = pvpBuildRows().filter(r => JSON.stringify(r.pick(start)) !== JSON.stringify(r.pick(run.best)));
-  render();
-}
-
-function pvpRecEquip(saveToBuild) {
-  if (!pvpRec || !pvpRec.best) return;
-  const best = pvpRec.best, n = pvpRec.changed.length;
-  const s = n === 1 ? '' : 's';
-  if (saveToBuild && !pvp.self) {
-    state = Object.assign(defaultState(), pvpClone(best));
-    saveState();
-    pvp.patches = [];
-    pvpRanking = null;
-    savePvp();
-    pvpRec = { status: 'equipped', msg: `Equipped ${n} change${s} on your build.` };
-    render();
-  } else {
-    pvpRec = { status: 'equipped', msg: pvp.self
-      ? `Equipped ${n} change${s} on the loaded build (what-if changes).`
-      : `Trying ${n} change${s} in the simulator. Your saved build isn’t touched until you press Apply to my build.` };
-    pvpCommitTrial(best);
-  }
-}
-
-function renderPvpRec(res, abs) {
-  if (!abs || !res.win) return null;
-  const box = el('div', { class: 'pvp-rec' });
-  const sig = pvpRecSig(res);
-  const losing = res.win.win < 0.5;
-
-  if (pvpRec && pvpRec.status === 'equipped') {
-    box.appendChild(el('p', { class: 'pvp-rec-msg' }, pvpRec.msg));
-    pvpRec = null; // shown once
-    return box;
-  }
-  const current = pvpRec && pvpRec.sig === sig ? pvpRec : null;
-  if (pvpRec && !current && pvpRec.status === 'running') pvpRec.status = 'cancelled'; // build or opponent changed
-
-  if (current && current.status === 'running') {
-    const pct = current.total ? Math.round(current.done / current.total * 100) : 0;
-    box.appendChild(el('div', { class: 'pvp-rec-head' }, 'Looking for gear you own that wins…'));
-    box.appendChild(el('div', { id: 'pvp-rec-progress', class: 'pvp-rec-progress' }, [
-      el('div', { class: 'capy-progress' }, el('div', { class: 'capy-progress-fill pvp-rec-bar-fill', style: `width:${pct}%` })),
-      el('div', { class: 'gemsim-note pvp-rec-count' }, `${current.phase} · ${current.done} of ${current.total}`),
-    ]));
-    box.appendChild(el('div', { class: 'pvp-opp-actions' }, [
-      el('button', { class: 'filter-chip', onclick: () => { current.status = 'cancelled'; pvpRec = null; render(); } }, 'Cancel'),
-    ]));
-    return box;
-  }
-
-  if (current && current.status === 'done') {
-    const pc = (v) => `${Math.round(v * 100)}%`;
-    if (!current.changed.length) {
-      box.appendChild(el('div', { class: 'pvp-rec-head' }, 'Nothing you own does better here'));
-      box.appendChild(el('p', { class: 'gemsim-note' }, 'Every owned relic, mount, artifact' + (res.trial.petOwned && res.trial.petOwned.length ? ', pet' : '') + (res.trial.legacyOwned ? ', hero and brand' : '') + ' was tried in each slot. Gems, psionics and gear pieces aren’t tracked as owned, so they weren’t tried — use Rank gems in step 1 for gems.'));
-      return box;
-    }
-    const wins = current.after.win >= 0.5;
-    box.appendChild(el('div', { class: 'pvp-rec-head' }, wins ? 'Swap these to win' : 'Your best setup from what you own'));
-    box.appendChild(el('p', { class: 'pvp-rec-win' }, [
-      'Win chance ', el('strong', {}, pc(current.before.win)), ' → ', el('strong', { class: wins ? 'gemsim-good' : '' }, pc(current.after.win)),
-      wins ? '' : ' — still short of a win, but the closest you can get with what you own.',
-    ]));
-    const list = el('div', { class: 'pvp-rec-list' });
-    current.changed.forEach(r => list.appendChild(el('div', { class: 'pvp-rec-row' }, [
-      el('span', { class: 'pvp-label' }, `${r.cat} · ${r.label}`),
-      el('span', { class: 'pvp-was' }, r.summary(current.start)),
-      el('span', { class: 'pvp-rec-arrow', 'aria-hidden': 'true' }, '→'),
-      el('span', { class: 'pvp-sum' }, r.summary(current.best)),
-    ])));
-    box.appendChild(list);
-    const actions = el('div', { class: 'pvp-opp-actions' });
-    if (!pvp.self) actions.appendChild(el('button', { class: 'bulk-action-btn primary', onclick: () => pvpRecEquip(true) },
-      res.hasChanges ? 'Equip these (also saves your other changes)' : 'Equip these'));
-    actions.appendChild(el('button', { class: 'bulk-action-btn secondary', onclick: () => pvpRecEquip(false) }, pvp.self ? 'Equip these here' : 'Try them first'));
-    box.appendChild(actions);
-    box.appendChild(el('p', { class: 'gemsim-note' }, pvp.self
-      ? 'Your side is a loaded build file, so the swaps go in as what-if changes here.'
-      : 'Equip these writes the swaps to your saved build (Equipment and Collection tabs). Try them first only changes the simulator.'));
-    return box;
-  }
-
-  if (!losing) return null;
-  const hasExtras = (res.trial.petOwned && res.trial.petOwned.length) || res.trial.legacyOwned;
-  box.appendChild(el('div', { class: 'pvp-rec-head' }, 'Want to turn this around?'));
-  box.appendChild(el('p', { class: 'gemsim-note' },
-    'Tries every relic, mount and artifact you’ve marked as owned' + (hasExtras ? ', plus the pets, heroes and brands from your player export,' : '') +
-    ' in each slot, and finds the swaps that raise your win chance.' + (hasExtras ? '' : ' Import a player export to include pets, heroes and brands.') + ' This can take a little while.'));
-  box.appendChild(el('div', { class: 'pvp-opp-actions' }, [
-    el('button', { class: 'bulk-action-btn primary', onclick: () => pvpRecRun(res) }, 'Find gear that wins'),
-  ]));
   return box;
 }
 
@@ -11136,14 +10799,12 @@ function renderPvpResult(res) {
     }
   }
   box.appendChild(cards);
-  const rec = renderPvpRec(res, abs);
-  if (rec) box.appendChild(rec);
   if (abs && res.win) box.appendChild(el('details', { class: 'pvp-why-wrap', open: '' }, [el('summary', { class: 'gemsim-note' }, 'Why this result'), renderPvpWhy(res)]));
   const opts = el('div', { class: 'pvp-fight-opts' });
   opts.appendChild(simSelect('Rounds', PVP_ROUND_OPTIONS.map(n => ({ value: n, label: `${n} rounds` })), pvp.rounds,
     (v) => { pvp.rounds = Number(v); savePvp(); render(); }));
   opts.appendChild(el('p', { class: 'gemsim-note' },
-    '“Damage to shielded targets” and “targets above 70% HP” bonuses switch on by themselves while the target has a shield or is above 70% HP. Duels last up to 30 rounds. From round 10, each round adds +10% damage and −10% max HP for both fighters (round 10: +10% / −10%, round 11: +20% / −20%, …), up to +90% / −90% from round 18 on.'));
+    '“Damage to shielded targets” and “targets above 70% HP” bonuses switch on by themselves while the target has a shield or is above 70% HP. Duels last up to 30 rounds; the game’s extra rules after round 10 aren’t modelled.'));
   box.appendChild(opts);
   return box;
 }
@@ -11451,11 +11112,12 @@ function renderPvpSettings(res) {
   });
   box.appendChild(el('div', { class: 'gemsim-coef-row' }, [bcInp]));
   box.appendChild(el('p', { class: 'gemsim-note' },
-    'Win chance uncertainty (±%). Each simulated fight scales each side’s damage by a random factor of about this size, standing in for everything the model leaves out. 0 = only crit, block, combo and counter luck.'));
-  const sgInp = el('input', { type: 'number', min: '0', max: '100', step: '1', value: String(pvp.sigma == null ? 10 : pvp.sigma), class: 'search-input pvp-num' });
+    'Win chance uncertainty (±%). Each simulated fight scales each side’s damage by a random factor of about this size, standing in for everything the model leaves out (stuns, silences, procs, turn order). Default 25%, which matches real duel results. 0 = only crit, block, combo and counter luck.'));
+  const sgInp = el('input', { type: 'number', min: '0', max: '100', step: '1', value: String(pvp.sigma == null ? 25 : pvp.sigma), class: 'search-input pvp-num' });
   sgInp.addEventListener('change', () => {
     const v = sgInp.value.trim();
-    pvp.sigma = v === '' ? 10 : clamp(Number(v), 0, 100);
+    pvp.sigma = v === '' ? 25 : clamp(Number(v), 0, 100);
+    pvp.sigmaSet = v !== '';
     savePvp(); render();
   });
   box.appendChild(el('div', { class: 'gemsim-coef-row' }, [sgInp]));
