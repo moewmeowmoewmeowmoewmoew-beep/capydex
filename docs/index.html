@@ -1633,12 +1633,18 @@ textarea::placeholder {
   font-size: 14px;
 }
 .psi-info-icon:hover { opacity: 1; color: var(--accent); }
+/* Tutorial modal: wider than the usual 360px box, and the screenshot is
+   shown whole at its own shape (no crop), capped to the screen height. */
+.modal-box-tutorial { max-width: 720px; }
+.tutorial-modal-img-link { display: block; cursor: zoom-in; }
 .tutorial-modal-img {
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  height: auto;
+  max-height: 65vh;
+  object-fit: contain;
   border-radius: 8px;
   border: 1px solid var(--hairline);
+  background: var(--bg-panel-2);
   display: block;
 }
 .calc-full-table-desc-row.collapsed { display: none; }
