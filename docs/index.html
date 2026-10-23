@@ -7522,6 +7522,7 @@ const GEM_NAME_TO_LABEL = {
   'Physical Damage Reduction +X': 'Physical DMG Reduction',
   'Global HP +X': 'Global HP%', 'Global Defense +X': 'Global DEF%',
   'Control Immunity Rate +X': 'Control Immunity Rate', 'Ignore Control Immunity Rate +X': 'Ignore Control Immunity Rate',
+  'Immune to first +X control effects, increases hero’s control immunity rate by +X': 'Control Immunity Rate',
   'Damage over Time Duration +X, Damage over Time +X': 'DoT DMG',
   'Combo Count +X, Combo Damage +X': 'Combo DMG',
   'Increased Damage to Shielded Targets +X': 'DMG to Shielded Enemies',
@@ -9242,6 +9243,9 @@ function renderAttackTypeFilter() {
    ============================================================ */
 const PVP_STORE_KEY = 'capydex_pvp_sim_v1';
 const PVP_MAX_ROUNDS = 30; // game config 1116: a PVP duel lasts at most 30 rounds
+// Rage: the meter fills from basic attacks and rage effects; at full it casts the Rage Skill.
+// The game tables don't hold the base numbers, so these are settings (Advanced).
+const PVP_RAGE_MAX_DEFAULT = 100, PVP_RAGE_BASIC_DEFAULT = 34; // 34 a basic attack ≈ a plain build rages every 3 rounds
 const PVP_SKILL_TYPES = ['Lightning', 'Dagger', 'Sword Qi', 'Light Spear'];
 const PVP_EDIT_SECTIONS = ['equipment', 'relicSlots', 'relicOwned', 'relicStars', 'mountState', 'mountSlots', 'mountMainSlot',
   'artifactState', 'artifactSlots', 'artifactMainSlot', 'petSlots', 'heroSlots', 'brandSlots', 'adventurerSlot'];
@@ -9259,10 +9263,11 @@ const SIM_TYPE_EXTRAS = {
 };
 
 function pvpDefaultSide() {
-  return { atk: '', def: '', hp: '', basic: 1, maxCombo: 1, rageEvery: 3, skillHits: {} };
+  return { atk: '', def: '', hp: '', basic: 1, maxCombo: 1, rageEvery: '', skillHits: {} };
 }
 function loadPvp() {
-  const base = { rounds: 30, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), view: 'you', baseCoef: {}, blockChance: 100, sigma: 25 };
+  const base = { rounds: 30, patches: [], opponent: null, you: pvpDefaultSide(), opp: pvpDefaultSide(), view: 'you', baseCoef: {}, blockChance: 100, sigma: 25,
+    rageBasic: PVP_RAGE_BASIC_DEFAULT, rageMax: PVP_RAGE_MAX_DEFAULT };
   try {
     const raw = JSON.parse(localStorage.getItem(PVP_STORE_KEY) || 'null');
     if (raw && typeof raw === 'object') {
@@ -9273,6 +9278,9 @@ function loadPvp() {
       // The default spread went from 10% to 25% (checked against real duel
       // results); move saved settings along unless the person set it.
       if (!raw.sigmaSet && (raw.sigma == null || Number(raw.sigma) === 10)) base.sigma = 25;
+      // Rage used to be a fixed "every 3 rounds"; it's now worked out from rage gains
+      // unless someone typed their own number.
+      ['you', 'opp'].forEach(k => { if (!raw.rageSet && Number(base[k].rageEvery) === 3) base[k].rageEvery = ''; });
     }
   } catch (e) { /* storage unavailable — start fresh */ }
   base.rounds = PVP_MAX_ROUNDS; // every PVP duel runs the game's full length (an older saved "Rounds" choice is ignored)
@@ -9471,7 +9479,12 @@ function pvpHitModel(typeName, A, D, side, enemySide) {
     const c = clamp(((A[L.proc[0]] || 0) - (D[L.proc[1]] || 0)) / 100, 0, 1);
     return { kind: 'counter', c, tries: Math.max(0, Number(enemySide.basic) || 0) };
   }
-  if (typeName === 'Rage Skill') return { kind: 'rage', every: Number(side.rageEvery) || 0 };
+  if (typeName === 'Rage Skill') {
+    if (side.nashir) return { kind: 'rage', every: 0 };
+    const typed = side.rageEvery !== '' && side.rageEvery != null;
+    return typed ? { kind: 'rage', every: Number(side.rageEvery) || 0 } : { kind: 'rage', every: -1 }; // -1 = rage meter
+  }
+  if (typeName === 'Lightning' && side.nashir) return { kind: 'nashir', n: side.nashir.bolt + NASHIR_RELEASE[3] / 3 };
   return { kind: 'fixed', n: Math.max(0, Number(side.skillHits[typeName]) || 0) };
 }
 function pvpHitsPerRound(typeName, A, D, side, enemySide) {
@@ -9482,8 +9495,8 @@ function pvpHitsPerRound(typeName, A, D, side, enemySide) {
     return m.basic * n;
   }
   if (m.kind === 'counter') return m.c * m.tries;
-  if (m.kind === 'rage') return m.every > 0 ? 1 / m.every : 0;
-  return m.n;
+  if (m.kind === 'rage') return m.every > 0 ? 1 / m.every : m.every < 0 ? (side.rageRate || 0) : 0;
+  return m.n; // fixed, nashir (bolt + 6 Divine Thunders every 3rd round)
 }
 
 // Guess of skill hits per round from the equipped weapon's own text, used
@@ -9520,7 +9533,8 @@ function pvpEffectiveSide(side, st) {
     skillHits[t] = v === '' || v == null ? guess[t] : Number(v);
   });
   const fx = pvpFightEffects(st);
-  return Object.assign({}, side, { skillHits, guessed: guess,
+  const nashir = pvpNashirProfile(st);
+  return Object.assign({}, side, { skillHits, guessed: guess, nashir, rage: nashir ? null : pvpRageProfile(st),
     maxCombo: Math.max(1, Number(side.maxCombo) || 1) + (fx.comboCount || 0) });
 }
 
@@ -9652,7 +9666,7 @@ const pvpFxCache = new WeakMap();
 function pvpFightEffects(st) {
   if (st && pvpFxCache.has(st)) return pvpFxCache.get(st);
   const fx = { heal: 0, shield: 0, immune: 0, fluct: null, atkDown: 0, steal: null, atkUp: null, ignoreRed: 0, critDown: 0,
-    comboCount: 0, comboShield: null, swordProc: 0, notes: [] };
+    comboCount: 0, comboShield: null, swordProc: 0, stun: 0, silence: 0, ctrlImmune: 0, notes: [] };
   const num = (v) => parseFloat(v) / 100;
   pvpGemTexts(st || {}).forEach(t => {
     let m;
@@ -9676,6 +9690,10 @@ function pvpFightEffects(st) {
     if ((m = t.match(/sword aura hits,\s+([\d.]+)%\s+chance to release a blade whirlwind dealing\s+([\d.]+)%\s+damage/i))) {
       fx.swordProc = num(m[1]) * num(m[2]); fx.notes.push(t);
     }
+    // Control: stun on basic attacks, silence on Rage Skill (max 2 a battle), immune to the first N controls.
+    if ((m = t.match(/(?:Basic|Normal) attacks? ha(?:ve|s) (?:an? )?([\d.]+)% chance to stun/i))) { fx.stun = Math.max(fx.stun, num(m[1])); fx.notes.push(t); }
+    if ((m = t.match(/Rage skill has (?:an? )?([\d.]+)% chance to silence/i))) { fx.silence = Math.max(fx.silence, num(m[1])); fx.notes.push(t); }
+    if ((m = t.match(/Immune to (?:the )?first\s+(\d+)\s+control/i))) { fx.ctrlImmune += Number(m[1]); fx.notes.push(t); }
   });
   fx.notes = [...new Set(fx.notes)];
   if (st) pvpFxCache.set(st, fx);
@@ -9784,6 +9802,144 @@ function pvpShieldSources(b) {
   return b._shieldSources;
 }
 
+/* ---------- Rage ----------
+   Every weapon except Nashir's Scepter has a Rage Skill. The meter starts at
+   the build's Initial Rage, fills from each basic attack (the setting plus any
+   "Basic Attacks restore N extra Rage"), weapon crits (Gale Elres' Whisper),
+   the dagger Rage gem (every 3 daggers → +15, max 1–2 a turn), and deployed
+   Qiankun Bag / Capybara Rhapsody (A4+) on their turns. At full it casts the
+   Rage Skill at the end of that turn — round 1 if it starts full. */
+const pvpRageCache = new WeakMap();
+function pvpRageProfile(st) {
+  if (!st || typeof st !== 'object') return null;
+  if (pvpRageCache.has(st)) return pvpRageCache.get(st);
+  const out = { initial: 0, extra: 0, crit: null, dagger: null, deployed: [] };
+  EQUIPMENT_SLOTS.forEach(sd => {
+    const g = (st.equipment || {})[sd.id];
+    const item = g && g.itemName ? (DB[sd.dataKey] || []).find(w => w.n === g.itemName) : null;
+    if (!item) return;
+    const tier = getEquipTier(item, g) || 0;
+    (item.skills || []).forEach(sk => {
+      if (tier < sk.tier) return;
+      let m;
+      if ((m = sk.desc.match(/Initial Rage \+(\d+)/i))) out.initial += Number(m[1]);
+      if ((m = sk.desc.match(/Basic Attacks restore (\d+) extra Rage|Rage Recovery from Basic Attack \+(\d+)/i))) out.extra += Number(m[1] || m[2]);
+      if ((m = sk.desc.match(/Gain (\d+) rage on weapon critical hits?, triggers (\d+) times/i))) out.crit = { gain: Number(m[1]), max: Number(m[2]) };
+    });
+    const arc = (st.arcana || {})[item.n];
+    const entry = (DB.arcanas || []).find(a => a.linked_item === item.n);
+    if (entry && entry.arcana_descs && arc != null && arc !== '' && Number(arc) >= 0) {
+      entry.arcana_descs.slice(0, Number(arc) + 1).forEach(t => { const m = String(t).match(/Initial Rage \+(\d+)/i); if (m) out.initial += Number(m[1]); });
+    }
+  });
+  pvpGemTexts(st).forEach(t => {
+    const m = t.match(/Every 3 daggers,? additionally triggers? 1 Rage Dagger, restoring (\d+) Rage, up to (\d+) times? per turn/i);
+    if (m && (!out.dagger || Number(m[1]) * Number(m[2]) > out.dagger.gain * out.dagger.max)) out.dagger = { gain: Number(m[1]), max: Number(m[2]) };
+  });
+  // Deployed artifacts fire in turn: slot 1 on rounds 1, 4, 7…; slot 2 on 2, 5, 8…; slot 3 on 3, 6, 9….
+  (st.artifactSlots || []).forEach((slot, k) => {
+    if (!slot || slot.itemIdx == null) return;
+    const item = (DB.artifacts || []).find(it => it.idx === slot.itemIdx);
+    const aw = ((st.artifactState || {})[slot.itemIdx] || {}).awaken || 0;
+    if (!item || aw < 4) return;
+    if (/Qiankun Bag/i.test(item.n)) {
+      // 10 hits, each 25% for 20 Rage (A10: 100% for Rage or HP → half of them Rage); A7+ adds 6–10 Daggers.
+      out.deployed.push({ slot: k, name: item.n, hits: 10, chance: aw >= 10 ? 0.5 : 0.25, gain: 20, daggers: aw >= 7 ? 8 : 0 });
+    } else if (/Capybara Rhapsody/i.test(item.n)) {
+      out.deployed.push({ slot: k, name: item.n, perDagger: { chance: 0.2, gain: 10, cap: 30 } });
+    }
+  });
+  pvpRageCache.set(st, out);
+  return out;
+}
+// Expected rage gained in round r (1-based): basics = basic attacks made,
+// daggers = daggers thrown, critChance = a basic attack's crit chance.
+function pvpRageGain(rp, r, basics, daggers, critChance) {
+  let g = basics * (Number(pvp.rageBasic) >= 0 ? Number(pvp.rageBasic) : PVP_RAGE_BASIC_DEFAULT) + basics * rp.extra;
+  if (rp.crit) g += Math.min(rp.crit.max, basics * critChance) * rp.crit.gain;
+  let d = daggers;
+  rp.deployed.forEach(x => { if ((r - 1) % 3 === x.slot && x.daggers) d += x.daggers; });
+  if (rp.dagger) g += Math.min(rp.dagger.max, d / 3) * rp.dagger.gain;
+  rp.deployed.forEach(x => {
+    if ((r - 1) % 3 !== x.slot) return;
+    if (x.hits) g += x.hits * x.chance * x.gain;
+    if (x.perDagger) g += Math.min(x.perDagger.cap, d * x.perDagger.chance * x.perDagger.gain);
+  });
+  return g;
+}
+const pvpRageMax = () => (Number(pvp.rageMax) > 0 ? Number(pvp.rageMax) : PVP_RAGE_MAX_DEFAULT);
+
+/* ---------- Nashir's Scepter ----------
+   Nashir never casts a Rage Skill. From the start of battle it charges; each
+   charging turn gives an Electric Shield. At the end of the 3rd charging turn
+   (its "rage") it releases 6 Nasir Divine Thunders, then starts charging
+   again the next turn. Controlled (stunned or silenced) before then, it
+   releases what it had charged on its next turn (1 turn → 1, 2 turns → 3)
+   and starts over. A Rage Skill gem's silence fires on that release. */
+const NASHIR_RELEASE = [0, 1, 3, 6];
+const NASHIR_SHIELD_GEM = 'g_81134';
+const pvpNashirCache = new WeakMap();
+function pvpNashirProfile(st) {
+  if (!st || typeof st !== 'object') return null;
+  if (pvpNashirCache.has(st)) return pvpNashirCache.get(st);
+  let out = null;
+  const s = (st.equipment || {}).weapon;
+  const item = s && s.itemName && /Nashir/i.test(s.itemName) ? (DB.weapons || []).find(w => w.n === s.itemName) : null;
+  if (item) {
+    const tier = getEquipTier(item, s) || 0;
+    const arcRaw = (st.arcana || {})[item.n];
+    const arc = arcRaw == null || arcRaw === '' ? -1 : Number(arcRaw);
+    const gemMeta = ((DB.gems || {}).weapon || []).find(o => o.id === NASHIR_SHIELD_GEM);
+    const gemSlot = (s.gems || []).find(x => x.gemId === NASHIR_SHIELD_GEM);
+    const gemPct = gemMeta && gemSlot ? (extractGemScalingValue(gemMeta, gemSlot.tier || 9) || 0) : 0;
+    const stackTier = pickLevelTier(item.stacking_stats_tier_tiers, 'min_tier', tier);
+    const stackCfg = stackTier && stackTier.stats && stackTier.stats.lightning_dmg;
+    out = {
+      name: item.n, tier,
+      bolt: tier >= 2 ? 1 : 0,                         // Great: 1 lightning bolt each turn
+      dtCoef: s.quality === 'Mythic' ? 90 : 80,         // Divine Thunder: % of ATK
+      chargeCoef: tier >= 4 ? 15 : 0,                   // Epic: +15% coefficient per charged turn
+      chargeDmg: stackCfg ? stackCfg.per_stack : 0,     // Epic: +30% electric damage per charged turn
+      // Electric Shield per charging turn: 5% max HP, 10% from Legendary; arcana and gem raise it.
+      shield: (tier >= 7 ? 0.10 : 0.05) * (1 + (arc >= 2 ? 0.10 : 0) + gemPct / 100),
+      convert: tier >= 11 ? (arc >= 10 ? 0.7 : 0.5) : 0, // Surpass: lightning → Divine Thunder
+      dtStep: tier >= 11 ? 0.20 : 0,                    // Surpass: +20% Divine Thunder damage per release
+      dtMax: tier >= 11 ? 6 + (arc >= 5 ? 3 : 0) : 0,
+    };
+  }
+  pvpNashirCache.set(st, out);
+  return out;
+}
+// The Calculator counts Nashir's charging bonus as "+30% per round, up to 3".
+// In a fight it follows the charge instead, so take the Calculator's out.
+function pvpNashirStackIn(b, i, pa) {
+  const e = ((b.rounds || [])[i] || {})['Lightning DMG'];
+  if (!e || !pa.chargeDmg) return 0;
+  return e.sources.filter(sc => /:stacking:lightning_dmg$/.test(sc.groupKey || '') && String(sc.groupKey).includes(pa.name) && (!b.page || sc.battle))
+    .reduce((a, sc) => a + sc.val, 0);
+}
+// Nashir's lightning in round i at charge 1..3: a normal bolt and a Divine
+// Thunder (before its per-release bonus). extra = this round's other multipliers.
+function pvpNashirHits(pa, A, i, a, d, ctx, cond, mods, extra) {
+  const stackIn = pvpNashirStackIn(A, i, pa);
+  const L = pvpLabels('Lightning');
+  const hits = [];
+  for (let c = 1; c <= 3; c++) {
+    const aC = Object.assign({}, a, { 'Lightning DMG': (a['Lightning DMG'] || 0) - stackIn + pa.chargeDmg * c });
+    const h = pvpHit(aC, d, 'Lightning', ctx, cond, mods);
+    h.total *= extra; h.unit *= extra; h.allMult *= extra;
+    const coefB = pvpSum(aC, L.coef);
+    h.dtRatio = (pa.dtCoef + pa.chargeCoef * c + coefB) / Math.max(1, L.baseCoef + coefB);
+    hits.push(h);
+  }
+  return hits;
+}
+// Chance a control from A lands on D: lowered by D's Control Immunity Rate,
+// raised back by A's Ignore Control Immunity Rate.
+function pvpCtrlLand(A0, D0) {
+  return clamp(1 - ((D0['Control Immunity Rate'] || 0) - (A0['Ignore Control Immunity Rate'] || 0)) / 100, 0, 1);
+}
+
 // A attacks D for the whole fight. With HP known, D's HP is tracked round
 // by round: its shield soaks damage first, its first immune hits do
 // nothing, and it heals at the end of each round. "Target has a shield"
@@ -9800,6 +9956,14 @@ function pvpFight(A, D, sideA, sideD) {
   } : null;
   const fa = pvpFightEffects(A.st), fd = pvpFightEffects(D.st);
   const dShielded = pvpShieldSources(D).length > 0;
+  // Nashir: this view has no control, so it charges 3 turns and releases on every 3rd round.
+  const pa = sideA.nashir || null, pd = sideD.nashir || null;
+  let dtStacks = 0;
+  const nashShield = [];
+  // Rage meter (expected gains; casts at the end of the turn it fills).
+  const rp = sideA.rage || null, rageModel = pvpHitModel('Rage Skill', {}, {}, sideA, sideD);
+  let rageMeter = rp ? Math.min(rp.initial, pvpRageMax()) : 0;
+  const rageRounds = [];
   const fluct = pvpFluctMean(fa);
   const hp = hpIn && atkIn ? hpIn * pvpStageRatio('hp', D.totals[0], D.ref, sideD.src) * 5 : null;
   let curHp = hp, curMax = hp, shield = hp ? hp * fd.shield : 0, immune = fd.immune, killRound = null;
@@ -9812,6 +9976,9 @@ function pvpFight(A, D, sideA, sideD) {
       if (newMax <= 0) killRound = i + 1e-6;
       else { curHp *= newMax / curMax; curMax = newMax; }
     }
+    // A charging Nashir gets its Electric Shield at the start of each turn.
+    const nGain = pd && hp && killRound == null ? pd.shield * curMax : 0;
+    shield += nGain; nashShield.push(nGain);
     const hpShare = hp ? (killRound == null ? curHp / curMax : 0) : null;
     const a = pvpWithConds(A.totals[i], (A.conds || [])[i], { round: i + 1, targetHp: hpShare, selfHp: null });
     const d = pvpWithConds(D.totals[i], (D.conds || [])[i], { round: i + 1, targetHp: null, selfHp: hpShare });
@@ -9819,7 +9986,24 @@ function pvpFight(A, D, sideA, sideD) {
     const mods = pvpRoundMods(i + 1, fa, fd, atkIn, atkD);
     conds.push(cond);
     let roundDmg = 0, roundHits = 0;
+    const rageT = types.find(t => t.name === 'Rage Skill');
     types.forEach(t => {
+      if (t === rageT) return; // after the others: its rage comes from this round's attacks
+      if (pa && t.name === 'Lightning') {
+        const extraN = fluct * pvpLateDmg(i + 1);
+        const nh = pvpNashirHits(pa, A, i, a, d, ctx, cond, mods, extraN);
+        const c = (i % 3) + 1, h = nh[c - 1];
+        const mult = () => 1 + pa.dtStep * Math.min(pa.dtMax, dtStacks);
+        let dmg = pa.bolt * h.total * ((1 - pa.convert) + pa.convert * h.dtRatio * mult());
+        dtStacks += pa.bolt * pa.convert;
+        if (c === 3) { dmg += NASHIR_RELEASE[3] * h.total * h.dtRatio * mult(); dtStacks += 1; }
+        const hits = pa.bolt + (c === 3 ? NASHIR_RELEASE[3] : 0);
+        const avg = hits ? dmg / hits : 0;
+        const hit = Object.assign({}, h, { total: avg, st: Object.assign({}, h.st, { coef: h.st.coef * (h.total ? avg / h.total : 1) }) });
+        t.rounds.push({ hits, hit, dmg, model: { kind: 'nashir', n: hits }, nash: { bolt: nh.map(x => x.unit), dt: nh.map(x => x.unit * x.dtRatio) } });
+        t.total += dmg; t.hits += hits; roundDmg += dmg; roundHits += hits;
+        return;
+      }
       const hits = pvpHitsPerRound(t.name, a, d, sideA, sideD);
       const hit = pvpHit(a, d, t.name, ctx, cond, mods);
       // Blade whirlwind and similar: a share of Sword Qi hits repeat as a full hit.
@@ -9829,6 +10013,23 @@ function pvpFight(A, D, sideA, sideD) {
       t.rounds.push({ hits, hit, dmg, model: pvpHitModel(t.name, a, d, sideA, sideD) });
       t.total += dmg; t.hits += hits; roundDmg += dmg; roundHits += hits;
     });
+    if (rageT) {
+      let hits;
+      if (rageModel.every < 0 && rp) {
+        const rec = (n) => (types.find(t => t.name === n).rounds[i] || {});
+        const basicRec = rec('Basic Attack');
+        rageMeter += pvpRageGain(rp, i + 1, basicRec.hits || 0, rec('Dagger').hits || 0, (basicRec.hit || {}).chance || 0);
+        hits = rageMeter >= pvpRageMax() ? 1 : 0;
+        if (hits) rageMeter -= pvpRageMax();
+      } else hits = rageModel.every > 0 ? ((i + 1) % rageModel.every === 0 ? 1 : 0) : 0;
+      rageRounds.push(hits);
+      const hit = pvpHit(a, d, 'Rage Skill', ctx, cond, mods);
+      const extra = fluct * pvpLateDmg(i + 1);
+      hit.total *= extra; hit.unit *= extra; hit.allMult *= extra;
+      const dmg = hits * hit.total;
+      rageT.rounds.push({ hits, hit, dmg, model: rageModel });
+      rageT.total += dmg; rageT.hits += hits; roundDmg += dmg; roundHits += hits;
+    }
     if (immune > 0 && roundHits > 0) {
       const blocked = Math.min(immune, roundHits);
       roundDmg *= 1 - blocked / roundHits;
@@ -9851,7 +10052,8 @@ function pvpFight(A, D, sideA, sideD) {
   const total = byRound.reduce((x, y) => x + y, 0);
   types.forEach(t => { t.share = total > 0 ? t.total / total : 0; });
   return { types, byRound, total, hp, killRound, hpTrace, endHp: hpTrace.length ? hpTrace[hpTrace.length - 1] : null,
-    absolute: !!atkIn, ctx, conds, fa, fd, shieldGain };
+    absolute: !!atkIn, ctx, conds, fa, fd, shieldGain, nashShield, pa, pd, rp, rageRounds,
+    ctrlLand: pvpCtrlLand(A.totals[0] || {}, D.totals[0] || {}), basic: Math.max(0, Number(sideA.basic) || 0) };
 }
 
 /* ---------- win chance: Monte Carlo ----------
@@ -9875,28 +10077,77 @@ function pvpGauss(f, side) {
 }
 // A fight's numbers boiled down to plain arrays (also the cache key).
 function pvpMcPlan(fight) {
+  const pa = fight.pa;
   return {
     hp: fight.hp, shield: fight.fd.shield, heal: fight.fd.heal, immune: fight.fd.immune, shieldGain: fight.shieldGain,
     fluct: fight.fa.fluct, fluctMean: pvpFluctMean(fight.fa),
+    typeNames: fight.types.map(t => t.name), skill: fight.types.map(t => PVP_SKILL_HIT_TYPES.has(t.name)),
+    // control: the attacker's stun / silence, how often it lands on the defender, the defender's immunity count
+    basic: fight.basic, stun: fight.fa.stun, silence: fight.fa.silence, land: fight.ctrlLand, ctrlImmune: fight.fd.ctrlImmune,
+    atkNash: pa ? { bolt: pa.bolt, convert: pa.convert, step: pa.dtStep, max: pa.dtMax } : null,
+    rage: fight.rp ? { initial: fight.rp.initial, extra: fight.rp.extra, crit: fight.rp.crit, dagger: fight.rp.dagger, deployed: fight.rp.deployed,
+      basic: Number(pvp.rageBasic) >= 0 ? Number(pvp.rageBasic) : PVP_RAGE_BASIC_DEFAULT, max: pvpRageMax() } : null,
+    defNashShield: fight.pd ? fight.pd.shield : 0,
     rounds: fight.types[0].rounds.map((_, i) => fight.types.map(t => {
       const rd = t.rounds[i], m = rd.model, h = rd.hit;
+      if (m.kind === 'nashir') return [m.kind, 0, 0, 0, 0, 0, 0, rd.nash.bolt, h.chance, h.mult, h.blockRed, rd.nash.dt];
       return [m.kind, m.n || 0, m.c || 0, m.max || 0, m.basic || 0, m.tries || 0, m.every || 0, h.unit, h.chance, h.mult, h.blockRed];
     })),
   };
 }
 // One side's damage in round r of fight f, hit by hit. def = the target's
 // running state ({ immune }), so its first immune hits do nothing.
-function pvpMcRoundDamage(plan, r, f, side, blockP, def) {
-  let dmg = 0;
+// me / them = each side's control state this round ({ ctrl: 0 none, 1 stunned,
+// 2 silenced, nash: { c, stacks } }). Stunned: no attacks. Silenced: no
+// skills. A controlled Nashir releases what it had charged and starts over.
+// Returns { dmg, basics (basic attacks made), rage (cast its Rage / Nashir release) }.
+function pvpMcRoundDamage(plan, r, f, side, blockP, def, me, them) {
+  let dmg = 0, basics = 0, rage = false, daggers = 0, basicCrits = 0;
   const types = plan.rounds[r];
   const fl = plan.fluct;
+  const stunned = me.ctrl === 1, silenced = me.ctrl === 2;
+  let rageT = -1;
   for (let t = 0; t < types.length; t++) {
-    const [kind, n, c, max, basic, tries, every, unitMean, chance, mult, blockRed] = types[t];
-    const unit = unitMean / plan.fluctMean; // the range is rolled per hit below
+    const row = types[t];
+    const [kind, n, c, max, basic, tries, every, unitMean, chance, mult, blockRed] = row;
+    const hitOnce = (u, k) => {
+      if (def.immune > 0) { def.immune--; return 0; }
+      let d = u / plan.fluctMean; // the range is rolled per hit below
+      if (fl) d *= 1 + fl[0] + pvpU(f, side, r, t, k, 5) * (fl[1] - fl[0]);
+      if (pvpU(f, side, r, t, k, 0) < chance) { d *= mult; if (plan.typeNames[t] === 'Basic Attack') basicCrits++; }
+      if (blockRed > 0 && pvpU(f, side, r, t, k, 1) < blockP) d *= 1 - blockRed;
+      return d;
+    };
+    if (kind === 'nashir') {
+      const N = plan.atkNash, st = me.nash, dt = row[11];
+      const boost = () => 1 + N.step * Math.min(N.max, st.stacks);
+      if (stunned || silenced) {
+        if (st.c > 0) {
+          const u = dt[st.c - 1] * boost();
+          for (let k = 0; k < NASHIR_RELEASE[st.c]; k++) dmg += hitOnce(u, 10 + k);
+          st.stacks++; st.c = 0; rage = true;
+        }
+        continue;
+      }
+      st.c++;
+      for (let k = 0; k < N.bolt; k++) {
+        if (N.convert > 0 && pvpU(f, side, r, t, k, 8) < N.convert) { dmg += hitOnce(dt[st.c - 1] * boost(), k); st.stacks++; }
+        else dmg += hitOnce(unitMean[st.c - 1], k);
+      }
+      if (st.c >= 3) {
+        const u = dt[2] * boost();
+        for (let k = 0; k < NASHIR_RELEASE[3]; k++) dmg += hitOnce(u, 10 + k);
+        st.stacks++; st.c = 0; rage = true;
+      }
+      continue;
+    }
+    if (kind === 'rage' && every < 0) { rageT = t; continue; } // rage meter: after this round's attacks
+    if (stunned || (silenced && plan.skill[t])) continue;
     let hits = 0;
     if (kind === 'fixed') hits = Math.floor(n) + (pvpU(f, side, r, t, 0, 2) < n - Math.floor(n) ? 1 : 0);
     else if (kind === 'rage') hits = every > 0 && (r + 1) % every === 0 ? 1 : 0;
     else if (kind === 'counter') {
+      if (them.ctrl === 1) continue; // a stunned enemy doesn't attack, so nothing to counter
       const m = Math.floor(tries) + (pvpU(f, side, r, t, 0, 2) < tries - Math.floor(tries) ? 1 : 0);
       for (let j = 0; j < m; j++) if (pvpU(f, side, r, t, j + 1, 3) < c) hits++;
     } else if (kind === 'combo') {
@@ -9905,16 +10156,54 @@ function pvpMcRoundDamage(plan, r, f, side, blockP, def) {
         for (let k = 1; k <= max; k++) { if (pvpU(f, side, r, t, j * 32 + k, 4) < c) hits++; else break; }
       }
     }
-    for (let k = 0; k < hits; k++) {
-      if (def.immune > 0) { def.immune--; continue; }
-      let d = unit;
-      if (fl) d *= 1 + fl[0] + pvpU(f, side, r, t, k, 5) * (fl[1] - fl[0]);
-      if (pvpU(f, side, r, t, k, 0) < chance) d *= mult;
-      if (blockRed > 0 && pvpU(f, side, r, t, k, 1) < blockP) d *= 1 - blockRed;
-      dmg += d;
+    if (plan.typeNames[t] === 'Basic Attack') basics += hits;
+    if (plan.typeNames[t] === 'Dagger') daggers += hits;
+    if (kind === 'rage' && hits > 0) rage = true;
+    for (let k = 0; k < hits; k++) dmg += hitOnce(unitMean, k);
+  }
+  // Rage meter: fill from this round's attacks, cast at the end of the turn when full.
+  if (rageT >= 0 && plan.rage) {
+    const R = plan.rage;
+    if (me.rage == null) me.rage = Math.min(R.initial, R.max);
+    let g = basics * (R.basic + R.extra);
+    if (R.crit) g += Math.min(R.crit.max, basicCrits) * R.crit.gain;
+    let d = daggers;
+    R.deployed.forEach(x => { if (r % 3 === x.slot && x.daggers && !stunned) d += x.daggers; });
+    if (R.dagger) g += Math.min(R.dagger.max, Math.floor(d / 3)) * R.dagger.gain;
+    R.deployed.forEach((x, j) => {
+      if (r % 3 !== x.slot) return;
+      if (x.hits) for (let k = 0; k < x.hits; k++) if (pvpU(f, side, r, 50 + j, k, 9) < x.chance) g += x.gain;
+      if (x.perDagger) { let got = 0; for (let k = 0; k < d; k++) if (pvpU(f, side, r, 60 + j, k, 9) < x.perDagger.chance) got += x.perDagger.gain; g += Math.min(x.perDagger.cap, got); }
+    });
+    me.rage += g;
+    if (me.rage >= R.max && !stunned && !silenced) {
+      me.rage -= R.max; rage = true;
+      const row = types[rageT];
+      const [, , , , , , , unitMean, chance, mult, blockRed] = row;
+      if (def.immune > 0) def.immune--;
+      else {
+        let x = unitMean / plan.fluctMean;
+        if (fl) x *= 1 + fl[0] + pvpU(f, side, r, rageT, 0, 5) * (fl[1] - fl[0]);
+        if (pvpU(f, side, r, rageT, 0, 0) < chance) x *= mult;
+        if (blockRed > 0 && pvpU(f, side, r, rageT, 0, 1) < blockP) x *= 1 - blockRed;
+        dmg += x;
+      }
     }
   }
-  return dmg;
+  return { dmg, basics, rage };
+}
+// Controls this side lands on the other this round, for next round:
+// 0 none, 1 stun (from basic attacks), 2 silence (from its Rage / Nashir release).
+function pvpMcControl(plan, r, f, side, me, them, out) {
+  let next = 0;
+  if (me.ctrl !== 1 && plan.stun > 0) {
+    for (let k = 0; k < out.basics && !next; k++) if (pvpU(f, side, r, 40, k, 6) < plan.stun * plan.land) next = 1;
+  }
+  if (!next && out.rage && plan.silence > 0 && me.silUsed < 2 && pvpU(f, side, r, 41, 0, 7) < plan.silence * plan.land) {
+    next = 2; me.silUsed++;
+  }
+  if (next && them.ctrlImm > 0) { them.ctrlImm--; next = 0; }
+  return next;
 }
 const pvpMcCache = new Map();
 // dealt: you hit them; taken: they hit you. Needs both sides' ATK/DEF/HP.
@@ -9929,7 +10218,11 @@ function pvpWinChance(dealt, taken, ySpeed, oSpeed, n) {
   if (pvpMcCache.has(key)) return pvpMcCache.get(key);
   let win = 0, lose = 0, none = 0;
   const R = pY.rounds.length;
+  const anyCtrl = pY.stun || pY.silence || pO.stun || pO.silence;
   for (let f = 0; f < n; f++) {
+    // control state: you are the attacker in pY and the defender in pO
+    const sY = { ctrl: 0, silUsed: 0, ctrlImm: pO.ctrlImmune, nash: { c: 0, stacks: 0 } };
+    const sO = { ctrl: 0, silUsed: 0, ctrlImm: pY.ctrlImmune, nash: { c: 0, stacks: 0 } };
     const fy = Math.exp(sigma * pvpGauss(f, 0) - sigma * sigma / 2), fo = Math.exp(sigma * pvpGauss(f, 1) - sigma * sigma / 2);
     // them = the opponent's bar (hit by pY), me = yours (hit by pO)
     const them = { hp: pY.hp, max: pY.hp, shield: pY.hp * pY.shield, immune: pY.immune };
@@ -9941,9 +10234,19 @@ function pvpWinChance(dealt, taken, ySpeed, oSpeed, n) {
     for (let r = 0; r < R; r++) {
       const scale = pvpLateHp(r + 1);
       if (scale < 1) { shrink(them, pY.hp, scale); shrink(me, pO.hp, scale); }
+      // A charging Nashir gets its Electric Shield at the start of its turn.
+      if (pY.atkNash && sY.ctrl === 0) me.shield += pO.defNashShield * me.max;
+      if (pO.atkNash && sO.ctrl === 0) them.shield += pY.defNashShield * them.max;
+      let oY = { dmg: 0, basics: 0, rage: false }, oO = oY;
       if (scale > 0) {
-        hitBar(them, pvpMcRoundDamage(pY, r, f, 0, blockP, them) * fy);
-        hitBar(me, pvpMcRoundDamage(pO, r, f, 1, blockP, me) * fo);
+        oY = pvpMcRoundDamage(pY, r, f, 0, blockP, them, sY, sO);
+        oO = pvpMcRoundDamage(pO, r, f, 1, blockP, me, sO, sY);
+        hitBar(them, oY.dmg * fy);
+        hitBar(me, oO.dmg * fo);
+      }
+      if (anyCtrl) {
+        const toO = pvpMcControl(pY, r, f, 0, sY, sO, oY), toY = pvpMcControl(pO, r, f, 1, sO, sY, oO);
+        sO.ctrl = toO; sY.ctrl = toY;
       }
       const yk = them.hp <= 0, ok = me.hp <= 0;
       if (yk && ok) out = ySpeed > oSpeed ? 1 : ySpeed < oSpeed ? -1 : (pvpU(f, 0, 0, 0, 0, 92) < 0.5 ? 1 : -1);
@@ -11004,7 +11307,8 @@ function pvpFightProfile(f) {
 // HP (1 = none). f = a fight where this side is the defender.
 function pvpSustain(f) {
   const alive = f.killRound != null ? Math.ceil(f.killRound) - 1 : pvp.rounds;
-  const gained = f.hp ? (f.shieldGain || []).slice(0, alive).reduce((a, b) => a + b, 0) / f.hp : 0;
+  const sum = (arr) => (arr || []).slice(0, alive).reduce((a, b) => a + b, 0);
+  const gained = f.hp ? (sum(f.shieldGain) + sum(f.nashShield)) / f.hp : 0;
   return 1 + f.fd.shield + gained + f.fd.heal * Math.max(0, alive);
 }
 function pvpWhyFactors(res) {
@@ -11084,7 +11388,22 @@ function renderPvpWhy(res) {
     const src = pvpShieldSources(b);
     return el('p', { class: 'gemsim-note' }, `${n} — has a shield: ${src.length ? `yes (${src.join(', ')}), so damage-to-shielded bonuses against ${n === 'You' ? 'you' : n} are on all fight` : 'no'}`);
   });
-  box.appendChild(el('details', { class: 'pvp-why-wrap' }, [el('summary', { class: 'gemsim-note' }, 'Fight effects counted'), ...fxList, ...condList, ...shieldList]));
+  const nashList = [[yn, res.you], [on, res.oppSide]].filter(([, sd]) => sd && sd.nashir).map(([n, sd]) => {
+    const p = sd.nashir;
+    return el('p', { class: 'gemsim-note' }, `${n} — ${p.name}: no Rage Skill. Charges from the start (Electric Shield ${pvpPct(p.shield * 100, 1)} of max HP each charging turn), 1 bolt a turn${p.convert ? ` (${Math.round(p.convert * 100)}% become Divine Thunder)` : ''}, and 6 Divine Thunders (${p.dtCoef}% ATK${p.chargeCoef ? ' +45% coefficient' : ''}) at the end of the 3rd charging turn${p.dtStep ? `, +20% Divine Thunder damage per release (max ${p.dtMax})` : ''}. Stunned or silenced before that: releases 1 (1 turn charged) or 3 (2 turns) next turn and starts over. A Rage Skill gem’s silence fires on the release.`);
+  });
+  const land = (F) => `${pvpPct(F.ctrlLand * 100, 0)}`;
+  const ctrlList = [[yn, on, res.dealt], [on, yn, res.taken]].map(([a, b, F]) => el('p', { class: 'gemsim-note' },
+    `${a} — controls: ${F.fa.stun ? `stun ${pvpPct(F.fa.stun * 100, 0)} per basic attack` : 'no stun'}, ${F.fa.silence ? `silence ${pvpPct(F.fa.silence * 100, 0)} on Rage (max 2)` : 'no silence'}; they land ${land(F)} of the time on ${b} (${b}’s Control Immunity Rate minus ${a}’s Ignore Control Immunity Rate)${F.fd.ctrlImmune ? `; ${b} ignores the first ${F.fd.ctrlImmune}` : ''}. Win chance includes control; the round-by-round view assumes none.`));
+  const rageList = [[yn, res.dealt], [on, res.taken]].filter(([, F]) => F.rp).map(([n, F]) => {
+    const rp = F.rp, rounds = (F.rageRounds || []).map((h, i) => (h ? i + 1 : null)).filter(Boolean);
+    const bits = [`starts at ${Math.min(rp.initial, pvpRageMax())}`, `+${(Number(pvp.rageBasic) >= 0 ? Number(pvp.rageBasic) : PVP_RAGE_BASIC_DEFAULT) + rp.extra} per basic attack`];
+    if (rp.crit) bits.push(`+${rp.crit.gain} on weapon crits (max ${rp.crit.max} a turn)`);
+    if (rp.dagger) bits.push(`+${rp.dagger.gain} per 3 daggers (max ${rp.dagger.max} a turn)`);
+    rp.deployed.forEach(x => bits.push(`${x.name} on its turns`));
+    return el('p', { class: 'gemsim-note' }, `${n} — rage: ${bits.join(', ')}. Rage Skill in rounds ${rounds.length ? rounds.slice(0, 10).join(', ') + (rounds.length > 10 ? '…' : '') : 'none'} (no control; the win chance rolls it fight by fight).`);
+  });
+  box.appendChild(el('details', { class: 'pvp-why-wrap' }, [el('summary', { class: 'gemsim-note' }, 'Fight effects counted'), ...fxList, ...condList, ...shieldList, ...nashList, ...rageList, ...ctrlList]));
   return box;
 }
 
@@ -11478,6 +11797,7 @@ function renderPvpSettings(res) {
       if (opts.skill) pvp[side].skillHits[key] = v;
       else pvp[side][key] = opts.text ? v : (v === '' ? pvpDefaultSide()[key] : Number(v));
       if (['atk', 'def', 'hp'].includes(key)) delete pvp[side].src; // a typed number isn't the page's any more
+      if (key === 'rageEvery') pvp.rageSet = true;
       savePvp(); render();
     });
     return inp;
@@ -11487,10 +11807,24 @@ function renderPvpSettings(res) {
     mirror ? el('td', { class: 'gemsim-note' }, 'same as you') : null]));
   row('Basic attacks per round', 'basic');
   row('Combo chain (max combos per attack)', 'maxCombo');
-  row('Rage Skill every N rounds (0 = never)', 'rageEvery');
+  row('Rage Skill every N rounds (blank = from the rage meter, 0 = never)', 'rageEvery', { placeholder: 'auto' });
   PVP_SKILL_TYPES.forEach(t => row(`${t} hits per round`, t, { skill: true }));
   table.appendChild(tb);
   box.appendChild(el('div', { class: 'gemsim-table-wrap' }, table));
+  const rageInput = (key, def) => {
+    const inp = el('input', { type: 'number', min: '0', step: '1', value: String(pvp[key] == null ? def : pvp[key]), class: 'search-input pvp-num' });
+    inp.addEventListener('change', () => { const v = inp.value.trim(); pvp[key] = v === '' ? def : Math.max(0, Number(v)); savePvp(); render(); });
+    return inp;
+  };
+  box.appendChild(el('p', { class: 'gemsim-note' },
+    `Rage meter (both sides). The game data doesn’t hold these base numbers, so they’re settings: Rage needed to cast (default ${PVP_RAGE_MAX_DEFAULT}) and Rage from each basic attack before “extra Rage” effects (default ${PVP_RAGE_BASIC_DEFAULT}, about one Rage Skill every 3 rounds for a build with nothing extra). Initial Rage, extra Rage on basic attacks, weapon-crit Rage, the dagger Rage gem and deployed Qiankun Bag / Capybara Rhapsody (A4+) are read from each build.`));
+  box.appendChild(el('div', { class: 'gemsim-coef-row' }, [
+    el('label', { class: 'gemsim-coef' }, [el('span', { class: 'filter-dropdown-label' }, 'Rage to cast'), rageInput('rageMax', PVP_RAGE_MAX_DEFAULT)]),
+    el('label', { class: 'gemsim-coef' }, [el('span', { class: 'filter-dropdown-label' }, 'Rage per basic attack'), rageInput('rageBasic', PVP_RAGE_BASIC_DEFAULT)]),
+  ]));
+  const nashSides = sides.filter(([, eff]) => eff && eff.nashir).map(([sd]) => pvpSideName(sd));
+  if (nashSides.length) box.appendChild(el('p', { class: 'gemsim-note' },
+    `${nashSides.join(' and ')}: Nashir’s Scepter, so the Rage Skill and Lightning boxes are ignored. Nashir never rages; its lightning follows the 3-turn charge.`));
 
   box.appendChild(el('p', { class: 'gemsim-note' },
     'Block chance when hit (%). The Block reduction itself is documented, but how often it triggers is not, so this is an assumption: 100 means every hit is reduced, 0 turns Block off.'));
