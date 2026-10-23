@@ -2606,6 +2606,39 @@ textarea::placeholder {
   .pvp-rec-row .pvp-label { grid-column: 1 / -1; }
 }
 
+
+/* ---- Credits: always visible along the bottom of the page ---- */
+:root { --credits-h: 0px; }
+body { padding-bottom: var(--credits-h); }
+.site-credits {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 18px;
+  padding: 7px 16px calc(7px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--hairline);
+  color: var(--text-tertiary);
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+.site-credits .credit { white-space: nowrap; }
+.site-credits .credit-icon { margin-right: 5px; }
+.site-credits .credit-name { color: var(--accent-text); font-weight: 600; }
+.site-credits .credit-sep { color: var(--text-disabled); }
+.back-to-top { bottom: calc(24px + var(--credits-h)); }
+.bulk-action-bar { bottom: calc(32px + var(--credits-h)); }
+@media (max-width: 640px) {
+  .site-credits { font-size: 11px; gap: 2px 12px; padding-top: 6px; padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+  .site-credits .credit-sep { display: none; }
+}
 </style>
 </head>
 <body>
@@ -12272,6 +12305,25 @@ function syncTopbarHeight() {
 }
 syncTopbarHeight();
 window.addEventListener('resize', syncTopbarHeight);
+
+/* ---------- Credits: always visible along the bottom ---------- */
+function renderSiteCredits() {
+  const name = (n) => el('span', { class: 'credit-name' }, n);
+  const sep = () => el('span', { class: 'credit-sep', 'aria-hidden': 'true' }, '·');
+  const footer = el('footer', { class: 'site-credits', role: 'contentinfo' }, [
+    el('span', { class: 'credit' }, [el('span', { class: 'credit-icon', 'aria-hidden': 'true' }, '🌙'), 'Built at 3am zoomies by ', name('Vampy')]),
+    sep(),
+    el('span', { class: 'credit' }, [el('span', { class: 'credit-icon', 'aria-hidden': 'true' }, '🐟'), 'Data tables fished out by ', name('aphrael')]),
+    sep(),
+    el('span', { class: 'credit' }, [el('span', { class: 'credit-icon', 'aria-hidden': 'true' }, '🐾'), 'Official first button-swatters: ', name('aphrael'), ', ', name('Villa Meow'), ' & ', name('something')]),
+  ]);
+  document.body.appendChild(footer);
+  // Keep the page (and the floating buttons) clear of the bar at any width.
+  const sync = () => document.documentElement.style.setProperty('--credits-h', `${footer.offsetHeight}px`);
+  sync();
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(footer); else window.addEventListener('resize', sync);
+}
+renderSiteCredits();
 
 const backToTopBtn = document.getElementById('back-to-top');
 backToTopBtn.addEventListener('click', () => {
