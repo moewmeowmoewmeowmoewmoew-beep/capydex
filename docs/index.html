@@ -2606,6 +2606,17 @@ textarea::placeholder {
   .pvp-rec-row .pvp-label { grid-column: 1 / -1; }
 }
 
+/* ---- PVP: attack / defend switch, Explain with Claude ---- */
+.pvp-mode { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
+.pvp-explain {
+  display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; margin-top: 12px;
+  border: 1px solid var(--hairline); border-radius: 8px; background: var(--bg-panel-2);
+}
+.pvp-explain-text { display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.55; color: var(--text-primary); overflow-wrap: anywhere; }
+.pvp-explain-text p { margin: 0; }
+.pvp-explain-h { font-weight: 600; font-size: 14px; margin-top: 6px; color: var(--text-primary); }
+.pvp-explain-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+
 
 /* ---- Credits: always visible along the bottom of the page ---- */
 :root { --credits-h: 0px; }
