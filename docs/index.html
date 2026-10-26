@@ -2677,6 +2677,7 @@ function defaultState() {
     mountState: {},         // idx -> { owned, stars(0-5), awaken(0-10) }
     artifactState: {},      // idx -> { owned, stars(0-5), awaken(0-10) }
     fashionLevel: 0,
+    playerPower: null,       // battle power (Power) from the last player export — PVP turn order on a Speed tie
     capymon: {},             // cardName -> { owned, stars(0-5), deployed }
     homestead: {},           // buildingId -> level (0 = not owned)
     equipment: {},           // slotId -> { itemName, quality, surpass, arcana, psionics[4], gems[5] }
@@ -2757,13 +2758,105 @@ function saveState() {
 }
 
 function exportSaveData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const out = { schema_version: EXPORT_SCHEMA_VERSION, game_version: EXPORT_GAME_VERSION, generated_at: new Date().toISOString() };
+  Object.assign(out, state);
+  try { out.totals = buildExportTotals(state); } catch (e) { console.warn('Could not add stat totals to the export.', e); }
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = el('a', { href: url, download: `capydex-export-${new Date().toISOString().slice(0, 10)}.json` });
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+/* ---------- Export: the player's stat totals ----------
+   Every CapyDex export also carries the build's numbers, worked out by the
+   same aggregator the Calculator uses, so a site reading the file doesn't
+   need CapyDex's data tables:
+     totals.stats        one entry per stat: game attribute key (null when
+                         CapyDex doesn't know it), CapyDex label, value, unit
+     totals.combat       final ATK / max HP / DEF as the game totals them
+                         (flat × (1 + %) × (1 + Global %)), plus PVP max HP
+     totals.conditional  fight-only and conditional effects (skills, procs,
+                         stacks, deployed skills, "if …" bonuses) — listed,
+                         never added into the sums
+     totals.breakdown    per stat: where the total comes from
+   Reading an export back in ignores these blocks (EXPORT_META_KEYS). */
+const EXPORT_SCHEMA_VERSION = 2;
+const EXPORT_GAME_VERSION = '1.9.6';
+const EXPORT_META_KEYS = ['schema_version', 'game_version', 'generated_at', 'totals'];
+// CapyDex labels that are the same game attribute as another label.
+const EXPORT_LABEL_MERGE = { 'Global HP': 'Global HP%' };
+const EXPORT_STAGE_GAME_KEYS = {
+  'Global ATK': 'GlobalAttack%', 'Global HP%': 'GlobalHPMax%', 'Global DEF%': 'GlobalDefence%',
+  'PVP ATK%': 'PVPAttack%', 'PVP HP%': 'PVPHPMax%', 'PVP DEF%': 'PVPDefence%',
+};
+const EXPORT_STAT_NOTES = {
+  'Crit DMG': 'Includes the 200% every fighter starts with; the game attribute is this minus 200.',
+  'Speed': 'Includes the base 5.',
+};
+let exportKeyCache = null;
+function exportGameKeyOf(label) {
+  if (!exportKeyCache) {
+    const m = Object.assign({}, EXPORT_STAGE_GAME_KEYS);
+    const addRev = (map) => Object.entries(map).forEach(([key, l]) => { if (!(l in m)) m[l] = key; });
+    addRev(ARMAMENT_KEY_TO_LABEL);
+    CAPYTOOL_GROUPS.forEach(g => g.items.forEach(it => { if (it.game && it.calc && !(it.calc in m)) m[it.calc] = it.game; }));
+    addRev(GAME_KEY_TO_LABEL_EXTRA);
+    exportKeyCache = m;
+  }
+  return exportKeyCache[label] || null;
+}
+function buildExportTotals(st) {
+  const saved = state;
+  state = st;
+  let stats;
+  try { stats = aggregateFullStatsWithSources(null); } finally { state = saved; }
+  const unit = (l) => (CALC_NON_PERCENT_LABELS.has(l) ? 'flat' : '%');
+  const r4 = (v) => Math.round(v * 10000) / 10000;
+  const COND_RE = /\s*\(if: (.+)\)\s*$/;
+  const sums = {}, breakdown = {}, conditional = [];
+  Object.entries(stats).forEach(([raw, e]) => {
+    const label = EXPORT_LABEL_MERGE[raw] || raw;
+    e.sources.forEach(sc => {
+      const m = COND_RE.exec(sc.name);
+      if (sc.battle || m) {
+        conditional.push({ key: exportGameKeyOf(label), label, value: r4(sc.val), unit: unit(label),
+          source: sc.name.replace(COND_RE, ''), when: m ? m[1] : 'in battle (skill, proc, stack or deployed effect)' });
+        return;
+      }
+      sums[label] = (sums[label] || 0) + sc.val;
+      (breakdown[label] = breakdown[label] || []).push({ source: sc.name, value: r4(sc.val) });
+    });
+  });
+  // Calculator order first, then anything else A–Z.
+  const order = [];
+  CALC_TABLE_CATEGORIES.forEach(c => c.labels.forEach(l => { if (!order.includes(l)) order.push(l); }));
+  const rank = (l) => { const i = order.indexOf(l); return i < 0 ? order.length : i; };
+  const labels = Object.keys(sums).filter(l => Math.abs(sums[l]) > 1e-9)
+    .sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+  const t = (l) => sums[l] || 0;
+  const hp = t('HP') * (1 + t('HP%') / 100) * (1 + t('Global HP%') / 100);
+  return {
+    note: 'Out-of-fight attribute totals (what the stats screen shows), from the CapyDex Calculator. Fight-only and conditional effects are under "conditional" and are not added in.',
+    stats: labels.map(l => Object.assign({ key: exportGameKeyOf(l), label: l, value: r4(t(l)), unit: unit(l) },
+      EXPORT_STAT_NOTES[l] ? { note: EXPORT_STAT_NOTES[l] } : {})),
+    combat: {
+      atk: Math.round(t('ATK') * (1 + t('ATK%') / 100) * (1 + t('Global ATK') / 100)),
+      max_hp: Math.round(hp),
+      def: Math.round(t('DEF') * (1 + t('DEF%') / 100) * (1 + t('Global DEF%') / 100)),
+      pvp_max_hp: Math.round(t('HP') * (1 + (t('HP%') + t('PVP HP%')) / 100) * (1 + t('Global HP%') / 100) * 5),
+      formula: {
+        atk: 'ATK × (1 + ATK%) × (1 + Global ATK%)',
+        max_hp: 'HP × (1 + HP%) × (1 + Global HP%)',
+        def: 'DEF × (1 + DEF%) × (1 + Global DEF%)',
+        pvp_max_hp: 'HP × (1 + HP% + PVP HP%) × (1 + Global HP%) × 5 (PVP duels; before the round-10+ shrink)',
+      },
+    },
+    conditional,
+    breakdown,
+  };
 }
 
 // Wipes everything and replaces it cleanly with the imported file — merged
@@ -2788,6 +2881,7 @@ function importSaveData(jsonText, onError) {
     openPlayerImportPreview(parsed);
     return;
   }
+  EXPORT_META_KEYS.forEach(k => { delete parsed[k]; }); // the export's own totals aren't saved data
   state = Object.assign(defaultState(), parsed);
   saveState();
   render();
@@ -3204,6 +3298,7 @@ function convertPlayerExport(exp) {
     notes.push('Not changed: Specialization (this export has no talents section).');
   }
 
+  if (exp.player && Number(exp.player.cp) > 0) next.playerPower = Number(exp.player.cp);
   return { next, counts, missing, notes };
 }
 
@@ -7306,6 +7401,33 @@ const ARMAMENT_KEY_TO_LABEL = {
 // Enemy debuffs → the stat they act like on your side (enemy Crit DMG
 // Reduction −6% ≈ your Crit DMG +6%; enemy DMG Boost −10% ≈ your DMG
 // Reduction +10%).
+// Game attribute keys (Stat Sources page / build files) → CapyDex labels, on
+// top of ARMAMENT_KEY_TO_LABEL and the Capytool keys. Shared by the PVP
+// Simulator and the export's stat totals, so it lives outside the PVP block.
+const GAME_KEY_TO_LABEL_EXTRA = {
+  'CritRate%': 'Crit Rate (Generic)', 'IgnoreCritRate%': 'Ignore Crit', 'IgnoreCrit%': 'Ignore Crit',
+  'CritValueReduction%': 'Crit DMG Reduction', 'CritDamageReduction%': 'Crit DMG Reduction',
+  'SkillCritRate%': 'Skill Crit Rate', 'IgnoreSkillCritRate%': 'Ignore Skill Crit', 'IgnoreSkillCrit%': 'Ignore Skill Crit',
+  'NormalCritRate%': 'Basic ATK Crit Rate', 'IgnoreNormalCritRate%': 'Ignore Normal ATK Crit',
+  'SkillCritValue%': 'Skill Crit DMG', 'NormalCritValue%': 'Basic ATK Crit DMG',
+  'FinalDamageAdd%': 'General Final Damage', 'FinalDamageReduction%': 'General Final Damage Reduction',
+  'FinalSkillDamageReduction%': 'Skill Damage Final Damage Reduction', 'FinalNormalDamageReduction%': 'Basic Attack Final Damage Reduction',
+  'FinalComboDamageReduction%': 'Basic Attack Final Damage Reduction',
+  'ComboRate%': 'Combo Rate', 'IgnoreComboRate%': 'Ignore Combo', 'IgnoreCombo%': 'Ignore Combo',
+  'CounterRate%': 'Counter Rate', 'IgnoreCounterRate%': 'Ignore Counter', 'IgnoreCounter%': 'Ignore Counter',
+  'SkillDamageReduction%': 'Skill DMG Reduction', 'NormalDamageReduction%': 'Basic ATK DMG Reduction',
+  'ComboDamageReduction%': 'Combo DMG Reduction', 'CounterDamageAdd%': 'Counter DMG', 'CounterDamageReduction%': 'Counter DMG Reduction',
+  'Tenacity': 'Tenacity', 'TenacityResistance': 'Tenacity Resistance', 'IgnoreTenacity': 'Tenacity Resistance',
+  'Penetration': 'Armor Break', 'ArmorBreak': 'Armor Break',
+  'PenetrationResistance': 'Armor Break Resistance', 'IgnorePenetration': 'Armor Break Resistance', 'ArmorBreakResistance': 'Armor Break Resistance',
+  'Block': 'Block',
+  'PVPDamageAdd%': 'PVP DMG', 'PVPDamageReduction%': 'PVP Damage Reduction',
+  'GlobalDamageAdd%': 'Global DMG', 'GlobalDamageReduction%': 'Global DMG Reduction',
+  'IgnoreDefence%': 'Ignore DEF', 'IgnoreDefense%': 'Ignore DEF',
+  'RecoveryEffect%': 'Recovery Effect', 'RecoveryReduction%': 'Recovery Reduction',
+  'IgnoreStun%': 'Ignore Stun', 'IgnoreFrozen%': 'Ignore Frozen', 'IgnoreNumb%': 'Ignore Numb',
+  'ControlImmunity%': 'Control Immunity Rate', 'IgnoreControlImmunity%': 'Ignore Control Immunity Rate',
+};
 const ARMAMENT_ENEMY_TO_LABEL = {
   'CritValueReduction%': 'Crit DMG', 'FinalSkillDamageReduction%': 'Final Skill Damage',
   'DamageAdd%': 'Generic DMG Reduction', 'FinalDamageAdd%': 'General Final Damage Reduction',
